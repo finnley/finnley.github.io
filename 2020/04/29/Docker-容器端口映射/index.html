@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="案例 比如创建一个网站，那么服务肯定要能够被别人访问到，如在本地创建了一个Nginx的服务  1   sudo docker run --name web -d nginx     这样就创建了 Nginx 的 Container，现在通过 docker 创建了 nginx 的 Server    但是现在 Nginx 的服务还访问不了，如果想访问只能通过下面的方式访问  1   sudo doc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器端口映射">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/04/29/Docker-%E5%AE%B9%E5%99%A8%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="案例 比如创建一个网站，那么服务肯定要能够被别人访问到，如在本地创建了一个Nginx的服务  1   sudo docker run --name web -d nginx     这样就创建了 Nginx 的 Container，现在通过 docker 创建了 nginx 的 Server    但是现在 Nginx 的服务还访问不了，如果想访问只能通过下面的方式访问  1   sudo doc">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/1.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/2.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/3.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/4.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/5.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/6.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/7.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/8.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/11.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/9.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/10.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/12.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/13.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/14.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/15.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/port-mapping/16.png">
+<meta property="article:published_time" content="2020-04-29T14:19:17.000Z">
+<meta property="article:modified_time" content="2020-07-18T18:37:02.738Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/docker/port-mapping/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/04/29/Docker-%E5%AE%B9%E5%99%A8%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>容器端口映射 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/04/29/Docker-%E5%AE%B9%E5%99%A8%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          容器端口映射
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-04-29 22:19:17" itemprop="dateCreated datePublished" datetime="2020-04-29T22:19:17+08:00">2020-04-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-19 02:37:02" itemprop="dateModified" datetime="2020-07-19T02:37:02+08:00">2020-07-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>比如创建一个网站，那么服务肯定要能够被别人访问到，如在本地创建了一个Nginx的服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run --name web -d nginx</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/1.png" alt=""></p>
+<p>这样就创建了 Nginx 的 Container，现在通过 docker 创建了 nginx 的 Server</p>
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/2.png" alt=""></p>
+<p>但是现在 Nginx 的服务还访问不了，如果想访问只能通过下面的方式访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker exec -it web &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/3.png" alt=""></p>
+<p>如果需要访问，就需要将服务暴露给外面，其实NGINX的网络空间 netowork namespace 是独立的，它有自己的IP地址，NGINX 默认启用的端口是 80 端口，先看下 NGINX 的IP地址，默认是连接到 bridge 上面的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker network inspect bridge</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/4.png" alt=""></p>
+<p>IP地址是 172.17.0.2，在主机上 PING下 下这个IP地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping 172.17.0.2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/5.png" alt=""></p>
+<p>发现是可以 PING 通的，因为主机上是有 docker0 这个 bridge 的,因为它是连到 docker0 这个 bridge 上面的</p>
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/6.png" alt=""></p>
+<h2 id="访问-NGINX"><a href="#访问-NGINX" class="headerlink" title="访问 NGINX"></a>访问 NGINX</h2><p>访问NGINX 80 端口</p>
+<h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">telnet 172.17.0.2 80</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/7.png" alt=""></p>
+<p>发现是可以访问的</p>
+<h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl http:&#x2F;&#x2F;172.17.0.2</span><br></pre></td></tr></table></figure>
+
+<p>此时会将 NGINX 的访问页面拉取下来</p>
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/8.png" alt=""></p>
+<p>在 docker host 里面是可以访问 NGINX 80 服务的，但是现在是要向外面提供服务的，也就是说现在不光要在 docker-node里面可以访问，也希望在外面也可以访问，这就要用到端口映射(port map)，现在NGINX的端口只绑定到了 172.17.0.2 这个IP的网络空间里面</p>
+<p>现在需要将端口映射到本地 docker-node 这台机子上的80 端口上，就不需要访问 172.17.0.2 了，只需要 <code>curl 127.0.0.1</code> 就可以了</p>
+<h2 id="端口映射"><a href="#端口映射" class="headerlink" title="端口映射"></a>端口映射</h2><p>现将NGINX关闭并删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker stop web</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker rm web</span><br></pre></td></tr></table></figure>
+
+<p>首先使用 <code>curl 127.0.0.1</code> 看下访问情况</p>
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/11.png" alt=""></p>
+<p>接着创建 NGINX 的 Container,指定参数 -p 表示端口映射，并将容器端口映射到本地端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run --name web -d -p 80:80 nginx</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/9.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker ps</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/10.png" alt=""></p>
+<p>会看到 PORTS 这一列中看到 80 映射到 80/tcp,接着再去使用 <code>curl 127.0.0.1</code> 看下结果</p>
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/12.png" alt=""></p>
+<p>从图片中看到现在访问本地的80端口就已经可以访问到 Container 中的 NGINX 服务了，这也证明服务已经绑定到了本地 docker-node 的80端口上了</p>
+<p>如果 docker-node 有一个自己的独立IP地址，比如在公网上面，docker-node有一个自己的公网地址，如果去访问docker-node的公网IP地址的时候是否就可以到容器中的NGINX了呢？</p>
+<p>因为现在是通过 Vagrant 启动的docker-node,它的IP地址是在inett后面的，是个私有的IP地址</p>
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/13.png" alt=""></p>
+<p>现在在 Vagrantfile 中做一个端口映射（port map），将guest的80端口映射成opts里面的变量，比如docker-node1的80映射成8888，docker-node2映射成9999</p>
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/14.png" alt=""></p>
+<p>当前是在 node1 里面，将本地的80端口映射到了我笔记本的8888端口上,现在打来浏览器输入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:8888</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/port-mapping/15.png" alt=""></p>
+<p>现在就已经可以访问 NGINX 了，这个过程就是做了端口转发</p>
+<h2 id="Container-Port-Map"><a href="#Container-Port-Map" class="headerlink" title="Container Port Map"></a>Container Port Map</h2><p><img src="https://images.notes.xuepincat.com/docker/port-mapping/16.png" alt=""></p>
+<ul>
+<li>第一步</li>
+</ul>
+<p>在Linux虚拟机里面通过 Docker 启动了一个 NGINX Container，NGINX的服务是绑定到了本地的Linux的network namespace 里面（172.17.0.2:80，这个IP：端口），Linux的虚拟机又是和docker0这个bridge连在一起的，通过 <code>-p</code> 实现了一个效果就是在本地的iptable里面添加了一个转换的规则，就是将访问本地（Linux虚拟机）80 端口的流量转发到NGINX Container的172.17.0.2:80端口上，这样当去访问linux虚拟机的本地80端口的时候就会将流量转发到NGINX里面，这样访问本地就可以访问NGINX的服务了</p>
+<ul>
+<li>第二步</li>
+</ul>
+<p>通过 Vagrantfile 做了一个端口的转发，因为在我们的电脑笔记本上无法直接访问192.168.205.10这个Linux虚拟机的地址的，我们可以做一个port map端口转发，当去访问我们笔记本127.0.0.1:8888的时候，就会将流量转发到vagrant创建的这台linux虚拟机的80端口上去，这样访问本地的8888端口就可以访问到container容器里面的NGINX了</p>
+<p>如果不是通过vagrant创建的，而是通过阿里云，亚马逊云创建的一台云主机，就可以为云主机分配一个public 的IP地址，比如上面的192.168.205.10 就会对应变成一个公有的IP地址，任何人都可以访问的地址，通过上面的方式去云主机里面启动一个NGINX，然后将NGINX的80map到云主机的80，那么任何人都可以通过互联网访问NGINX的服务了，</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/27/Docker-%E5%AE%B9%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84link/" rel="prev" title="容器之间的link">
+      <i class="fa fa-chevron-left"></i> 容器之间的link
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/06/Docker-%E5%AE%B9%E5%99%A8%E7%BD%91%E7%BB%9C%E4%B9%8Bhost%E5%92%8Cnone/" rel="next" title="容器网络之host和none">
+      容器网络之host和none <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">1.</span> <span class="nav-text">案例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#访问-NGINX"><span class="nav-number">2.</span> <span class="nav-text">访问 NGINX</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法一"><span class="nav-number">2.1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法二"><span class="nav-number">2.2.</span> <span class="nav-text">方法二</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#端口映射"><span class="nav-number">3.</span> <span class="nav-text">端口映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Container-Port-Map"><span class="nav-number">4.</span> <span class="nav-text">Container Port Map</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

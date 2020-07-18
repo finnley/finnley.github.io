@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="使用场景 比如项目组在开发一个软件，版本库里面放的是1.0的代码，这里的版本1.0不是SVN服务器的版本1.0，而是面向用户的版本1.0，比如说IOS10.2， IOS10.3之类的版本号。1.0版本比如已经发布给用户使用很长时间了，时间久了就显得有点过时了，并且出现了快被竞争对手干掉的情况。  于是项目组决定从现有的开发团队里面抽调一部分人开始重新设计整个软件产品，在1.0版本的基础上要做出一些">
+<meta property="og:type" content="article">
+<meta property="og:title" content="17-主干版本和分支版本">
+<meta property="og:url" content="https://notes.xuepincat.com/2017/07/09/17-%E4%B8%BB%E5%B9%B2%E7%89%88%E6%9C%AC%E5%92%8C%E5%88%86%E6%94%AF%E7%89%88%E6%9C%AC/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="使用场景 比如项目组在开发一个软件，版本库里面放的是1.0的代码，这里的版本1.0不是SVN服务器的版本1.0，而是面向用户的版本1.0，比如说IOS10.2， IOS10.3之类的版本号。1.0版本比如已经发布给用户使用很长时间了，时间久了就显得有点过时了，并且出现了快被竞争对手干掉的情况。  于是项目组决定从现有的开发团队里面抽调一部分人开始重新设计整个软件产品，在1.0版本的基础上要做出一些">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170709/1.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170709/2.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170709/3.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170709/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170709/5.png">
+<meta property="article:published_time" content="2017-07-09T02:48:36.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.315Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="SVN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/20170709/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2017/07/09/17-%E4%B8%BB%E5%B9%B2%E7%89%88%E6%9C%AC%E5%92%8C%E5%88%86%E6%94%AF%E7%89%88%E6%9C%AC/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>17-主干版本和分支版本 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/09/17-%E4%B8%BB%E5%B9%B2%E7%89%88%E6%9C%AC%E5%92%8C%E5%88%86%E6%94%AF%E7%89%88%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          17-主干版本和分支版本
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-09 10:48:36" itemprop="dateCreated datePublished" datetime="2017-07-09T10:48:36+08:00">2017-07-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><p>比如项目组在开发一个软件，版本库里面放的是1.0的代码，这里的版本1.0不是SVN服务器的版本1.0，而是面向用户的版本1.0，比如说IOS10.2， IOS10.3之类的版本号。1.0版本比如已经发布给用户使用很长时间了，时间久了就显得有点过时了，并且出现了快被竞争对手干掉的情况。</p>
+<a id="more"></a>
+
+<p>于是项目组决定从现有的开发团队里面抽调一部分人开始重新设计整个软件产品，在1.0版本的基础上要做出一些重大的改进，然后推出2.0版本。</p>
+<p>而1.0版本也要继续维持小版本号的发布，比如说1.1,1.2的更新。而2.0的开发版本又不能影响已经发布的1.0版本的代码。</p>
+<p>所以这个时候我们可以通过创建分支版本库用来存放2.0版本的代码，把它和1.0版本的代码隔离开来。</p>
+<p>我们把现在还在开发的1.0版本称之为主干版本，把准备重新设计的2.0版本称为分支版本。</p>
+<p>创建分支版本库的过程是完全脱离工作副本进行的，也就是说整个过程和工作副本压根就没有关系，所以在终端里面执行这些命令的时候目录所在的位置就无关紧要了，他并不需要在某个特定的工作副本目录下。</p>
+<p>还是拿repos版本库演示</p>
+<p>现在我们需要创建一个分支版本，为了来方便代码管理，当我们要进行多版本并行开发的时候，通常会在版本库里面增加一层目录用来区分主干版本和分支版本。</p>
+<p>我们先把版本库中的文件复制到一个名为trunk的文件夹里面，这样做的目的就是把当前版本库的代码都复制到主干版本文件夹里面去。这个也是类似于前面从工作副本直接复制到线上版本库操作一样，他是脱离工作副本直接提交到线上版本库的，所以也需要一个-m参数来标明提交的备注。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  svn cp svn://118.89.47.207/repos/ svn://118.89.47.207/repos/trunk -m "setup a trunk"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170709/1.png" alt="&quot; &quot;"></p>
+<p>这样就得到了一个提示信息，说线上版本库已经提交到了版本9。</p>
+<p>现在进入repos工作副本，然后执行一下更新操作，会发现里面增加了一个trunk目录。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd repos/</span></span><br><span class="line"><span class="comment"># svn up</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170709/2.png" alt="&quot; &quot;"></p>
+<p>工作副本内容详情，trunk目录就是刚才使用复制命令创建并提交的一个版本库，这个里面放置的就是原来repos版本库的代码。</p>
+<p><img src="/images/20170709/3.png" alt="&quot; &quot;"></p>
+<p>现在以trunk为基础，创建一个分支版本，分支版本目录的名称通常为branch。</p>
+<p>格式</p>
+<pre><code>svn cp 主干版本 分之版本</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn cp svn://118.89.47.207/repos/trunk svn://118.89.47.207/repos/branch -m "create a branch"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170709/4.png" alt="&quot; &quot;"></p>
+<p>同样的我们得到了一个提示信息，信息告诉我们已经提交到了版本10。</p>
+<p>现在再来更新一下,又得到了一个branch目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn up</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170709/5.png" alt="&quot; &quot;"></p>
+<p>现在版本库目录下就有了trunk和branch目录，一个是主干版本，一个是分支版本。那项目组中的不同开发人员就可以进入不同的版本目录进行代码修改，分工明确，主干版本和分支版本互不干扰。</p>
+<p>除了trunk和branch目录之外的文件现在不需要了，就可以做一个删除处理。</p>
+<p>其实在工作岗位上做版本库管理的时候一个版本库刚刚被创建的时候，里面还什么都没有的时候就会现在里面创建trunk和branch目录，一开始都会在trunk目录里面创建文件提交版本等等。为的就是在将来软件版本迭代的时候比较方便。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/SVN/" rel="tag"># SVN</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/08/16-svn%20copy%E5%91%BD%E4%BB%A4/" rel="prev" title="16-svn copy命令">
+      <i class="fa fa-chevron-left"></i> 16-svn copy命令
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/10/18-SVN%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94HOOKS%E9%92%A9%E5%AD%90%E5%BA%94%E7%94%A8/" rel="next" title="18-SVN高级应用——HOOKS钩子应用">
+      18-SVN高级应用——HOOKS钩子应用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用场景"><span class="nav-number">1.</span> <span class="nav-text">使用场景</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

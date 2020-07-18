@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Search 运行机制  * Search 执行的时候实际分两个步骤运行的   * Query 阶段          * Fetch 阶段           * Query-Then-Fetch  Query 阶段 用户向集群发起查询请求 GET test_index&#x2F;_search,某一个节点比如node3 在接收到用户的search请求后，会先进行 Query 阶段（此时是Node3作为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Search运行机制">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/06/17/7-Search%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="Search 运行机制  * Search 执行的时候实际分两个步骤运行的   * Query 阶段          * Fetch 阶段           * Query-Then-Fetch  Query 阶段 用户向集群发起查询请求 GET test_index&#x2F;_search,某一个节点比如node3 在接收到用户的search请求后，会先进行 Query 阶段（此时是Node3作为">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/81.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/82.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/83.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/84.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/85.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/86.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/87.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/88.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/89.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/90.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/91.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/elastic/elasticsearch/92.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/elastic/elasticsearch/93.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/94.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/95.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/96.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/97.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/98.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/99.png">
+<meta property="article:published_time" content="2020-06-16T16:35:23.000Z">
+<meta property="article:modified_time" content="2020-07-12T03:33:47.788Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Elasticsearch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/81.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/06/17/7-Search%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Search运行机制 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/06/17/7-Search%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Search运行机制
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-06-17 00:35:23" itemprop="dateCreated datePublished" datetime="2020-06-17T00:35:23+08:00">2020-06-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index"><span itemprop="name">Elasticsearch</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Search-运行机制"><a href="#Search-运行机制" class="headerlink" title="Search 运行机制"></a>Search 运行机制</h2><ul>
+<li>Search 执行的时候实际分两个步骤运行的</li>
+</ul>
+<ul>
+<li><p>Query 阶段</p>
+</li>
+<li><p>Fetch 阶段</p>
+</li>
+</ul>
+<ul>
+<li>Query-Then-Fetch</li>
+</ul>
+<h3 id="Query-阶段"><a href="#Query-阶段" class="headerlink" title="Query 阶段"></a>Query 阶段</h3><p>用户向集群发起查询请求 <code>GET test_index/_search</code>,某一个节点比如node3 在接收到用户的search请求后，会先进行 Query 阶段（此时是Node3作为 Coordinating Node 角色在服务）</p>
+<p>Node3会在6个主副分片中随机选择3个分片，发送 search request</p>
+<p>被选中的3个分片会分别执行查询并排序，返回 from+size 个文档Id和排序值，比如返回第10-19个文档，实际在执行的时候每个分片都会返回es 10+10=20个文档，node3一共拿到 3*20=60个文档，然后在这60个文档里面通过排序之后再去拿实际的第9到19个文档，这个就是es的分片机决定了node3没法知道真正的前20个文档在哪个分片，有可能20个文档在P0,P1上，和P2没有关系，也可能20个文档均匀的分布在P0,P1,P2三个分片上，这种情况就需要每个分片把前20个分片取出来做一个整合，在整合之后就可以算出真正的前20个文档了</p>
+<p>Node3 整合3个分片返回的 front+size 个文档Id,根据排序值排序后选取from到from+size的文档Id</p>
+<h3 id="Fetch-阶段"><a href="#Fetch-阶段" class="headerlink" title="Fetch 阶段"></a>Fetch 阶段</h3><ul>
+<li>node3 根据 Query 阶段获取的文档Id列表去对应的shard上获取文档情况数据</li>
+</ul>
+<p>node3 向相关分片发送 multi_get 请求</p>
+<p>3个分片返回文档详细数据</p>
+<p>node3 拼接返回的结果并返回给客户</p>
+<h2 id="相关性算分"><a href="#相关性算分" class="headerlink" title="相关性算分"></a>相关性算分</h2><ul>
+<li><p>相关性算分在 shard 与 shard 间是相互独立的，也就以为这同一个 Term 的 IDF等一些值在不同的 shard 上是不同的。文档的相关想算分和它所处的 shard 相关</p>
+</li>
+<li><p>在文档数量不多时，会导致相关性算分严重不准的情况发生</p>
+</li>
+</ul>
+<p>比如 倒排索引 这个 term 在shard0上有10个文档，这10个文档包括倒排索引关键词，在shard1只有一个文档包含倒排索引这个关键词，在分片2上有5个文档包含倒排索引关键词，由于在不同的shard上有不同的 document refrequence(文档频率)，也就意味着 term 在 不同的分片上进行算分时，计算得到的结果是完全不同的，也就会导致算分时不准的，可能分片1上的相关性得分高于分片0上的得分</p>
+<p>下面比如添加三个文档</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line">DELETE test_search_relevance</span><br><span class="line"></span><br><span class="line">POST test_search_relevance&#x2F;doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;hello&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST test_search_relevance&#x2F;doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;hello,world&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">POST test_search_relevance&#x2F;doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;name&quot;: &quot;hello,world! a beautiful world&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接着获取下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_relevance&#x2F;_search</span><br></pre></td></tr></table></figure>
+
+<p>再查看下索引的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_relevance</span><br></pre></td></tr></table></figure>
+
+<p>获取 name 是 hello 的 文档</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_relevance&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;hello&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>返回了三个文档，但是我想要的只有 hello 的文档</p>
+<p>可以添加 <code>explain</code> 查看下具体情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_relevance&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;explain&quot;: true,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;hello&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解决方案</li>
+</ul>
+<ol>
+<li><p>是设置分片数为1个，从根本上排除问题，在文档数量不多的时候可以考虑该方案比如百万到千万级别的文档数量</p>
+</li>
+<li><p>使用 DFS Query-then-Fetch 查询方式</p>
+</li>
+</ol>
+<p>DFS Query-then-Fetch 是在拿到所有文档后再重新完整的计算一次相关性算分，耗费更多的cpu和内存，执行性能也比较地下，一般已建议使用。</p>
+<p>使用方式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_relevance&#x2F;_search?search_type&#x3D;dfs_query_then_fetch</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;name&quot;: &quot;hello&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="sorting-doc-values-field-data"><a href="#sorting-doc-values-field-data" class="headerlink" title="sorting-doc-values-field-data"></a>sorting-doc-values-field-data</h2><h3 id="排序"><a href="#排序" class="headerlink" title="排序"></a>排序</h3><ul>
+<li>es 默认是采用相关性算分从高到低排序的，用户可以通过设定 sorting 参数来自行设定排序规则</li>
+</ul>
+<p>比如按照出声日期排序排列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;sort&quot;: &#123;</span><br><span class="line">    &quot;birth&quot;: &quot;desc&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>也可以执行多个排序条件，比如按照多个字段排序，分别按照出声日期倒排，得分倒排，文党内部ID倒排</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;sort&quot;: [ # 关键词</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;birth&quot;: &quot;desc&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;_score&quot;: &quot;desc&quot; # _score 指的是相关性得分</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;_doc&quot;: &quot;desc&quot; # _doc 指的是文档内部Id,和索引相关（分片内唯一）</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>根据出声日期排序</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># score is null here</span><br><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;username&quot;: &quot;alfred&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;birth&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 27,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 1,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 3,</span><br><span class="line">    &quot;max_score&quot;: null,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_search_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;_score&quot;: null,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;username&quot;: &quot;alfred way&quot;,</span><br><span class="line">          &quot;job&quot;: &quot;java engineer&quot;,</span><br><span class="line">          &quot;age&quot;: 18,</span><br><span class="line">          &quot;birth&quot;: &quot;1990-01-02&quot;,</span><br><span class="line">          &quot;isMarried&quot;: false</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          631238400000</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_search_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;4&quot;,</span><br><span class="line">        &quot;_score&quot;: null,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;username&quot;: &quot;alfred junior way&quot;,</span><br><span class="line">          &quot;job&quot;: &quot;ruby engineer&quot;,</span><br><span class="line">          &quot;age&quot;: 23,</span><br><span class="line">          &quot;birth&quot;: &quot;1989-08-07&quot;,</span><br><span class="line">          &quot;isMarried&quot;: false</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          618451200000</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_search_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;2&quot;,</span><br><span class="line">        &quot;_score&quot;: null,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">          &quot;job&quot;: &quot;java senior engineer and java specialist&quot;,</span><br><span class="line">          &quot;age&quot;: 28,</span><br><span class="line">          &quot;birth&quot;: &quot;1980-05-07&quot;,</span><br><span class="line">          &quot;isMarried&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          326505600000</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面返回结果中 score 是 null，如果按照日期排序，算分就毫无意义，所以es就没有自动算分</p>
+<p>如果需要算分可以使用下面的方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;username&quot;: &quot;alfred&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;birth&quot;: &#123;</span><br><span class="line">        &quot;order&quot;: &quot;desc&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;_score&quot;: &quot;desc&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;_doc&quot;: &quot;desc&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 4,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 1,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 3,</span><br><span class="line">    &quot;max_score&quot;: null,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_search_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;_score&quot;: 0.33698124,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;username&quot;: &quot;alfred way&quot;,</span><br><span class="line">          &quot;job&quot;: &quot;java engineer&quot;,</span><br><span class="line">          &quot;age&quot;: 18,</span><br><span class="line">          &quot;birth&quot;: &quot;1990-01-02&quot;,</span><br><span class="line">          &quot;isMarried&quot;: false</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          631238400000,</span><br><span class="line">          0.33698124,</span><br><span class="line">          0</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_search_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;4&quot;,</span><br><span class="line">        &quot;_score&quot;: 0.27601978,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;username&quot;: &quot;alfred junior way&quot;,</span><br><span class="line">          &quot;job&quot;: &quot;ruby engineer&quot;,</span><br><span class="line">          &quot;age&quot;: 23,</span><br><span class="line">          &quot;birth&quot;: &quot;1989-08-07&quot;,</span><br><span class="line">          &quot;isMarried&quot;: false</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          618451200000,</span><br><span class="line">          0.27601978,</span><br><span class="line">          3</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_search_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;2&quot;,</span><br><span class="line">        &quot;_score&quot;: 0.43250346,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">          &quot;job&quot;: &quot;java senior engineer and java specialist&quot;,</span><br><span class="line">          &quot;age&quot;: 28,</span><br><span class="line">          &quot;birth&quot;: &quot;1980-05-07&quot;,</span><br><span class="line">          &quot;isMarried&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          326505600000,</span><br><span class="line">          0.43250346,</span><br><span class="line">          1</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字符串排序徐"><a href="#字符串排序徐" class="headerlink" title="字符串排序徐"></a>字符串排序徐</h3><p>按照字符串排序比较特殊，因为es有text和keyword两种类型，针对text类型排序会报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;sort&quot;: &#123;</span><br><span class="line">    &quot;username&quot;: &quot;desc&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/81.png" alt=""></p>
+<p>错误原因是：Fielddata is disabled on text fields by default. Set fielddata=true on [username] in order to load fielddata in memory by uninverting the inverted index</p>
+<ul>
+<li>针对keyword类型排序，可以返回预期结果</li>
+</ul>
+<p>通过 mapping 可以看到username子字段是keyword类型，可以按照 keyword 进行排序</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;sort&quot;: &#123;</span><br><span class="line">    &quot;username.keyword&quot;: &quot;desc&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 0,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 1,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 4,</span><br><span class="line">    &quot;max_score&quot;: null,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_search_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;3&quot;,</span><br><span class="line">        &quot;_score&quot;: null,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;username&quot;: &quot;lee&quot;,</span><br><span class="line">          &quot;job&quot;: &quot;java and ruby engineer&quot;,</span><br><span class="line">          &quot;age&quot;: 22,</span><br><span class="line">          &quot;birth&quot;: &quot;1985-08-07&quot;,</span><br><span class="line">          &quot;isMarried&quot;: false</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          &quot;lee&quot;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_search_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;_score&quot;: null,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;username&quot;: &quot;alfred way&quot;,</span><br><span class="line">          &quot;job&quot;: &quot;java engineer&quot;,</span><br><span class="line">          &quot;age&quot;: 18,</span><br><span class="line">          &quot;birth&quot;: &quot;1990-01-02&quot;,</span><br><span class="line">          &quot;isMarried&quot;: false</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          &quot;alfred way&quot;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_search_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;4&quot;,</span><br><span class="line">        &quot;_score&quot;: null,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;username&quot;: &quot;alfred junior way&quot;,</span><br><span class="line">          &quot;job&quot;: &quot;ruby engineer&quot;,</span><br><span class="line">          &quot;age&quot;: 23,</span><br><span class="line">          &quot;birth&quot;: &quot;1989-08-07&quot;,</span><br><span class="line">          &quot;isMarried&quot;: false</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          &quot;alfred junior way&quot;</span><br><span class="line">        ]</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_search_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;2&quot;,</span><br><span class="line">        &quot;_score&quot;: null,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">          &quot;job&quot;: &quot;java senior engineer and java specialist&quot;,</span><br><span class="line">          &quot;age&quot;: 28,</span><br><span class="line">          &quot;birth&quot;: &quot;1980-05-07&quot;,</span><br><span class="line">          &quot;isMarried&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;sort&quot;: [</span><br><span class="line">          &quot;alfred&quot;</span><br><span class="line">        ]</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>如何针对text类型字段排序</li>
+</ul>
+<p>排序的过程实质是对字段原始内容排序的过程，这个过程中 <code>倒排索引无法发挥作用</code>，需要用到 <code>正排索引</code>，也就是通过文档Id和字段可以快速得到字段原始内容,然后拿原始内容排序</p>
+<p>es提供了2中实现方式：</p>
+<ol>
+<li><p>fielddata 默认禁用</p>
+</li>
+<li><p>doc values 默认启用，除了text类型</p>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">文档ID</th>
+<th align="center">字段值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">100</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">89</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">129</td>
+</tr>
+</tbody></table>
+<ul>
+<li>Fielddata vs DocValues</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">对比</th>
+<th align="center">Fielddata</th>
+<th align="center">DocValues</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">创建时机</td>
+<td align="center">搜索时即时创建</td>
+<td align="center">索引时创建，与倒排索引创建时机一致</td>
+</tr>
+<tr>
+<td align="center">创建位置</td>
+<td align="center">JVM Heap</td>
+<td align="center">磁盘</td>
+</tr>
+<tr>
+<td align="center">优点</td>
+<td align="center">不会占用额外的磁盘资源</td>
+<td align="center">不会占用 Heap 内存</td>
+</tr>
+<tr>
+<td align="center">缺点</td>
+<td align="center">文档过多时，即时创建会花过多时间，占用过多 Heap 内存</td>
+<td align="center">减慢索引的速度，占用额外的磁盘资源</td>
+</tr>
+</tbody></table>
+<h3 id="Fielddata"><a href="#Fielddata" class="headerlink" title="Fielddata"></a>Fielddata</h3><p>Fielddata 默认是关闭的，可以通过下面 api 开启 <code>&quot;fielddata&quot;: true</code></p>
+<p>开启后字符串是按照分词后的 term 排序，往往结果很难复合预期</p>
+<p>一般是在对分词做聚合分析的时候开启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PUT test_search_index&#x2F;_mapping&#x2F;doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;username&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">      &quot;fielddata&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>打开之前执行查询,发现报错了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;sort&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;username&quot;: &quot;desc&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后通过下面的配置打开</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/82.png" alt=""></p>
+<p>接着再去执行查询就可以查询了</p>
+<p>如果再次关闭后去查询就会再次报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">PUT test_search_index&#x2F;_mapping&#x2F;doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;username&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">      &quot;fielddata&quot;: false</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>fielddata 只能作用于text类型，如果针对其他类型会直接报错</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/83.png" alt=""></p>
+<h3 id="Doc-Values"><a href="#Doc-Values" class="headerlink" title="Doc Values"></a>Doc Values</h3><p>Doc Values 默认是启用的，可以在创建索引的时候关闭</p>
+<p>如果后面要再开启 doc values,需要做reindex操作, Doc Values 相对fielddata 是一个较重的操作，所以最好在一开始设计数据模型的时候就像这些考虑进去，要不然后面需要使用的时候要做reindex操作</p>
+<p>当我们明确知道我们不需要按照这个字段来排序，不需要使用该字段做聚合分析，就可以将该字段关闭，这样可以加快索引速度，减少磁盘空间占用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">PUT test_doc_values1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;doc&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;username&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">          &quot;doc_values&quot;: false</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="docvalue-fields"><a href="#docvalue-fields" class="headerlink" title="docvalue_fields"></a>docvalue_fields</h3><p>可以通过该字段获取 fielddata 或者 doc values 中存储的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;docvalue_fields&quot;: [</span><br><span class="line">    &quot;username&quot;,</span><br><span class="line">    &quot;username.keyword&quot;,</span><br><span class="line">    &quot;age&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># doc values</span><br><span class="line">DELETE test_doc_values</span><br><span class="line"></span><br><span class="line">PUT test_doc_values</span><br><span class="line"></span><br><span class="line">GET test_doc_values</span><br><span class="line"></span><br><span class="line">PUT test_doc_values&#x2F;_mapping&#x2F;doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;username&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">      &quot;doc_values&quot;: false</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;hobby&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT test_doc_values&#x2F;doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">  &quot;hobby&quot;: &quot;basketball&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET test_doc_values&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;sort&quot;: &quot;username&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行排序的时候出错了</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/84.png" alt=""></p>
+<p>但是hobby确是可以排序的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET test_doc_values&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;sort&quot;: &quot;hobby&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/85.png" alt=""></p>
+<p>后续如果想把 doc values 打开</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">PUT test_doc_values&#x2F;_mapping&#x2F;doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;username&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">      &quot;doc_values&quot;: true</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;hobby&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>设置成true发现不行,报错了,其实es是不允许后续再把 doc values 打开的</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/86.png" alt=""></p>
+<p>如果要重新打开，需要再重建个索引，然后将原先的索引reindex到新的索引中</p>
+<p>下面将 username 的 fielddata 关闭</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># can be used to get original field value for not stored field</span><br><span class="line">PUT test_search_index&#x2F;_mapping&#x2F;doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;username&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">      &quot;fielddata&quot;: false</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;docvalue_fields&quot;: [</span><br><span class="line">    &quot;username&quot;,</span><br><span class="line">    &quot;username.keyword&quot;,</span><br><span class="line">    &quot;age&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后执行上面的es查询会发现报错</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/87.png" alt=""></p>
+<p>但是执行下面es查询时确是正常的,将 username 去掉</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;docvalue_fields&quot;: [</span><br><span class="line">    &quot;username.keyword&quot;,</span><br><span class="line">    &quot;age&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果将 fielddata 打开，然后再次去执行下es,可以正常访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">PUT test_search_index&#x2F;_mapping&#x2F;doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;properties&quot;: &#123;</span><br><span class="line">    &quot;username&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">      &quot;fielddata&quot;: true</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;docvalue_fields&quot;: [</span><br><span class="line">    &quot;username&quot;,</span><br><span class="line">    &quot;username.keyword&quot;,</span><br><span class="line">    &quot;age&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分页与遍历"><a href="#分页与遍历" class="headerlink" title="分页与遍历"></a>分页与遍历</h2><p>es 提供了3中方式来解决分页与遍历问题</p>
+<ol>
+<li><p>from/size</p>
+</li>
+<li><p>scroll</p>
+</li>
+<li><p>search_after</p>
+</li>
+</ol>
+<h3 id="from-size"><a href="#from-size" class="headerlink" title="from-size"></a>from-size</h3><p>最常用的分页方案</p>
+<p>from: 指明开始位置，从哪个位置开始获取文档</p>
+<p>size: 获取总数，从开始的位置指明获取多少个文档</p>
+<p>下面表示获取第二个文档，从第一个位置开始，也就是默认排序的情况下取的是第一个和第二个文档，基数从0开始的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;from&quot;: 1,</span><br><span class="line">  &quot;size&quot;: 2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>深度分页是一个景点问题：在数据分片存储的情况下如果获取前1000个文档？</p>
+<p>from=990,size=10, 即获取从990-1000的文档时，会在每个分片行先获取1000个文档，然后再由Coordinationg Node聚合所有分片的结果后再排序选取前1000个文档</p>
+<p>比如es有5个分片,p0, p1, p2, p3, p4,文档存储在5个分片上，es获取总数据中的1000个文档，es会从5个分片上都获取前1000个文档，从p0取前1000个文档， p1前1000个文档，p2前1000个文档，p3前1000个文档，p4前1000个文档，然后整合这5000个文档排序后返回990-1000的文档</p>
+<p>这是因为数据分散存储在5个分片上，es的Coordinating Node 是没有一个全局的概念的，它没有办法直接知道整体的数据的前1000个是哪些，它能做的就是从每个分片上取1000个然后排序下，再拿1000个文档就是前1000个文档</p>
+<p>这种方案存在个问题，就是页数越深，处理文档阅多，占用内存阅多，耗时越长。尽量避免深度分页，es通过 <code>index.max_result_window</code> 限定对多到 10000 条数据</p>
+<p>一般分页都会计算一个总页数 total_page</p>
+<p>总页数 = (文档总数 + page_size - 1) / page_size</p>
+<p>比如 total=4,page_size = 2</p>
+<p>total_page = (total+page_size-1)/page_size = (4+2-1)/2=2.5<br>取整为2</p>
+<p>下面就是每页两个数据</p>
+<p>第一页</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># pagination </span><br><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;from&quot;: 0,</span><br><span class="line">  &quot;size&quot;: 2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二页</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;from&quot;: 2,</span><br><span class="line">  &quot;size&quot;: 2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第三页</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;from&quot;: 4,</span><br><span class="line">  &quot;size&quot;: 2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果是深度分页，将from设置为10000,查询结果会直接报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;from&quot;: 10000,</span><br><span class="line">  &quot;size&quot;: 2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/88.png" alt=""></p>
+<p>但是如果改成9998就可以</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/89.png" alt=""></p>
+<p>google 搜索引擎也是不允许访问过多的页数，所以限制了页数</p>
+<h3 id="scroll"><a href="#scroll" class="headerlink" title="scroll"></a>scroll</h3><p>遍历文档集的api,以快照的方式来避免深度分页的问题</p>
+<p>不能用来做实时搜索，因为数据不是实时的，因为建立快照的过程是需要花费时间的，快照是创建快照时的数据情况，后续进来的文档是无法在这次快照中查询到的，所以数据不是实时的</p>
+<p>尽量不要使用复杂的 sort 条件，使用_doc 最高效</p>
+<p>使用稍显复杂</p>
+<p>step 1</p>
+<p>需要发起1个 scroll search ，es 在收到该请求后悔根据查询条件创建文档ID合集的快照</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search?scroll&#x3D;5m</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>scroll=5m: 该 scroll 快照有效时间</p>
+<p>size: 每次 scroll 返回的文档数</p>
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_scroll_id&quot;: &quot;...&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>_scroll_id: 后续调用 scroll api 时的参数</p>
+<p>step 2</p>
+<p>调用 scroll search 的api,获取文档集合，不断迭代调用知道返回 hits.hits 数组为空时停止</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST _search&#x2F;scroll</span><br><span class="line">&#123;</span><br><span class="line">  &quot;scroll&quot;: &quot;5m&quot;,</span><br><span class="line">  &quot;scroll_id&quot;: &quot;...&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>scroll: 有效时间</p>
+<p>scroll_id 上一步返回的 id</p>
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_scroll_id&quot;: &quot;...&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>_scroll_id: 下一次条用时使用</p>
+<p>第一次查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># scroll</span><br><span class="line">GET test_search_index&#x2F;_search?scroll&#x3D;5m</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/90.png" alt=""></p>
+<p>复制返回的 scroll_id</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST _search&#x2F;scroll</span><br><span class="line">&#123;</span><br><span class="line">  &quot;scroll&quot;: &quot;5m&quot;,</span><br><span class="line">  &quot;scroll_id&quot;: &quot;DXF1ZXJ5QW5kRmV0Y2gBAAAAAAABARYWd29qdEd3MUhUM2loTDBQODhmd1Y3dw&#x3D;&#x3D;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/91.png" alt=""></p>
+<p>再复制下返回的 scroll_id</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST _search&#x2F;scroll</span><br><span class="line">&#123;</span><br><span class="line">  &quot;scroll&quot;: &quot;5m&quot;,</span><br><span class="line">  &quot;scroll_id&quot;: &quot;DXF1ZXJ5QW5kRmV0Y2gBAAAAAAABARYWd29qdEd3MUhUM2loTDBQODhmd1Y3dw&#x3D;&#x3D;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/elastic/elasticsearch/92.png" alt=""></p>
+<p>再复制下返回的 scroll_id</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST _search&#x2F;scroll</span><br><span class="line">&#123;</span><br><span class="line">  &quot;scroll&quot;: &quot;5m&quot;,</span><br><span class="line">  &quot;scroll_id&quot;: &quot;DXF1ZXJ5QW5kRmV0Y2gBAAAAAAABARYWd29qdEd3MUhUM2loTDBQODhmd1Y3dw&#x3D;&#x3D;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/elastic/elasticsearch/93.png" alt=""> </p>
+<p>知道 hits.hits 数组是空</p>
+<p>scroll 是对文档做一个快照，创建快照的时候如果有新文档进来，后面进来的新文档通过 scroll 是取不到的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br></pre></td></tr></table></figure>
+<p> 查询索引目前是有4个文档</p>
+<p> 现在重新创建一个新的 scroll</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search?scroll&#x3D;5m</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 保存下返回的 scroll_id,并创建个新的文档</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># DXF1ZXJ5QW5kRmV0Y2gBAAAAAAABAVMWd29qdEd3MUhUM2loTDBQODhmd1Y3dw&#x3D;&#x3D;</span><br><span class="line"></span><br><span class="line"># new doc can not be searched</span><br><span class="line">PUT test_search_index&#x2F;doc&#x2F;10</span><br><span class="line">&#123;</span><br><span class="line">  &quot;username&quot;: &quot;doc10&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> POST _search/scroll<br>{<br>  “scroll”: “5m”,<br>  “scroll_id”: “DXF1ZXJ5QW5kRmV0Y2gBAAAAAAABAVMWd29qdEd3MUhUM2loTDBQODhmd1Y3dw==”<br>}</p>
+<p> <img src="https://images.notes.xuepincat.com/elastic/elasticsearch/94.png" alt=""></p>
+<p> 会发现 total 还是4，也就意味着刚才新进来的文档是没有在创建 scroll 的快照里面</p>
+<p> 现在再重新创建个快照</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search?scroll&#x3D;5m</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>保存下返回的 scroll_id,并创建个新的文档</p>
+<p>将上面创建的文档10删掉</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE test_search_index&#x2F;doc&#x2F;10</span><br></pre></td></tr></table></figure>
+
+<p>删除之后total变成4</p>
+<p>现在执行下快照,会看到 total 是5，虽然将文档删掉了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST _search&#x2F;scroll</span><br><span class="line">&#123;</span><br><span class="line">  &quot;scroll&quot;: &quot;5m&quot;,</span><br><span class="line">  &quot;scroll_id&quot;: &quot;DXF1ZXJ5QW5kRmV0Y2gBAAAAAAABAXMWd29qdEd3MUhUM2loTDBQODhmd1Y3dw&#x3D;&#x3D;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/95.png" alt=""></p>
+<p>过多的 scroll 调用会占用大量内存，可以通过 clear api 删除过多的 scroll 快照</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">DELETE &#x2F;_search&#x2F;scroll</span><br><span class="line">&#123;</span><br><span class="line">  &quot;scroll_id&quot;: [</span><br><span class="line">    &quot;scroll_id_1&quot;,</span><br><span class="line">    &quot;scroll_id_2&quot;,</span><br><span class="line">    &quot;...&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE &#x2F;_search&#x2F;scroll&#x2F;_all</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">DELETE &#x2F;_search&#x2F;scroll&#x2F;_all</span><br><span class="line"></span><br><span class="line">POST _search&#x2F;scroll</span><br><span class="line">&#123;</span><br><span class="line">  &quot;scroll&quot;: &quot;5m&quot;,</span><br><span class="line">  &quot;scroll_id&quot;: &quot;DXF1ZXJ5QW5kRmV0Y2gBAAAAAAABAXMWd29qdEd3MUhUM2loTDBQODhmd1Y3dw&#x3D;&#x3D;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>比如我将 scroll 全部删掉，然后再去执行之前的快照,会发现报错了</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/96.png" alt=""></p>
+<h3 id="search-after"><a href="#search-after" class="headerlink" title="search after"></a>search after</h3><p>search after 避免了深度分页的性能问题，提供实时的下一页文档获取功能</p>
+<p>缺点是不能使用 from 参数，即不能指定页数</p>
+<p>只能下一页，不能上一页</p>
+<p>使用简单</p>
+<p>step 1 </p>
+<p>正常搜索，但是要指定 sort 值，并保证值唯一，因为 search after 获取下一页是根据排序值来获取的，而且必须保证排序值是唯一的，es在返回结果的时候会把排序值一起返回，只有保证排序值是唯一的才能保证 search after 是准确的</p>
+<p>step 2</p>
+<p>使用上一步最后一个文档的 sort 值进行查询</p>
+<p>比如第一步正常获取</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># search after</span><br><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;: 1,</span><br><span class="line">  &quot;sort&quot;: &#123;</span><br><span class="line">    &quot;age&quot;: &quot;desc&quot;,</span><br><span class="line">    &quot;_id&quot;: &quot;desc&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/97.png" alt=""></p>
+<p>第二步将返回的排序值放到第二个查询中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;: 1,</span><br><span class="line">  &quot;search_after&quot;: [</span><br><span class="line">    28,</span><br><span class="line">    &quot;2&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;sort&quot;: &#123;</span><br><span class="line">    &quot;age&quot;: &quot;desc&quot;,</span><br><span class="line">    &quot;_id&quot;: &quot;desc&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/98.png" alt=""></p>
+<p>然后再把发挥的 sort 放到第三次查询中 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">GET test_search_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;size&quot;: 1,</span><br><span class="line">  &quot;search_after&quot;: [</span><br><span class="line">    23,</span><br><span class="line">    &quot;4&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;sort&quot;: &#123;</span><br><span class="line">    &quot;age&quot;: &quot;desc&quot;,</span><br><span class="line">    &quot;_id&quot;: &quot;desc&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/99.png" alt=""></p>
+<ul>
+<li>search_after 执行原理</li>
+</ul>
+<p>如何避免from+size深度问题？</p>
+<p>通过唯一排序值定位文档，将每次要处理的文档数控制在size内</p>
+<p>比如有5个分片 p0,p1,p2,p3,p4,比如现在要获取下一页数据的时候，因为有一个排序值，每个分片只需要返回再这个排序值后面的10个文档，这里的10就是每次要获取的文档数，比如size:10,每个分片返回10个文档，Coordinating Node 只需要处理50个文档就可以了，然后将50个文档排序，最后返回10个文档就可以了</p>
+<p>search_after 每次都将要处理的文档数控制在了一个 size 内，这样它的深度分页问题就没有了，而且性能也比较高，但是缺点就是只能获取下一页，不能指定访问页数</p>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">from+size</td>
+<td align="center">需要实时获取顶部的部分文档，且需要自由翻页</td>
+</tr>
+<tr>
+<td align="center">scroll</td>
+<td align="center">需要全部文档，如导出所有数据的功能</td>
+</tr>
+<tr>
+<td align="center">search_after</td>
+<td align="center">需要全部文档，不需要自由翻页</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Elasticsearch/" rel="tag"># Elasticsearch</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/13/MacOS10-15-%E5%AE%89%E8%A3%85PHP7-1/" rel="prev" title="MacOS10.15 安装PHP7.1">
+      <i class="fa fa-chevron-left"></i> MacOS10.15 安装PHP7.1
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/25/8-%E8%81%9A%E5%90%88%E5%88%86%E6%9E%90/" rel="next" title="聚合分析">
+      聚合分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Search-运行机制"><span class="nav-number">1.</span> <span class="nav-text">Search 运行机制</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Query-阶段"><span class="nav-number">1.1.</span> <span class="nav-text">Query 阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fetch-阶段"><span class="nav-number">1.2.</span> <span class="nav-text">Fetch 阶段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关性算分"><span class="nav-number">2.</span> <span class="nav-text">相关性算分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sorting-doc-values-field-data"><span class="nav-number">3.</span> <span class="nav-text">sorting-doc-values-field-data</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#排序"><span class="nav-number">3.1.</span> <span class="nav-text">排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串排序徐"><span class="nav-number">3.2.</span> <span class="nav-text">字符串排序徐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fielddata"><span class="nav-number">3.3.</span> <span class="nav-text">Fielddata</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Doc-Values"><span class="nav-number">3.4.</span> <span class="nav-text">Doc Values</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docvalue-fields"><span class="nav-number">3.5.</span> <span class="nav-text">docvalue_fields</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分页与遍历"><span class="nav-number">4.</span> <span class="nav-text">分页与遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#from-size"><span class="nav-number">4.1.</span> <span class="nav-text">from-size</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scroll"><span class="nav-number">4.2.</span> <span class="nav-text">scroll</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#search-after"><span class="nav-number">4.3.</span> <span class="nav-text">search after</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用场景"><span class="nav-number">4.4.</span> <span class="nav-text">应用场景</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

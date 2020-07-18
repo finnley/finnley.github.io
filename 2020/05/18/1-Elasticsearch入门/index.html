@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="常用术语  * 文档 Document  用户存储在 es 中的数据文档，是es中存储的最小数据单元，相当于MYSQL表中的一行数据   * 索引 Index  由具有相同字段的文档列表组成，一个文档的集合，在MYSQL中对应的是一个Table  可能之前会将Index对比成数据库中的Database,原因是Index下有不同的Type即不同的类型，但是在6.0之后官方已经不允许在一个 Index">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Elasticsearch入门">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/05/18/1-Elasticsearch%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="常用术语  * 文档 Document  用户存储在 es 中的数据文档，是es中存储的最小数据单元，相当于MYSQL表中的一行数据   * 索引 Index  由具有相同字段的文档列表组成，一个文档的集合，在MYSQL中对应的是一个Table  可能之前会将Index对比成数据库中的Database,原因是Index下有不同的Type即不同的类型，但是在6.0之后官方已经不允许在一个 Index">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/1.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/2.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/3.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/4.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/5.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/6.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/7.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/8.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/9.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/10.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/11.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/12.png">
+<meta property="article:published_time" content="2020-05-18T15:00:38.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.269Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Elasticsearch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/05/18/1-Elasticsearch%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Elasticsearch入门 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/05/18/1-Elasticsearch%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Elasticsearch入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-18 23:00:38" itemprop="dateCreated datePublished" datetime="2020-05-18T23:00:38+08:00">2020-05-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index"><span itemprop="name">Elasticsearch</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="常用术语"><a href="#常用术语" class="headerlink" title="常用术语"></a>常用术语</h2><ul>
+<li>文档 Document</li>
+</ul>
+<p>用户存储在 es 中的数据文档，是es中存储的最小数据单元，相当于MYSQL表中的一行数据</p>
+<ul>
+<li>索引 Index</li>
+</ul>
+<p>由具有相同字段的文档列表组成，一个文档的集合，在MYSQL中对应的是一个Table</p>
+<a id="more"></a>
+
+<p>可能之前会将Index对比成数据库中的Database,原因是Index下有不同的Type即不同的类型，但是在6.0之后官方已经不允许在一个 Index 下创建多个 Type 了，也就是说一个 Index 只有一个 Type,并且在未来的大版本中将 Type 的概念去掉，所以将Index类比成Database已经不合适了</p>
+<ul>
+<li>节点 Node</li>
+</ul>
+<p>一个 Elasticsearch 的运行实例，是集群的构成单元，也就是集群是由多个节点构成的，每个节点就是es的一个运行实例</p>
+<ul>
+<li>集群 Cluster</li>
+</ul>
+<p>由一个或多个节点组成，对外提供服务</p>
+<h2 id="Document-介绍"><a href="#Document-介绍" class="headerlink" title="Document 介绍"></a>Document 介绍</h2><h4 id="Document"><a href="#Document" class="headerlink" title="Document"></a>Document</h4><ul>
+<li>Json Object</li>
+</ul>
+<p>Document 在 es 中实际就是一个 Json Object , 一个 Json Object 是由 <code>字段 (Field)</code> 组成，每个字段有不同的类型</p>
+<ol>
+<li><p>字符串类型: text, keyword</p>
+<p>text 是分词的，keyword 是部分词的</p>
+</li>
+<li><p>数值型: long, integer, short, byte, double, float, half_float, scaled_float</p>
+</li>
+<li><p>布尔: boolean</p>
+</li>
+<li><p>日期: date</p>
+</li>
+<li><p>二进制: binary</p>
+</li>
+<li><p>范围类型: integer_range, float_range, long_range, double_range, date_range</p>
+</li>
+</ol>
+<ul>
+<li>每个文档都有一个唯一的id标识</li>
+</ul>
+<p>类似MYSQL中的主键 (Primary Key)</p>
+<p>可以自行指定，也可以自动生成</p>
+<p>比如有一条 nginx log</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">93.180.71.3 -- [17&#x2F;May&#x2F;2015:08:05:32 +0000 &quot;GET &#x2F;downloads&#x2F;product_1 HTTP&#x2F;1.1&quot; 304 0 &quot;-&quot; &quot;Debian APT-HTTP&#x2F;1.3 (0.8.16~exp12ubuntu10.21)&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>document in es</p>
+<p>格式：<br>field_name: field_value</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;remote_ip&quot;: &quot;93.180.71.3&quot;, </span><br><span class="line">    &quot;user_name&quot;: &quot;-&quot;,</span><br><span class="line">    &quot;@timestamp&quot;: &quot;2015-05-17T08:05:32.000Z&quot;,</span><br><span class="line">    &quot;request_action&quot;: &quot;GET&quot;,</span><br><span class="line">    &quot;request&quot;: &quot;&#x2F;downloads&#x2F;product_1&quot;,</span><br><span class="line">    &quot;http_version&quot;: &quot;1.1&quot;,</span><br><span class="line">    &quot;response&quot;: &quot;304&quot;,</span><br><span class="line">    &quot;bytes&quot;: &quot;0&quot;,</span><br><span class="line">    &quot;referrer&quot;: &quot;-&quot;,</span><br><span class="line">    &quot;agent&quot;: &quot;Debian APT-HTTP&#x2F;1.3 (0.8.16~exp12ubuntu10.21)&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Document-MetaData"><a href="#Document-MetaData" class="headerlink" title="Document MetaData"></a>Document MetaData</h4><ul>
+<li>元数据，用户标注文档的相关信息</li>
+</ul>
+<p>_index: 文档所在的索引名</p>
+<p>_type: 文档所在的类型名</p>
+<p>_id: 文档唯一id</p>
+<p>_uid: 组合id, 由 _type 和 _id 组成 (6.x _type 不再起作用，同 _id 一样)</p>
+<p>_source: 文档的原始 Json 数据，可以从这里获取每个字段的内容</p>
+<p>_all: 整合所有字段内容到该字段，可以对Document的所有内容做查询，官方现在已经不推荐使用_all了，因为它是针对所有字段进行分词，所以会比较占磁盘空间，并且它的查询效果也并不是很好，在新的版本中已经默认禁用了</p>
+<h2 id="Index-介绍"><a href="#Index-介绍" class="headerlink" title="Index 介绍"></a>Index 介绍</h2><p>索引中存储具有相同结构的文档(Document)</p>
+<p>Index 在数据库中类比 Table,Table都是有自己的表结构定义的，es中每个Index也有自己的 Schema 定义</p>
+<p>每个所有都有自己的 <code>mapping</code> 定义，用于定义字段名和类型</p>
+<p>一个集群可以有多个索引，比如：</p>
+<p>nginx 日志存储的时候可以按照日期每天生成一个索引来存储</p>
+<blockquote>
+<p>nginx-log-2020-05-16<br>nginx-log-2020-05-17<br>nginx-log-2020-05-18</p>
+</blockquote>
+<h2 id="Rest-API"><a href="#Rest-API" class="headerlink" title="Rest API"></a>Rest API</h2><p>Elasticsearch 对外提供了一些RESTful API</p>
+<p>REST - Representational State Transfer</p>
+<p>URI 指定资源，如 Index 是一个资源，可以对它进行创建，删除等, Document 也是资源，也可以进行创建，更新，删除等</p>
+<p>Http Method 指明资源操作类型，如 GET,POST,PUT,DELETE等</p>
+<h2 id="索引-API-index-api"><a href="#索引-API-index-api" class="headerlink" title="索引 API (index api)"></a>索引 API (index api)</h2><p>es 有专门的 Index API , 用于创建、更新、删除索引配置等</p>
+<p>进入到 es 目录 ，启动es</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin&#x2F;elasticsearch -Ecluster.routing.allocation.disk.threshold_enabled&#x3D;false -Epath.data&#x3D;es</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/1.png" alt=""></p>
+<p>再启动下Kibana,进入 Kibana 的解压目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin&#x2F;kibana</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/2.png" alt=""></p>
+<p>下图就是 Kibana 的欢迎界面</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/3.png" alt=""></p>
+<h4 id="创建索引-API"><a href="#创建索引-API" class="headerlink" title="创建索引 API"></a>创建索引 API</h4><ul>
+<li>request:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># create index</span><br><span class="line">PUT &#x2F;test_index</span><br></pre></td></tr></table></figure>
+
+<p>test_index: 索引名</p>
+<ul>
+<li>response:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;acknowledged&quot;: true,</span><br><span class="line">  &quot;shards_acknowledged&quot;: true,</span><br><span class="line">  &quot;index&quot;: &quot;test_index&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/4.png" alt=""></p>
+<h4 id="查看现有索引"><a href="#查看现有索引" class="headerlink" title="查看现有索引"></a>查看现有索引</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET _cat&#x2F;indices</span><br></pre></td></tr></table></figure>
+
+<p>response:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yellow open test_index x-1Q_hp-TgOqsiIFs9SKYg 5 1 0 0 1.1kb 1.1kb</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/5.png" alt=""></p>
+<h4 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DELETE &#x2F;test_index</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/6.png" alt=""></p>
+<h2 id="文档-Document-API"><a href="#文档-Document-API" class="headerlink" title="文档 Document API"></a>文档 Document API</h2><p>es 有专门的 Document API</p>
+<h4 id="创建文档"><a href="#创建文档" class="headerlink" title="创建文档"></a>创建文档</h4><ol>
+<li>指定 id 创建文档</li>
+</ol>
+<p>创建文档时，如果索引不存在，es会自动创建对应的index和type</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># create document</span><br><span class="line">PUT test_index&#x2F;doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">  &quot;age&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;result&quot;: &quot;created&quot;,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 2,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;_seq_no&quot;: 0,</span><br><span class="line">  &quot;_primary_term&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/7.png" alt=""></p>
+<ol start="2">
+<li>不指定id创建文档API</li>
+</ol>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># create document without id</span><br><span class="line">POST test_index&#x2F;doc</span><br><span class="line">&#123;</span><br><span class="line">  &quot;username&quot;: &quot;tom&quot;,</span><br><span class="line">  &quot;age&quot;: 20</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;KBb8PHIBjbQNbnLLlH-i&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;result&quot;: &quot;created&quot;,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 2,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;_seq_no&quot;: 0,</span><br><span class="line">  &quot;_primary_term&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/8.png" alt=""></p>
+<h4 id="查询文档"><a href="#查询文档" class="headerlink" title="查询文档"></a>查询文档</h4><ol>
+<li>指定要查询的文档id</li>
+</ol>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># query document</span><br><span class="line">GET &#x2F;test_index&#x2F;doc&#x2F;1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response 200</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;found&quot;: true,</span><br><span class="line">  &quot;_source&quot;: &#123;</span><br><span class="line">    &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">    &quot;age&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  _source 存储了文档的完整原始数据</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/9.png" alt=""></p>
+<ul>
+<li>response 404</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;2&quot;,</span><br><span class="line">  &quot;found&quot;: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/10.png" alt=""></p>
+<ol start="2">
+<li>搜索所有文档，使用 <code>_search</code></li>
+</ol>
+<p>无请求体</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># query</span><br><span class="line">GET &#x2F;test_index&#x2F;doc&#x2F;_search</span><br></pre></td></tr></table></figure>
+
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 42, # 表示查询耗时，单位ms</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 2, # 符合条件的总文档数</span><br><span class="line">    &quot;max_score&quot;: 1,</span><br><span class="line">    &quot;hits&quot;: [ # 返回的文档详情数据数组，默认前10个文档</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_index&quot;, # 索引名</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;KBb8PHIBjbQNbnLLlH-i&quot;, # 文档id</span><br><span class="line">        &quot;_score&quot;: 1, # 文档得分</span><br><span class="line">        &quot;_source&quot;: &#123; # 文档详情</span><br><span class="line">          &quot;username&quot;: &quot;tom&quot;,</span><br><span class="line">          &quot;age&quot;: 20</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;_score&quot;: 1,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">          &quot;age&quot;: 1</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/11.png" alt=""></p>
+<p>有请求体</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># query</span><br><span class="line">GET test_index&#x2F;doc&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;term&quot;: &#123;</span><br><span class="line">      &quot;_id&quot;: &quot;1&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 10,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 1,</span><br><span class="line">    &quot;max_score&quot;: 1,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;_score&quot;: 1,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">          &quot;age&quot;: 1</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/12.png" alt=""></p>
+<p>查询语句，JSON格式，放在 <code>http body</code> 中发送到es</p>
+<h4 id="批量创建文档"><a href="#批量创建文档" class="headerlink" title="批量创建文档"></a>批量创建文档</h4><p>es 允许一次创建多个文档，从而减少网路传输开销，提升写入速率，</p>
+<p>endpoint 为 _bulk</p>
+<p>  action_type:<br>  index - 创建，当文档存在，则会将文档覆盖掉<br>  update - 更新<br>  create - 创建，当文档已经存在的时候就会报错<br>  delete - 删除文档</p>
+<p>首先创建一个id为3的文档</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PUT &#x2F;test_index&#x2F;doc&#x2F;3</span><br><span class="line">&#123;</span><br><span class="line">  &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">  &quot;age&quot;: 10</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;3&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;result&quot;: &quot;created&quot;,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 2,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;_seq_no&quot;: 0,</span><br><span class="line">  &quot;_primary_term&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>request bulk</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"># bulk api</span><br><span class="line">POST _bulk</span><br><span class="line">&#123;</span><br><span class="line">  &quot;index&quot;: &#123;</span><br><span class="line">    &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">    &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">    &quot;_id&quot;: &quot;3&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">  &quot;age&quot;: 20</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;update&quot;: &#123;</span><br><span class="line">    &quot;_id&quot;: &quot;2&quot;,</span><br><span class="line">    &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">    &quot;_type&quot;: &quot;doc&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;doc&quot;: &#123;</span><br><span class="line">    &quot;age&quot;: &quot;20&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;delete&quot;: &#123;</span><br><span class="line">    &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">    &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">    &quot;_id&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 7, # 查询耗时，单位 ms</span><br><span class="line">  &quot;errors&quot;: true,</span><br><span class="line">  &quot;items&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;index&quot;: &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;3&quot;,</span><br><span class="line">        &quot;_version&quot;: 2,</span><br><span class="line">        &quot;result&quot;: &quot;updated&quot;,</span><br><span class="line">        &quot;_shards&quot;: &#123;</span><br><span class="line">          &quot;total&quot;: 2,</span><br><span class="line">          &quot;successful&quot;: 1,</span><br><span class="line">          &quot;failed&quot;: 0</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;_seq_no&quot;: 1,</span><br><span class="line">        &quot;_primary_term&quot;: 1,</span><br><span class="line">        &quot;status&quot;: 200</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;update&quot;: &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;2&quot;,</span><br><span class="line">        &quot;status&quot;: 404,</span><br><span class="line">        &quot;error&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;document_missing_exception&quot;,</span><br><span class="line">          &quot;reason&quot;: &quot;[doc][2]: document missing&quot;,</span><br><span class="line">          &quot;index_uuid&quot;: &quot;x-1Q_hp-TgOqsiIFs9SKYg&quot;,</span><br><span class="line">          &quot;shard&quot;: &quot;2&quot;,</span><br><span class="line">          &quot;index&quot;: &quot;test_index&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;delete&quot;: &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;_version&quot;: 2,</span><br><span class="line">        &quot;result&quot;: &quot;deleted&quot;,</span><br><span class="line">        &quot;_shards&quot;: &#123;</span><br><span class="line">          &quot;total&quot;: 2,</span><br><span class="line">          &quot;successful&quot;: 1,</span><br><span class="line">          &quot;failed&quot;: 0</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;_seq_no&quot;: 1,</span><br><span class="line">        &quot;_primary_term&quot;: 1,</span><br><span class="line">        &quot;status&quot;: 200</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>errors 为 true 表示出错了，因为不存在id为2的文档</p>
+<h4 id="批量查询"><a href="#批量查询" class="headerlink" title="批量查询"></a>批量查询</h4><p>es 允许一次查询多个文档,可以一次性指定多个id</p>
+<p>endpoint: _mget</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># multi_get</span><br><span class="line">GET &#x2F;_mget</span><br><span class="line">&#123;</span><br><span class="line">  &quot;docs&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">      &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">      &quot;_id&quot;: &quot;3&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">      &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">      &quot;_id&quot;: &quot;2&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;docs&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">      &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">      &quot;_id&quot;: &quot;3&quot;,</span><br><span class="line">      &quot;_version&quot;: 2,</span><br><span class="line">      &quot;found&quot;: true,</span><br><span class="line">      &quot;_source&quot;: &#123;</span><br><span class="line">        &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">        &quot;age&quot;: 20</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;_index&quot;: &quot;test_index&quot;,</span><br><span class="line">      &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">      &quot;_id&quot;: &quot;2&quot;,</span><br><span class="line">      &quot;found&quot;: false</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Elasticsearch/" rel="tag"># Elasticsearch</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/07/1-Numpy%E5%85%A5%E9%97%A8/" rel="prev" title="Numpy入门">
+      <i class="fa fa-chevron-left"></i> Numpy入门
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/20/%E7%88%AC%E8%99%AB%E5%85%A5%E9%97%A8-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="next" title="爬虫入门-计算机网络知识点回顾">
+      爬虫入门-计算机网络知识点回顾 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用术语"><span class="nav-number">1.</span> <span class="nav-text">常用术语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Document-介绍"><span class="nav-number">2.</span> <span class="nav-text">Document 介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Document"><span class="nav-number">2.0.1.</span> <span class="nav-text">Document</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Document-MetaData"><span class="nav-number">2.0.2.</span> <span class="nav-text">Document MetaData</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Index-介绍"><span class="nav-number">3.</span> <span class="nav-text">Index 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rest-API"><span class="nav-number">4.</span> <span class="nav-text">Rest API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#索引-API-index-api"><span class="nav-number">5.</span> <span class="nav-text">索引 API (index api)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建索引-API"><span class="nav-number">5.0.1.</span> <span class="nav-text">创建索引 API</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看现有索引"><span class="nav-number">5.0.2.</span> <span class="nav-text">查看现有索引</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除索引"><span class="nav-number">5.0.3.</span> <span class="nav-text">删除索引</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文档-Document-API"><span class="nav-number">6.</span> <span class="nav-text">文档 Document API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建文档"><span class="nav-number">6.0.1.</span> <span class="nav-text">创建文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查询文档"><span class="nav-number">6.0.2.</span> <span class="nav-text">查询文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#批量创建文档"><span class="nav-number">6.0.3.</span> <span class="nav-text">批量创建文档</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#批量查询"><span class="nav-number">6.0.4.</span> <span class="nav-text">批量查询</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

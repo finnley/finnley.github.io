@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="解决问题 解决问题  1. Master挂掉不会影响业务  对于现有架构只有一个Master，将来我们扩展多个Slave，但是现有Master挂掉就会影响现有架构业务，也就是Master挂掉，Slave写数据就不知道怎么写入数据了，而且Slave不知道监听哪台Master了，所以将来我们可以给Master备份另外一台Master，这样可以实现一个心跳感应。   2. 心跳感应  心跳感应就是其中一">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3-MySQL双主热备">
+<meta property="og:url" content="https://notes.xuepincat.com/2018/07/20/3-MySQL%E5%8F%8C%E4%B8%BB%E7%83%AD%E5%A4%87/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="解决问题 解决问题  1. Master挂掉不会影响业务  对于现有架构只有一个Master，将来我们扩展多个Slave，但是现有Master挂掉就会影响现有架构业务，也就是Master挂掉，Slave写数据就不知道怎么写入数据了，而且Slave不知道监听哪台Master了，所以将来我们可以给Master备份另外一台Master，这样可以实现一个心跳感应。   2. 心跳感应  心跳感应就是其中一">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-07-20T09:29:25.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.280Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2018/07/20/3-MySQL%E5%8F%8C%E4%B8%BB%E7%83%AD%E5%A4%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>3-MySQL双主热备 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/07/20/3-MySQL%E5%8F%8C%E4%B8%BB%E7%83%AD%E5%A4%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          3-MySQL双主热备
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-20 17:29:25" itemprop="dateCreated datePublished" datetime="2018-07-20T17:29:25+08:00">2018-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><h3 id="解决问题-1"><a href="#解决问题-1" class="headerlink" title="解决问题"></a>解决问题</h3><ol>
+<li>Master挂掉不会影响业务</li>
+</ol>
+<p>对于现有架构只有一个Master，将来我们扩展多个Slave，但是现有Master挂掉就会影响现有架构业务，也就是Master挂掉，Slave写数据就不知道怎么写入数据了，而且Slave不知道监听哪台Master了，所以将来我们可以给Master备份另外一台Master，这样可以实现一个心跳感应。</p>
+<ol start="2">
+<li>心跳感应</li>
+</ol>
+<p>心跳感应就是其中一台Master挂掉我们可以立马切换到另一台Master</p>
+<h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><p>假设我们现有一台Master和一台Slave，然后Master开启了它的binary log，Salve去监听binary log，监听如果有写操作就会写入Slave的replay log，replay log回去执行一些sql语句，完成一些添加删除更新等写操作，从而实现了Slave和Master的数据同步，现在我需要将现有的Slave一位另一台Master，我们可以给这台Slave开启binary log，而且还要开一log_slave_updates，它表示当我们的relay log发生改变的时候，它会通过log_salve_updates写入我们的binary log中，也就是实现了Slave和Master中的binary log的同步，这样Slave和Master它们拥有内容是一模一样的，然后再让Master的去监听Slave的binary log，这样Maser也要开启relay log，让他作为我们Slave的从机，这样我们就实现了Master和Slave互为主从，这样的好处就是我们在向其中任何一台机器写入数据，另外一台机器都会跟着改变，其中一个挂掉另外一个可以直接作为主机来提供服务。最终我们可以达到双Master的效果，各自的Master下都有各自的Slave集群，其中一个Master挂掉不影响另外的Master提供服务。</p>
+<div align=center>
+![Book Shop](/images/mysql/20180722/1.png)
+</div>
+
+<p>接下来就是把我们Slave也变成主机（Master）</p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><h4 id="配置-Slave"><a href="#配置-Slave" class="headerlink" title="配置 Slave"></a>配置 Slave</h4><ol>
+<li>Slave开启 <code>binary log</code> （这里是在152机器上操作）</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;my.cnf</span><br></pre></td></tr></table></figure>
+
+<p>添加下面代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">log-bin&#x3D;mysql-bin</span><br><span class="line">binlog_format&#x3D;mixed</span><br></pre></td></tr></table></figure>
+
+<p>另外还需要将 <code>relay log</code> 从主机里面监听的写的操作也写入 <code>binary log</code> 当中，因为我们需要两个biary log要一致，</p>
+<p>所以我们还需要添加下面代码,它的意思是将我们的 <code>relay log</code> 通过这样的内容写入 <code>binary log</code> 中，这样即使我们向主机写入我们从机的binary log和主的bianry log是一模一样的。如果将来我们的主机挂掉那么我们的从机立马会作为新的主机来上位</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">log_slave_updates&#x3D;1</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180722/2.png)
+</div>
+
+<ol start="2">
+<li>重启Slave</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld restart</span><br></pre></td></tr></table></figure>
+
+<p>这样我们的Slave就有了作为主机的能力</p>
+<ol start="3">
+<li>从机Slave给主机Master授权（这里是在152机器上操作）</li>
+</ol>
+<p>从机Slave要让我们的主机Master来监听从机Slave的binary log</p>
+<p>进入从机Slave的ＭySQL， 也就是我这里的152机器，我们孕育master这个用户通过151来监听152这台机器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant replication slave on *.* to master@192.168.1.151 identified by &#39;123&#39;;</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180722/3.png)
+</div>
+
+<ol start="4">
+<li>主机Master监听从机Slave（这里是在151机器上操作）</li>
+</ol>
+<p>首先打开主机Master的配置文件，也是151机器上的配置文件，在原来的基础上添加 <code>relay_log=mysql-relay-bin</code> ， 除了开启relay log，还要开启一个东西，因为将来我们这台机器要做从机的话，我们从152这台机器binary log来写数据，也要通过一个选项来写 如binary log里面去，所以也需要添加 <code>log_slave_updates=1</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">relay_log&#x3D;mysql-relay-bin</span><br><span class="line">log_slave_updates&#x3D;1</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180722/4.png)
+</div>
+
+<p>这样就可以实现151和151的binary log保持一致</p>
+<ol start="5">
+<li>重启151Master</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysqld restart</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>连接进入MySQL监听152机器（这里是在151机器上操作）</li>
+</ol>
+<p>首先查看152状态（这里是在152机器上操作查看状态）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show master status;</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180722/5.png)
+</div>
+
+<p>会发现我们的152机子的binary log是mysql-bin.000001，位置是451，我们对它进行reset操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reset master;</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180722/6.png)
+</div>
+
+<p>现在就可以在151机器上执行下面代码操作（这里是在151机器上操作）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; change master to </span><br><span class="line">    -&gt; master_host&#x3D;&#39;192.168.1.152&#39;,</span><br><span class="line">    -&gt; master_port&#x3D;3306,</span><br><span class="line">    -&gt; master_user&#x3D;&#39;master&#39;,</span><br><span class="line">    -&gt; master_password&#x3D;&#39;123&#39;,</span><br><span class="line">    -&gt; master_log_file&#x3D;&#39;mysql-bin.000001&#39;,</span><br><span class="line">    -&gt; master_log_pos&#x3D;154;</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180722/7.png)
+</div>
+
+<p>其中master_log_file和master_log_pos是152机器上reset后的值</p>
+<p>现在152已经指向了152，151已经变成了152的从机了。</p>
+<ol start="7">
+<li>现在开启主机中的从（这里是在151机器上操作）</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">start slave;</span><br><span class="line">show slave status\G</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180722/8.png)
+</div>
+
+<p>发现上面是两个yes,说明没有问题，现在151是152的从，152也是151的从，然后151是152的主，152也是151的主,它们互为主从</p>
+<p>我们去152中执行下面语句（这里是在152机器上操作）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show slave status\G</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180722/9.png)
+</div>
+
+<p>现在我们去操作数据库看一下是否成功</p>
+<p>现在数据中存在的数据，他们的数据是一致的</p>
+<div align=center>
+![Book Shop](/images/mysql/20180722/10.png)
+</div>
+
+<p>现在我们在151中将id为1的数据删除</p>
+<div align=center>
+![Book Shop](/images/mysql/20180722/11.png)
+</div>
+
+<p>现在我们去152中将id为3的数据删除掉</p>
+<div align=center>
+![Book Shop](/images/mysql/20180722/12.png)
+</div>
+
+<p>下面又准备了153和154两台机器</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/07/20/CentOS-7-%E5%BC%80%E6%94%BE3306%E7%AB%AF%E5%8F%A3/" rel="prev" title="CentOS 7 开放3306端口">
+      <i class="fa fa-chevron-left"></i> CentOS 7 开放3306端口
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/07/23/4-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E9%97%B4%E4%BB%B6MyCat/" rel="next" title="4-数据库中间件MyCat">
+      4-数据库中间件MyCat <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#解决问题"><span class="nav-number">1.</span> <span class="nav-text">解决问题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解决问题-1"><span class="nav-number">1.1.</span> <span class="nav-text">解决问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#场景"><span class="nav-number">1.2.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#步骤"><span class="nav-number">1.3.</span> <span class="nav-text">步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-Slave"><span class="nav-number">1.3.1.</span> <span class="nav-text">配置 Slave</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="编译环境准备 编译环境是指能够将源码编译成可安装的文件，这里需要系统内安装好 gcc 和 gcc-c++   * gcc  * gcc-c++  这里我使用的阿里云CentOS7.6 64位版本的系统。  首先使用远程连接工具进行进行连接，我本地物理机使用的 Ubuntu 18.04 自带的 Terminal 进行连接，如果是 Windows 系统可以使用 XShell 或者 PuTTY 等工具进">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS编译安装Nginx">
+<meta property="og:url" content="https://notes.xuepincat.com/2019/03/10/CentOS%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85Nginx/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="编译环境准备 编译环境是指能够将源码编译成可安装的文件，这里需要系统内安装好 gcc 和 gcc-c++   * gcc  * gcc-c++  这里我使用的阿里云CentOS7.6 64位版本的系统。  首先使用远程连接工具进行进行连接，我本地物理机使用的 Ubuntu 18.04 自带的 Terminal 进行连接，如果是 Windows 系统可以使用 XShell 或者 PuTTY 等工具进">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/1.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/2.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/3.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/4.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/5.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/6.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/7.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/8.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/9.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/10.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/11.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/12.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/13.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/14.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/15.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/16.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/17.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/18.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/19.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/20.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/21.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/22.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/23.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/24.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/25.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/26.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/27.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/28.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/29.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/30.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/31.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/32.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/33.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/34.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/35.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/36.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/37.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/38.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/39.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/40.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/41.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/42.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/43.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/44.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/45.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/46.png">
+<meta property="og:image" content="http://images.ornnth.com/hexo/nginx/47.png">
+<meta property="article:published_time" content="2019-03-10T04:47:26.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.294Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://images.ornnth.com/hexo/nginx/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2019/03/10/CentOS%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85Nginx/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>CentOS编译安装Nginx | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/03/10/CentOS%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85Nginx/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CentOS编译安装Nginx
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-10 12:47:26" itemprop="dateCreated datePublished" datetime="2019-03-10T12:47:26+08:00">2019-03-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="编译环境准备"><a href="#编译环境准备" class="headerlink" title="编译环境准备"></a>编译环境准备</h2><p>编译环境是指能够将源码编译成可安装的文件，这里需要系统内安装好 <code>gcc</code> 和 <code>gcc-c++</code></p>
+<ul>
+<li>gcc</li>
+<li>gcc-c++</li>
+</ul>
+<p>这里我使用的阿里云CentOS7.6 64位版本的系统。</p>
+<p>首先使用远程连接工具进行进行连接，我本地物理机使用的 <code>Ubuntu 18.04</code> 自带的 <code>Terminal</code> 进行连接，如果是 <code>Windows</code> 系统可以使用 <code>XShell</code> 或者 <code>PuTTY</code> 等工具进行远程连接。</p>
+<a id="more"></a>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/1.png" alt="nginx"></p>
+<p>连接上服务器后先使用 <code>yum update -y</code> 命令更新下系统。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum update -y</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/2.png" alt="nginx"></p>
+<p><img src="http://images.ornnth.com/hexo/nginx/3.png" alt="nginx"></p>
+<p>然后使用下面命令搜索机器内是否已经安装了 <code>gcc</code> 和 <code>gcc-c++</code> ， 如果出现内容就表示已经安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep gcc*</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/4.png" alt="nginx"></p>
+<p>如果没有出现内容就表示没有安装,例如判断系统内是否已经安装了 <code>Nginx</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep nginx</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/5.png" alt="nginx"></p>
+<p>显示系统内是还没有安装 <code>Nginx</code> 的。如果系统没有安装 <code>gcc</code> 和 <code>gcc-c++</code>, 可以使用下面命令进行安装 <code>gcc</code> 和 <code>gcc-c++</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install gcc-c++</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/6.png" alt="nginx"></p>
+<p><img src="http://images.ornnth.com/hexo/nginx/7.png" alt="nginx"></p>
+<p>现在再次使用 <code>rpm -qa | grep gcc*</code> 命令查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep gcc*</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/8.png" alt="nginx"></p>
+<p>##　源码编译安装 <code>Nginx</code></p>
+<p>首先打开 <a href="http://nginx.org/en/" target="_blank" rel="noopener">Nginx官网</a></p>
+<p><img src="http://images.ornnth.com/hexo/nginx/9.png" alt="nginx"></p>
+<p>点击右边的　<code>download</code>　进入下载页面</p>
+<p><img src="http://images.ornnth.com/hexo/nginx/10.png" alt="nginx"></p>
+<p>页面中可以看到当前最新稳定版为 <code>1.14.2</code> ,这也是我们所要编译安装的版本。</p>
+<p>我们可以使用下面命令下载该版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;nginx.org&#x2F;download&#x2F;nginx-1.14.2.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/11.png" alt="nginx"></p>
+<p>我们可以通过 <code>ll</code> 命令查看当前目录下已经下载的安装包。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ll</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/12.png" alt="nginx"></p>
+<h3 id="解压安装包"><a href="#解压安装包" class="headerlink" title="解压安装包"></a>解压安装包</h3><p>使用 <code>tar</code> 命令进行解压，然后使用 <code>ll</code> 命令查看解压后的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf nginx-1.14.2.tar.gz</span><br><span class="line">ll</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/13.png" alt="nginx"></p>
+<p><img src="http://images.ornnth.com/hexo/nginx/14.png" alt="nginx"></p>
+<p>我们进入解压后的目录查看里面内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd nginx-1.14.2</span><br><span class="line">ll</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/15.png" alt="nginx"></p>
+<h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><p>打开 <code>Nginx</code> 官网 ，点击右边的 <code>documentation</code></p>
+<p><img src="http://images.ornnth.com/hexo/nginx/16.png" alt="nginx"></p>
+<p>我们点击 <code>Building nginx from Sources</code> 使用源码构建nginx</p>
+<p><img src="http://images.ornnth.com/hexo/nginx/17.png" alt="nginx"></p>
+<p>将页面拉到最下面，找到 <code>Example of parameters usage (all of this needs to be typed in one line):</code> 官网给的示例配置</p>
+<p><img src="http://images.ornnth.com/hexo/nginx/18.png" alt="nginx"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure</span><br><span class="line">    --sbin-path&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx</span><br><span class="line">    --conf-path&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx.conf</span><br><span class="line">    --pid-path&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx.pid</span><br><span class="line">    --with-http_ssl_module</span><br><span class="line">    --with-pcre&#x3D;..&#x2F;pcre-8.42</span><br><span class="line">    --with-zlib&#x3D;..&#x2F;zlib-1.2.11</span><br></pre></td></tr></table></figure>
+
+<p>我们修改后在终端下粘贴</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure \</span><br><span class="line">--sbin-path&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx \</span><br><span class="line">--conf-path&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx.conf \</span><br><span class="line">--pid-path&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx.pid \</span><br><span class="line">--with-http_ssl_module \</span><br><span class="line">--with-pcre&#x3D;..&#x2F;pcre-8.42 \</span><br><span class="line">--with-zlib&#x3D;..&#x2F;zlib-1.2.11</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/19.png" alt="nginx"></p>
+<p>回车</p>
+<p><img src="http://images.ornnth.com/hexo/nginx/20.png" alt="nginx"></p>
+<p><img src="http://images.ornnth.com/hexo/nginx/21.png" alt="nginx"></p>
+<p>在最后发现提示这样的错误 <code>./configure: error: SSL modules require the OpenSSL library.</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure: error: SSL modules require the OpenSSL library.</span><br><span class="line">You can either do not enable the modules, or install the OpenSSL library</span><br><span class="line">into the system, or build the OpenSSL library statically from the source</span><br><span class="line">with nginx by using --with-openssl&#x3D;&lt;path&gt; option.</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/22.png" alt="nginx"></p>
+<p>解决方法就是我们需要安装 <code>openssl</code> 和 <code>openssl-dev</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install openssl openssl-devel</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/23.png" alt="nginx"></p>
+<p><img src="http://images.ornnth.com/hexo/nginx/24.png" alt="nginx"></p>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>安装完成后继续执行上面的编译操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure \</span><br><span class="line">--sbin-path&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx \</span><br><span class="line">--conf-path&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx.conf \</span><br><span class="line">--pid-path&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx.pid \</span><br><span class="line">--with-http_ssl_module \</span><br><span class="line">--with-pcre&#x3D;..&#x2F;pcre-8.42 \</span><br><span class="line">--with-zlib&#x3D;..&#x2F;zlib-1.2.11</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/25.png" alt="nginx"></p>
+<p><img src="http://images.ornnth.com/hexo/nginx/26.png" alt="nginx"></p>
+<p>此时并没有发现有任何错误提示。编译完执行 <code>make</code> 操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<p>提示下面错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">make -f objs&#x2F;Makefile</span><br><span class="line">make[1]: Entering directory &#96;&#x2F;root&#x2F;nginx-1.14.2&#39;</span><br><span class="line">cd ..&#x2F;pcre-8.42 \</span><br><span class="line">&amp;&amp; if [ -f Makefile ]; then make distclean; fi \</span><br><span class="line">&amp;&amp; CC&#x3D;&quot;cc&quot; CFLAGS&#x3D;&quot;-O2 -fomit-frame-pointer -pipe &quot; \</span><br><span class="line">.&#x2F;configure --disable-shared </span><br><span class="line">&#x2F;bin&#x2F;sh: line 0: cd: ..&#x2F;pcre-8.42: No such file or directory</span><br><span class="line">make[1]: *** [..&#x2F;pcre-8.42&#x2F;Makefile] Error 1</span><br><span class="line">make[1]: Leaving directory &#96;&#x2F;root&#x2F;nginx-1.14.2&#39;</span><br><span class="line">make: *** [build] Error 2</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/27.png" alt="nginx"></p>
+<p>提示说在编译配置的时候没有找到 <code>../pcre-8.42</code> 目录，这是因为我们在配置的时候有这样的一句话 <code>--with-pcre=../pcre-8.42 \</code> 和 <code>--with-zlib=../zlib-1.2.11</code> ，我们配置的时候需要执行该目录</p>
+<p>我们将上面打开的官网往上移动一点会看到下面的页面</p>
+<p><img src="http://images.ornnth.com/hexo/nginx/28.png" alt="nginx"></p>
+<p>点击看色下划线的 <code>PCRE</code> 进入下面页面</p>
+<p><img src="http://images.ornnth.com/hexo/nginx/29.png" alt="nginx"></p>
+<p>我们找到 <code>Download</code> 点击 <a href="https://ftp.pcre.org/pub/pcre/" target="_blank" rel="noopener">https://ftp.pcre.org/pub/pcre/</a> 进入到下面下载页面</p>
+<p><img src="http://images.ornnth.com/hexo/nginx/30.png" alt="nginx"></p>
+<p>我们找到对应的 <code>pcre-8.42</code> 的版本复制下载链接，然后进入主目录进行下载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">wget https:&#x2F;&#x2F;ftp.pcre.org&#x2F;pub&#x2F;pcre&#x2F;pcre-8.42.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/31.png" alt="nginx"></p>
+<p>然后还在 <code>Nginx</code> 官网下面，方才的 <code>PCRE</code> 下面找到 蓝色下划线的 <code>zlib</code> 字体，点击进去进入下面页面</p>
+<p><img src="http://images.ornnth.com/hexo/nginx/32.png" alt="nginx"></p>
+<p>向下移动页面，找到下面内容</p>
+<p><img src="http://images.ornnth.com/hexo/nginx/33.png" alt="nginx"></p>
+<p>复制下载连接进行下载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;prdownloads.sourceforge.net&#x2F;libpng&#x2F;zlib-1.2.11.tar.gz?download</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/34.png" alt="nginx"></p>
+<p>查看下刚才下载的两个文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ll</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/35.png" alt="nginx"></p>
+<p>分别解压 <code>pcre-8.42.tar.gz</code> 和 <code>zlib-1.2.11.tar.gz</code> 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf pcre-8.42.tar.gz</span><br><span class="line">tar -zxvf zlib-1.2.11.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/36.png" alt="nginx"></p>
+<p>下面进入 <code>nginx</code> 的解压目录，重新执行配置编译操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">cd nginx-1.14.2</span><br><span class="line">.&#x2F;configure \</span><br><span class="line">--sbin-path&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx \</span><br><span class="line">--conf-path&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx.conf \</span><br><span class="line">--pid-path&#x3D;&#x2F;usr&#x2F;local&#x2F;nginx&#x2F;nginx.pid \</span><br><span class="line">--with-http_ssl_module \</span><br><span class="line">--with-pcre&#x3D;..&#x2F;pcre-8.42 \</span><br><span class="line">--with-zlib&#x3D;..&#x2F;zlib-1.2.11</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/37.png" alt="nginx"></p>
+<p><img src="http://images.ornnth.com/hexo/nginx/38.png" alt="nginx"></p>
+<p>然后进行 <code>make</code> 操作，在做每一个操作的时候要确定每一步都是没有问题的。</p>
+<p>执行 <code>make</code> 操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/39.png" alt="nginx"></p>
+<p><img src="http://images.ornnth.com/hexo/nginx/40.png" alt="nginx"></p>
+<p>此时没有出错的提示信息，代表编译完成。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>编译完成后执行 <code>make install</code> 操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/41.png" alt="nginx"></p>
+<p><img src="http://images.ornnth.com/hexo/nginx/42.png" alt="nginx"></p>
+<p>此时 <code>Nginx</code> 已经安装完成。</p>
+<p>默认情况下，<code>Nginx</code> 会被默认安装到 <code>/usr/local</code> 下的 <code>nginx</code> 目录下</p>
+<p><img src="http://images.ornnth.com/hexo/nginx/43.png" alt="nginx"></p>
+<p>此时我们打开浏览器，在地址栏中输入服务器IP，回车后发现页面如下所示：</p>
+<p><img src="http://images.ornnth.com/hexo/nginx/44.png" alt="nginx"></p>
+<p>进入 <code>nginx</code> 安装目录 <code>/usr/local/nginx</code>， 输入 <code>./nginx</code> 命令来启动 <code>nginx</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;nginx</span><br></pre></td></tr></table></figure>
+
+<p>另外可以可以通过下面命令来查看 <code>nginx</code> 系统进程，用此来判断是否启动成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -aux | grep nginx</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.ornnth.com/hexo/nginx/45.png" alt="nginx"></p>
+<p>现在刷新一下刚才打开的网页，此时就可以打开了。</p>
+<p><img src="http://images.ornnth.com/hexo/nginx/46.png" alt="nginx"></p>
+<p>进入 <code>nginx</code> 安装目录中的 <code>html</code> 目录，编写的一个测试文件 <code>test.html</code> , 在文件中输入 <code>Hello Nginx!</code> 的内容，然后在浏览器地址栏中输入 <code>IP/test.html</code></p>
+<p><img src="http://images.ornnth.com/hexo/nginx/47.png" alt="nginx"></p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/02/27/7-%E4%BC%9A%E8%AF%9D%E6%8E%A7%E5%88%B6/" rel="prev" title="7-会话控制">
+      <i class="fa fa-chevron-left"></i> 7-会话控制
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/10/CentOS%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85PHP/" rel="next" title="CentOS编译安装PHP">
+      CentOS编译安装PHP <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#编译环境准备"><span class="nav-number">1.</span> <span class="nav-text">编译环境准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#解压安装包"><span class="nav-number">1.1.</span> <span class="nav-text">解压安装包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置"><span class="nav-number">1.2.</span> <span class="nav-text">配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编译"><span class="nav-number">1.3.</span> <span class="nav-text">编译</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.4.</span> <span class="nav-text">安装</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

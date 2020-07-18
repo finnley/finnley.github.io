@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="目录与索引 对于书本，一般都会有目录，它的作用就是可以快速让用户知道它在讲什么，并方便用户定位相看的内容，用户可以方便用户查看章节，还有指明章节的名称和页码  如何快速查找一个关键词所在的页面？  有些书还有可能会有索引，它会将一些关键词列举出来，列出它们在那一页出现，方便用户查找  书与搜索引擎类似，目录页对应的正排索引，而索引页对应倒排索引   * 正排索引  可以通过文档ID获取到文档的内容">
+<meta property="og:type" content="article">
+<meta property="og:title" content="倒排索引与分词">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/05/23/2-%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%88%86%E8%AF%8D/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="目录与索引 对于书本，一般都会有目录，它的作用就是可以快速让用户知道它在讲什么，并方便用户定位相看的内容，用户可以方便用户查看章节，还有指明章节的名称和页码  如何快速查找一个关键词所在的页面？  有些书还有可能会有索引，它会将一些关键词列举出来，列出它们在那一页出现，方便用户查找  书与搜索引擎类似，目录页对应的正排索引，而索引页对应倒排索引   * 正排索引  可以通过文档ID获取到文档的内容">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/13.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/14.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/15.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/16.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/17.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/18.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/19.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/20.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/21.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/22.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/23.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/24.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/25.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/26.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/27.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/28.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/29.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/30.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/31.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/32.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/33.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/34.png">
+<meta property="article:published_time" content="2020-05-23T06:29:51.000Z">
+<meta property="article:modified_time" content="2020-05-31T06:02:57.253Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Elasticsearch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/13.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/05/23/2-%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%88%86%E8%AF%8D/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>倒排索引与分词 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/05/23/2-%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%88%86%E8%AF%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          倒排索引与分词
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-23 14:29:51" itemprop="dateCreated datePublished" datetime="2020-05-23T14:29:51+08:00">2020-05-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-31 14:02:57" itemprop="dateModified" datetime="2020-05-31T14:02:57+08:00">2020-05-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index"><span itemprop="name">Elasticsearch</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="目录与索引"><a href="#目录与索引" class="headerlink" title="目录与索引"></a>目录与索引</h2><p>对于书本，一般都会有目录，它的作用就是可以快速让用户知道它在讲什么，并方便用户定位相看的内容，用户可以方便用户查看章节，还有指明章节的名称和页码</p>
+<p>如何快速查找一个关键词所在的页面？</p>
+<p>有些书还有可能会有索引，它会将一些关键词列举出来，列出它们在那一页出现，方便用户查找</p>
+<a id="more"></a>
+
+<p>书与搜索引擎类似，目录页对应的正排索引，而索引页对应倒排索引</p>
+<ul>
+<li>正排索引</li>
+</ul>
+<p>可以通过文档ID获取到文档的内容，或者单词关联，这里的单词就是将文档分词之后每个分词的结果</p>
+<p>正排索引维护的是文档id到文档内容、单词的关联关系</p>
+<ul>
+<li>倒排索引</li>
+</ul>
+<p>维护的是单词到文档id的关联关系</p>
+<h2 id="正排索引"><a href="#正排索引" class="headerlink" title="正排索引"></a>正排索引</h2><table>
+<thead>
+<tr>
+<th align="center">文档ID</th>
+<th align="center">文档内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">elasticsearch 是最流行的搜索引擎</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">php 是世界上最好的语言</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">搜索引擎是如何诞生的</td>
+</tr>
+</tbody></table>
+<p>正排索引文档ID都对应了一个文档内容，即可以通过文档ID获取文档的内容</p>
+<h2 id="倒排索引"><a href="#倒排索引" class="headerlink" title="倒排索引"></a>倒排索引</h2><table>
+<thead>
+<tr>
+<th align="center">单词</th>
+<th align="center">文档ID列表</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">elasticsearch</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">流行</td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="center">搜索引擎</td>
+<td align="center">1,3</td>
+</tr>
+<tr>
+<td align="center">php</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">世界</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">最好</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">语言</td>
+<td align="center">2</td>
+</tr>
+<tr>
+<td align="center">如何</td>
+<td align="center">3</td>
+</tr>
+<tr>
+<td align="center">诞生</td>
+<td align="center">3</td>
+</tr>
+</tbody></table>
+<p>倒排索引如何产生的呢？</p>
+<p>是将正排索引做了分词，比如将 <code>elasticsearch是最流行的搜索引擎</code> 分成了 <code>elasticsearch</code>, <code>流行</code>, <code>搜索引擎</code> 3个单词，这3个单词就和文档ID 1 关联起来了；<code>php 是世界上最好的语言</code> 分成了个 <code>php</code>, <code>世界</code>, <code>最好</code>, <code>语言</code>，它们和文档ID 2 关联起来了；<code>搜索引擎是如何诞生的</code> 分成了 <code>搜索引擎</code>, <code>如何</code>, <code>诞生</code>，它们和文档ID 3 关联起来了，可以看到搜索引擎关联了两个文档</p>
+<h4 id="查询流程"><a href="#查询流程" class="headerlink" title="查询流程"></a>查询流程</h4><p>有了正排和倒排之后如何去实现一个搜索引擎呢？</p>
+<p>比如查询包含 <code>搜索引擎</code> 的文档</p>
+<ol>
+<li>先通过倒排索引获得 <code>索引引擎</code> 对应的文档ID，有1和3</li>
+<li>通过正排索引查询 1和3 的完整内容</li>
+<li>返回用户最终结果</li>
+</ol>
+<p>上面就是正排索引和倒排索引结合在一起实现搜索查询的流程</p>
+<h4 id="倒排索引组成"><a href="#倒排索引组成" class="headerlink" title="倒排索引组成"></a>倒排索引组成</h4><p>倒排索引是搜索引擎的核心，主要包含两部分：</p>
+<ul>
+<li><p>单词词典 (Term Dictionary)</p>
+</li>
+<li><p>倒排列表 (Posting List)</p>
+</li>
+</ul>
+<ul>
+<li>单词词典 (Term Dictionary)</li>
+</ul>
+<ol>
+<li><p>记录所有文档的单词，一般比较大，当存储内容非常大时，单词词典也会很大，因为分词结果很多</p>
+</li>
+<li><p>记录单词到倒排列表的关联信息（其实就是一个单词关联了哪些文档，记录了关联信息，这样才能找到关联的文档的ID）</p>
+</li>
+</ol>
+<p>单词字典的实现一般使用 <code>B + Tree</code> </p>
+<p>下图排序采用拼音实现,构造方法参考</p>
+<p><a href="https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html" target="_blank" rel="noopener">https://www.cs.usfca.edu/~galles/visualization/BPlusTree.html</a></p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/13.png" alt=""></p>
+<p>B + Tree 的好处就是插入和查询性能非常高，可以充分利用磁盘和内存的映射机制，单词字典使用了这种数据结构可以能保证它的高效</p>
+<ul>
+<li>倒排列表 (Posting List)</li>
+</ul>
+<ol>
+<li><p>记录的是单词对应文档的集合，由倒排索引项（Posting）组成</p>
+</li>
+<li><p>倒排索引项（Posting）主要包含下面内容：</p>
+<p> 文档ID，主要获取原始信息</p>
+<p> 单词频率（TF，Term Frequency），记录该单词在给文档中出现的次数，用于后续相关性算分</p>
+<p> 位置（Position），记录单词在文档中的分词位置（多个），用于做词语搜索（Phrase Query），比如搜索苹果手机，苹果手机可能被分词成 <code>苹果</code> 和 <code>手机</code> 两个词，拿这两个词去搜索的时候，只给苹果在手机前面的文档，不需要手机在苹果前面的</p>
+<p> 迁移（Offset），记录单词在文档的开始和结束位置，用于做高亮显示</p>
+</li>
+</ol>
+<p>以 <code>搜索引擎</code> 为例，看如果构建 Posting List</p>
+<table>
+<thead>
+<tr>
+<th align="center">文档ID</th>
+<th align="center">文档内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">elasticsearch是最流行的搜索引擎</td>
+</tr>
+<tr>
+<td align="center">2</td>
+<td align="center">php 是世界上最好的语言</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">搜索引擎是如何诞生的</td>
+</tr>
+</tbody></table>
+<p>转换为下面的 Posting List</p>
+<table>
+<thead>
+<tr>
+<th align="center">DocID</th>
+<th align="center">TF</th>
+<th align="center">Position</th>
+<th align="center">Offset</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">2</td>
+<td align="center">&lt;18,22&gt;</td>
+</tr>
+<tr>
+<td align="center">3</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">&lt;0,4&gt;</td>
+</tr>
+</tbody></table>
+<p>从上面的表中看到搜索引擎有连个文档1和3，下面的 Posting List,每一行都是一个倒排索引项<br>第一行DocID表示文档ID是1的文档，频率是1，因为<code>搜索引擎</code>在DocID是1的文档中出现了1次，</p>
+<p>Position表示分词后出现的位置，<code>elasticsearch是最流行的搜索引擎</code> 被分词成了 <code>elasticsearch</code>, <code>流行</code>, <code>搜索引擎</code> 3个单词，搜索引擎在第二个位置，从0开始计算的</p>
+<p>Offset表示搜索引擎在这个文档中的字符的位置，是从18到22</p>
+<p>第二行DocID表示文档ID是3的文档，频率是1，因为<code>搜索引擎</code>在DocID是1的文档中出现了1次，</p>
+<p>Position表示分词后出现的位置，<code>搜索引擎是如何诞生的</code> 被分词成了 <code>elasticsearch</code>, <code>搜索引擎</code>, <code>如何</code>， <code>诞生</code> 3个单词，搜索引擎在第一个位置，从0开始计算的</p>
+<p>Offset起始位置是0到4</p>
+<p>一个倒排索引大致的样子，单词字典与倒排列表整合一起结构如下：</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/14.png" alt=""></p>
+<p>这里的倒排索引项值显示了 DocID</p>
+<p>倒排索引是由 Term Dictionary 和 Posting List 构成的，Term Dictionary 是一个B+ Tree, Term Dictionary 会记录每个单词在 Posting List中的位置，比如搜索的时候可以通过Term Dictionary定位到搜索引擎，通过搜索引擎可以拿到在 Posting List 中的偏移量，可以快速定位到在 Posting List 中的位置，就拿到了真正的倒排索引项1,3,图中只列出了DocID,但是实际上收到拍索引项是可以包含四项信息的一项，拿到一项就可以去正排索引中拿到原始的信息，计算相关性得分，然后进行排序，返回给用户</p>
+<p>es存储的是一个 json 格式的文档，其中包含多个字段，每个字段会有自己的倒排索引，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">    &quot;job&quot;: &quot;programmer&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在构建倒排索引的时候是按照字段进行构建的，也就是username会有一个倒排索引，job也会有一个倒排索引</p>
+<h2 id="分词"><a href="#分词" class="headerlink" title="分词"></a>分词</h2><p>分词是指将文本转换成一系列单词(term or token) 的过程，也可以叫做文本分析，在es里面成为 Analysis</p>
+<p>比如有一个文本 <code>elasticsearch是最流行的搜索引擎</code>，被分词后的结果是 <code>elasticsearch</code>, <code>流行</code>, <code>搜索引擎</code></p>
+<h4 id="分词器"><a href="#分词器" class="headerlink" title="分词器"></a>分词器</h4><p>分词器是es中专门处理分词的组件，应为 Analyzer, 它的组成如下：</p>
+<ol>
+<li><p>Character Filters</p>
+<p> 针对原始文本进行处理，比如去除 html 特殊标记</p>
+</li>
+<li><p>Tokenizer </p>
+<p> 将原始文本按照一定规则切分为单词</p>
+</li>
+<li><p>Token Filters</p>
+<p> 针对 tokenizer 处理的单词进行再加工，比如转小写，删除或者新增处理</p>
+</li>
+</ol>
+<h4 id="调用顺序"><a href="#调用顺序" class="headerlink" title="调用顺序"></a>调用顺序</h4><p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/15.png" alt=""></p>
+<p>Analyzer 有一个先后顺序，从上到下会先经过 Character Filters, Tokenizer, 和 Token Filters</p>
+<h2 id="Analyze-API"><a href="#Analyze-API" class="headerlink" title="Analyze API"></a>Analyze API</h2><p>es 提供了一个测试分词的API接口，方便央行增分词效果，endpoint是_analyze</p>
+<pre><code>可以直接指定 analyzer 进行测试
+
+可以直接指定索引中的字段进行测试 
+
+可以自定义分词器进行测试</code></pre><h4 id="直接指定-analyzer-进行测试"><a href="#直接指定-analyzer-进行测试" class="headerlink" title="直接指定 analyzer 进行测试"></a>直接指定 analyzer 进行测试</h4><p>analyzer: 分词器 standard 是es自带的分词器<br>text: 文本</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;standard&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;hello world!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;hello&quot;, # 分词结果</span><br><span class="line">      &quot;start_offset&quot;: 0, # 起始偏移</span><br><span class="line">      &quot;end_offset&quot;: 5, # 结束偏移</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 0 # 分词位置</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;world&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 6,</span><br><span class="line">      &quot;end_offset&quot;: 11,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/16.png" alt=""></p>
+<h4 id="直接指定索引中的字段进行测试"><a href="#直接指定索引中的字段进行测试" class="headerlink" title="直接指定索引中的字段进行测试"></a>直接指定索引中的字段进行测试</h4><p>使用场景：当已经创建了一个索引，针对索引字段做查询的时候输出和预期不一样，这个时候就可以针对这个字段做分词测试</p>
+<p>test_index: 测试的索引<br>field: 测试字段<br>text: 测试文本</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># analyze</span><br><span class="line">POST test_index&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;field&quot;: &quot;username&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;hello world!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>resoonse</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;hello&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 5,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;world&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 6,</span><br><span class="line">      &quot;end_offset&quot;: 11,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/17.png" alt=""></p>
+<h4 id="自定义分词器进行测试"><a href="#自定义分词器进行测试" class="headerlink" title="自定义分词器进行测试"></a>自定义分词器进行测试</h4><ul>
+<li>不使用filter</li>
+</ul>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># analyze</span><br><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;tokenizer&quot;: &quot;standard&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;Hello World!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;Hello&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 5,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;World&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 6,</span><br><span class="line">      &quot;end_offset&quot;: 11,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/18.png" alt=""></p>
+<ul>
+<li>使用 filter</li>
+</ul>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># analyze</span><br><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;tokenizer&quot;: &quot;standard&quot;,</span><br><span class="line">  &quot;filter&quot;: [</span><br><span class="line">    &quot;lowercase&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;text&quot;: &quot;Hello World!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;hello&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 5,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;world&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 6,</span><br><span class="line">      &quot;end_offset&quot;: 11,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/19.png" alt=""></p>
+<h2 id="预定义分词器"><a href="#预定义分词器" class="headerlink" title="预定义分词器"></a>预定义分词器</h2><p>es 自带下面这些分词器</p>
+<pre><code>Standard
+Simple
+Whitespace
+Stop
+Keyword
+Pattern
+Language</code></pre><h4 id="Standard-Analyzer"><a href="#Standard-Analyzer" class="headerlink" title="Standard Analyzer"></a>Standard Analyzer</h4><p>默认分词器</p>
+<pre><code>按词切分，支持多语言，小写处理</code></pre><p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/20.png" alt=""></p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># analyze</span><br><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;standard&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;The 2 QUICK Brown-Foxes jumped ober the lazy dog&#39;s bone!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;the&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 3,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;2&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 4,</span><br><span class="line">      &quot;end_offset&quot;: 5,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;NUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;quick&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 6,</span><br><span class="line">      &quot;end_offset&quot;: 11,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;brown&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 12,</span><br><span class="line">      &quot;end_offset&quot;: 17,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 3</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;foxes&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 18,</span><br><span class="line">      &quot;end_offset&quot;: 23,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 4</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;jumped&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 24,</span><br><span class="line">      &quot;end_offset&quot;: 30,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 5</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;ober&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 31,</span><br><span class="line">      &quot;end_offset&quot;: 35,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 6</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;the&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 36,</span><br><span class="line">      &quot;end_offset&quot;: 39,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 7</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;lazy&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 40,</span><br><span class="line">      &quot;end_offset&quot;: 44,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 8</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;dog&#39;s&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 45,</span><br><span class="line">      &quot;end_offset&quot;: 50,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 9</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;bone&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 51,</span><br><span class="line">      &quot;end_offset&quot;: 55,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 10</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Simple-Analyzer"><a href="#Simple-Analyzer" class="headerlink" title="Simple Analyzer"></a>Simple Analyzer</h4><pre><code>在那好非字母切分,小写处理</code></pre><p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/21.png" alt=""></p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># analyze</span><br><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;simple&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;The 2 QUICK Brown-Foxes jumped ober the lazy dog&#39;s bone!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;the&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 3,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;quick&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 6,</span><br><span class="line">      &quot;end_offset&quot;: 11,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;brown&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 12,</span><br><span class="line">      &quot;end_offset&quot;: 17,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;foxes&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 18,</span><br><span class="line">      &quot;end_offset&quot;: 23,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 3</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;jumped&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 24,</span><br><span class="line">      &quot;end_offset&quot;: 30,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 4</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;ober&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 31,</span><br><span class="line">      &quot;end_offset&quot;: 35,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 5</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;the&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 36,</span><br><span class="line">      &quot;end_offset&quot;: 39,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 6</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;lazy&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 40,</span><br><span class="line">      &quot;end_offset&quot;: 44,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 7</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;dog&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 45,</span><br><span class="line">      &quot;end_offset&quot;: 48,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 8</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;s&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 49,</span><br><span class="line">      &quot;end_offset&quot;: 50,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 9</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;bone&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 51,</span><br><span class="line">      &quot;end_offset&quot;: 55,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 10</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Whitespace-Analyzer"><a href="#Whitespace-Analyzer" class="headerlink" title="Whitespace Analyzer"></a>Whitespace Analyzer</h4><p>按照空格切分</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/22.png" alt=""></p>
+<ul>
+<li>request </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># analyze</span><br><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;whitespace&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;The 2 QUICK Brown-Foxes jumped ober the lazy dog&#39;s bone!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;The&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 3,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;2&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 4,</span><br><span class="line">      &quot;end_offset&quot;: 5,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;QUICK&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 6,</span><br><span class="line">      &quot;end_offset&quot;: 11,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;Brown-Foxes&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 12,</span><br><span class="line">      &quot;end_offset&quot;: 23,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 3</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;jumped&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 24,</span><br><span class="line">      &quot;end_offset&quot;: 30,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 4</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;ober&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 31,</span><br><span class="line">      &quot;end_offset&quot;: 35,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 5</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;the&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 36,</span><br><span class="line">      &quot;end_offset&quot;: 39,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 6</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;lazy&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 40,</span><br><span class="line">      &quot;end_offset&quot;: 44,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 7</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;dog&#39;s&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 45,</span><br><span class="line">      &quot;end_offset&quot;: 50,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 8</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;bone!&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 51,</span><br><span class="line">      &quot;end_offset&quot;: 56,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 9</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Stop-Analyzer"><a href="#Stop-Analyzer" class="headerlink" title="Stop Analyzer"></a>Stop Analyzer</h4><p>Stop Word 是指预期助词等修饰性的词语，比如 the, an, 的， 这等等</p>
+<pre><code>相比 Simple Analyzer 多了 Stop Word 处理</code></pre><p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/23.png" alt=""></p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># analyze</span><br><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;stop&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;The 2 QUICK Brown-Foxes jumped ober the lazy dog&#39;s bone!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;quick&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 6,</span><br><span class="line">      &quot;end_offset&quot;: 11,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;brown&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 12,</span><br><span class="line">      &quot;end_offset&quot;: 17,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;foxes&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 18,</span><br><span class="line">      &quot;end_offset&quot;: 23,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 3</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;jumped&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 24,</span><br><span class="line">      &quot;end_offset&quot;: 30,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 4</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;ober&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 31,</span><br><span class="line">      &quot;end_offset&quot;: 35,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 5</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;lazy&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 40,</span><br><span class="line">      &quot;end_offset&quot;: 44,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 7</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;dog&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 45,</span><br><span class="line">      &quot;end_offset&quot;: 48,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 8</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;s&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 49,</span><br><span class="line">      &quot;end_offset&quot;: 50,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 9</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;bone&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 51,</span><br><span class="line">      &quot;end_offset&quot;: 55,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 10</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Keyword-Analyzer"><a href="#Keyword-Analyzer" class="headerlink" title="Keyword Analyzer"></a>Keyword Analyzer</h4><pre><code>不分词，直接将输入作为一个单词输出</code></pre><p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/24.png" alt=""></p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># analyze</span><br><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;keyword&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;The 2 QUICK Brown-Foxes jumped ober the lazy dog&#39;s bone!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;The 2 QUICK Brown-Foxes jumped ober the lazy dog&#39;s bone!&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 56,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Pattern-Analyzer"><a href="#Pattern-Analyzer" class="headerlink" title="Pattern Analyzer"></a>Pattern Analyzer</h4><pre><code>通过正则表达式自定义分割符
+
+默认是 `\W+` ,即非字词的符号作为分隔符</code></pre><p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/25.png" alt=""></p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># analyze</span><br><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;pattern&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;The 2 QUICK Brown-Foxes jumped ober the lazy dog&#39;s bone!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;the&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 3,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;2&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 4,</span><br><span class="line">      &quot;end_offset&quot;: 5,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;quick&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 6,</span><br><span class="line">      &quot;end_offset&quot;: 11,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;brown&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 12,</span><br><span class="line">      &quot;end_offset&quot;: 17,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 3</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;foxes&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 18,</span><br><span class="line">      &quot;end_offset&quot;: 23,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 4</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;jumped&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 24,</span><br><span class="line">      &quot;end_offset&quot;: 30,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 5</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;ober&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 31,</span><br><span class="line">      &quot;end_offset&quot;: 35,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 6</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;the&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 36,</span><br><span class="line">      &quot;end_offset&quot;: 39,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 7</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;lazy&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 40,</span><br><span class="line">      &quot;end_offset&quot;: 44,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 8</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;dog&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 45,</span><br><span class="line">      &quot;end_offset&quot;: 48,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 9</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;s&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 49,</span><br><span class="line">      &quot;end_offset&quot;: 50,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 10</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;bone&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 51,</span><br><span class="line">      &quot;end_offset&quot;: 55,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 11</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="Language-Analyzer"><a href="#Language-Analyzer" class="headerlink" title="Language Analyzer"></a>Language Analyzer</h4><p>提供了30+常见的语言分词器</p>
+<p>arabic, armenian, basque, bengali, brazilian, bulgarian, catalan, cjk, czech, danish, dutch, english, …</p>
+<h2 id="中文分词"><a href="#中文分词" class="headerlink" title="中文分词"></a>中文分词</h2><p>中文分词是指将一个汉字序列切分成一个一个单独的词。在英文中，单词之间是以空格作为自然分解符，汉语中词没有一个形式上的分界符。</p>
+<p>上下文不同，分词结果迥异，比如交叉歧义问题</p>
+<pre><code>- 乒乓球拍/卖/完了
+- 乒乓球/拍卖/完了</code></pre><p><a href="https://mp.weixin.qq.com/s?__biz=MzU1NDA4NjU2MA==&amp;mid=2247486148&amp;idx=1&amp;sn=817027a204650763c1bea3e837d695ea&amp;source=41#wechat_redirect" target="_blank" rel="noopener">https://mp.weixin.qq.com/s?__biz=MzU1NDA4NjU2MA==&amp;mid=2247486148&amp;idx=1&amp;sn=817027a204650763c1bea3e837d695ea&amp;source=41#wechat_redirect</a></p>
+<h4 id="IK"><a href="#IK" class="headerlink" title="IK"></a>IK</h4><p>常用分词系统</p>
+<ul>
+<li>实现中英文单词的切分，支持 ik_smart, ik_maxword等模式</li>
+<li>可自定义词库，支持热更新分词词典</li>
+<li><a href="https://github.com/medcl/elasticsearch-analysis-ik" target="_blank" rel="noopener">https://github.com/medcl/elasticsearch-analysis-ik</a></li>
+</ul>
+<h4 id="jieba"><a href="#jieba" class="headerlink" title="jieba"></a>jieba</h4><p>常用分词系统</p>
+<ul>
+<li>python 中流行的分词系统，支持分词和词性标注</li>
+<li>支持繁体分词，自定义词典，并行分词等</li>
+<li><a href="https://github.com/sing1ee/elasticsearch-jieba-plugin" target="_blank" rel="noopener">https://github.com/sing1ee/elasticsearch-jieba-plugin</a></li>
+</ul>
+<h4 id="Hanlp"><a href="#Hanlp" class="headerlink" title="Hanlp"></a>Hanlp</h4><p>基于自然语言处理的分析系统</p>
+<ul>
+<li>由一些列模型与算法组成的Java工具包，目标是普及自然语言处理在生产环境中的应用</li>
+<li><a href="https://github.com/hankcs/HanLP" target="_blank" rel="noopener">https://github.com/hankcs/HanLP</a></li>
+</ul>
+<h4 id="THULAC"><a href="#THULAC" class="headerlink" title="THULAC"></a>THULAC</h4><ul>
+<li>YHU Lexical Analyzer for Chinese,由清华大学自然语言处理与社会人文计算实验室颜值退出的一套中文此法分析工具包，具有中文分词和词性标注功能</li>
+<li><a href="https://github.com/microbun/elasticsearch-thulac-plugin" target="_blank" rel="noopener">https://github.com/microbun/elasticsearch-thulac-plugin</a></li>
+</ul>
+<h2 id="自定义分词器-CharacterFilter"><a href="#自定义分词器-CharacterFilter" class="headerlink" title="自定义分词器-CharacterFilter"></a>自定义分词器-CharacterFilter</h2><p>当自带的分词无法满足需求时，可以自定义分词</p>
+<ul>
+<li>通过自定义 Character Filters, Tokenizer 和 Token Filter 实现</li>
+</ul>
+<h4 id="Character-Filter"><a href="#Character-Filter" class="headerlink" title="Character Filter"></a>Character Filter</h4><ul>
+<li>在 Tokenizer 之前对原始文本进行处理，比如增加，删除或替换字符等</li>
+<li>自带如下：<br>  HTML Strip 去除html标签和转换html实体<br>  Mapping 进行字符替换操作<br>  Pattern Replace 进行正则匹配替换</li>
+<li>会影响后续 tokenizer 解析的 position 和 offset 信息</li>
+</ul>
+<ul>
+<li>API</li>
+</ul>
+<p>tokenizer: keyword类型的tokenizer可以直接看到输出结果<br>char filter: 指明要使用的 char_filter,如 html_strip<br>text: 测试的文本</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># charater filter</span><br><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;tokenizer&quot;: &quot;keyword&quot;,</span><br><span class="line">  &quot;char_filter&quot;: [</span><br><span class="line">    &quot;html_strip&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;text&quot;: &quot;&lt;p&gt;I&amp;apos;m so&lt;b&gt;happy&lt;&#x2F;b&gt;!&lt;&#x2F;p&gt;&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">I&#39;m sohappy!</span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 31,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/26.png" alt=""></p>
+<h2 id="自定义分词-Tokenizer"><a href="#自定义分词-Tokenizer" class="headerlink" title="自定义分词-Tokenizer"></a>自定义分词-Tokenizer</h2><p>将原始文本按照一定规则切分为单词 （term or token）</p>
+<p>自带如下：</p>
+<p>standard: 按照单词进行分割<br>letter: 按照非字符类进行分割<br>whitespace: 按照空格进行分割<br>UAX URL Email: 按照standard分割，但不会分割邮箱和url<br>NGram 和 Edge NGram: 连词分割<br>Path Hierarchy: 按照文件路径进行分割</p>
+<ul>
+<li>API</li>
+</ul>
+<p>tokenizer: 指定要测试的tokenizer</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># tokenizer</span><br><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;tokenizer&quot;: &quot;path_hierarchy&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;&#x2F;one&#x2F;two&#x2F;three&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;&#x2F;one&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 4,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;&#x2F;one&#x2F;two&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 8,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;&#x2F;one&#x2F;two&#x2F;three&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 14,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/27.png" alt=""></p>
+<h2 id="自定义分词器-TokenFilter"><a href="#自定义分词器-TokenFilter" class="headerlink" title="自定义分词器-TokenFilter"></a>自定义分词器-TokenFilter</h2><p>对于tokenizer输出的单词(term) 进行增加，删除，修改等操作<br>自带如下：<br>    lowercase 将所有term转为小写<br>    stop删除stop words<br>    NGram 和 Edge Ngram 连词分割<br>    Synonym添加近义词的term</p>
+<ul>
+<li>API</li>
+</ul>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># token filter</span><br><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;tokenizer&quot;: &quot;standard&quot;,</span><br><span class="line">  &quot;filter&quot;: [</span><br><span class="line">    &quot;stop&quot;,</span><br><span class="line">    &quot;lowercase&quot;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;type&quot;: &quot;ngram&quot;,</span><br><span class="line">      &quot;min_gram&quot;: 4,</span><br><span class="line">      &quot;max_gram&quot;: 4</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;text&quot;: &quot;a Hello, world!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;hell&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 2,</span><br><span class="line">      &quot;end_offset&quot;: 7,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;ello&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 2,</span><br><span class="line">      &quot;end_offset&quot;: 7,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;worl&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 9,</span><br><span class="line">      &quot;end_offset&quot;: 14,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;orld&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 9,</span><br><span class="line">      &quot;end_offset&quot;: 14,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/28.png" alt=""></p>
+<p>修改 min_gram ,并去掉 max_gram</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># token filter</span><br><span class="line">POST _analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;tokenizer&quot;: &quot;standard&quot;,</span><br><span class="line">  &quot;filter&quot;: [</span><br><span class="line">    &quot;stop&quot;,</span><br><span class="line">    &quot;lowercase&quot;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;type&quot;: &quot;ngram&quot;,</span><br><span class="line">      &quot;min_gram&quot;: 2</span><br><span class="line">    &#125;</span><br><span class="line">  ],</span><br><span class="line">  &quot;text&quot;: &quot;a Hello, world!&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;he&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 2,</span><br><span class="line">      &quot;end_offset&quot;: 7,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;el&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 2,</span><br><span class="line">      &quot;end_offset&quot;: 7,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;ll&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 2,</span><br><span class="line">      &quot;end_offset&quot;: 7,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;lo&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 2,</span><br><span class="line">      &quot;end_offset&quot;: 7,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;wo&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 9,</span><br><span class="line">      &quot;end_offset&quot;: 14,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;or&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 9,</span><br><span class="line">      &quot;end_offset&quot;: 14,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;rl&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 9,</span><br><span class="line">      &quot;end_offset&quot;: 14,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;ld&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 9,</span><br><span class="line">      &quot;end_offset&quot;: 14,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="自定义分词API"><a href="#自定义分词API" class="headerlink" title="自定义分词API"></a>自定义分词API</h2><p>自定义分词API需要在索引的配置中设定</p>
+<p>分词配置可以自定义<br>char_filter<br>tokenizer<br>filter<br>analyzer</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># custom analyzer setting</span><br><span class="line">PUT test_index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;char_filter&quot;: &#123;&#125;,</span><br><span class="line">      &quot;tokenizer&quot;: &#123;&#125;,</span><br><span class="line">      &quot;filter&quot;: &#123;&#125;,</span><br><span class="line">      &quot;analyzer&quot;: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>实例1</li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/29.png" alt=""></p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"># customize</span><br><span class="line">PUT test_index_1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;analyzer&quot;: &#123;</span><br><span class="line">        &quot;my_custom_analyzer&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;custom&quot;,</span><br><span class="line">          &quot;tokenizer&quot;: &quot;standard&quot;,</span><br><span class="line">          &quot;char_filter&quot;: [</span><br><span class="line">            &quot;html_strip&quot;</span><br><span class="line">          ],</span><br><span class="line">          &quot;filter&quot;: [</span><br><span class="line">            &quot;lowercase&quot;,</span><br><span class="line">            &quot;asciifolding&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;acknowledged&quot;: true,</span><br><span class="line">  &quot;shards_acknowledged&quot;: true,</span><br><span class="line">  &quot;index&quot;: &quot;test_index_1&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/30.png" alt=""></p>
+<p>测试</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST test_index_1&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;my_custom_analyzer&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;Is this &lt;b&gt; a box&lt;&#x2F;b&gt;?&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;is&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 2,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;this&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 3,</span><br><span class="line">      &quot;end_offset&quot;: 7,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;a&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 12,</span><br><span class="line">      &quot;end_offset&quot;: 13,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 2</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;box&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 14,</span><br><span class="line">      &quot;end_offset&quot;: 21,</span><br><span class="line">      &quot;type&quot;: &quot;&lt;ALPHANUM&gt;&quot;,</span><br><span class="line">      &quot;position&quot;: 3</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/31.png" alt=""></p>
+<ul>
+<li>实例2</li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/32.png" alt=""></p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">PUT test_index_2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;settings&quot;: &#123;</span><br><span class="line">    &quot;analysis&quot;: &#123;</span><br><span class="line">      &quot;analyzer&quot;: &#123;</span><br><span class="line">        &quot;my_custom_analyzer&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;custom&quot;,</span><br><span class="line">          &quot;char_filter&quot;: [</span><br><span class="line">            &quot;emoticons&quot;</span><br><span class="line">          ],</span><br><span class="line">          &quot;tokenizer&quot;: &quot;punctuation&quot;,</span><br><span class="line">          &quot;filter&quot;: [</span><br><span class="line">            &quot;lowercase&quot;,</span><br><span class="line">            &quot;english_stop&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;tokenizer&quot;: &#123;</span><br><span class="line">        &quot;punctuation&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;pattern&quot;,</span><br><span class="line">          &quot;pattern&quot;: &quot;[.,!?]&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;char_filter&quot;: &#123;</span><br><span class="line">        &quot;emoticons&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;mapping&quot;,</span><br><span class="line">          &quot;mappings&quot;: [</span><br><span class="line">            &quot;:) &#x3D;&gt; _happy_&quot;,</span><br><span class="line">            &quot;:( &#x3D;&gt; _sad_&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;filter&quot;: &#123;</span><br><span class="line">        &quot;english_stop&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;stop&quot;,</span><br><span class="line">          &quot;stopwords&quot;: &quot;_english_&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;acknowledged&quot;: true,</span><br><span class="line">  &quot;shards_acknowledged&quot;: true,</span><br><span class="line">  &quot;index&quot;: &quot;test_index_2&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/33.png" alt=""></p>
+<p>测试 </p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST test_index_2&#x2F;_analyze</span><br><span class="line">&#123;</span><br><span class="line">  &quot;analyzer&quot;: &quot;my_custom_analyzer&quot;,</span><br><span class="line">  &quot;text&quot;: &quot;I&#39;m a :) person, and you?&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;tokens&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot;i&#39;m a _happy_ person&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 0,</span><br><span class="line">      &quot;end_offset&quot;: 15,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 0</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;token&quot;: &quot; and you&quot;,</span><br><span class="line">      &quot;start_offset&quot;: 16,</span><br><span class="line">      &quot;end_offset&quot;: 24,</span><br><span class="line">      &quot;type&quot;: &quot;word&quot;,</span><br><span class="line">      &quot;position&quot;: 1</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/34.png" alt=""></p>
+<h2 id="分词使用时机"><a href="#分词使用时机" class="headerlink" title="分词使用时机"></a>分词使用时机</h2><ul>
+<li>创建或更新文档时(Index Time)，会对相应的文档进行分词处理</li>
+<li>查询时(Search Time)，会对查询语句进行分词</li>
+</ul>
+<p>在索引的时候已经把所有文档都已经分好词了，那么在查询匹配的时候肯定也要拿着一个一个的单词来匹配才能找到对应的结果，所以查询的语句也是要分词的</p>
+<h4 id="索引时分词"><a href="#索引时分词" class="headerlink" title="索引时分词"></a>索引时分词</h4><p>索引时分词是通过配置 Index Mapping 中每个字段的 anlyzer 属性实现的</p>
+<ul>
+<li>不指定分词时，使用默认 standard</li>
+</ul>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">PUT test_index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;doc&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;title&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">          &quot;analyzer&quot;: &quot;whitespace&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查询时分词</li>
+</ul>
+<p>查询的时候通过 analyzer 指定分词器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">POST test_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;message&quot;: &#123;</span><br><span class="line">        &quot;query&quot;: &quot;hello&quot;,</span><br><span class="line">        &quot;analyzer&quot;: &quot;standard&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过 index mapping 设置 search_analyzer 实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PUT test_index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;doc&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;title&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">          &quot;analyzer&quot;: &quot;whitespace&quot;,</span><br><span class="line">          &quot;search_analyzer&quot;: &quot;standard&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<pre><code>注: 一般不需要特别指定查询时分词器，直接使用索引时分词器即可，否则会出现无法匹配的情况</code></pre><h4 id="分词使用建议"><a href="#分词使用建议" class="headerlink" title="分词使用建议"></a>分词使用建议</h4><ul>
+<li><p>明确字段是否需要分词，不需要分词的字段就将 type 设置为 keyword,可以节省空间和提高写性能</p>
+</li>
+<li><p>善用 _analyze API , 查看文档的具体分词结果</p>
+</li>
+<li><p>动手测试</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Elasticsearch/" rel="tag"># Elasticsearch</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/20/%E7%88%AC%E8%99%AB%E5%85%A5%E9%97%A8-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="prev" title="爬虫入门-计算机网络知识点回顾">
+      <i class="fa fa-chevron-left"></i> 爬虫入门-计算机网络知识点回顾
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/24/3-Mapping/" rel="next" title="Mapping">
+      Mapping <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目录与索引"><span class="nav-number">1.</span> <span class="nav-text">目录与索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正排索引"><span class="nav-number">2.</span> <span class="nav-text">正排索引</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#倒排索引"><span class="nav-number">3.</span> <span class="nav-text">倒排索引</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查询流程"><span class="nav-number">3.0.1.</span> <span class="nav-text">查询流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#倒排索引组成"><span class="nav-number">3.0.2.</span> <span class="nav-text">倒排索引组成</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词"><span class="nav-number">4.</span> <span class="nav-text">分词</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分词器"><span class="nav-number">4.0.1.</span> <span class="nav-text">分词器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调用顺序"><span class="nav-number">4.0.2.</span> <span class="nav-text">调用顺序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Analyze-API"><span class="nav-number">5.</span> <span class="nav-text">Analyze API</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#直接指定-analyzer-进行测试"><span class="nav-number">5.0.1.</span> <span class="nav-text">直接指定 analyzer 进行测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#直接指定索引中的字段进行测试"><span class="nav-number">5.0.2.</span> <span class="nav-text">直接指定索引中的字段进行测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义分词器进行测试"><span class="nav-number">5.0.3.</span> <span class="nav-text">自定义分词器进行测试</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#预定义分词器"><span class="nav-number">6.</span> <span class="nav-text">预定义分词器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Standard-Analyzer"><span class="nav-number">6.0.1.</span> <span class="nav-text">Standard Analyzer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Simple-Analyzer"><span class="nav-number">6.0.2.</span> <span class="nav-text">Simple Analyzer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Whitespace-Analyzer"><span class="nav-number">6.0.3.</span> <span class="nav-text">Whitespace Analyzer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Stop-Analyzer"><span class="nav-number">6.0.4.</span> <span class="nav-text">Stop Analyzer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Keyword-Analyzer"><span class="nav-number">6.0.5.</span> <span class="nav-text">Keyword Analyzer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Pattern-Analyzer"><span class="nav-number">6.0.6.</span> <span class="nav-text">Pattern Analyzer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Language-Analyzer"><span class="nav-number">6.0.7.</span> <span class="nav-text">Language Analyzer</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中文分词"><span class="nav-number">7.</span> <span class="nav-text">中文分词</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#IK"><span class="nav-number">7.0.1.</span> <span class="nav-text">IK</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#jieba"><span class="nav-number">7.0.2.</span> <span class="nav-text">jieba</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Hanlp"><span class="nav-number">7.0.3.</span> <span class="nav-text">Hanlp</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#THULAC"><span class="nav-number">7.0.4.</span> <span class="nav-text">THULAC</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义分词器-CharacterFilter"><span class="nav-number">8.</span> <span class="nav-text">自定义分词器-CharacterFilter</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Character-Filter"><span class="nav-number">8.0.1.</span> <span class="nav-text">Character Filter</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义分词-Tokenizer"><span class="nav-number">9.</span> <span class="nav-text">自定义分词-Tokenizer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义分词器-TokenFilter"><span class="nav-number">10.</span> <span class="nav-text">自定义分词器-TokenFilter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义分词API"><span class="nav-number">11.</span> <span class="nav-text">自定义分词API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分词使用时机"><span class="nav-number">12.</span> <span class="nav-text">分词使用时机</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#索引时分词"><span class="nav-number">12.0.1.</span> <span class="nav-text">索引时分词</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分词使用建议"><span class="nav-number">12.0.2.</span> <span class="nav-text">分词使用建议</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

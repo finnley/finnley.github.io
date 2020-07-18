@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="为什么学爬虫需要了解计算机网络  1. 遇到问题可以懂得分析，可以迅速排查问题            2. 了解模拟登录原理（了解HTTP协议）            3. 反爬 （反爬其实也是基于一些协议制定的一些策略，当了解一些底层协议，那么反爬也就逃不过这些协议，有助于解决目标网站反爬问题）            4. 遇到非浏览器的客户端的数据            什么是网络协议  1.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="爬虫入门-计算机网络知识点回顾">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/05/20/%E7%88%AC%E8%99%AB%E5%85%A5%E9%97%A8-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="为什么学爬虫需要了解计算机网络  1. 遇到问题可以懂得分析，可以迅速排查问题            2. 了解模拟登录原理（了解HTTP协议）            3. 反爬 （反爬其实也是基于一些协议制定的一些策略，当了解一些底层协议，那么反爬也就逃不过这些协议，有助于解决目标网站反爬问题）            4. 遇到非浏览器的客户端的数据            什么是网络协议  1.">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/reptile/network-protocal/1.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/reptile/network-protocal/2.png">
+<meta property="article:published_time" content="2020-05-20T14:02:14.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.324Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="爬虫">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/reptile/network-protocal/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/05/20/%E7%88%AC%E8%99%AB%E5%85%A5%E9%97%A8-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>爬虫入门-计算机网络知识点回顾 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/05/20/%E7%88%AC%E8%99%AB%E5%85%A5%E9%97%A8-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          爬虫入门-计算机网络知识点回顾
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-20 22:02:14" itemprop="dateCreated datePublished" datetime="2020-05-20T22:02:14+08:00">2020-05-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="为什么学爬虫需要了解计算机网络"><a href="#为什么学爬虫需要了解计算机网络" class="headerlink" title="为什么学爬虫需要了解计算机网络"></a>为什么学爬虫需要了解计算机网络</h2><ol>
+<li><p>遇到问题可以懂得分析，可以迅速排查问题</p>
+</li>
+<li><p>了解模拟登录原理（了解HTTP协议）</p>
+</li>
+<li><p>反爬 （反爬其实也是基于一些协议制定的一些策略，当了解一些底层协议，那么反爬也就逃不过这些协议，有助于解决目标网站反爬问题）</p>
+</li>
+<li><p>遇到非浏览器的客户端的数据</p>
+</li>
+</ol>
+<h2 id="什么是网络协议"><a href="#什么是网络协议" class="headerlink" title="什么是网络协议"></a>什么是网络协议</h2><ol>
+<li><p>全球上百亿的联网设备连接在一起，两两通信，比如上海的一个网卡发送出去的数据，北京或者美国就能收到，而且两者根本不知道对方在哪里，这就很神奇？</p>
+</li>
+<li><p>整个互联网的通信设备非常多，像什么集线器，网线，电缆，交换机，路由器，防火墙等硬件设备，每个设备还有不同的厂家，它们又是如何完成信息互通的呢？</p>
+<p> 一个数据发送出去之后其实是会经历很多硬件设备的，比如现在从一个PC上请求淘宝的网站，可能有一个PC和淘宝的数据之间建立了一个连接（相当于在我的设备和淘宝的服务器之间建立一个数据通道），其实这个数据数据通道并不是一个直连，并不是直接拉了一根线，实际上中间的数据在传输的时候，也就是淘宝数据是不会直接发送到我们的电脑上的，中间会经过很多硬件设备，比如先通过杭州，然后再通过广州，然后再到达上海的一个小区的路由器上，然后这个路由器再转发到我们自己的电脑上</p>
+</li>
+</ol>
+<ul>
+<li>淘宝的数据是如何传送到本机？</li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/reptile/network-protocal/1.png" alt=""></p>
+<p>我们向淘宝发送一条请求，比如向淘宝请求一个网页，数据在会返回的时候首先会通过电缆，或者是网线，会传输到一个路由器上，它是不会直接传送到我们本机上的，它肯定是通过一系列的设备，到达路由器1，路由器可能会将数据发送给另外一个路由器2</p>
+<p>如果路由器1刚好在淘宝的服务器附近，而我们的本机电脑也放好属于这个小区的路由器1范围内，如果我们的电脑正好属于路由器1管理，那这个小区的路由器1刚好可以直接将数据发送到我们本机</p>
+<p>那比如淘宝的服务器在北京，而我们的本机在上海，路由器1的IP地址可能管不到我们的本机，此时路由器1会将数据发送到另外的路由器2，另外的路由器实际在做重复的动作，如果恰好数据到达我们的小区的路由器3中，小区的路由器3正好发现了我们的IP地址，正好在自己的管辖范围内，就可以直接将数据传递给本机了</p>
+<p>数据在传递过程中是经过了很多硬件设备的，现在比如路由器1是华为的，路由器2是 TP-LINK 的，网络中所存在的硬件可能是非常多的厂家生产的，而且任何时候都有可能再添加一些货拿掉一些硬件设备，各个厂家可能生产的硬件是不同的，网络数据怎么能支持这些不同的硬件设备呢？这实际上就是由网络协议规范的，然后所有的硬件生产厂家，不管是程序的开发者，还是硬件厂家，都必须遵守网络协议，这样的的不同的厂家生产出来的不同的设置都没有关系，因为他们都遵循了一套网络协议</p>
+<ol start="3">
+<li><p>不同的设备的数据转发都是通过协议来完成，整个互联网可以说是完全由网络协议来维持的，就像法律一样</p>
+</li>
+<li><p>不同的协议分工不同，比如IP协议确保了IP寻址，TCP协议确保了数据的完整性</p>
+</li>
+</ol>
+<h2 id="一个完整的网络请求过程"><a href="#一个完整的网络请求过程" class="headerlink" title="一个完整的网络请求过程"></a>一个完整的网络请求过程</h2><p>比如现在我发起了一个请求 GOOGLE 首页的请求，我在浏览器中输入 <code>google.com</code> 按下回车键后，浏览器首先会去查询 DNS 服务器，DNS 服务器其实是去查询 <code>google.com</code> 这个网址所对应的IP地址，在互联网协议中它的连接实际上通过IP地址连接的，通过域名是无法定位到服务器的，因为域名可以指向任意一台服务器，IP地址和域名之间其实是有绑定的</p>
+<p>DNS服务器查询到IP之后会将IP地址返回给浏览器</p>
+<p>浏览器拿到IP地址之后就会向谷歌web服务器第一步先建立TCP连接，TCP连接其实是会经过很多物理设备的，它们的连接也是通过协议来建立的</p>
+<p>浏览器和web服务器建立好连接之后会向web服务器发送一个HTTP请求</p>
+<p>web服务器接收到请求之后生成html之后再返回给浏览器，浏览器拿到html之后会进行一系列的渲染，执行JS操作等</p>
+<h2 id="IP-地址"><a href="#IP-地址" class="headerlink" title="IP 地址"></a>IP 地址</h2><ul>
+<li>整个网络传输可以看做是快递，数据就是快递包裹</li>
+</ul>
+<p>实际上快递是不会直接从仓库中发送到我们的家里面的，它们都会经历一些中转，经过中转的一些捡包和分包之后才会送到我们的手中</p>
+<ul>
+<li>IP地址相当于门牌号</li>
+</ul>
+<p>在访问URL的时候首先会将它转化成IP地址，然后就可以通过IP地址在互联网中传输</p>
+<ul>
+<li>动态IP和静态IP</li>
+</ul>
+<p>IP地址又分为动态IP和静态IP，IPV4 的地址其实数量是有限的，IP地址格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xxx.xxx.xxx.xxx</span><br></pre></td></tr></table></figure>
+
+<p>总长度是32位，是由32位二进制表示的，最大长度为2^32</p>
+<h2 id="URL-uniform-resource-locator"><a href="#URL-uniform-resource-locator" class="headerlink" title="URL (uniform resource locator)"></a>URL (uniform resource locator)</h2><p>统一资源定位符，每一个url指向一个独特的资源，可以是一个html页面，一个css文档，一个图片，文件，js文件等</p>
+<ul>
+<li>url 协议</li>
+</ul>
+<ol>
+<li><a href="https://devloper/mozilla.org" target="_blank" rel="noopener">https://devloper/mozilla.org</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Learn" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Learn</a></li>
+<li><a href="https://developer.mozilla.org/en-US/search?q=URL" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/search?q=URL</a></li>
+</ol>
+<ul>
+<li>url 格式</li>
+</ul>
+<p><a href="http://www.example.com:80/path/to/myfile.html?key1=v1&amp;key2=v2#maodian" target="_blank" rel="noopener">http://www.example.com:80/path/to/myfile.html?key1=v1&amp;key2=v2#maodian</a></p>
+<p><code>http://</code> : 协议</p>
+<p><code>www.example.com</code> : 域名</p>
+<p><code>:80</code> : 默认端口</p>
+<p><code>path/to/myfile.html</code> : 路径</p>
+<p><code>?key1=v1&amp;key2=v2</code> : 参数</p>
+<p><code>#maodian</code> : 锚点</p>
+<p>常用协议：http, https, file, ftp</p>
+<p>域名： 可以看成是IP地址的别名，域名处可以直接填写IP地址</p>
+<p>URL还分为相对URL和绝对URL</p>
+<h2 id="七层网络协议"><a href="#七层网络协议" class="headerlink" title="七层网络协议"></a>七层网络协议</h2><p>应用层<br>表示层<br>会话层<br>传输层<br>网络层<br>数据链路层<br>物理层</p>
+<p>上面七层是标准的七层模型，但是平时最常用的是五层，表示层和会话层是用不着的</p>
+<p>应用层<br>传输层<br>网络层<br>数据链路层<br>物理层</p>
+<p>应用层协议： http, ftp, pop3(邮件), DNS<br>传输层：TCP(保证数据的有序和不丢失)，UDP(传输快，省去了数据的校验过程，所以不能保证数据的有序和不丢失)<br>网络层：ICMP, IP, IGMP<br>数据链路层：ARP，RARP<br>物理层：物理传输介质</p>
+<ul>
+<li>数据流动</li>
+</ul>
+<p>应用层：是由应用程序完成，浏览器也相当于应用程序，它是实现HTTP协议的<br>传输层：数据传输的时候回使用传输层的协议，TCP协议这些，传输层对数据进行包装后，其实每一层都会对数据进行包装，传输层将数据包装后将数据交给下一层网络层，路由器就是工作在网络层的<br>数据链路层：交换机就是在数据链路层<br>物理层：双绞线和集线器</p>
+<h2 id="Socket"><a href="#Socket" class="headerlink" title="Socket"></a>Socket</h2><ul>
+<li>什么是 Socket?</li>
+</ul>
+<p>Socket 可以用英文概念理解：插座</p>
+<p>电力公司给我们家里送电是通过电线，但是电送到我们家里还不够，家里还得有个插座（Socket）,这样我们才能用上电，插座上有火线，地线和中线，这些可以理解为IP地址、端口等</p>
+<p>Socket本身并不是一个协议，是一个套接字，操作系统为了方便大家直接使用TCP协议二存在的一个抽象层，它把复杂的TCP/IP协议隐藏在接口后面</p>
+<ul>
+<li>端口存在的意义又是什么呢？</li>
+</ul>
+<p>Socket里面提到了端口，首先IP地址可以定位到一台服务器，比如有很多应用程序都运行在一台服务器上，IP地址又只能定位到服务器，此时如果应用程序不能区别开来，就会出现数据到达网口之后不知道递交给哪个应用程序，这种情况就提出了端口的概念</p>
+<p>在连接的时候就指定一个端口，这样就知道数据是哪一个应用程序的，每个应用程序只能监听一个端口，操作系统的端口是不能重用的</p>
+<p><img src="https://images.notes.xuepincat.com/reptile/network-protocal/2.png" alt=""></p>
+<p>应用程序和TCP协议进行交互的时候，中间有个接口层，这个接口就是系统提供的Socket,Socket本身不是一个协议，它可以直接和TCP打交道</p>
+<ul>
+<li>Socket 编程</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"># 爬虫</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/18/1-Elasticsearch%E5%85%A5%E9%97%A8/" rel="prev" title="Elasticsearch入门">
+      <i class="fa fa-chevron-left"></i> Elasticsearch入门
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/23/2-%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%88%86%E8%AF%8D/" rel="next" title="倒排索引与分词">
+      倒排索引与分词 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么学爬虫需要了解计算机网络"><span class="nav-number">1.</span> <span class="nav-text">为什么学爬虫需要了解计算机网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是网络协议"><span class="nav-number">2.</span> <span class="nav-text">什么是网络协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个完整的网络请求过程"><span class="nav-number">3.</span> <span class="nav-text">一个完整的网络请求过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IP-地址"><span class="nav-number">4.</span> <span class="nav-text">IP 地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#URL-uniform-resource-locator"><span class="nav-number">5.</span> <span class="nav-text">URL (uniform resource locator)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七层网络协议"><span class="nav-number">6.</span> <span class="nav-text">七层网络协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Socket"><span class="nav-number">7.</span> <span class="nav-text">Socket</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

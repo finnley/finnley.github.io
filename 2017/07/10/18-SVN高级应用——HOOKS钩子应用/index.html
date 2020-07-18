@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="下面介绍介个管理员级别的操作，意思是说我们在做这几个操作的时候SVN服务端需要暂停或者重启服务才可以实现。这些操作的过程会影响整个版本库用户的连接和使用。在这些操作之前的命令都不需要暂停或者重启SVN服务。  HOOKS钩子应用 何为钩子？ 钩子可以理解成一个触发器，当执行某些特定操作的时候出发执行预先设定好的任务。 比如说平时我们会上一些论坛，论坛的用户都会有金币或者积分之类的虚拟财产，这里面就">
+<meta property="og:type" content="article">
+<meta property="og:title" content="18-SVN高级应用——HOOKS钩子应用">
+<meta property="og:url" content="https://notes.xuepincat.com/2017/07/10/18-SVN%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94HOOKS%E9%92%A9%E5%AD%90%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="下面介绍介个管理员级别的操作，意思是说我们在做这几个操作的时候SVN服务端需要暂停或者重启服务才可以实现。这些操作的过程会影响整个版本库用户的连接和使用。在这些操作之前的命令都不需要暂停或者重启SVN服务。  HOOKS钩子应用 何为钩子？ 钩子可以理解成一个触发器，当执行某些特定操作的时候出发执行预先设定好的任务。 比如说平时我们会上一些论坛，论坛的用户都会有金币或者积分之类的虚拟财产，这里面就">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170710/1.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170710/2.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170710/3.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170710/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170710/5.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170710/6.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170710/7.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170710/8.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170710/9.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170710/10.png">
+<meta property="article:published_time" content="2017-07-10T04:33:36.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.309Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="SVN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/20170710/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2017/07/10/18-SVN%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94HOOKS%E9%92%A9%E5%AD%90%E5%BA%94%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>18-SVN高级应用——HOOKS钩子应用 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/10/18-SVN%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94HOOKS%E9%92%A9%E5%AD%90%E5%BA%94%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          18-SVN高级应用——HOOKS钩子应用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-10 12:33:36" itemprop="dateCreated datePublished" datetime="2017-07-10T12:33:36+08:00">2017-07-10</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>下面介绍介个管理员级别的操作，意思是说我们在做这几个操作的时候SVN服务端需要暂停或者重启服务才可以实现。这些操作的过程会影响整个版本库用户的连接和使用。在这些操作之前的命令都不需要暂停或者重启SVN服务。</p>
+<a id="more"></a>
+
+<h3 id="HOOKS钩子应用"><a href="#HOOKS钩子应用" class="headerlink" title="HOOKS钩子应用"></a>HOOKS钩子应用</h3><h4 id="何为钩子？"><a href="#何为钩子？" class="headerlink" title="何为钩子？"></a>何为钩子？</h4><p>钩子可以理解成一个触发器，当执行某些特定操作的时候出发执行预先设定好的任务。<br>比如说平时我们会上一些论坛，论坛的用户都会有金币或者积分之类的虚拟财产，这里面就有很多钩子和触发器的应用，比如某天用户第一次登录的时候送我们几个金币，发帖的时候也送几个金币，回复别人帖子的时候也会送几个金币。</p>
+<p>诸如此类的过程把论坛用户登录、发帖、回帖看成是一个特定的操作，把送金币看成所以设定好的任务。</p>
+<p>就好像一个钩子，当执行特定操作的时候就会勾一下特定的任务，让它执行对应的任务。</p>
+<p>现在进入SVN的目录repos版本库为例。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd /svnroot/repos/</span></span><br><span class="line"><span class="comment"># ls</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170710/1.png" alt="&quot; &quot;"></p>
+<p>里面有个hooks目录，进入hooks目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd hooks</span></span><br><span class="line"><span class="comment"># ls</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170710/2.png" alt="&quot; &quot;"></p>
+<p>进入之后会发现里面有很多以tmpl为扩展名的文件，tmpl为模板的意思，如果要让这些钩子生效，只需要复制一份模板，然后名称上把tmpl去掉就可以启用这些钩子了，而钩子文件实际上及时一个Shell脚本，这里所谓执行对应的任务就是把钩子对应的Shell脚本给执行一次。</p>
+<p>SVN中涉及与服务器通信的命令，比如说commit操作，会包含两个过程，先把数据传输到服务端，然后再把这些数据写入到版本库，把这个过程分割一下，就会有数据传输之前，数据传输之后但是写入版本库之前，以及写入版本库之后三个时间点。</p>
+<p>再来看下钩子的前缀有start,pre和post就对应刚才提到的时间点。</p>
+<pre><code>start是指数据传输之前；
+pre是指数据传输之后但是在写入版本库之前；
+post是指写入版本库之后才执行的钩子。</code></pre><p>钩子的文件名后半部分才是对应的操作，比如commit对应的提交；lock对应的锁定；unlock对应的解锁；revprop-change对应的是版本属性变化。</p>
+<p>这里以post,commit为例做一个演示。<br>commit钩子实在每一次提交操作全部完成之后执行的，启用这个钩子首先复制这个模板文件，然后把后面的tmpl后缀去掉。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cp -a post-commit.tmpl post-commit</span></span><br><span class="line"><span class="comment"># ll</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170710/3.png" alt="&quot; &quot;"></p>
+<p>现在post-commit这个钩子已经启用了，钩子实际上上是一个Shell脚本，要让它可以运行，需要给它一个可执行的权限</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># chmod +x post-commit</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170710/4.png" alt="&quot; &quot;"></p>
+<p>编辑钩子<br>里面的内容<br><img src="/images/20170710/5.png" alt="&quot; &quot;"></p>
+<p>把最后三行的去掉，我们自己写</p>
+<p>写什么？我们有这样的需求，在每次提交一个新版本之后我们把版本库的最新的详细信息保存为一个xml的文件，把它放到/var目录下，然后我们的开发团队成员可以通过浏览器来查看这个xml文件来或者这个版本库的最新信息。这个需要之前用到的svn info命令。</p>
+<p>添加这句话：</p>
+<pre><code>svn info svn://118.89.47.207/repos --xml &gt;&gt; /var/repo.xml</code></pre><p>修改后：<br><img src="/images/20170710/6.png" alt="&quot; &quot;"></p>
+<p>当这个钩子启用之后每次提交结束之后就会把最新的版本库信息写入到xml文件里。</p>
+<p>要让钩子生效还需要重启下SVN服务。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># killall svnserve</span></span><br><span class="line"><span class="comment"># svnserve -d -r /svnroot/</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170710/7.png" alt="&quot; &quot;"></p>
+<p>进入到/var目录下，发现并没有xml文件<br><img src="/images/20170710/8.png" alt="&quot; &quot;"></p>
+<p>现在到repos版本库的工作副本里面的trunk目录里面的修改下index.html,随便添加写内容，然后保存退出，然后把修改提交提交上去。</p>
+<p><img src="/images/20170710/9.png" alt="&quot; &quot;"></p>
+<p>这个时候在进入/var目录下查看会发现多出了一个repo.xml的文件，说明钩子的配置已经成功了。<br><img src="/images/20170710/10.png" alt="&quot; &quot;"></p>
+<p>这样每个SVN用户在执行提交操作之后都会自动生成一个xml的文件。</p>
+<p>这个钩子的能力空间是无限大的，只要会写Shell脚本，我们想弄什么功能都可以，甚至是跨软件的操作。可以说钩子用好了，SVN的工功能就非常强大。</p>
+<h3 id="二、版本库精简与丢弃"><a href="#二、版本库精简与丢弃" class="headerlink" title="二、版本库精简与丢弃"></a>二、版本库精简与丢弃</h3><h3 id="三、版本库迁移与switch重定向"><a href="#三、版本库迁移与switch重定向" class="headerlink" title="三、版本库迁移与switch重定向"></a>三、版本库迁移与switch重定向</h3>
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/SVN/" rel="tag"># SVN</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/09/17-%E4%B8%BB%E5%B9%B2%E7%89%88%E6%9C%AC%E5%92%8C%E5%88%86%E6%94%AF%E7%89%88%E6%9C%AC/" rel="prev" title="17-主干版本和分支版本">
+      <i class="fa fa-chevron-left"></i> 17-主干版本和分支版本
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/11/19-%E7%89%88%E6%9C%AC%E5%BA%93%E7%B2%BE%E7%AE%80%E4%B8%8E%E4%B8%A2%E5%BC%83/" rel="next" title="19-版本库精简与丢弃">
+      19-版本库精简与丢弃 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#HOOKS钩子应用"><span class="nav-number">1.</span> <span class="nav-text">HOOKS钩子应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#何为钩子？"><span class="nav-number">1.1.</span> <span class="nav-text">何为钩子？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、版本库精简与丢弃"><span class="nav-number">2.</span> <span class="nav-text">二、版本库精简与丢弃</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、版本库迁移与switch重定向"><span class="nav-number">3.</span> <span class="nav-text">三、版本库迁移与switch重定向</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

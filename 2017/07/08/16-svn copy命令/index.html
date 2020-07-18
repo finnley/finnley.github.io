@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="之前所学的命令要不是针对工作副本内部的操作，要不是针对SVN服务端版本库的操作。而svn copy命令部分功能是可以关联工作副本，以及线上版本库的操作。  一、工作副本到工作副本的复制 也就是工作副本内部的复制操作。 比如现在进入repos版本库的工作副本。我现在想新建个文件，并直接加入到版本控制中，而这个文件恰巧和index.html文件内容大致相同，这个时候就可以使用复制命令来复制一个inde">
+<meta property="og:type" content="article">
+<meta property="og:title" content="16-svn copy命令">
+<meta property="og:url" content="https://notes.xuepincat.com/2017/07/08/16-svn%20copy%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="之前所学的命令要不是针对工作副本内部的操作，要不是针对SVN服务端版本库的操作。而svn copy命令部分功能是可以关联工作副本，以及线上版本库的操作。  一、工作副本到工作副本的复制 也就是工作副本内部的复制操作。 比如现在进入repos版本库的工作副本。我现在想新建个文件，并直接加入到版本控制中，而这个文件恰巧和index.html文件内容大致相同，这个时候就可以使用复制命令来复制一个inde">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170708/1.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170708/2.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170708/3.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170708/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170708/5.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170708/6.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170708/7.png">
+<meta property="article:published_time" content="2017-07-08T00:32:27.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.323Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="SVN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/20170708/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2017/07/08/16-svn%20copy%E5%91%BD%E4%BB%A4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>16-svn copy命令 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/08/16-svn%20copy%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          16-svn copy命令
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-08 08:32:27" itemprop="dateCreated datePublished" datetime="2017-07-08T08:32:27+08:00">2017-07-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>之前所学的命令要不是针对工作副本内部的操作，要不是针对SVN服务端版本库的操作。而svn copy命令部分功能是可以关联工作副本，以及线上版本库的操作。</p>
+<h3 id="一、工作副本到工作副本的复制"><a href="#一、工作副本到工作副本的复制" class="headerlink" title="一、工作副本到工作副本的复制"></a>一、工作副本到工作副本的复制</h3><p>也就是工作副本内部的复制操作。<br>比如现在进入repos版本库的工作副本。我现在想新建个文件，并直接加入到版本控制中，而这个文件恰巧和index.html文件内容大致相同，这个时候就可以使用复制命令来复制一个index.html的文件，然后在其基础上做一些修改。</p>
+<a id="more"></a>
+
+<p>格式</p>
+<pre><code>svn copy(cp) 原文件名称 目标文件名称</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn cp index.html copy.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170708/1.png" alt="&quot; &quot;"></p>
+<p>这样就通过复制命令得到了一个copy.html文件。在输出的信息中前面的标记为【A】，表示复制产生的新文件会直接加入到版本控制中。<br>如果我们使用Linux原生的copy来复制工作副本中的文件，那新产生的文件是无版本控制状态，需要使用svn add命令来增加到版本控制中。</p>
+<p>加入现在又要创建一个文件来加入到版本控制中，而这个文件的内容和index.html的版本4基本一致。这时候我就希望把index.html的版本4复制成一个新的文件，而不是从工作副本的最新版本来复制，我们可以使用一个参数-r来指定原文件的版本号</p>
+<p>格式</p>
+<pre><code>svn cp -r 版本号 源文件名 目标文件名</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn cp -r 4 index.html copyv4.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170708/2.png" alt="&quot; &quot;"></p>
+<p>这样就把版本4的index.html文件复制成了copyv4.html的新文件。</p>
+<p>上面是单文件都复制,svn copy还支持批量复制，但是批量复制是对多个文件的操作，这个时候就不能指定目标文件名了，也就是说复制完之后，他还保留原来的文件名。但是在计算机的文件系统中，同一个目录下的文件名都是有唯一性的，所以批量复制只能复制到到除当前目录之外的位置。</p>
+<p>现在我先创建一个目录并且加入到版本控制中，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn mkdir temp</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170708/3.png" alt="&quot; &quot;"></p>
+<p>这时候已经创建了一个名为temp的目录，并且增加到了版本控制中，现在我要把当前目录下的index.html和about.html批量复制到temp目录中，<br>格式</p>
+<pre><code>svn cp 批量复制文件名列表(多个文件名之间用空格隔开)  目标目录路径</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  svn cp index.html about.html ./temp/</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170708/4.png" alt="&quot; &quot;"></p>
+<h3 id="二、工作副本到线上版本库的复制"><a href="#二、工作副本到线上版本库的复制" class="headerlink" title="二、工作副本到线上版本库的复制"></a>二、工作副本到线上版本库的复制</h3><p>格式<br>    svn cp 源文件名 版本库路径/目标文件名</p>
+<p> 这样写和之前的工作副本内部的复制有什么区别呢？</p>
+<p>区别在于这个命令相当于复制复制一个文件并且不通过工作副本直接提交到线上版本库。<br>由于这里是一个直接提交的操作，所以这里也必须有一个-m参数来写提交备注，这个提交备注是必须加的，就算什么也不想说也得提交一个空的备注。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  svn cp index.html svn://118.89.47.207/repos/target.html -m "copy a file"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170708/5.png" alt="&quot; &quot;"></p>
+<p>线上的版本已经变成版本8了</p>
+<p>现在在看一下工作副本里面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls</span></span><br></pre></td></tr></table></figure>
+
+<p>发现本地的工作副本里面并没有target.html文件，也就是说线上的工作副本相较于当前的工作副本多了一个target.html文件</p>
+<p>现在执行一下svn update操作<br>更新之后会在本地的工作副本中多出一个target.html文件，而target.html就是前一个操作直接从index.html复制之后跳过工作副本直接提交到服务端的文件。</p>
+<p><img src="/images/20170708/6.png" alt="&quot; &quot;"></p>
+<p>注意</p>
+<pre><code>从工作副本到线上版本库的复制操作是不支持跨库操作的，就是说当前的工作副本是从repos版本库中检出的，那我只能从repos这个工作副本复制到repos这个线上版本库中，写上一个不想管的版本库路径是操作不成功的。</code></pre><h3 id="三、从线上版本库到工作副本的复制"><a href="#三、从线上版本库到工作副本的复制" class="headerlink" title="三、从线上版本库到工作副本的复制"></a>三、从线上版本库到工作副本的复制</h3><p>这个命令就是把前面用法中的源文件和目标文件写法对调位置。</p>
+<p>格式</p>
+<pre><code>svn cp 线上版本库路径 目标文件</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  svn cp svn://118.89.47.207/repos/index.html demo.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170708/7.png" alt="&quot; &quot;"></p>
+<p>就这样我们可以把线上版本库的index.html复制一份到本地工作副本，并且取名为demo.html</p>
+<p>乍一看好像和在工作副本内部直接复制一个文件没有什么区别，其实还是有一点区别的，如果说我的工作副本最后一次更新之后有人提交了一份新的index.html上去，而我还没有更新，那使用这种用法就是别人提交的最新版本的index.html复制品。</p>
+<p>那如果没有其他人提交新的index.html上去，那这个操作就和工作副本内部复制是一样的。</p>
+<p>另外从线上版本库到工作副本的复制操作是支持跨库操作的。</p>
+<p>比如说现在我是在repos版本检出的工作副本下，现在我要复制另外的版本库，比如说world版本库里面的index.html到repos版本库的工作副本中，这样是可以实现的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  svn cp svn://118.89.47.207/world/index.html demo2.html</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="四、从线上版本库到线上版本库的复制"><a href="#四、从线上版本库到线上版本库的复制" class="headerlink" title="四、从线上版本库到线上版本库的复制"></a>四、从线上版本库到线上版本库的复制</h3><p>命令使用用法详见【主干版本和分之版本】</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/SVN/" rel="tag"># SVN</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/07/15-%E5%A4%9A%E7%89%88%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" rel="prev" title="15-多版本解决方案">
+      <i class="fa fa-chevron-left"></i> 15-多版本解决方案
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/09/17-%E4%B8%BB%E5%B9%B2%E7%89%88%E6%9C%AC%E5%92%8C%E5%88%86%E6%94%AF%E7%89%88%E6%9C%AC/" rel="next" title="17-主干版本和分支版本">
+      17-主干版本和分支版本 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、工作副本到工作副本的复制"><span class="nav-number">1.</span> <span class="nav-text">一、工作副本到工作副本的复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、工作副本到线上版本库的复制"><span class="nav-number">2.</span> <span class="nav-text">二、工作副本到线上版本库的复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、从线上版本库到工作副本的复制"><span class="nav-number">3.</span> <span class="nav-text">三、从线上版本库到工作副本的复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、从线上版本库到线上版本库的复制"><span class="nav-number">4.</span> <span class="nav-text">四、从线上版本库到线上版本库的复制</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

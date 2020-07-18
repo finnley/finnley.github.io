@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="常见SVN术语以及文件状态 常见术语 版本库、检出、工作副本、更新、提交、版本、版本号  常见文件状态 无版本控制、增加、修改、常规、冲突、删除、锁定  流程 1、之前我们创建了名为repos的版本库，这个新建的版本库里面是空的什么都没有，并且这个版本库的版本号是0；  2、现在项目组来了三个研发人员，分别是研发A、研发B、研发C加入到这个项目的开发中，在开始开发之前，这几个研发人员需要做几个操作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7-SVN常见术语以及文件状态">
+<meta property="og:url" content="https://notes.xuepincat.com/2017/06/29/7-SVN%E5%B8%B8%E8%A7%81%E6%9C%AF%E8%AF%AD%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="常见SVN术语以及文件状态 常见术语 版本库、检出、工作副本、更新、提交、版本、版本号  常见文件状态 无版本控制、增加、修改、常规、冲突、删除、锁定  流程 1、之前我们创建了名为repos的版本库，这个新建的版本库里面是空的什么都没有，并且这个版本库的版本号是0；  2、现在项目组来了三个研发人员，分别是研发A、研发B、研发C加入到这个项目的开发中，在开始开发之前，这几个研发人员需要做几个操作">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2017-06-29T01:48:46.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.297Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="SVN">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2017/06/29/7-SVN%E5%B8%B8%E8%A7%81%E6%9C%AF%E8%AF%AD%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>7-SVN常见术语以及文件状态 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/29/7-SVN%E5%B8%B8%E8%A7%81%E6%9C%AF%E8%AF%AD%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          7-SVN常见术语以及文件状态
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-29 09:48:46" itemprop="dateCreated datePublished" datetime="2017-06-29T09:48:46+08:00">2017-06-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="常见SVN术语以及文件状态"><a href="#常见SVN术语以及文件状态" class="headerlink" title="常见SVN术语以及文件状态"></a>常见SVN术语以及文件状态</h3><h4 id="常见术语"><a href="#常见术语" class="headerlink" title="常见术语"></a>常见术语</h4><p>版本库、检出、工作副本、更新、提交、版本、版本号</p>
+<h4 id="常见文件状态"><a href="#常见文件状态" class="headerlink" title="常见文件状态"></a>常见文件状态</h4><p>无版本控制、增加、修改、常规、冲突、删除、锁定</p>
+<a id="more"></a>
+
+<h4 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h4><pre><code>1、之前我们创建了名为repos的版本库，这个新建的版本库里面是空的什么都没有，并且这个版本库的版本号是0；
+
+2、现在项目组来了三个研发人员，分别是研发A、研发B、研发C加入到这个项目的开发中，在开始开发之前，这几个研发人员需要做几个操作，每个人都要从版本库中检出(checkout)一份工作副本到自己的电脑上，这个工作副本可以看作是项目的代码文件之类的数据，这个时候的工作副本数据适合版本库中的数据一致的，版本号也都是0，刚刚他们检出的工作副本没有做任何修改的情况下它的状态我们称之为“常规”；
+
+3、这个时候看研发A，研发A在工作副本中新建了一个文件夹或者是代码文件之类的数据，但是新加的代码文件并没有加入到版本控制中，这个时候我们把这个文件的状态称之为“无版本控制”。这里新加的文件可以文件夹，代码文件或者是图片等等在项目中可能出现的任何数据。
+
+4、要对新建的文件进行版本控制需要执行一个增加的操作，执行增加操作之后这个文件的状态称之为“增加”，意思是说研发A准备把这个文件增加到版本控制中；
+
+5、这时研发A执行了一次提交的操作，SVN接收到提交上来的数据后会对数据进行一个保存的操作，完成后把版本号加1。这里有一点非常重要，只有当某个客户端执行提交操作时，SVN服务端的最大版本号才会加1。
+
+6、最后SVN服务端会给研发A的电脑发送一个反馈的信号，就是通知它递交成功了并且现在的版本号是1，接收到反馈信号之后，研发A的工作副本也会把版本号变成1，并且文件状态又恢复到了常规状态。
+
+7、这整个过程中看起来和研发B和研发C没有任何关系，他们两个的工作副本也没有任何变化，依然是版本号位0，而且文件状态一直是常规状态，这边注意的是文件状态是针对各自的工作副本而言的额，并不是对SVN服务端而言的，也就是说他不是实时的。
+
+8、随后研发B进行了一次更新操作，服务端就会把最新的版本库数据同步给他，这个操作过后研发B的工作副本版本号也会更新到1,；
+
+9、现在看研发B，他会里面的文件做了一些修改，并且保存了，这时候的文件状态就改变了，我们把这时候的文件状态称之为“修改”；
+
+10、研发B把他的修改提交到SVN服务端，类似前面研发A的操作，服务端保存提交上来的数据之后，版本号增加到了2，类似的SVN服务度阿奴会给研发B发送一个反馈信号，通知他提交成功了，并且版本号增加到了2，随后研发B的工作副本版本号也更新到了2，并且文件状态恢复到了常规。这个过程研发A和研发C也没有参与其中，所以他们的工作副本以及文件状态保持不变。
+
+11、现在看一下研发C，之前研发A和研发B做的一系列操作他都没有参与，现在他的工作副本版本号依然是0，现在他要工作了，执行了一次更新操作(update)，他的工作副本版本号直接更新到了2，跳过了版本1。所以这个更新操作默认的是直接更新到最新的版本号，但是如果更新的时候指定参数，指定要更新的版本号，也是可以更新到指定的版本号的。</code></pre><h4 id="小小建议"><a href="#小小建议" class="headerlink" title="小小建议"></a>小小建议</h4><p>由于SVN服务端不会把某一个客户端提交的数据主动推送给其他人，所以当其他人提交了新数据的时候，我们可能并不知道，这个时候的工作副本和服务端的数据已经不一致了，所以在使用的时候要养成经常更新的好习惯，这样做可以使工作副本和版本库尽可能的保持一致。在开发中最大成都的避免数据冲突。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/SVN/" rel="tag"># SVN</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/06/28/6-SVN%E6%9C%8D%E5%8A%A1%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%90%AF%E5%8A%A8/" rel="prev" title="6-SVN服务设置自启动">
+      <i class="fa fa-chevron-left"></i> 6-SVN服务设置自启动
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/30/8-SVN%E4%B8%ADcheckout%E4%B8%8Eexport%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="next" title="8-SVN中checkout与export的区别">
+      8-SVN中checkout与export的区别 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见SVN术语以及文件状态"><span class="nav-number">1.</span> <span class="nav-text">常见SVN术语以及文件状态</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常见术语"><span class="nav-number">1.1.</span> <span class="nav-text">常见术语</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常见文件状态"><span class="nav-number">1.2.</span> <span class="nav-text">常见文件状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#流程"><span class="nav-number">1.3.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#小小建议"><span class="nav-number">1.4.</span> <span class="nav-text">小小建议</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

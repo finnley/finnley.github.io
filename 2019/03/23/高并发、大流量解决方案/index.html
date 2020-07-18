@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="并发 概念  1. 互联网时代，所讲的并发，高并发通常是指并发访问。也就是在某个时间点，有多少个访问同时到来。高并发就是并发数非常大。  比如访问一个网站，现在同时有50个人来访问这个网站，此时的并发就可以计算为50。   2. 通常来说，如果一个系统的日PV在千万以上，有可能是一个高并发的系统。但是日PV在千万以上也不一定高并发，比如有些公司不是走的技术路线，全靠机器堆，比如增加服务器数量等方式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高并发、大流量解决方案">
+<meta property="og:url" content="https://notes.xuepincat.com/2019/03/23/%E9%AB%98%E5%B9%B6%E5%8F%91%E3%80%81%E5%A4%A7%E6%B5%81%E9%87%8F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="并发 概念  1. 互联网时代，所讲的并发，高并发通常是指并发访问。也就是在某个时间点，有多少个访问同时到来。高并发就是并发数非常大。  比如访问一个网站，现在同时有50个人来访问这个网站，此时的并发就可以计算为50。   2. 通常来说，如果一个系统的日PV在千万以上，有可能是一个高并发的系统。但是日PV在千万以上也不一定高并发，比如有些公司不是走的技术路线，全靠机器堆，比如增加服务器数量等方式">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-03-23T02:10:48.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.300Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2019/03/23/%E9%AB%98%E5%B9%B6%E5%8F%91%E3%80%81%E5%A4%A7%E6%B5%81%E9%87%8F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>高并发、大流量解决方案 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/03/23/%E9%AB%98%E5%B9%B6%E5%8F%91%E3%80%81%E5%A4%A7%E6%B5%81%E9%87%8F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          高并发、大流量解决方案
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-23 10:10:48" itemprop="dateCreated datePublished" datetime="2019-03-23T10:10:48+08:00">2019-03-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="并发"><a href="#并发" class="headerlink" title="并发"></a>并发</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><ol>
+<li>互联网时代，所讲的并发，高并发通常是指并发访问。也就是在某个时间点，有多少个访问同时到来。高并发就是并发数非常大。</li>
+</ol>
+<p>比如访问一个网站，现在同时有50个人来访问这个网站，此时的并发就可以计算为50。</p>
+<ol start="2">
+<li><p>通常来说，如果一个系统的日PV在千万以上，有可能是一个高并发的系统。但是日PV在千万以上也不一定高并发，比如有些公司不是走的技术路线，全靠机器堆，比如增加服务器数量等方式。</p>
+</li>
+<li><p>QPS： 每秒钟请求或者查询的数量，在互联网领域，指的是每秒响应请求数（HTTP请求）；</p>
+</li>
+</ol>
+<p>这是一个非常重要的指标，通常理解并发数在哪一个点该做什么优化，就可以根据QPS的量来进行操作。</p>
+<ol start="4">
+<li><p>吞吐量： 单位时间内处理的请求数量（通常由QPS与并发数决定）；</p>
+</li>
+<li><p>响应时间： 从请求发出到收到响应花费的时间。</p>
+</li>
+</ol>
+<p>例如系统处理一个HTTP请求需要100ms,这个100ms就是系统的响应时间；</p>
+<p>比如我打开头条，按下 【F12】 就可以看到网站的加载时间</p>
+<div align=center>
+![token](architecture/1.png)
+</div>
+
+<p>上图中下面红色的 <code>Load:862ms</code> 就是网站的响应时间,并且里面有一些资源，我们可以从 <code>Time</code> 这一列中可以看到每个资源的响应时间</p>
+<ol start="6">
+<li>PV: 综合浏览量（Page View）, 即页面浏览量或者点击量，一个访客在24小时内访问的页面数量，并不是一面重复刷新的数量，这种只能算一个PV，刷新并不能累加PV；</li>
+</ol>
+<p>同一个浏览一个网站同一个页面，只记作一个PV。</p>
+<ol start="7">
+<li><p>UV: 独立访客（Unique Visitor）, 即一定时间范围内相同访客多次访问网站，只计算为1个独立访客；</p>
+</li>
+<li><p>带宽: 计算带宽大小需要关注两个指标，峰值流量和页面的平均大小；</p>
+</li>
+</ol>
+<p>日网站带宽 = PV / 统计时间（比如统计一天，3600**24 ,换算到秒） * 平均页面大小（单位KB） * 8<br>峰值一般是平均值的倍数，根据实际情况来定</p>
+<ol start="9">
+<li><p><code>QPS</code> 不等于 <code>并发连接数</code> ，QPS是每秒HTTP请求，并发连接数是系统同时处理的请求数量，两个概念不一样；对于并发连接数，一个并发连接数有可能会有多个HTTP请求</p>
+</li>
+<li><p>（总PV数 × 80%） / （6小时秒数 * 20%） = 峰值每秒请求数（QPS）</p>
+</li>
+</ol>
+<p>表示 80% 的访问量集中在20%的时间内（二八定律）<br>6个小时表示一个简单的估计，中午两个小时，下午两个小时，晚上两个小时。</p>
+<ol start="11">
+<li>压力测试，对于QPS来说需要做一个压力测试，对于服务器来说，我们应该知道这台服务器最大能够承受多少QPS，而我们的网站一点PV是多少，然后也可以计算出来峰值的QPS；压力测试主要是用来测试能承受的最大并发数，以及测试最大承受的QPS值。</li>
+</ol>
+<p>比如日QPS为200，单机峰值QPS,承受50，这样我们至少需要4台机器才能够完成正常的访问。</p>
+<ol start="12">
+<li>常用的性能测试工具</li>
+</ol>
+<p>ab(apache benchmark), wrk, http_load, Web Bench, Siege, Appache JMeter</p>
+<p>ab工作原理是创建多个并发访问的线程，模拟多个访问者同时对某一URL地址进行访问。它的测试目的是基于URL的，因此它既可以用来测试apache的负载压力，也可以测试nginx,lighthttp，tomcat,IIS等其他Web服务器的压力。</p>
+<p>模拟并发请求100次，总共请求5000次，（并发100个，请求页面5000次）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ab -c 100 -n 5000 待测试网站</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ab测试的时候，测试机器与被测试机器要分来，不要在一台机器上测试；</li>
+<li>不要对线上的服务做压力测试</li>
+<li>观察测试工具ab所在机器，以及被测试的前端机的CPU，内存，网络等都不超多最高限度的75%(控制内存和CPU等，不要超过限度75%)</li>
+</ul>
+<ol start="13">
+<li>如果QPS达到极限，应该怎么处理？</li>
+</ol>
+<p>随着QPS的增长，每个阶段需要根据实际情况来进行优化，优化的方案与硬件条件、网络带宽息息相关。</p>
+<p>比如 QPS达到50，对于这种网站可以称为小型网站，一般的服务器就可以应付，这时候基本可以不需要优化的；<br>比如 QPS达到100，假设关系型数据库的每次请求在0.01秒完成，假设单页面只有一个SQL查询，那么100QPS意味着1秒中完成100次请求，但是此时我们并不能保证数据库查询能完成100次。此时的优化方案： 数据库缓存层，数据库负载均衡；<br>比如 QPS达到800，假设使用的是百兆带宽，意味着网站出口的实际带宽是8M左右，假设每个页面只有10K，在这个并发条件下，百兆带宽已经吃完。此时的优化方案：CDN加速，负载均衡；<br>比如 QPS达到800，假设使用Memcache缓存数据库查询数据，每个页面对Memcache的请求远大于直接对DB的请求，Memcacha的悲观并发数在2w左右，但有可能在之前的内网带宽已经吃光，表现出不稳定。优化方案：静态HTML缓存；<br>比如 QPS达到2000，这个级别下，文件系统访问锁都成为了灾难。优化方案：做业务分离，分布式存储；</p>
+<h3 id="优化方案"><a href="#优化方案" class="headerlink" title="优化方案"></a>优化方案</h3><ol>
+<li>流量优化</li>
+</ol>
+<p>防盗链处理（拒绝一些恶意请求）；</p>
+<ol start="2">
+<li>前端优化</li>
+</ol>
+<p>减少HTTP请求（比如将CSS进行合并，把JS进行合并等，虽然文件会大一点，但是请求只会请求一次）；<br>添加异步请求；<br>启用浏览器缓存和文件压缩；<br>CDN加速；<br>建立独立图片服务器；</p>
+<ol start="3">
+<li>服务端优化</li>
+</ol>
+<p>页面静态化；<br>并发处理；<br>队列处理；</p>
+<ol start="4">
+<li>数据库优化</li>
+</ol>
+<p>数据库缓存；<br>分库分表、分区操作；<br>读写分离；<br>负载均衡；</p>
+<ol start="5">
+<li>Web服务器优化</li>
+</ol>
+<p>负载均衡；</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/PHP/" rel="tag"># PHP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/18/AI-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%92%8C%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%9A%84%E5%85%B3%E8%81%94/" rel="prev" title="AI,机器学习和深度学习的关联">
+      <i class="fa fa-chevron-left"></i> AI,机器学习和深度学习的关联
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/23/Web%E8%B5%84%E6%BA%90%E9%98%B2%E7%9B%97%E9%93%BE/" rel="next" title="Web资源防盗链">
+      Web资源防盗链 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并发"><span class="nav-number">1.</span> <span class="nav-text">并发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#概念"><span class="nav-number">1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化方案"><span class="nav-number">1.2.</span> <span class="nav-text">优化方案</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

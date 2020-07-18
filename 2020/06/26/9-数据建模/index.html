@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="数据建模 英文是 Data Modeling, 为创建数据模型的过程  数据模型 (Data Model)  - 对显示世界进行抽象描述的一种工具和方法  - 通过抽象的实体及实体之间的联系的形式去描述业务规则，从而实现对现实世界的映射  比如现在有学校，学校有老师，有学生，老师讲课，学生上课，现在开发一个课表系统，老师根据课表系统可以知道什么时候快速上课，上什么课，在哪里上课，学生通过课表系统可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据建模">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/06/26/9-%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="数据建模 英文是 Data Modeling, 为创建数据模型的过程  数据模型 (Data Model)  - 对显示世界进行抽象描述的一种工具和方法  - 通过抽象的实体及实体之间的联系的形式去描述业务规则，从而实现对现实世界的映射  比如现在有学校，学校有老师，有学生，老师讲课，学生上课，现在开发一个课表系统，老师根据课表系统可以知道什么时候快速上课，上什么课，在哪里上课，学生通过课表系统可">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/100.png">
+<meta property="article:published_time" content="2020-06-26T09:20:41.000Z">
+<meta property="article:modified_time" content="2020-07-12T03:33:47.508Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Elasticsearch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/elastic/elasticsearch/100.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/06/26/9-%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>数据建模 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/06/26/9-%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          数据建模
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-06-26 17:20:41" itemprop="dateCreated datePublished" datetime="2020-06-26T17:20:41+08:00">2020-06-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Elasticsearch/" itemprop="url" rel="index"><span itemprop="name">Elasticsearch</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="数据建模"><a href="#数据建模" class="headerlink" title="数据建模"></a>数据建模</h2><p>英文是 Data Modeling, 为创建数据模型的过程</p>
+<p>数据模型 (Data Model)</p>
+<pre><code>- 对显示世界进行抽象描述的一种工具和方法
+
+- 通过抽象的实体及实体之间的联系的形式去描述业务规则，从而实现对现实世界的映射</code></pre><p>比如现在有学校，学校有老师，有学生，老师讲课，学生上课，现在开发一个课表系统，老师根据课表系统可以知道什么时候快速上课，上什么课，在哪里上课，学生通过课表系统可以知道每天的课程安排</p>
+<p>在做课表系统的时候都会去做一些表结构设计，比如产生老师表，学生表，课程表，产生的表以及表的详细设计就是数据模型，通过表对现实世界的问题进行了抽象化的描述</p>
+<h3 id="数据建模过程"><a href="#数据建模过程" class="headerlink" title="数据建模过程"></a>数据建模过程</h3><ul>
+<li><p>概念模型</p>
+<ul>
+<li>确定系统的核心需求和范围边界，设计实体和实体间的关系</li>
+</ul>
+</li>
+<li><p>逻辑模型</p>
+<ul>
+<li>进一步树立业务需求，确定每个实体的属性，关系和约束等</li>
+</ul>
+</li>
+<li><p>物理模型</p>
+<ul>
+<li><p>结合具体的数据库产品，在满足业务读写性能等需求的前提下确定最终的定义</p>
+</li>
+<li><p>MySQL，MongoDB, elasticsearch 等</p>
+</li>
+<li><p>第三范式</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="ES-数据建模配置"><a href="#ES-数据建模配置" class="headerlink" title="ES 数据建模配置"></a>ES 数据建模配置</h2><p>ES是基于 Lucene 以倒排索引为基础实现的存储体系，不存在关系型数据库汇总的范式约定</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/elasticsearch/100.png" alt=""></p>
+<h3 id="Mapping-字段的相关设置"><a href="#Mapping-字段的相关设置" class="headerlink" title="Mapping 字段的相关设置"></a>Mapping 字段的相关设置</h3><ul>
+<li><p>enabled</p>
+<ul>
+<li><p>true|false</p>
+</li>
+<li><p>仅存储，不做搜索或聚合分析</p>
+</li>
+</ul>
+</li>
+<li><p>index</p>
+<ul>
+<li><p>true|false</p>
+</li>
+<li><p>是否构建倒排索引</p>
+</li>
+</ul>
+</li>
+<li><p>index_options</p>
+<ul>
+<li><p>docs|freqs|positions|offsets</p>
+</li>
+<li><p>存储倒排索引的哪些信息</p>
+</li>
+</ul>
+</li>
+<li><p>norms</p>
+<ul>
+<li><p>true|false</p>
+</li>
+<li><p>是否存储归一化相关参数，如果字段仅用于过滤和聚合分析，可关系</p>
+</li>
+</ul>
+</li>
+<li><p>doc_values</p>
+<ul>
+<li><p>true|false</p>
+</li>
+<li><p>是否启用doc_values，用于排序和聚合分析</p>
+</li>
+</ul>
+</li>
+<li><p>field_data</p>
+<ul>
+<li><p>false|true</p>
+</li>
+<li><p>是否为 text 类型启用 fielddata, 实现排序和聚合分析</p>
+</li>
+</ul>
+</li>
+<li><p>store</p>
+<ul>
+<li><p>true|false</p>
+</li>
+<li><p>是否存储该字段</p>
+</li>
+</ul>
+</li>
+<li><p>coerce</p>
+<ul>
+<li><p>true|false</p>
+</li>
+<li><p>是否开启自动数据类型转换功能，比如字符串转为数字，浮点转为整形等</p>
+</li>
+</ul>
+</li>
+<li><p>multifields 多字段</p>
+<ul>
+<li>灵活使用多字段特性来解决多样的业务需求</li>
+</ul>
+</li>
+<li><p>dynamic</p>
+<ul>
+<li><p>true|false|strict</p>
+</li>
+<li><p>控制 mapping 自动更新</p>
+</li>
+</ul>
+</li>
+<li><p>date_detection</p>
+<ul>
+<li><p>true|false</p>
+</li>
+<li><p>是否自动识别日期类型</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="Mapping-字段属性设定流程"><a href="#Mapping-字段属性设定流程" class="headerlink" title="Mapping 字段属性设定流程"></a>Mapping 字段属性设定流程</h3><ol>
+<li><p>判断字段属于何种类型？</p>
+</li>
+<li><p>判断字段是否需要检索？</p>
+</li>
+<li><p>判断是否排序和聚合分析?</p>
+</li>
+<li><p>判断是否需要另行存储？</p>
+</li>
+</ol>
+<h4 id="何种类型"><a href="#何种类型" class="headerlink" title="何种类型"></a>何种类型</h4><ul>
+<li><p>字符串类型</p>
+<ul>
+<li>需要分词则设定为 text 类型，否定则设置为 keyword 类型</li>
+</ul>
+</li>
+<li><p>枚举类型</p>
+<ul>
+<li>基于性能考虑将其设定为 keyword 类型，即便该数据为整形</li>
+</ul>
+</li>
+<li><p>数值类型</p>
+<ul>
+<li>尽量选择贴近的类型，比如 byte 即可表示所有数值类型，即选用 byte，不要用 long</li>
+</ul>
+</li>
+<li><p>其他类型</p>
+<ul>
+<li>比如布尔来兴，日期，地理位置数据等</li>
+</ul>
+</li>
+</ul>
+<h3 id="是否需要检索"><a href="#是否需要检索" class="headerlink" title="是否需要检索"></a>是否需要检索</h3><ul>
+<li><p>完全不需要检索，排序，聚合分析的字段</p>
+<ul>
+<li>enabled 设置为 false</li>
+</ul>
+</li>
+<li><p>不需要检索的字段</p>
+<ul>
+<li>index 设置为 false</li>
+</ul>
+</li>
+<li><p>需要检索的字段，可以通过下面配置设定需要的存储粒度</p>
+<ul>
+<li><p>index_options 结合需要设定</p>
+</li>
+<li><p>norms 不需要归一化数据时关闭即可</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="是否需要排序和聚合分析"><a href="#是否需要排序和聚合分析" class="headerlink" title="是否需要排序和聚合分析"></a>是否需要排序和聚合分析</h3><ul>
+<li><p>不需要排序或者聚合分析</p>
+<ul>
+<li><p>doc_values 设定为 false</p>
+</li>
+<li><p>fielddata 设定为 false</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="是否需要另行存储"><a href="#是否需要另行存储" class="headerlink" title="是否需要另行存储"></a>是否需要另行存储</h3><ul>
+<li><p>是否需要专门存储当前字段的数据</p>
+<ul>
+<li><p>store 设定为 true,即可存储该字段的原始内容(与 _source 中的不相关)</p>
+</li>
+<li><p>一般结合 _suorce 的 enabled 设定为 false 时使用</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="建模实例"><a href="#建模实例" class="headerlink" title="建模实例"></a>建模实例</h2><ul>
+<li><p>博客文章 blog_index</p>
+<ul>
+<li><p>标题 title</p>
+</li>
+<li><p>发布日期 publish_date</p>
+</li>
+<li><p>作者 author</p>
+</li>
+<li><p>摘要 abstract</p>
+</li>
+<li><p>网络地址 url</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="blog-index-mapping设置"><a href="#blog-index-mapping设置" class="headerlink" title="blog_index mapping设置"></a>blog_index mapping设置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">PUT blog_index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;doc&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;title&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">          &quot;fields&quot;: &#123;</span><br><span class="line">            &quot;keyword&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;keyword&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;publish_date&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;date&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;author&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">          &quot;ignore_above&quot;: 100</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;abstract&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;url&quot;: &#123;</span><br><span class="line">          &quot;enabled&quot;: false</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>title: 对title是需要做全文检索的，text类型表示需要进行分词的，还用到了 multifields,指定type为 keywowd,子字段设置为 keyword 好处是可以对博客的标题进行完全匹配</p>
+<p>author: keyword,不需要对作者进行分词</p>
+<p>ignore_above: 100 表示如果term的长度超过100，就存储前面100个字符</p>
+<p>abstract: text,需要对摘要进行全文检索的</p>
+<p>url: enabled设置为 false ,只需要展示的，不需要搜索</p>
+<p>现在如果想添加一个内容 (content)的字段，一个博客的内容可能是几千字或者几万字，如果内容非常大的时候将类型设置为 text 类型，当取原始数据的时候通过 _source 来获取原始内容，那么每次去取 source 的时候都会将content内容取出来，如果 content 非常大，就意味着取相应source的时候要取非常多的内容，就会导致性能非常慢，此时就可以将_source 的 enabled 设置为 false ,数据模型如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">PUT blog_index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;doc&quot;: &#123;</span><br><span class="line">      &quot;_source&quot;: &#123;</span><br><span class="line">        &quot;enabled&quot;: false</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;title&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">          &quot;fields&quot;: &#123;</span><br><span class="line">            &quot;keyword&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">              &quot;ignore_above&quot;: 100</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;store&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;publish_date&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;date&quot;,</span><br><span class="line">          &quot;store&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;author&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">          &quot;ignore_above&quot;: 100,</span><br><span class="line">          &quot;store&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;abstract&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">          &quot;store&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;content&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">          &quot;store&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;url&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">          &quot;doc_values&quot;: false,</span><br><span class="line">          &quot;norms&quot;: false,</span><br><span class="line">          &quot;ignore_above&quot;: 100,</span><br><span class="line">          &quot;store&quot;: true</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为每个字段都设置了 store 属性为 true,也就是专门为每个字段都存储了原始值</p>
+<p>url比较特殊，如果把 store 设置为 true 的时候就不能将 enabled 设置为 false,因为把 enabled 设置为 false 的时候 url 原始值依然会存在 _source 里面，但是这里将 _source 关掉了，所以如果想取url的原始值，将 store 设置为true,将 type 设置为 keywoed,并且不需要做聚合分析，所以将 doc_values 设置为 false</p>
+<p>一般做搜索引擎的时候读会一种需求，比如匹配了一个关键词之后价格高亮方便查看匹配的关键词在哪个地方</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">GET blog_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;stored_fields&quot;: [</span><br><span class="line">    &quot;title&quot;,</span><br><span class="line">    &quot;publish_date&quot;,</span><br><span class="line">    &quot;author&quot;,</span><br><span class="line">    &quot;abstract&quot;,</span><br><span class="line">    &quot;url&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;content&quot;: &quot;word&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;highlight&quot;: &#123;</span><br><span class="line">    &quot;fields&quot;: &#123;</span><br><span class="line">      &quot;content&quot;: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在结果中是不需要再显示 content 字段的，所以使用 stored_fields 只返回哪些字段，这样就把 content 字段排除了，这样性能就不会受content大小的影响了，如果内容为几十万个字，每次都是通过 _source 获取，性能就会非常差，通过 stored_fields 就可以解决这个问题</p>
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">PUT blog_index&#x2F;doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;title&quot;: &quot;blog title&quot;,</span><br><span class="line">  &quot;content&quot;: &quot;blog content&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;_index&quot;: &quot;blog_index&quot;,</span><br><span class="line">  &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">  &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">  &quot;_version&quot;: 1,</span><br><span class="line">  &quot;result&quot;: &quot;created&quot;,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 2,</span><br><span class="line">    &quot;successful&quot;: 1,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;_seq_no&quot;: 0,</span><br><span class="line">  &quot;_primary_term&quot;: 1</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET blog_index&#x2F;_search</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 2,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 1,</span><br><span class="line">    &quot;max_score&quot;: 1,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;blog_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;_score&quot;: 1</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">GET blog_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;stored_fields&quot;: [</span><br><span class="line">    &quot;title&quot;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 2,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 1,</span><br><span class="line">    &quot;max_score&quot;: 1,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;blog_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;_score&quot;: 1,</span><br><span class="line">        &quot;fields&quot;: &#123;</span><br><span class="line">          &quot;title&quot;: [</span><br><span class="line">            &quot;blog title&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>request</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">GET blog_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;stored_fields&quot;: [</span><br><span class="line">    &quot;title&quot;</span><br><span class="line">  ],</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;match&quot;: &#123;</span><br><span class="line">      &quot;content&quot;: &quot;blog&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;highlight&quot;: &#123;</span><br><span class="line">    &quot;fields&quot;: &#123;</span><br><span class="line">      &quot;content&quot;: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 98,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 1,</span><br><span class="line">    &quot;max_score&quot;: 0.2876821,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;blog_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;_score&quot;: 0.2876821,</span><br><span class="line">        &quot;fields&quot;: &#123;</span><br><span class="line">          &quot;title&quot;: [</span><br><span class="line">            &quot;blog title&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;highlight&quot;: &#123;</span><br><span class="line">          &quot;content&quot;: [</span><br><span class="line">            &quot;&lt;em&gt;blog&lt;&#x2F;em&gt; content&quot;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Nested-Object"><a href="#Nested-Object" class="headerlink" title="Nested Object"></a>Nested Object</h2><h3 id="关联关系处理"><a href="#关联关系处理" class="headerlink" title="关联关系处理"></a>关联关系处理</h3><p>es 不擅长处理关系型数据库中的关联关系，比如文章表 blog 与 评论表 comment 之间通过 blog_id 关联，因为es底层实现是倒排索引，倒排索引是不适合动态的做联合的，在es中可以通过下面两中手段变相解决</p>
+<ol>
+<li><p>Nested Object</p>
+</li>
+<li><p>Parent/Child</p>
+</li>
+</ol>
+<p>现在新增一个评论 Comment</p>
+<pre><code>- 文章 Id blog_id
+
+- 评论人 username
+
+- 评论日期 date
+
+- 评论内容 content</code></pre><p>如果是关系型数据库它们的关系如下</p>
+<p>Blog 1<br>{<br>    “title”: “Blog Number One”,<br>    “author”: “alfred”<br>}</p>
+<p>Comment 1<br>{<br>    “blog_id”: 1,<br>    “username”: “lee”,<br>    “date”: “2020-06-26”,<br>    “content”: “awensome article!”<br>}</p>
+<p>Comment 2<br>{<br>    “blog_id”: 1,<br>    “username”: “fax”,<br>    “date”: “2020-06-25”,<br>    “content”: “thanks!”<br>}</p>
+<p>ES 中的处理方式</p>
+<p>Blog 1<br>{<br>    “title”: “Blog Number One”,<br>    “author”: “alfred”,<br>    “comments”: [<br>        {<br>            “username”: “lee”,<br>            “date”: “2020-06-26”,<br>            “content”: “awensome article!”<br>        },<br>        {<br>            “username”: “fax”,<br>            “date”: “2020-06-25”,<br>            “content”: “thanks!”<br>        }<br>    ]<br>}</p>
+<p>查询返回 用户名是 lee,并且评论是有 thanks 关键词的 blog</p>
+<p>GET blog_index/_search<br>{<br>    “query”: {<br>        “bool”: {<br>            “must”: [<br>                {<br>                    “match”: {<br>                        “comments.username”: “lee”<br>                    }<br>                },<br>                {<br>                    “match”: {<br>                        “comments.content”: “thanks”<br>                    }<br>                }<br>            ]<br>        }<br>    }<br>}</p>
+<p>Comments 默认是 Object Array,存储结构类似下面的形式</p>
+<p>{<br>    “title”: “Blog Number One”,<br>    “author”: “alfred”,<br>    “comments.username”: [<br>        “lee”,<br>        “fax”<br>    ],<br>    “comments.date”: [<br>        “2020-06-26”,<br>        “2020-06-25”<br>    ],<br>    “comments.content”: [<br>        “awesome article!”,<br>        “thanks!”<br>    ]<br>}</p>
+<p>Nested Object 可以解决这个问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">PUT blog_index_nested</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;doc&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;title&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">          &quot;fields&quot;: &#123;</span><br><span class="line">            &quot;keyword&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">              &quot;ignore_above&quot;: 100</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;publish_date&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;date&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;author&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">          &quot;ignore_above&quot;: 100</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;abstract&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;url&quot;: &#123;</span><br><span class="line">          &quot;enabled&quot;: false</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;comments&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;nested&quot;,</span><br><span class="line">          &quot;properties&quot;: &#123;</span><br><span class="line">            &quot;username&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">              &quot;ignore_above&quot;: 100</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;date&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;date&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;content&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;text&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>reqeust</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">GET blog_index_nested&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;nested&quot;: &#123;</span><br><span class="line">      &quot;path&quot;: &quot;comments&quot;,</span><br><span class="line">      &quot;query&quot;: &#123;</span><br><span class="line">        &quot;bool&quot;: &#123;</span><br><span class="line">          &quot;must&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;match&quot;: &#123;</span><br><span class="line">                &quot;comments.username&quot;: &quot;lee&quot;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;match&quot;: &#123;</span><br><span class="line">                &quot;comments.content&quot;: &quot;thanks&quot;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为什么 Nested Object 能解决这个问题？</p>
+<p>因为 Nested Object 的存储结构类似下面的形式,Nested Object 独立存在</p>
+<p>{<br>    “title”: “Blog Number One”,<br>    “author”: “alfred”<br>},<br>{<br>    “comments.username”: “lee”,<br>    “comments.date”: “2020-06-26”,<br>    “comments.content”: “awesome article!”<br>},<br>{<br>    “comments.username”: “fax”,<br>    “comments.date”: “2020-06-25”,<br>    “comments.content”: “thanks!”<br>}</p>
+<p>举例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">DELETE blog_index</span><br><span class="line"></span><br><span class="line">PUT blog_index&#x2F;doc&#x2F;2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;title&quot;: &quot;Blog Number One&quot;,</span><br><span class="line">  &quot;author&quot;: &quot;alfred&quot;,</span><br><span class="line">  &quot;comments&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;username&quot;: &quot;lee&quot;,</span><br><span class="line">      &quot;date&quot;: &quot;2020-06-26&quot;,</span><br><span class="line">      &quot;content&quot;: &quot;awesome article!&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;username&quot;: &quot;lfaxee&quot;,</span><br><span class="line">      &quot;date&quot;: &quot;2020-06-25&quot;,</span><br><span class="line">      &quot;content&quot;: &quot;thanks!&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET blog_index&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;bool&quot;: &#123;</span><br><span class="line">      &quot;must&quot;: [</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;match&quot;: &#123;</span><br><span class="line">            &quot;comments.username&quot;: &quot;lee&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          &quot;match&quot;: &#123;</span><br><span class="line">            &quot;comments.content&quot;: &quot;thanks&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 1,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 1,</span><br><span class="line">    &quot;max_score&quot;: 0.5753642,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;blog_index&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;2&quot;,</span><br><span class="line">        &quot;_score&quot;: 0.5753642,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;title&quot;: &quot;Blog Number One&quot;,</span><br><span class="line">          &quot;author&quot;: &quot;alfred&quot;,</span><br><span class="line">          &quot;comments&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;username&quot;: &quot;lee&quot;,</span><br><span class="line">              &quot;date&quot;: &quot;2020-06-26&quot;,</span><br><span class="line">              &quot;content&quot;: &quot;awesome article!&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;username&quot;: &quot;lfaxee&quot;,</span><br><span class="line">              &quot;date&quot;: &quot;2020-06-25&quot;,</span><br><span class="line">              &quot;content&quot;: &quot;thanks!&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>下面使用的是 nested</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line">DELETE blog_index_nested</span><br><span class="line"></span><br><span class="line">PUT blog_index_nested</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;doc&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;title&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">          &quot;fields&quot;: &#123;</span><br><span class="line">            &quot;keyword&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">              &quot;ignore_above&quot;: 100</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;publish_date&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;date&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;author&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">          &quot;ignore_above&quot;: 100</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;abstract&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;url&quot;: &#123;</span><br><span class="line">          &quot;enabled&quot;: false</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;comments&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;nested&quot;,</span><br><span class="line">          &quot;properties&quot;: &#123;</span><br><span class="line">            &quot;username&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">              &quot;ignore_above&quot;: 100</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;date&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;date&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &quot;content&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;text&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT blog_index_nested&#x2F;doc&#x2F;2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;title&quot;: &quot;Blog Number One&quot;,</span><br><span class="line">  &quot;author&quot;: &quot;alfred&quot;,</span><br><span class="line">  &quot;comments&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;username&quot;: &quot;lee&quot;,</span><br><span class="line">      &quot;date&quot;: &quot;2020-06-26&quot;,</span><br><span class="line">      &quot;content&quot;: &quot;awesome article!&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;username&quot;: &quot;lfaxee&quot;,</span><br><span class="line">      &quot;date&quot;: &quot;2020-06-25&quot;,</span><br><span class="line">      &quot;content&quot;: &quot;thanks!&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET blog_index_nested&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;nested&quot;: &#123;</span><br><span class="line">      &quot;path&quot;: &quot;comments&quot;,</span><br><span class="line">      &quot;query&quot;: &#123;</span><br><span class="line">        &quot;bool&quot;: &#123;</span><br><span class="line">          &quot;must&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;match&quot;: &#123;</span><br><span class="line">                &quot;comments.username&quot;: &quot;lee&quot;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;match&quot;: &#123;</span><br><span class="line">                &quot;comments.content&quot;: &quot;thanks&quot;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询结果没有了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 2,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 0,</span><br><span class="line">    &quot;max_score&quot;: null,</span><br><span class="line">    &quot;hits&quot;: []</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果将查询条件换下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">GET blog_index_nested&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;nested&quot;: &#123;</span><br><span class="line">      &quot;path&quot;: &quot;comments&quot;,</span><br><span class="line">      &quot;query&quot;: &#123;</span><br><span class="line">        &quot;bool&quot;: &#123;</span><br><span class="line">          &quot;must&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;match&quot;: &#123;</span><br><span class="line">                &quot;comments.username&quot;: &quot;lee&quot;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;match&quot;: &#123;</span><br><span class="line">                &quot;comments.content&quot;: &quot;awesome&quot;</span><br><span class="line">              &#125;</span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 2,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 1,</span><br><span class="line">    &quot;max_score&quot;: 1.3031167,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;blog_index_nested&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;2&quot;,</span><br><span class="line">        &quot;_score&quot;: 1.3031167,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;title&quot;: &quot;Blog Number One&quot;,</span><br><span class="line">          &quot;author&quot;: &quot;alfred&quot;,</span><br><span class="line">          &quot;comments&quot;: [</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;username&quot;: &quot;lee&quot;,</span><br><span class="line">              &quot;date&quot;: &quot;2020-06-26&quot;,</span><br><span class="line">              &quot;content&quot;: &quot;awesome article!&quot;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">              &quot;username&quot;: &quot;lfaxee&quot;,</span><br><span class="line">              &quot;date&quot;: &quot;2020-06-25&quot;,</span><br><span class="line">              &quot;content&quot;: &quot;thanks!&quot;</span><br><span class="line">            &#125;</span><br><span class="line">          ]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Parent-Child"><a href="#Parent-Child" class="headerlink" title="Parent/Child"></a>Parent/Child</h2><p>ES 还提供了类似关系数据库中的 join 的实现方式，使用 join 数据类型实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">PUT blog_index_parent_child</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;doc&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;join&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;join&quot;,</span><br><span class="line">          &quot;relations&quot;: &#123;</span><br><span class="line">            &quot;blog&quot;: &quot;comment&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>type</code> 指明类型</p>
+<p><code>relations</code> 指明父子关系</p>
+<p><code>&quot;blog&quot;: &quot;comment&quot;</code> 前面是父类型名称，后面是子类型名称</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># 创建父文档</span><br><span class="line">PUT blog_index_parent_child&#x2F;doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;title&quot;: &quot;blog&quot;,</span><br><span class="line">  &quot;join&quot;: &quot;blog&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"># 创建子文档</span><br><span class="line">PUT blog_index_parent_child&#x2F;doc&#x2F;comment-1?routing&#x3D;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;comment&quot;: &quot;comment world&quot;,</span><br><span class="line">  &quot;join&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &quot;comment&quot;,</span><br><span class="line">    &quot;parent&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>join</code> 指明父子类型</p>
+<p><code>routing=1</code> 指明routing值，确保父子文档在一个分片上，一般使用父文档Id</p>
+<p><code>&quot;name&quot;: &quot;comment&quot;</code> 指明父子关系</p>
+<p><code>&quot;parent&quot;: 1</code> 指明父子文档Id</p>
+<ul>
+<li>常见 query 语法包括如下几种</li>
+</ul>
+<ul>
+<li><p>parent_id 返回某父文档的子文档</p>
+</li>
+<li><p>has_child 返回包含某子文档的父文档</p>
+</li>
+<li><p>has_parent 返回包含某福文档的子文档</p>
+</li>
+</ul>
+<h3 id="parent-id"><a href="#parent-id" class="headerlink" title="parent_id"></a>parent_id</h3><p>返回某父文档的子文档</p>
+<p>返回 id 为 2 的父文档的所有 comment 的子文档</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET blog_index_parent_child&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;parent_id&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;comment&quot;,</span><br><span class="line">      &quot;id&quot;: 2</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 0,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 1,</span><br><span class="line">    &quot;max_score&quot;: 0.18232156,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;blog_index_parent_child&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;comment-2&quot;,</span><br><span class="line">        &quot;_score&quot;: 0.18232156,</span><br><span class="line">        &quot;_routing&quot;: &quot;2&quot;,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;comment&quot;: &quot;comment hello&quot;,</span><br><span class="line">          &quot;join&quot;: &#123;</span><br><span class="line">            &quot;name&quot;: &quot;comment&quot;,</span><br><span class="line">            &quot;parent&quot;: 2</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="has-child"><a href="#has-child" class="headerlink" title="has_child"></a>has_child</h3><p>返回包含某子文档的父文档</p>
+<p>返回子文档中包含 world 关键词的所有父文档</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET blog_index_parent_child&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;has_child&quot;: &#123;</span><br><span class="line">      &quot;type&quot;: &quot;comment&quot;,</span><br><span class="line">      &quot;query&quot;: &#123;</span><br><span class="line">        &quot;match&quot;: &#123;</span><br><span class="line">          &quot;comment&quot;: &quot;world&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 12,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 1,</span><br><span class="line">    &quot;max_score&quot;: 1,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;blog_index_parent_child&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;_score&quot;: 1,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;title&quot;: &quot;blog&quot;,</span><br><span class="line">          &quot;join&quot;: &quot;blog&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="has-partent"><a href="#has-partent" class="headerlink" title="has_partent"></a>has_partent</h3><p>返回包含父文档那个的子文档</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">GET blog_index_parent_child&#x2F;_search</span><br><span class="line">&#123;</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;has_parent&quot;: &#123;</span><br><span class="line">      &quot;parent_type&quot;: &quot;blog&quot;,</span><br><span class="line">      &quot;query&quot;: &#123;</span><br><span class="line">        &quot;match&quot;: &#123;</span><br><span class="line">          &quot;title&quot;: &quot;blog&quot;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>response</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;took&quot;: 0,</span><br><span class="line">  &quot;timed_out&quot;: false,</span><br><span class="line">  &quot;_shards&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 5,</span><br><span class="line">    &quot;successful&quot;: 5,</span><br><span class="line">    &quot;skipped&quot;: 0,</span><br><span class="line">    &quot;failed&quot;: 0</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;hits&quot;: &#123;</span><br><span class="line">    &quot;total&quot;: 1,</span><br><span class="line">    &quot;max_score&quot;: 1,</span><br><span class="line">    &quot;hits&quot;: [</span><br><span class="line">      &#123;</span><br><span class="line">        &quot;_index&quot;: &quot;blog_index_parent_child&quot;,</span><br><span class="line">        &quot;_type&quot;: &quot;doc&quot;,</span><br><span class="line">        &quot;_id&quot;: &quot;comment-1&quot;,</span><br><span class="line">        &quot;_score&quot;: 1,</span><br><span class="line">        &quot;_routing&quot;: &quot;1&quot;,</span><br><span class="line">        &quot;_source&quot;: &#123;</span><br><span class="line">          &quot;comment&quot;: &quot;comment world&quot;,</span><br><span class="line">          &quot;join&quot;: &#123;</span><br><span class="line">            &quot;name&quot;: &quot;comment&quot;,</span><br><span class="line">            &quot;parent&quot;: 1</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>举例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">DELETE blog_index_parent_child</span><br><span class="line"></span><br><span class="line">PUT blog_index_parent_child</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;doc&quot;: &#123;</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;join&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;join&quot;,</span><br><span class="line">          &quot;relations&quot;: &#123;</span><br><span class="line">            &quot;blog&quot;: &quot;comment&quot;</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT blog_index_parent_child&#x2F;doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;title&quot;: &quot;blog&quot;,</span><br><span class="line">  &quot;join&quot;: &quot;blog&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT blog_index_parent_child&#x2F;doc&#x2F;2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;title&quot;: &quot;blog2&quot;,</span><br><span class="line">  &quot;join&quot;: &quot;blog&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT blog_index_parent_child&#x2F;doc&#x2F;comment-1?routing&#x3D;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;comment&quot;: &quot;comment world&quot;,</span><br><span class="line">  &quot;join&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &quot;comment&quot;,</span><br><span class="line">    &quot;parent&quot;: 1</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT blog_index_parent_child&#x2F;doc&#x2F;comment-2?routing&#x3D;2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;comment&quot;: &quot;comment hello&quot;,</span><br><span class="line">  &quot;join&quot;: &#123;</span><br><span class="line">    &quot;name&quot;: &quot;comment&quot;,</span><br><span class="line">    &quot;parent&quot;: 2</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET blog_index_parent_child&#x2F;_search</span><br></pre></td></tr></table></figure>
+
+<h2 id="Nested-Object-vs-Parent-Child"><a href="#Nested-Object-vs-Parent-Child" class="headerlink" title="Nested Object vs Parent/Child"></a>Nested Object vs Parent/Child</h2><table>
+<thead>
+<tr>
+<th align="center">对比</th>
+<th align="center">Nested Object</th>
+<th align="center">Parent/Child</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">优点</td>
+<td align="center">文档存储在一起，因此读取性能提高</td>
+<td align="center">父子文档可以独立更新，互不影响</td>
+</tr>
+<tr>
+<td align="center">缺点</td>
+<td align="center">更新父或子文档时需要更新整个文档</td>
+<td align="center">为了维护join的关系，需要占用部分内存，读取性能较差</td>
+</tr>
+<tr>
+<td align="center">场景</td>
+<td align="center">父子文档偶尔更新，查询频繁</td>
+<td align="center">子文档更新频繁</td>
+</tr>
+</tbody></table>
+<p>建议尽量选择 Nested Object 来解决问题</p>
+<h2 id="Reindex"><a href="#Reindex" class="headerlink" title="Reindex"></a>Reindex</h2><ul>
+<li><p>指的是重建所有数据的过程，一般发生如下情况：</p>
+<ul>
+<li><p>mapping 设置变更，比如数字类型变化，分词器字典更新等</p>
+</li>
+<li><p>index 设置变更，比如分片数更改等</p>
+</li>
+<li><p>迁移数据</p>
+</li>
+</ul>
+</li>
+<li><p>ES 提供了现成的API用于完成该工作</p>
+<ul>
+<li><p>_updte_by_query 在现有索引上重现</p>
+</li>
+<li><p>_reindex 在其他索引上重建</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="update-by-query"><a href="#update-by-query" class="headerlink" title="_update_by_query"></a>_update_by_query</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST blog_index&#x2F;_update_by_query?conflicts&#x3D;proceed</span><br></pre></td></tr></table></figure>
+
+<p>当执行上面的命令时，es会将 blog_index 所有的文档重建一遍，如果在重建的过程中还对文档进行更新的话，很有可能会对同样的文档做更新，这时候会发生版本冲突，如果希望es遇到版本冲突的时候覆盖并继续执行需要加上 <code>conflicts=proceed</code>,此时es就会继续执行，否则会中断报错</p>
+<p>_update_by_query 或者 _reindex 这两个操作底层都是基于 scroll 有个快照的概念，任务开始之后进来的文档或者更改的文档es是无法感知到的，一般都是索引不会再发生变动才会做重建的操作</p>
+<p>除了直接调用 _update_by_query 之外，还可以给请求指定一些参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">POST blog_index&#x2F;_update_by_query</span><br><span class="line">&#123;</span><br><span class="line">  &quot;script&quot;: &#123;</span><br><span class="line">    &quot;source&quot;: &quot;ctx._source.likes++&quot;,</span><br><span class="line">    &quot;lang&quot;: &quot;painless&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;query&quot;: &#123;</span><br><span class="line">    &quot;term&quot;: &#123;</span><br><span class="line">      &quot;user&quot;: &quot;tom&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>script</code> 是指更新的时候还可以去修改 source 内容</p>
+<p><code>query</code> 可以只更新 blog_index 的某一些符合条件的文档</p>
+<h2 id="data"><a href="#data" class="headerlink" title="data"></a>data</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">PUT blog_index</span><br><span class="line">&#123;</span><br><span class="line">  &quot;mappings&quot;: &#123;</span><br><span class="line">    &quot;doc&quot;: &#123;</span><br><span class="line">      &quot;_source&quot;: &#123;</span><br><span class="line">        &quot;enabled&quot;: false</span><br><span class="line">      &#125;,</span><br><span class="line">      &quot;properties&quot;: &#123;</span><br><span class="line">        &quot;title&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">          &quot;fields&quot;: &#123;</span><br><span class="line">            &quot;keyword&quot;: &#123;</span><br><span class="line">              &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">              &quot;ignore_above&quot;: 100</span><br><span class="line">            &#125;</span><br><span class="line">          &#125;,</span><br><span class="line">          &quot;store&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;publish_date&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;date&quot;,</span><br><span class="line">          &quot;store&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;author&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">          &quot;ignore_above&quot;: 100,</span><br><span class="line">          &quot;store&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;abstract&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">          &quot;store&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;content&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;text&quot;,</span><br><span class="line">          &quot;store&quot;: true</span><br><span class="line">        &#125;,</span><br><span class="line">        &quot;url&quot;: &#123;</span><br><span class="line">          &quot;type&quot;: &quot;keyword&quot;,</span><br><span class="line">          &quot;doc_values&quot;: false,</span><br><span class="line">          &quot;norms&quot;: false,</span><br><span class="line">          &quot;ignore_above&quot;: 100,</span><br><span class="line">          &quot;store&quot;: true</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT blog_index&#x2F;doc&#x2F;1</span><br><span class="line">&#123;</span><br><span class="line">  &quot;title&quot;: &quot;blog title&quot;,</span><br><span class="line">  &quot;content&quot;: &quot;blog content&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">PUT blog_index&#x2F;doc&#x2F;2</span><br><span class="line">&#123;</span><br><span class="line">  &quot;title&quot;: &quot;Blog Number One&quot;,</span><br><span class="line">  &quot;author&quot;: &quot;alfred&quot;,</span><br><span class="line">  &quot;comments&quot;: [</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;username&quot;: &quot;lee&quot;,</span><br><span class="line">      &quot;date&quot;: &quot;2020-06-26&quot;,</span><br><span class="line">      &quot;content&quot;: &quot;awesome article!&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      &quot;username&quot;: &quot;lfaxee&quot;,</span><br><span class="line">      &quot;date&quot;: &quot;2020-06-25&quot;,</span><br><span class="line">      &quot;content&quot;: &quot;thanks!&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">GET blog_index&#x2F;_search</span><br></pre></td></tr></table></figure>
+
+<h3 id="reindex"><a href="#reindex" class="headerlink" title="_reindex"></a>_reindex</h3><p>将 source 的数据重建到 dest 中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">POST _reindex</span><br><span class="line">&#123;</span><br><span class="line">  &quot;source&quot;: &#123;</span><br><span class="line">    &quot;index&quot;: &quot;blog_index&quot;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;dest&quot;: &#123;</span><br><span class="line">    &quot;index&quot;: &quot;blog_new_index&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还可以冲突时覆盖并继续</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">POST _reindex</span><br><span class="line">&#123;</span><br><span class="line">  &quot;conflicts&quot;: &quot;proceed&quot;,</span><br><span class="line">  &quot;source&quot;: &#123;</span><br><span class="line">    &quot;index&quot;: &quot;blog_index&quot;,</span><br><span class="line">    &quot;query&quot;: &#123;</span><br><span class="line">      &quot;term&quot;: &#123;</span><br><span class="line">        &quot;user&quot;: &quot;tom&quot;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &quot;dest&quot;: &#123;</span><br><span class="line">    &quot;index&quot;: &quot;blog_new_index&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Task"><a href="#Task" class="headerlink" title="Task"></a>Task</h3><ul>
+<li><p>数据重建的时候受源索引文档规模的影响，当规模越大时，所需时间阅多，不可能一直等着，此时需要通过设定 url 参数 <code>wait_for_completion</code> 为 false 来异步执行，es会返回一个 task id，ES 以 task 来描述此类执行任务</p>
+</li>
+<li><p>ES 提供了Task API 来查看任务的执行进度和数据</p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST blog_index&#x2F;_update_by_query?conflicts&#x3D;proceed&amp;wait_for_completion&#x3D;false</span><br></pre></td></tr></table></figure>
+
+<p>通过返回的 task id 可以查看详情</p>
+<p>GET _tasks/{task_id}</p>
+<h2 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h2><h4 id="数据模型版本管理"><a href="#数据模型版本管理" class="headerlink" title="数据模型版本管理"></a>数据模型版本管理</h4><p>对 Mapping 进行版本管理</p>
+<pre><code>- 包含在代码或者以专门的文件进行管理，添加好注释，并加入git等版本管理仓库中，方便回顾
+
+- 为每隔增加一个 metadata 字段，在其中维护一些文档相关的元数据，方便进行管理</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;metadata&quot;: &#123;</span><br><span class="line">        &quot;version&quot;: 1</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;username&quot;: &quot;alfred&quot;,</span><br><span class="line">    &quot;job&quot;: &quot;engineer&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>mapping 版本，可自行指定，比如每次更新 mapping 设置后该version 加 1</p>
+<h3 id="防止字段过多"><a href="#防止字段过多" class="headerlink" title="防止字段过多"></a>防止字段过多</h3><ul>
+<li><p>字段过多主要有如下的坏处</p>
+<ul>
+<li><p>难于维护，当字段成百上千时，基本很难有人能明确知道每个字段的含义</p>
+</li>
+<li><p>mapping 的信息存储在 cluster state 里面，然后跟素有的node同步的，过多的字段会导致 cluster state 内容过多，mapping 过大，最中导致更新变慢，还有更新mapping信息可能会导致集群暂时拒绝响应，影响性能</p>
+</li>
+</ul>
+</li>
+<li><p>通过设置 index.mapping.total_fields.limit 可以限定索引中最大字段数，默认是1000</p>
+</li>
+<li><p>可以通过 key/value 的方式解决字段过多的问题，但并不完美（nested object）</p>
+<ul>
+<li><p>虽然通过这种凡是可以极大的减少Field数目，但也有一些明显的坏处</p>
+</li>
+<li><p>query语句复杂度飙升，且有一些可能无法实现，比如聚合分析相关的</p>
+</li>
+<li><p>不利于在 kibana 中做可视化分析</p>
+</li>
+</ul>
+</li>
+<li><p>一般字段过多的原因是由于没有高质量的数据建模导致的，比如 dynamic 设置为 true</p>
+</li>
+<li><p>考虑拆分多个索引来解决问题</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Elasticsearch/" rel="tag"># Elasticsearch</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/06/25/8-%E8%81%9A%E5%90%88%E5%88%86%E6%9E%90/" rel="prev" title="聚合分析">
+      <i class="fa fa-chevron-left"></i> 聚合分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/04/Logstash%E5%AF%BC%E5%85%A5CSV%E6%96%87%E4%BB%B6/" rel="next" title="Logstash导入CSV文件">
+      Logstash导入CSV文件 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据建模"><span class="nav-number">1.</span> <span class="nav-text">数据建模</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据建模过程"><span class="nav-number">1.1.</span> <span class="nav-text">数据建模过程</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ES-数据建模配置"><span class="nav-number">2.</span> <span class="nav-text">ES 数据建模配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mapping-字段的相关设置"><span class="nav-number">2.1.</span> <span class="nav-text">Mapping 字段的相关设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mapping-字段属性设定流程"><span class="nav-number">2.2.</span> <span class="nav-text">Mapping 字段属性设定流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#何种类型"><span class="nav-number">2.2.1.</span> <span class="nav-text">何种类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#是否需要检索"><span class="nav-number">2.3.</span> <span class="nav-text">是否需要检索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#是否需要排序和聚合分析"><span class="nav-number">2.4.</span> <span class="nav-text">是否需要排序和聚合分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#是否需要另行存储"><span class="nav-number">2.5.</span> <span class="nav-text">是否需要另行存储</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建模实例"><span class="nav-number">3.</span> <span class="nav-text">建模实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#blog-index-mapping设置"><span class="nav-number">3.1.</span> <span class="nav-text">blog_index mapping设置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nested-Object"><span class="nav-number">4.</span> <span class="nav-text">Nested Object</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#关联关系处理"><span class="nav-number">4.1.</span> <span class="nav-text">关联关系处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Parent-Child"><span class="nav-number">5.</span> <span class="nav-text">Parent&#x2F;Child</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#parent-id"><span class="nav-number">5.1.</span> <span class="nav-text">parent_id</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#has-child"><span class="nav-number">5.2.</span> <span class="nav-text">has_child</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#has-partent"><span class="nav-number">5.3.</span> <span class="nav-text">has_partent</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nested-Object-vs-Parent-Child"><span class="nav-number">6.</span> <span class="nav-text">Nested Object vs Parent&#x2F;Child</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reindex"><span class="nav-number">7.</span> <span class="nav-text">Reindex</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#update-by-query"><span class="nav-number">7.1.</span> <span class="nav-text">_update_by_query</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#data"><span class="nav-number">8.</span> <span class="nav-text">data</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#reindex"><span class="nav-number">8.1.</span> <span class="nav-text">_reindex</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Task"><span class="nav-number">8.2.</span> <span class="nav-text">Task</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建议"><span class="nav-number">9.</span> <span class="nav-text">建议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据模型版本管理"><span class="nav-number">9.0.1.</span> <span class="nav-text">数据模型版本管理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#防止字段过多"><span class="nav-number">9.1.</span> <span class="nav-text">防止字段过多</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前面利用Haproxy成功负载均衡的数据库集群，但是Haproxy是单节点部署的，如果这个节点出现了宕机，那么负载均衡方案就无效了。此时就需要进行冗余设计，这一点就说一些冗余设计方案。  为什么要采用双机热备 单节点的Haproxy不具备高可用，必须要有冗余设计  ![](http:&#x2F;&#x2F;images.ornnth.com&#x2F;images&#x2F;docker&#x2F;78.png)在PXC集群中，使用Haproxy">
+<meta property="og:type" content="article">
+<meta property="og:title" content="6-负载均衡高可用方案">
+<meta property="og:url" content="https://notes.xuepincat.com/2018/09/24/Docker-6-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="前面利用Haproxy成功负载均衡的数据库集群，但是Haproxy是单节点部署的，如果这个节点出现了宕机，那么负载均衡方案就无效了。此时就需要进行冗余设计，这一点就说一些冗余设计方案。  为什么要采用双机热备 单节点的Haproxy不具备高可用，必须要有冗余设计  ![](http:&#x2F;&#x2F;images.ornnth.com&#x2F;images&#x2F;docker&#x2F;78.png)在PXC集群中，使用Haproxy">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-09-23T17:39:37.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.293Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Linux - CentOS - Docker">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2018/09/24/Docker-6-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>6-负载均衡高可用方案 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/24/Docker-6-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          6-负载均衡高可用方案
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-09-24 01:39:37" itemprop="dateCreated datePublished" datetime="2018-09-24T01:39:37+08:00">2018-09-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>前面利用Haproxy成功负载均衡的数据库集群，但是Haproxy是单节点部署的，如果这个节点出现了宕机，那么负载均衡方案就无效了。此时就需要进行冗余设计，这一点就说一些冗余设计方案。</p>
+<h2 id="为什么要采用双机热备"><a href="#为什么要采用双机热备" class="headerlink" title="为什么要采用双机热备"></a>为什么要采用双机热备</h2><pre><code>单节点的Haproxy不具备高可用，必须要有冗余设计</code></pre><div align=center>
+![](http://images.ornnth.com/images/docker/78.png)
+</div>
+
+<p>在PXC集群中，使用Haproxy做 负载均衡，应用程序 发过来的请求由Haproxy请求转发给具体的数据库实例，确实可以降低每一个数据库实例的负载，这是正常情况下是没有问题。</p>
+<p>但是一旦Haproxy出现了故障，应用程序就无法把数据的请求发送到Haproxy上了，那数据库的负载均衡也就失效了</p>
+<p>所以Haproxy不能成为我们的瓶颈，Haproxy一定要设计成双节点或者是多节点的方案，一个节点挂掉后还有其他节点的Haproxy可以使用</p>
+<h2 id="虚拟地址"><a href="#虚拟地址" class="headerlink" title="虚拟地址"></a>虚拟地址</h2><p>Haproxy的双机热备方案离不开一个技术，这个技术叫做虚拟ＩＰ</p>
+<p>Linux系统可以在一个网卡中定义多个IP地址，可以把这些IP地址分配给对应的应用程序，这些IP地址就叫做虚拟IP</p>
+<div align=center>
+![](http://images.ornnth.com/images/docker/79.png)
+</div>
+
+<h2 id="利用Keepalived实现双机热备"><a href="#利用Keepalived实现双机热备" class="headerlink" title="利用Keepalived实现双机热备"></a>利用Keepalived实现双机热备</h2><h3 id="双击热备细节"><a href="#双击热备细节" class="headerlink" title="双击热备细节"></a>双击热备细节</h3><div align=center>
+![](http://images.ornnth.com/images/docker/80.png)
+</div>
+
+<p>首先要定义出虚拟IP，这里使用的双机热备，所以需要准备两个Haproxy，也就是说要在docker虚拟机上要启动两个容器，这两个容器各自运行Haproxy，那么Haproxy所在的容器还需要再安装一个程序，这个程序就叫做Keepalived,Keepalived是用来抢占虚拟IP的，所以我们再各自的容器中安装好Keepalived之后，Keepalived就会抢占虚拟IP，抢到虚拟IP之后，另外一个没有抢到，那么它就会处在一个等待的状态。</p>
+<p>抢到虚拟IP之后的keepalived所在的容器叫作主服务器，没有抢占到虚拟IP的Keepalived所在的容器叫做备用服务器，两个Keep alived之间是有心跳检测的，如果备用服务器发现发送给主服务器的Keepalived心跳检测没有响应，也就是说主服务器可能出现了故障，这个时候备份服务器上的Keepalibed就有权将虚拟IP抢到手，这样就可以通过应用程序向虚拟IP发送数据库请求，我们不去关心虚拟IP对应哪一个Haproxy，因为一个Haproxy容器挂掉还有另外一个Haproxy容器来接替工作，这个就是双机热备的具体细节</p>
+<h3 id="Haproxy双机热备方案"><a href="#Haproxy双机热备方案" class="headerlink" title="Haproxy双机热备方案"></a>Haproxy双机热备方案</h3><div align=center>
+![](http://images.ornnth.com/images/docker/81.png)
+</div>
+
+<pre><code>Docker内的虚拟IP不能为外网使用，所以需要借助宿主机Keepalived映射成外网可以访问的虚拟IP</code></pre><p>右侧是数据库的集群，使用双机热备方案需要创建两个容器，分别部署Haproxy，里面安装好Keepalived,这样任何一个容器挂掉之后还有另外一个容器可以使用，这就是双机热备的冗余设计；然后两个Keepalived要抢占一个虚拟IP，这个虚拟IP是172.18.0.15，从这个网段可以看出这个网段只能再docker内部使用，如果再局域网内部要访问这个虚拟IP怎么办呢？</p>
+<p>我们需要再宿主机上安装Keepalived，让宿主机的Keepalived把某一个IP映射到docker的虚拟IP上。</p>
+<p>我们安装好了Keepalived之后，通过命令行创建一个虚拟IP，这个虚拟IP假设是192.168.99.65，那么将来应用程序向这个IP发送数据请求，这个请求就会路由到docker的虚拟IP上，这个虚拟IP因为被某一个keepalived抢占，所以这个IP接受到的所有请求就会转发到对应的Haproxy上了，Haproxy再通过负载均衡技术把这个请求发送给某一个PXC的数据库节点，这就是总体的双击热备架构的设计。</p>
+<h3 id="安装Keepalived"><a href="#安装Keepalived" class="headerlink" title="安装Keepalived"></a>安装Keepalived</h3><p>Keepalived必须要安装再Haproxy所在的容器之内</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get install keepalived</span><br></pre></td></tr></table></figure>
+
+<p>进入Haproxy容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it h1 bash</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![](http://images.ornnth.com/images/docker/82.png)
+</div>
+
+<p>退出容器,只是退出交互界面，而不是停止容器的运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+<p>更新apt-get</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![](http://images.ornnth.com/images/docker/83.png)
+</div>
+
+<p>安装keepalived</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install keepalived</span><br></pre></td></tr></table></figure>
+
+<p>过程太长就不截图了</p>
+<h2 id="Keepalived配置文件"><a href="#Keepalived配置文件" class="headerlink" title="Keepalived配置文件"></a>Keepalived配置文件</h2><pre><code>Keepalived的配置文件是/etc/keepalived/keepalived.conf</code></pre><p>keepalived运行的时候要占抢虚拟IP，这个虚拟IP就要写在配置文件里，</p>
+<p>编写配置文件,如果想在终端窗口通过vim编写配置文件，Haproxy镜像里面是没有vim的，所以需要再容器里面安装vim编辑器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install vim</span><br><span class="line">vim &#x2F;etc&#x2F;keepalived&#x2F;keepalived.conf</span><br></pre></td></tr></table></figure>
+
+<p>Keepalived配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state MASTER #Keepalived身份，（MASTER主服务，BACKUP备份服务。主服务要抢占虚拟IP，备用服务器不会抢占IP）</span><br><span class="line">    interface eth0　#网卡设备</span><br><span class="line">    virtual_router_id 51 #虚拟路由标识，MASTER和BACKUP的虚拟路由标识必须一致。标识可以是0-255</span><br><span class="line">    priority 100 #MASTER权重要高于BACKUP 数字越大优先级越高</span><br><span class="line">    advert_int 1 #MASTER和BACKUP节点间 同步检查的时间间隔，单位为秒。主备之间必须一致</span><br><span class="line">    authentication &#123; #主从服务器验证方式。主备必须使用相同的密码才能正常通信</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass 123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123; #虚拟IP地址。可以设置多个IP地址，每行一个</span><br><span class="line">       	172.18.0.201</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在容器中输入下面指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;keepalived&#x2F;keepalived.conf</span><br></pre></td></tr></table></figure>
+
+<p>我的keepalived.conf配置文件内容，下面内容是我在阿里云上上面的配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state MASTER</span><br><span class="line">    interface eth0</span><br><span class="line">    virtual_router_id 51</span><br><span class="line">    priority 101</span><br><span class="line">    advert_int 1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass 123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">       	172.18.0.201</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="启动Keepalived"><a href="#启动Keepalived" class="headerlink" title="启动Keepalived"></a>启动Keepalived</h2><p>启动Keepalived之后，宿主机可以ping 通虚拟IP</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service keepalived start</span><br><span class="line">ping 172.18.0.201</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![](http://images.ornnth.com/images/docker/84.png)
+</div>
+
+<h2 id="创建第二个haproxy-（h2）"><a href="#创建第二个haproxy-（h2）" class="headerlink" title="创建第二个haproxy （h2）"></a>创建第二个haproxy （h2）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">--创建haproxy容器后台</span><br><span class="line">docker run -it -d -p 4003:8888 -p 4004:3306 -v &#x2F;home&#x2F;soft&#x2F;haproxy:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;haproxy --name h2 --privileged --net&#x3D;net1 --ip 172.18.0.8 haproxy</span><br><span class="line"></span><br><span class="line">--进入容器后台</span><br><span class="line">docker exec -it h2 bash</span><br><span class="line"></span><br><span class="line">--启动haproxy -f表示加载配置文件</span><br><span class="line">haproxy -f &#x2F;usr&#x2F;local&#x2F;etc&#x2F;haproxy&#x2F;haproxy.cfg</span><br></pre></td></tr></table></figure>
+<p>这个时候可以在浏览器中输入 <code>http://IP:4003/dbs</code> 进行查看，数据库连接工具可以创建H2节点，端口是4004</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">--h2安装keepalived</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install keepalived</span><br><span class="line">apt-get install vim</span><br><span class="line">vim &#x2F;etc&#x2F;keepalived&#x2F;keepalived.conf</span><br></pre></td></tr></table></figure>
+
+<p>–配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">vrrp_instance  VI_1 &#123;</span><br><span class="line">    state  MASTER</span><br><span class="line">    interface  eth0</span><br><span class="line">    virtual_router_id  51</span><br><span class="line">    priority  100</span><br><span class="line">    advert_int  1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type  PASS</span><br><span class="line">        auth_pass  123456</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        172.18.0.201</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>–启动h2的keepalived</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service keepalived start</span><br></pre></td></tr></table></figure>
+
+<p>然后重新打开一个连接 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping 172.18.0.201</span><br></pre></td></tr></table></figure>
+
+<h2 id="宿主机上安装keepalived"><a href="#宿主机上安装keepalived" class="headerlink" title="宿主机上安装keepalived"></a>宿主机上安装keepalived</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y keepalived</span><br></pre></td></tr></table></figure>
+
+<p>配置文件信息 宿主机上的配置文件位置为 <code>/etc/keepalived/keepalived.conf</code></p>
+<p>修改配置信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">vrrp_instance VI_1 &#123;</span><br><span class="line">    state MASTER</span><br><span class="line">    interface ens33</span><br><span class="line">    virtual_router_id 51</span><br><span class="line">    priority 100</span><br><span class="line">    advert_int 1</span><br><span class="line">    authentication &#123;</span><br><span class="line">        auth_type PASS</span><br><span class="line">        auth_pass 1111</span><br><span class="line">    &#125;</span><br><span class="line">    virtual_ipaddress &#123;</span><br><span class="line">        192.168.1.156</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">​</span><br><span class="line">virtual_server 192.168.1.156 8888 &#123;</span><br><span class="line">    delay_loop 3</span><br><span class="line">    lb_algo rr </span><br><span class="line">    lb_kind NAT</span><br><span class="line">    persistence_timeout 50</span><br><span class="line">    protocol TCP</span><br><span class="line">​</span><br><span class="line">    real_server 172.18.0.201 8888 &#123;</span><br><span class="line">        weight 1</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">​</span><br><span class="line">virtual_server 192.168.1.156 3306 &#123;</span><br><span class="line">    delay_loop 3</span><br><span class="line">    lb_algo rr </span><br><span class="line">    lb_kind NAT</span><br><span class="line">    persistence_timeout 50</span><br><span class="line">    protocol TCP</span><br><span class="line">​</span><br><span class="line">    real_server 172.18.0.201 3306 &#123;</span><br><span class="line">        weight 1</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>宿主机上keepalived的配置文件，上传到服务器，然后启动宿主机keepalived</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service keepalived start</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![](http://images.ornnth.com/images/docker/85.png)
+</div>
+
+<p>然后ping一下文件中设置的IP</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping 192.168.1.156</span><br></pre></td></tr></table></figure>
+
+<p>打开浏览器输入网址,地址是配置的虚拟IP <code>192.168.1.156</code>,端口8888,提示输入用户名和密码，用户名为admin,密码是abc123456</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.1.156:8888&#x2F;dbs</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![](http://images.ornnth.com/images/docker/86.png)
+</div>
+
+<p>注意：在最后宿主机上配置keepalived的时候如果输入的网址不成功可能是因为防火墙的原因，我这里将防火墙关掉就可以了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld</span><br></pre></td></tr></table></figure>
+
+<p>在上图中我们访问的局域网内的虚拟IP，这个请求就被转发到Docker里面的虚拟IP，Dockers的虚拟IP指不定被哪一个容器中h1或者h2中的keepalived抢占了，抢占完经由haproxy处理，然后上图看到的画面就是某一个容器内的haproxy的监控</p>
+<p>现在打开数据库管理工具</p>
+<div align=center>
+![](http://images.ornnth.com/images/docker/87.png)
+</div>
+
+<p>测试连接成功，这次发起的数据库请求，因为采用的是双机热备方案，这次请求不一定经由哪一个haproxy发到数据库节点上，然后就是通过这个局域网的虚拟IP来做数据库的增删改查也是可以的，比如</p>
+<div align=center>
+![](http://images.ornnth.com/images/docker/88.png)
+</div>
+
+<p>我向表中添加一条数据，这次insert请求也是不一定经由哪一个haproxy路由到数据库节点上，现在查看比如DB1节点</p>
+<div align=center>
+![](http://images.ornnth.com/images/docker/89.png)
+</div>
+
+<p>再打开DB5节点</p>
+<div align=center>
+![](http://images.ornnth.com/images/docker/90.png)
+</div>
+
+<p>接下来测试双机热备的高可用性，使用双机热备方案就是为了避免一个haproxy节点挂掉之后数据库的负载均衡不能使用，但是现在有两个节点，我挂掉任何一个节点还有另外一个节点依然可以使用，当前我启动了两个容器h1和h2，现在我打算将h1容器停掉</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pause h1</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![](http://images.ornnth.com/images/docker/91.png)
+</div>
+
+<p>这样h1容器里面haproxy就用不了了，但是现在因为双机热备方案还有h2容器来承担数据库的负载均衡，现在在数据库的客户端再试验一下，我再次添加一条记录</p>
+<div align=center>
+![](http://images.ornnth.com/images/docker/92.png)
+</div>
+
+<p>现在打开几个数据库节点看一下</p>
+<div align=center>
+![](http://images.ornnth.com/images/docker/93.png)
+</div>
+
+<div align=center>
+![](http://images.ornnth.com/images/docker/94.png)
+</div>
+
+<div align=center>
+![](http://images.ornnth.com/images/docker/95.png)
+</div>
+
+<div align=center>
+![](http://images.ornnth.com/images/docker/96.png)
+</div>
+
+<div align=center>
+![](http://images.ornnth.com/images/docker/97.png)
+</div>
+
+<p>从图中可以看到挂掉一个节点还有另外一个节点可以正常运行。</p>
+<p>先将h1节点恢复</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker unpause h1</span><br></pre></td></tr></table></figure>
+
+<p>如果想要彻底停止h1容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop h1</span><br></pre></td></tr></table></figure>
+<p>如果想要启动h1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start h1</span><br></pre></td></tr></table></figure>
+
+<p>但是这样容器里面的haproxy和keepalived并没有启动，所以还要进入到容器里面启动haproxy和keepalived两个服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">--进入容器</span><br><span class="line">docker exec -it h1 bash</span><br><span class="line">--启动服务</span><br></pre></td></tr></table></figure>
+
+<p>现在可能我将电脑关闭了，然后再打开电脑进入docker虚拟机启动pxc容器发现启动之后pxc容器闪退了，因为管理pxc集群方案比较复杂，如果挂掉pxc集群中的一些节点，将来将它们再启动的时候，它们的启动顺序非常重要。</p>
+<h2 id="暂停PXC集群方法"><a href="#暂停PXC集群方法" class="headerlink" title="暂停PXC集群方法"></a>暂停PXC集群方法</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;sysctl.conf</span><br><span class="line">#文件中添加 net.ipv4.ip_forward&#x3D;1 这个配置</span><br><span class="line">systemctl restart network</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux-CentOS-Docker/" rel="tag"># Linux - CentOS - Docker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/09/24/Docker-5-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" rel="prev" title="Docker-5-数据库负载均衡">
+      <i class="fa fa-chevron-left"></i> Docker-5-数据库负载均衡
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/09/27/%E8%85%BE%E8%AE%AF%E4%BA%91%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/" rel="next" title="腾讯云项目环境部署脚本">
+      腾讯云项目环境部署脚本 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要采用双机热备"><span class="nav-number">1.</span> <span class="nav-text">为什么要采用双机热备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#虚拟地址"><span class="nav-number">2.</span> <span class="nav-text">虚拟地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用Keepalived实现双机热备"><span class="nav-number">3.</span> <span class="nav-text">利用Keepalived实现双机热备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#双击热备细节"><span class="nav-number">3.1.</span> <span class="nav-text">双击热备细节</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Haproxy双机热备方案"><span class="nav-number">3.2.</span> <span class="nav-text">Haproxy双机热备方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Keepalived"><span class="nav-number">3.3.</span> <span class="nav-text">安装Keepalived</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Keepalived配置文件"><span class="nav-number">4.</span> <span class="nav-text">Keepalived配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动Keepalived"><span class="nav-number">5.</span> <span class="nav-text">启动Keepalived</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建第二个haproxy-（h2）"><span class="nav-number">6.</span> <span class="nav-text">创建第二个haproxy （h2）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#宿主机上安装keepalived"><span class="nav-number">7.</span> <span class="nav-text">宿主机上安装keepalived</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#暂停PXC集群方法"><span class="nav-number">8.</span> <span class="nav-text">暂停PXC集群方法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

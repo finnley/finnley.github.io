@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="变量的作用域  1. 变量的作用域也称 变量的范围 ， 变量的范围即它定义的上下文背景（也是它的生效范围）。大部分的PHP变量只有一个单独的范围，这个单独的范围跨度同样包含了 include 和 require 引入的文件  2. global 关键字  3. $GLOBALS 及 其他超全局数组  1 2 3 4 5 6 7   $outer &#x3D; &#39;str&#39;; &#x2F;&#x2F;外面的称为全局变量，指的下面函">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5-自定义函数及内部函数">
+<meta property="og:url" content="https://notes.xuepincat.com/2019/02/26/5-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0%E5%8F%8A%E5%86%85%E9%83%A8%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="变量的作用域  1. 变量的作用域也称 变量的范围 ， 变量的范围即它定义的上下文背景（也是它的生效范围）。大部分的PHP变量只有一个单独的范围，这个单独的范围跨度同样包含了 include 和 require 引入的文件  2. global 关键字  3. $GLOBALS 及 其他超全局数组  1 2 3 4 5 6 7   $outer &#x3D; &#39;str&#39;; &#x2F;&#x2F;外面的称为全局变量，指的下面函">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-02-26T13:59:01.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.327Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2019/02/26/5-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0%E5%8F%8A%E5%86%85%E9%83%A8%E5%87%BD%E6%95%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>5-自定义函数及内部函数 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/02/26/5-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0%E5%8F%8A%E5%86%85%E9%83%A8%E5%87%BD%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          5-自定义函数及内部函数
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-02-26 21:59:01" itemprop="dateCreated datePublished" datetime="2019-02-26T21:59:01+08:00">2019-02-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="变量的作用域"><a href="#变量的作用域" class="headerlink" title="变量的作用域"></a>变量的作用域</h3><blockquote>
+<ol>
+<li>变量的作用域也称 <code>变量的范围</code> ， 变量的范围即它定义的上下文背景（也是它的生效范围）。大部分的PHP变量只有一个单独的范围，这个单独的范围跨度同样包含了 <code>include</code> 和 <code>require</code> 引入的文件</li>
+<li><code>global</code> 关键字</li>
+<li><code>$GLOBALS</code> 及 <code>其他超全局数组</code></li>
+</ol>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$outer = <span class="string">'str'</span>; <span class="comment">//外面的称为全局变量，指的下面函数的外面</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myfunc</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> $outer; <span class="comment">//局部变量</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//对于PHP来说，默认情况下全局变量是不能拿到函数体内部来使用的，所以上面的里面的和外面的就不合适同一个变量</span></span><br></pre></td></tr></table></figure>
+
+<p>但是现在在函数体内部想引用外部的变量怎么办呢？ 我们可以使用 <code>global</code> 关键字</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$outer = <span class="string">'str'</span>; <span class="comment">//外面的称为全局变量，指的下面函数的外面</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myfunc</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">global</span> $outer;</span><br><span class="line">    <span class="keyword">echo</span> $outer; <span class="comment">//局部变量</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//这样可以将外部的变量拿到内部使用</span></span><br></pre></td></tr></table></figure>
+
+<p>除了使用 <code>global</code> 关键字之外，还可以使用 <code>$GLOBALS[$outer]</code> </p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$outer = <span class="string">'str'</span>; <span class="comment">//外面的称为全局变量，指的下面函数的外面</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myfunc</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $GLOBALS[$outer]；</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="静态变量"><a href="#静态变量" class="headerlink" title="静态变量"></a>静态变量</h3><blockquote>
+<p><code>静态变量</code> 仅在局部函数域中存在，但当程序执行历来此作用域时，其值并不会消失。即定义的静态变量不会立即释放内存，这个值会一直存在。</p>
+</blockquote>
+<p><code>static</code> 关键字特点</p>
+<ol>
+<li>仅初始化一次</li>
+<li>初始化时需要赋值</li>
+<li>每次执行函数该值会保留</li>
+<li>static 修饰的变量是局部的，仅在函数内部有效</li>
+<li>可以记录函数的调用次数，从而可以在某些条件下终止递归</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunc</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> $a = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">echo</span> $a++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第一次调用muFunc()的时候首先输出1,<br>第二次调用muFunc()的时候首先输出2,<br>第三次调用muFunc()的时候首先输出3,</p>
+<h3 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//写出如下程序的输出结果:</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    $count = <span class="number">5</span>;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">get_count</span><span class="params">()</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">static</span> $count; <span class="comment">//第四步,此时的值为NULL</span></span><br><span class="line">        <span class="keyword">return</span> $count++; <span class="comment">//第五步:NULL++=1,这里首先返回$count(NULL),然后再进行加加操作变成1,并且不会被释放</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">echo</span> $count;  <span class="comment">//第一步:5</span></span><br><span class="line">    ++$count; <span class="comment">//第二步:6</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">echo</span> get_count(); <span class="comment">//第三步跳转到函数体; 第六步 输出NULL;输出NULL之后$count的值变成了1</span></span><br><span class="line">    <span class="keyword">echo</span> get_count(); <span class="comment">//第七步又进入函数体,此时$count为1,先返回,这里也就输出1</span></span><br></pre></td></tr></table></figure>
+
+<p>答案: 5 NULL 1,NULL不会输出,所以最终结果为: 5 1</p>
+<h3 id="函数的参数"><a href="#函数的参数" class="headerlink" title="函数的参数"></a>函数的参数</h3><blockquote>
+<p>　默认情况下，函数参数通过值传递<br>　如果希望允许函数修改它的值，必须通过引用传递参数</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$a = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunc</span><span class="params">($a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $a = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">myFunc($a);</span><br><span class="line"><span class="keyword">echo</span> $a;</span><br></pre></td></tr></table></figure>
+
+<p>最终$a的值会变成２吗？是不会的，因为默认情况下是进行的值传递，当我们把$a的值传递到函数体内部的时候，它是一个值传递，你爱怎么改就怎么改，跟外部的变量是没有关系的</p>
+<p>如果想做引用传递只需要加一个　<code>&amp;</code> 符号就行了</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$a = <span class="number">1</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunc</span><span class="params">(＆$a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    $a = <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">myFunc($a);</span><br><span class="line"><span class="keyword">echo</span> $a;</span><br></pre></td></tr></table></figure>
+
+<p>此时在函数体内部修改$a的值，外面的$a的值就会跟着改变</p>
+<h3 id="函数的返回值"><a href="#函数的返回值" class="headerlink" title="函数的返回值"></a>函数的返回值</h3><blockquote>
+<ol>
+<li>值通过使用可选的返回语句(return)返回</li>
+<li>可以返回包括数组和对象的任意类型</li>
+<li>返回语句会终止函数执行,将控制权交回函数调用处</li>
+<li>省略return, 返回值为NULL,不可有多个返回值</li>
+</ol>
+</blockquote>
+<h3 id="函数的引用返回"><a href="#函数的引用返回" class="headerlink" title="函数的引用返回"></a>函数的引用返回</h3><blockquote>
+<p>从函数返回一个引用,必须再函数声明和指派返回值给一个变量时都使用引用运算符 <code>&amp;</code></p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> &amp;<span class="title">myFunc</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">static</span> $b = <span class="number">10</span>;</span><br><span class="line">   <span class="keyword">return</span> $b; </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$a = myFunc(); <span class="comment">//10</span></span><br><span class="line">$a = &amp;myFunc(); <span class="comment">//</span></span><br><span class="line">$a = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">echo</span> myFunc(); <span class="comment">//100</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="外部文件的导入"><a href="#外部文件的导入" class="headerlink" title="外部文件的导入"></a>外部文件的导入</h3><blockquote>
+<ol>
+<li>include/require语句包含并运行指定文<br>件</li>
+<li>如果给出路径名按照路径来找,否则从include_path中查找</li>
+<li>如果include_path中也没有,则从调用脚本文件所在的目录和当前工作目录下查找</li>
+<li>当一个文件被包含时,其中所包含的代码继承了include所在行的变量范围</li>
+<li>加载过程中未找到文件则 <code>include 结构会发出一条警告</code>; 这一点和 <code>require</code> 不同,后者会发出一个致命错误</li>
+<li><code>require</code>在出错的时候产生 <code>E_COMPILE_ERROR 级别</code> 的错误.即导致脚本中止; <code>incldue</code> 只产生 <code>警告(E_WARNING)</code>,脚本会继续执行 </li>
+<li>require(include)/require_once(include_once)唯一区别是PHP会检查文件 <code>是否已经曝韩过</code> ,如果是则 <code>不会再次包含</code></li>
+</ol>
+</blockquote>
+<h3 id="系统内置函数"><a href="#系统内置函数" class="headerlink" title="系统内置函数"></a>系统内置函数</h3><ul>
+<li>时间日期函数</li>
+</ul>
+<blockquote>
+<p>date(), strtotime(), mktime(), time(), microtime(), date_default_timezone_set()</p>
+</blockquote>
+<ul>
+<li>IP处理函数</li>
+</ul>
+<blockquote>
+<p>ip2long(), long2ip()</p>
+</blockquote>
+<ul>
+<li>打印处理函数</li>
+</ul>
+<blockquote>
+<p>print(), printf(), print_r(), echo, sprintf(), var_dump(), var_export()</p>
+</blockquote>
+<ul>
+<li>序列化与反序列化函数</li>
+</ul>
+<blockquote>
+<p>serialize(), unserialize()</p>
+</blockquote>
+<ul>
+<li>字符串处理函数</li>
+</ul>
+<blockquote>
+<p>implode(), explode(), join(), strrev(), trim(), ltrim(), rtirm(), strstr(), number_format()</p>
+</blockquote>
+<ul>
+<li>数组处理函数</li>
+</ul>
+<blockquote>
+<p>array_keys(), array_values(), array_diff(), array_intersect(), array_merge(), array_shift(), array_unshift(), array_pop(), array_push(), sort(), array_rand()</p>
+</blockquote>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    $var1 = <span class="number">5</span>;</span><br><span class="line">    $var2 = <span class="number">10</span>; </span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">foo</span><span class="params">(&amp;$my_var)</span></span></span><br><span class="line"><span class="function">    </span>&#123;</span><br><span class="line">        <span class="keyword">global</span> $var1; <span class="comment">// 第二步:5</span></span><br><span class="line">        $var1 += <span class="number">2</span>; <span class="comment">//第三步:7</span></span><br><span class="line">        $var2 = <span class="number">4</span>;</span><br><span class="line">        $my_var += <span class="number">3</span>; <span class="comment">//第四步:8</span></span><br><span class="line">        <span class="keyword">return</span> $var2; <span class="comment">//第五步:4</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    $my_var = <span class="number">5</span>;</span><br><span class="line">    <span class="keyword">echo</span> foo($my_var) . <span class="string">"\n"</span>; <span class="comment">// 第一步:进入函数;第六步:输出4</span></span><br><span class="line">    <span class="keyword">echo</span> $my_var . <span class="string">"\n"</span>; <span class="comment">//第七步:8</span></span><br><span class="line">    <span class="keyword">echo</span> $var1; <span class="comment">//第八步:7</span></span><br><span class="line">    <span class="keyword">echo</span> $var2; <span class="comment">//第九步:10</span></span><br><span class="line">    $bar = <span class="string">'foo'</span>;</span><br><span class="line">    $my_var = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">echo</span> $bar($my_var) . <span class="string">"\n"</span>; <span class="comment">//第十步:4</span></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/PHP/" rel="tag"># PHP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/02/25/4-%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6/" rel="prev" title="4-流程控制">
+      <i class="fa fa-chevron-left"></i> 4-流程控制
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/02/26/6-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="next" title="6-正则表达式">
+      6-正则表达式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#变量的作用域"><span class="nav-number">1.</span> <span class="nav-text">变量的作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态变量"><span class="nav-number">2.</span> <span class="nav-text">静态变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example"><span class="nav-number">3.</span> <span class="nav-text">Example</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数的参数"><span class="nav-number">4.</span> <span class="nav-text">函数的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数的返回值"><span class="nav-number">5.</span> <span class="nav-text">函数的返回值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#函数的引用返回"><span class="nav-number">6.</span> <span class="nav-text">函数的引用返回</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#外部文件的导入"><span class="nav-number">7.</span> <span class="nav-text">外部文件的导入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统内置函数"><span class="nav-number">8.</span> <span class="nav-text">系统内置函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-1"><span class="nav-number">9.</span> <span class="nav-text">Example</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

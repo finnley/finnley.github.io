@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Input Plugin  * input 插件指定数据源，一个 pipeline 可以有多个 input 插件，常用有下面几个插件   1. stdin            2. file            3. kafka          stdin     最简单的输入，从标准输入读取数据，通用配置为：             * codec 类型为 codec  logstash">
+<meta property="og:type" content="article">
+<meta property="og:title" content="input 插件详解及glob讲解">
+<meta property="og:url" content="https://notes.xuepincat.com/2019/09/21/input-%E6%8F%92%E4%BB%B6%E8%AF%A6%E8%A7%A3%E5%8F%8Aglob%E8%AE%B2%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="Input Plugin  * input 插件指定数据源，一个 pipeline 可以有多个 input 插件，常用有下面几个插件   1. stdin            2. file            3. kafka          stdin     最简单的输入，从标准输入读取数据，通用配置为：             * codec 类型为 codec  logstash">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/4.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/5.png">
+<meta property="article:published_time" content="2019-09-21T07:53:53.000Z">
+<meta property="article:modified_time" content="2020-06-27T14:09:34.413Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Logstash">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/elastic/logstash/4.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2019/09/21/input-%E6%8F%92%E4%BB%B6%E8%AF%A6%E8%A7%A3%E5%8F%8Aglob%E8%AE%B2%E8%A7%A3/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>input 插件详解及glob讲解 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/09/21/input-%E6%8F%92%E4%BB%B6%E8%AF%A6%E8%A7%A3%E5%8F%8Aglob%E8%AE%B2%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          input 插件详解及glob讲解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-21 15:53:53" itemprop="dateCreated datePublished" datetime="2019-09-21T15:53:53+08:00">2019-09-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-06-27 22:09:34" itemprop="dateModified" datetime="2020-06-27T22:09:34+08:00">2020-06-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Logstash/" itemprop="url" rel="index"><span itemprop="name">Logstash</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Input-Plugin"><a href="#Input-Plugin" class="headerlink" title="Input Plugin"></a>Input Plugin</h2><ul>
+<li>input 插件指定数据源，一个 pipeline 可以有多个 input 插件，常用有下面几个插件</li>
+</ul>
+<ol>
+<li><p>stdin</p>
+</li>
+<li><p>file</p>
+</li>
+<li><p>kafka</p>
+<h3 id="stdin"><a href="#stdin" class="headerlink" title="stdin"></a>stdin</h3><p>最简单的输入，从标准输入读取数据，通用配置为：</p>
+</li>
+</ol>
+<ul>
+<li>codec 类型为 codec</li>
+</ul>
+<p>logstash 会去检查我们输入的字符串是否存在 codec ,如果不存在就会认为配置是有问题的</p>
+<ul>
+<li>type 类型为 string , 自定义该事件的类型，可用于后续判断</li>
+</ul>
+<p>比如 web 日志的可以打上 web 的 tag, MySQL 的可以给tag打上 MySQL等</p>
+<ul>
+<li>tags 类型为 array, 自定义该事件的 tag , 可用于后续判断</li>
+</ul>
+<p>可以通过这个字段定义事件的 tag</p>
+<ul>
+<li>add_field 类型为 hash , 为该事件添加字段</li>
+</ul>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p>input-stdin.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    stdin &#123;</span><br><span class="line">        codec &#x3D;&gt; &quot;plain&quot;</span><br><span class="line">        tags &#x3D;&gt; [&quot;test&quot;]</span><br><span class="line">        type &#x3D;&gt; &quot;std&quot;</span><br><span class="line">        add_field &#x3D;&gt; &#123;&quot;key&quot; &#x3D;&gt; &quot;value&quot;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; &quot;rubydebug&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/4.png" alt=""></p>
+<p>plain: 什么都不做的解码</p>
+<p>output</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;type&quot; &#x3D;&gt; &quot;std&quot;,</span><br><span class="line">    &quot;@version&quot; &#x3D;&gt; &quot;1&quot;,</span><br><span class="line">    &quot;message&quot; &#x3D;&gt; &quot;test&quot;,</span><br><span class="line">    &quot;@timestamp&quot; &#x3D;&gt; 2019-09-21T16:19:20.841Z,</span><br><span class="line">    &quot;key&quot; &#x3D;&gt; &quot;value&quot;,</span><br><span class="line">    &quot;tags&quot; &#x3D;&gt; [</span><br><span class="line">        [0] &quot;test&quot;</span><br><span class="line">    ],</span><br><span class="line">    &quot;host&quot; &#x3D;&gt; &quot;MacBook-Pro-2.local&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;test&quot;|bin&#x2F;logstash -f conf&#x2F;input-stdin.conf</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/5.png" alt=""></p>
+<h3 id="file"><a href="#file" class="headerlink" title="file"></a>file</h3><p>从文件读取数据，如常见的日志文件。文件读取通常要解决介个问题：</p>
+<ul>
+<li><p>文件内容如何只被读取一次？即重启LS时，才上次读取的位置继续</p>
+<ul>
+<li>sincedb</li>
+</ul>
+</li>
+<li><p>如何即时读取到文件的新内容？</p>
+<ul>
+<li>定时检查文件是否更新</li>
+</ul>
+</li>
+<li><p>如何发现新文件并进行读取？</p>
+<ul>
+<li>可以，定时检查新文件</li>
+</ul>
+</li>
+<li><p>如果文件发生了归档(rotation) 操作，是否影响当前的内容读取？</p>
+<ul>
+<li>不影响，被归档的文件内容可以继续被读取 </li>
+</ul>
+</li>
+</ul>
+<p>基于 Filewatch 的 ruby 库实现的</p>
+<ul>
+<li><a href="https://github.com.jordansissel/ruby-filewatch" target="_blank" rel="noopener">https://github.com.jordansissel/ruby-filewatch</a></li>
+<li>watch</li>
+<li>Tail</li>
+</ul>
+<h3 id="关键配置"><a href="#关键配置" class="headerlink" title="关键配置"></a>关键配置</h3><ul>
+<li><p>path 类型为数组，指明读取的文件路径，基于 glob 匹配语法</p>
+<p>  path =&gt; [“/var/log/<em>*/</em>.log”, “/var/log/message”]</p>
+</li>
+<li><p>exclue 类型为数组排除不想监听的文件规则，基于 glob 匹配语法</p>
+<p>  exclude =&gt; “.gz”</p>
+</li>
+<li><p>sincedb_path 类型为字符串，记录sincedb 文件路径</p>
+</li>
+<li><p>start_position 类型为字符串，begining or end , 默认 end, 是否从头读取文件</p>
+</li>
+<li><p>start_interval 类型为数值，单位秒，定时检查文件是佛有更新，默认1秒</p>
+</li>
+<li><p>discover_interval 类型为数值，单位秒，定时检查是否有新文件待读取，默认15秒</p>
+</li>
+<li><p>ignore_older 类型为数值，单位秒，扫描文件列表时，如果该文件上次更改事件超过设定时长，则不作处理，但依然会监控是否有新内容，默认关闭</p>
+</li>
+<li><p>close_older 类型为数值，单位秒，如果监听的文件在超过该设定事件内没有新内容，会被关闭文件句柄，释放资源，但依然会监控是否有新内容，默认3600秒，即1个小时</p>
+</li>
+</ul>
+<h2 id="glob-匹配语法"><a href="#glob-匹配语法" class="headerlink" title="glob 匹配语法"></a>glob 匹配语法</h2><p>主要包含如下几种匹配符：</p>
+<ul>
+<li><p><code>*</code> 匹配任意字符，但不匹配以 <code>.</code> 开头的隐藏文件，匹配这类文件时要使用 <code>.*</code> 来匹配</p>
+</li>
+<li><p><code>**</code> 递归匹配子目录</p>
+</li>
+<li><p><code>?</code> 匹配单一字符</p>
+</li>
+<li><p><code>[]</code> 匹配多个字符， 比如 [a-z],[^a-z]</p>
+</li>
+<li><p><code>{}</code> 匹配多个单词， 比如 {foo, bar, hello}</p>
+</li>
+<li><p><code>\</code> 转移符号</p>
+</li>
+</ul>
+<h3 id="实例-1"><a href="#实例-1" class="headerlink" title="实例"></a>实例</h3><ul>
+<li>“/var/log/*.log”</li>
+</ul>
+<p>匹配 /var/log 目录下以 .log 结尾的文件</p>
+<ul>
+<li><code>&quot;/var/log/**/*.log&quot;</code></li>
+</ul>
+<p>匹配 /var/log 所有子目录下以 .log 结尾的文件</p>
+<ul>
+<li>“/var/log/{app1, app2, app3}/*.log”</li>
+</ul>
+<p>匹配 /var/log 目录下 app1, app2, app3 目录中以 .log 结尾的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    file &#123;</span><br><span class="line">        path &#x3D;&gt; [&quot;&#x2F;var&#x2F;log&#x2F;access_log&quot;, &quot;&#x2F;var&#x2F;log&quot;&#x2F;err_log],</span><br><span class="line">        type &#x3D;&gt; &quot;web&quot;,</span><br><span class="line">        start_position &#x3D;&gt; &quot;begining&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>start_position 只有在第一次读取的时候 begining 才生效，一旦读取过这个文件，在 sincedb 里面有记录，那么 logstash 再去跑的时候发现这个文件在 sincedb 里面有记录，即使 start_position 设置成了 begining ,也不会再从头读取。这中坏处是如果做一些调试会很麻烦，如果要从头开始读文件，需要将 sincedb 删掉，如多需要调试可以修改成下面的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    file &#123;</span><br><span class="line">        path &#x3D;&gt; &quot;&#x2F;var&#x2F;logs&#x2F;*.log&quot;</span><br><span class="line">        sincedb_path &#x3D;&gt; &quot;dev&#x2F;null&quot;</span><br><span class="line">        start_position &#x3D;&gt; &quot;begining&quot;</span><br><span class="line">        ignore_older &#x3D;&gt; 0</span><br><span class="line">        close_older &#x3D;&gt; 5</span><br><span class="line">        discover_interval &#x3D;&gt; 1</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;codec &#x3D;&gt; rubydebug &#123;&#125;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果需要调试可以将下面的 sincedb_path 设置成 “/dev/null” ,”/dev/null” 是一个特殊的文件，所有写入这个的文件的内容都不会存储，然后 start_position 再设置成 begining。然后每次运行  logstash 的时候都是从头读取这个文件</p>
+<h2 id="kafka"><a href="#kafka" class="headerlink" title="kafka"></a>kafka</h2><p>kafka 是最流行的消息队列，也是 Elastic stack 架构中常用的，使用相对简单</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    kafka &#123;</span><br><span class="line">        zk_connct &#x3D;&gt; &quot;kafka:2181&quot;</span><br><span class="line">        group_id &#x3D;&gt; &quot;logstash&quot;</span><br><span class="line">        topic_id &#x3D;&gt; &quot;apache_logs&quot;</span><br><span class="line">        consumer_threads &#x3D;&gt; 16</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Logstash/" rel="tag"># Logstash</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/09/18/Logstash%E5%85%A5%E9%97%A8%E5%8F%8A%E6%9E%B6%E6%9E%84%E7%AE%80%E4%BB%8B/" rel="prev" title="Logstash入门及架构简介">
+      <i class="fa fa-chevron-left"></i> Logstash入门及架构简介
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/09/22/codec-%E6%8F%92%E4%BB%B6%E8%AF%A6%E8%A7%A3/" rel="next" title="codec 插件详解">
+      codec 插件详解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Input-Plugin"><span class="nav-number">1.</span> <span class="nav-text">Input Plugin</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#stdin"><span class="nav-number">1.1.</span> <span class="nav-text">stdin</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实例"><span class="nav-number">1.1.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#file"><span class="nav-number">1.2.</span> <span class="nav-text">file</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关键配置"><span class="nav-number">1.3.</span> <span class="nav-text">关键配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#glob-匹配语法"><span class="nav-number">2.</span> <span class="nav-text">glob 匹配语法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例-1"><span class="nav-number">2.1.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kafka"><span class="nav-number">3.</span> <span class="nav-text">kafka</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

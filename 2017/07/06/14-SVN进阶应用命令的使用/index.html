@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="svn list -列出当前目录下处于版本控制的所有文件及文件夹 svn status -列出工作副本中的文件（夹）的状态 svn log -查看提交日志（来自svn ci的参数 -m参数） svn info -工作副本及文件（夹）的详细信息  一、svn list(svn ls)命令 来到svn_1机器，首先看一下svn list命令，使用这个命令列出的文件中不会包含无版本控制的文件。  比如现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="14-SVN进阶应用命令的使用">
+<meta property="og:url" content="https://notes.xuepincat.com/2017/07/06/14-SVN%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="svn list -列出当前目录下处于版本控制的所有文件及文件夹 svn status -列出工作副本中的文件（夹）的状态 svn log -查看提交日志（来自svn ci的参数 -m参数） svn info -工作副本及文件（夹）的详细信息  一、svn list(svn ls)命令 来到svn_1机器，首先看一下svn list命令，使用这个命令列出的文件中不会包含无版本控制的文件。  比如现">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/1.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/2.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/3.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/5.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/6.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/7.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/8.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/9.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/10.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/11.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/12.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/13.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/14.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170706/15.png">
+<meta property="article:published_time" content="2017-07-06T10:15:10.000Z">
+<meta property="article:modified_time" content="2020-07-12T03:33:47.503Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="SVN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/20170706/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2017/07/06/14-SVN%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>14-SVN进阶应用命令的使用 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/06/14-SVN%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          14-SVN进阶应用命令的使用
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-06 18:15:10" itemprop="dateCreated datePublished" datetime="2017-07-06T18:15:10+08:00">2017-07-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <pre><code>svn list -列出当前目录下处于版本控制的所有文件及文件夹
+svn status -列出工作副本中的文件（夹）的状态
+svn log -查看提交日志（来自svn ci的参数 -m参数）
+svn info -工作副本及文件（夹）的详细信息</code></pre><h3 id="一、svn-list-svn-ls-命令"><a href="#一、svn-list-svn-ls-命令" class="headerlink" title="一、svn list(svn ls)命令"></a>一、svn list(svn ls)命令</h3><p>来到svn_1机器，首先看一下svn list命令，使用这个命令列出的文件中不会包含无版本控制的文件。</p>
+<p>比如现在我们新建一个名为test.html的文件，现在test.html并没有加入到版本控制中，也就是说test.html的文件状态是无版本控制的。</p>
+<a id="more"></a>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># touch test.html</span></span><br><span class="line"><span class="comment"># svn ls</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/1.png" alt=""></p>
+<p>从输出的列表中我们没有看到test.html,也就是说他不会列出无版本控制的文件</p>
+<p>现在看一下在工作副本中的文件夹，比如说css、js、img文件夹里面也有一些文件，但是这里并没有列出，也就是说用这个命令默认情况下它只会顶级目录，目录下包含的文件并不会递归的显示出来，但如果在上面命令的基础上添加参数,它就可以递归的把所有目录下处于版本控制下的所有文件都显示出来。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn ls --recursive</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/2.png" alt=""></p>
+<p>我们知道在linux系统中原生命令ls有个参数-l,输入【ls -a】这个命令可以列出当前目录下所有文件的详细信息，包含权限、用户组等等。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls -l</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/3.png" alt=""></p>
+<p>熟悉这个命令的人都知道它有个缩写【ll】，在【svn ls】命令里面也有个类似的参数可以显示版本控制下的文件详情</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ls li -v</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/4.png" alt=""></p>
+<pre><code>root@VM-68-173-ubuntu:~/svn_1# svn ls -v
+  6 mingo2                Jul 31 15:46 ./
+  2 mingo               0 Jul 16 09:22 about.html
+  2 mingo                 Jul 16 09:22 css/
+  2 mingo                 Jul 16 09:22 img/
+  6 mingo2            228 Jul 31 15:46 index.html
+  2 mingo                 Jul 16 09:22 js/
+root@VM-68-173-ubuntu:~/svn_1#</code></pre><p>以index.html为例，这行表示index.html最后一次提交是mingo2这个用户执行的，它提交之后服务端的版本就变成了7，并且它占用228个字节，并且提交的时间等等信息。</p>
+<p>当然也可以和–recursive参数配置使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn ls -v --recursive</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/5.png" alt=""></p>
+<p>这样就可以看到所有子文件夹下的文件详情。<br>以上就是svn list的用法。</p>
+<h3 id="二、svn-status-svn-st-命令"><a href="#二、svn-status-svn-st-命令" class="headerlink" title="二、svn status( svn st)命令"></a>二、svn status( svn st)命令</h3><p>该命令用户查看文件的状态，比如哪些文件被改动过了，哪些文件被增加到版本库了，哪些文件是无版本控制的。</p>
+<p>为了显示这个命令，现在需要在工作副本中对文件做一些改动。比如现在把about.html从版本库中删除</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn rm about.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/6.png" alt=""></p>
+<p>然后再编辑一下index.html,随便添加一些东西，然后保存退出<br>修改前：</p>
+<p><img src="/images/20170706/7.png" alt=""></p>
+<p>修改后：</p>
+<p><img src="/images/20170706/8.png" alt=""></p>
+<p>现在执行一下svn status命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn st</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/9.png" alt=""></p>
+<p>它输出了几行信息，刚才动过的文件都被列出来了，每行前面都有一个标记，刚才说svn list命令的时候在工作副本下创建了一个test.html文件，这个文件目前是无版本控制的 ，这个问好表示无版本控制，about.html是从版本控制中删除了，所以D表示删除，M表示index.html被编辑过。</p>
+<p>常见标记状态</p>
+<pre><code>？ -无版本控制
+D -已被标记从版本库中删除
+M -已被编辑过
+A -已被标记增加到版本控制中
+R -文件被替换
+C -文件存在冲突
+！ -文件缺失</code></pre><h3 id="三、svn-log命令"><a href="#三、svn-log命令" class="headerlink" title="三、svn log命令"></a>三、svn log命令</h3><p>该命令用于查看日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn log</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/10.png" alt=""><br>我们可以看到每次提交后的版本号，提交的用户以及提交的时间还有修改的行数。</p>
+<p>当然这个命令也可以指定具体的文件名</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn log index.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/11.png" alt=""></p>
+<p>这样它只会列出与index.html有关的日志信息</p>
+<h3 id="四、svn-info命令"><a href="#四、svn-info命令" class="headerlink" title="四、svn info命令"></a>四、svn info命令</h3><p>该命令用于查看版本库的详细信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn info</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/12.png" alt=""></p>
+<pre><code>root@VM-68-173-ubuntu:~/svn_1# svn info
+Path: .
+Working Copy Root Path: /root/svn_1
+URL: svn://118.89.47.207
+Relative URL: ^/
+Repository Root: svn://118.89.47.207
+Repository UUID: 04a630e2-125b-4a85-b5c8-bbb913df8ee4
+Revision: 6
+Node Kind: directory
+Schedule: normal
+Last Changed Author: mingo2
+Last Changed Rev: 6
+Last Changed Date: 2017-07-31 15:46:39 +0800 (Mon, 31 Jul 2017)
+
+root@VM-68-173-ubuntu:~/svn_1#</code></pre><p>在输出的信息中可以看出版本库的URL路径，最高的版本号，最后一次提交的用户，以及提交的时间等等。</p>
+<p>当然我们也可以查看某个具体的文件的信息，比如说想查看一下index.html的详细信息</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn info index.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/13.png" alt=""></p>
+<p>输出的信息与上面是类似的，只不过信息是针对我们指定的文件或者是文件夹。</p>
+<p>这个命令有一个参数，用于将这些信息以xml的格式来输出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn info --xml</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/14.png" alt=""></p>
+<p>它就会以xml格式来输出信息，通常我们会用linux的管道来保存输出的信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn info --xml &gt;&gt; info.xml</span></span><br><span class="line"><span class="comment"># ls</span></span><br><span class="line"><span class="comment"># cat info.xml</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170706/15.png" alt=""></p>
+<p>这样就会在该目录下出现一个info.xml的文件</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/SVN/" rel="tag"># SVN</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/05/13-%E9%94%81%E5%AE%9A%E4%B8%8E%E8%A7%A3%E9%94%81/" rel="prev" title="13-锁定与解锁">
+      <i class="fa fa-chevron-left"></i> 13-锁定与解锁
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/07/15-%E5%A4%9A%E7%89%88%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" rel="next" title="15-多版本解决方案">
+      15-多版本解决方案 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、svn-list-svn-ls-命令"><span class="nav-number">1.</span> <span class="nav-text">一、svn list(svn ls)命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、svn-status-svn-st-命令"><span class="nav-number">2.</span> <span class="nav-text">二、svn status( svn st)命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、svn-log命令"><span class="nav-number">3.</span> <span class="nav-text">三、svn log命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、svn-info命令"><span class="nav-number">4.</span> <span class="nav-text">四、svn info命令</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

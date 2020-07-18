@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是Homebrew? Homebrew 是 mac 的包管理工具，相当于Redhat Linux(Centos&#x2F;RHEL&#x2F;Fedora)的 yum 或者Debian Linux(Debian&#x2F;Ubuntu)的 apt-get ，使用Homebrew能非常方便的下载需要的软件包，比如安装php，直接执行以下语句即可安装：  1   brew install php   注意：它虽然叫Homebr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac安装Homebrew并更换国内镜像源">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/06/13/Mac%E5%AE%89%E8%A3%85Homebrew%E5%B9%B6%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="什么是Homebrew? Homebrew 是 mac 的包管理工具，相当于Redhat Linux(Centos&#x2F;RHEL&#x2F;Fedora)的 yum 或者Debian Linux(Debian&#x2F;Ubuntu)的 apt-get ，使用Homebrew能非常方便的下载需要的软件包，比如安装php，直接执行以下语句即可安装：  1   brew install php   注意：它虽然叫Homebr">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-06-12T23:38:14.000Z">
+<meta property="article:modified_time" content="2020-07-12T03:33:47.696Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Mac">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/06/13/Mac%E5%AE%89%E8%A3%85Homebrew%E5%B9%B6%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Mac安装Homebrew并更换国内镜像源 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/06/13/Mac%E5%AE%89%E8%A3%85Homebrew%E5%B9%B6%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mac安装Homebrew并更换国内镜像源
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-06-13 07:38:14" itemprop="dateCreated datePublished" datetime="2020-06-13T07:38:14+08:00">2020-06-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Mac/" itemprop="url" rel="index"><span itemprop="name">Mac</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="什么是Homebrew"><a href="#什么是Homebrew" class="headerlink" title="什么是Homebrew?"></a>什么是Homebrew?</h2><p><a href="https://brew.sh/" target="_blank" rel="noopener" title="Homebrew">Homebrew</a> 是 mac 的包管理工具，相当于Redhat Linux(Centos/RHEL/Fedora)的 <code>yum</code> 或者Debian Linux(Debian/Ubuntu)的 <code>apt-get</code> ，使用Homebrew能非常方便的下载需要的软件包，比如安装php，直接执行以下语句即可安装：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install php</span><br></pre></td></tr></table></figure>
+
+<p>注意：它虽然叫Homebrew，但实际使用的时候，命令是 <span style="color:#dd0000;"> brew  </span>。<br>怎样安装Homebrew<br>执行以下命令即可，如果很慢或中断，请开科学上网工具并开启全局模式：<br>/usr/bin/ruby -e “$(curl -fsSL <a href="https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;" target="_blank" rel="noopener">https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</a><br>BashCopy<br>更换国内源<br>由于众所周知的原因，Homebrew安装软件非常慢，所以我们要把它的安装源更换成国内的源，这样才能用它愉快的安装软件。<br>要更换的源有三个：Homebrew本身的源、Formula源以及Bottles源。<br>更换Homebrew本身的源<br>Homebrew本身就是一个软件，是用ruby语言编写的，当执行brew update或者brew update xxx更新某个包时，brew会先更新它自己，所以如果这个源没有修改为国内源，它默认是在github上的，速度会比较慢，所以我们更换它的源，先进入Homebrew安装目录：<br>cd “$(brew –repo)”<br>BashCopy<br>然后修改git源为中科大的源：<br>git remote set-url origin git://mirrors.ustc.edu.cn/brew.git<br>BashCopy<br>以上两条命令也可以合并一起执行：<br>cd “$(brew –repo)” &amp;&amp; git remote set-url origin git://mirrors.ustc.edu.cn/brew.git<br>BashCopy<br>修改后，可以使用以下使用查看刚刚的修改：<br>git remote get-url origin<br>BashCopy<br>当然也可以直接在配置文件里看：<br>vim .git/config<br>BashCopy<br>因为修改git源，其实就是修改当前目录下的.git/config文件里的配置，注意.git目录是隐藏目录，要用ls -la才能看到。<br>如果你要换回去，也是完全一样的命令，只不过地址不同而已，换回去的地址为<br>cd “$(brew –repo)” &amp;&amp; git remote set-url origin <a href="https://github.com/Homebrew/brew.git" target="_blank" rel="noopener">https://github.com/Homebrew/brew.git</a><br>BashCopy<br>更换brew Formula的源<br>首先要说一下什么是Formula，查单词它是公式、配方的意思，其实它就是软件名，比如我安装一个nginx：<br>brew install nginx<br>BashCopy<br>在这里，nginx就是Formula，Formula的库默认也是在github上的，其实以前是和brew软件在同一个版本库中，后来分开了，叫做Homebrew-core，意思是官方维护的核心Formula，有官方就有民间，执行以下命令查看你目前有几个Formula库：<br>brew tap<br>BashCopy<br>这是我的：</p>
+<p>你还可以自己去网上或github搜索，有哪些好用的Formula库，你可以用brew tap 仓库名命令把它加入到你的Homebrew配置中，如：<br>#添加一个叫josegonzalez/php的Formula库<br>brew tap josegonzalez/php<br>#删除一个叫josegonzalez/php的Formula库<br>brew untap josegonzalez/php<br>BashCopy<br>当你用Homebrew搜索一个Formula的时候，Homebrew要在所有Formula库里都搜索一遍，把符合的显示出来，或者安装时候，它要先去Formula库中搜索有没有这个Formula，搜索到这个Formula后才能得到它的下载地址，因为Formula只是一个名称，并不是要安装的软件本身，由于Formula非常多，而且还有很多不同的库，而且库又在github上，所以会比较慢，所以我们需要把它更新为国内源（比较快的是中科大的，清华大学也有，听说没中科大的快），先进入homebrew-core的git目录：<br>cd “$(brew –repo)/Library/Taps/homebrew/homebrew-core”<br>BashCopy<br>然后更新git源：<br>git remote set-url origin git://mirrors.ustc.edu.cn/homebrew-core.git<br>BashCopy<br>以上两条命令也可以合并成一条命令来执行：<br>cd “$(brew –repo)/Library/Taps/homebrew/homebrew-core” &amp;&amp; git remote set-url origin git://mirrors.ustc.edu.cn/homebrew-core.git<br>BashCopy<br>如果要换回默认的源，也是一样，只不过最后那个地址不同：<br>cd “$(brew –repo)/Library/Taps/homebrew/homebrew-core” &amp;&amp; git remote set-url origin <a href="https://github.com/Homebrew/homebrew-core.git" target="_blank" rel="noopener">https://github.com/Homebrew/homebrew-core.git</a><br>BashCopy<br>更换Bottles源<br>Homebrew安装的软件都在以下目录中：<br>/usr/local/Cellar/<br>BashCopy<br>其中Cellar意为酒窖、地窖，而Homebrew官方预先编译好的一个软件叫做一个Bottle(酒瓶子)，Bottles就是很多酒瓶子(即软件)，Homebrew把安装一个软件叫做把一个酒瓶子放到酒窖(地窖)里（不过其实是pour，即倒到酒窖里）。<br>上边的Formula仓库只是软件的名称及对应的Bottle下载地址或源码下载地址，因为软件非常多而且又有不同的库，所以软件名本身就得建一个库，而查到软件名之后，还要去下载这个软件名对应的软件，而Homebrew官方的软件（即Bottles）是放在bintray网站中的，同样是国外网站及众所周知的原因，如果直接从这里下载是非常慢的，所以我们还是要把它换成国内的源(这里还是用中科大的)：<br>echo ‘export HOMEBREW_BOTTLE_DOMAIN=<a href="https://mirrors.ustc.edu.cn/homebrew-bottles&#39;" target="_blank" rel="noopener">https://mirrors.ustc.edu.cn/homebrew-bottles&#39;</a> &gt;&gt; ~/.bash_profile<br>BashCopy<br>source一下让它生效：<br>source ~/.bash_profile<br>BashCopy<br>注意：这次就不是设置git源了，这次是加在终端启动配置中，如果你更换了其他的shell，比如zsh，请自己更换名称即可，zsh的要这样添加（其实你自己用vim打开.zshrc添加也是一样的）：<br>echo ‘export HOMEBREW_BOTTLE_DOMAIN=<a href="https://mirrors.ustc.edu.cn/homebrew-bottles&#39;" target="_blank" rel="noopener">https://mirrors.ustc.edu.cn/homebrew-bottles&#39;</a> &gt;&gt; ~/.zshrc<br>BashCopy<br>source一下让它生效：<br>source ~/.zshrc<br>BashCopy<br>如果要用回原来的，直接把添加的这句删掉，再source ~/.bash_profile或source ~/.zshrc即可(有时候你删掉再重新source也不行，我就试过，这时候重新开一个终端窗口就行)。<br>好了，到这里，三个源都更换完毕，赶紧试试你的Homebrew有没有飞起来吧。<br>brew的基本使用<br>使用命令<br>查询软件：<br>brew search 软件名<br>BashCopy<br>安装软件：<br>brew install 软件名<br>BashCopy<br>对于需要在后台运行的软件，大部分可用以下方式启动|停止|重启（它的原理是用launchctl+plist，用这种方式启动的软件重启电脑后也会自动启动）：<br>brew services start|stop|restart 软件名<br>BashCopy<br>关于brew services的原理及详细用法，请查看：Mac服务管理 – launchd、launchctl、LaunchAgent、LaunchDaemon、brew services详解。<br>卸载软件：<br>brew uninstall 软件名<br>BashCopy<br>查看软件的信息：<br>brew info 软件名<br>BashCopy<br>查看安装了哪些软件：<br>brew list 软件名<br>BashCopy<br>查看安装了哪些软件：<br>brew list 软件名<br>BashCopy<br>查看帮助：<br>brew help<br>BashCopy<br>使用客户端软件Cakebrew<br>其实最初是只有命令的，只是后来可能有人觉得用命令麻烦，就开发了Cakebrew：</p>
+<pre><code>    觉得文章对你有用的话鼓励一下我吧
+
+打赏</code></pre><hr>
+<p>作者：Bruce Xie<br>来源：Bruce’s Blog<br>原文：<a href="https://www.xiebruce.top/720.html" target="_blank" rel="noopener">https://www.xiebruce.top/720.html</a><br>本文为转载文章，版权归原作者所有，转载请附上博文链接！</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Mac/" rel="tag"># Mac</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/31/6-Elasticsearch-%E5%88%86%E5%B8%83%E5%BC%8F%E7%89%B9%E6%80%A7/" rel="prev" title="Elasticsearch 分布式特性">
+      <i class="fa fa-chevron-left"></i> Elasticsearch 分布式特性
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/13/MacOS10-15-%E5%AE%89%E8%A3%85PHP7-1/" rel="next" title="MacOS10.15 安装PHP7.1">
+      MacOS10.15 安装PHP7.1 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Homebrew"><span class="nav-number">1.</span> <span class="nav-text">什么是Homebrew?</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

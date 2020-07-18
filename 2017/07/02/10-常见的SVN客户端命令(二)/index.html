@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="常见SVN客户端命令(二) svn diff -版本差异比较  svn mkdir -创建目录并增加到版本控制  svn cat -不检出工作副本直接查看指定文件  diff用于不用版本之间的差异比较； mkdir是创建目录并且直接增加到版本控制中； cat允许我们在不检出工作副本的情况下直接查看指定文件的内容。  一、svn diff … 1、比较本地工作副本和SVN客户机最后一次更新得到的版本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="10-常见的SVN客户端命令(二)">
+<meta property="og:url" content="https://notes.xuepincat.com/2017/07/02/10-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%BA%8C)/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="常见SVN客户端命令(二) svn diff -版本差异比较  svn mkdir -创建目录并增加到版本控制  svn cat -不检出工作副本直接查看指定文件  diff用于不用版本之间的差异比较； mkdir是创建目录并且直接增加到版本控制中； cat允许我们在不检出工作副本的情况下直接查看指定文件的内容。  一、svn diff … 1、比较本地工作副本和SVN客户机最后一次更新得到的版本">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170702/1.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170702/2.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170702/3.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170702/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170702/5.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170702/6.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170702/7.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170702/8.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170702/9.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170702/10.png">
+<meta property="article:published_time" content="2017-07-02T02:57:16.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.290Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="SVN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/20170702/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2017/07/02/10-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%BA%8C)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>10-常见的SVN客户端命令(二) | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/02/10-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%BA%8C)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          10-常见的SVN客户端命令(二)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-02 10:57:16" itemprop="dateCreated datePublished" datetime="2017-07-02T10:57:16+08:00">2017-07-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="常见SVN客户端命令-二"><a href="#常见SVN客户端命令-二" class="headerlink" title="常见SVN客户端命令(二)"></a>常见SVN客户端命令(二)</h3><pre><code>svn diff -版本差异比较
+
+svn mkdir -创建目录并增加到版本控制
+
+svn cat -不检出工作副本直接查看指定文件</code></pre><p>diff用于不用版本之间的差异比较；<br>mkdir是创建目录并且直接增加到版本控制中；<br>cat允许我们在不检出工作副本的情况下直接查看指定文件的内容。</p>
+<a id="more"></a>
+
+<h3 id="一、svn-diff-…"><a href="#一、svn-diff-…" class="headerlink" title="一、svn diff …"></a>一、svn diff …</h3><h4 id="1、比较本地工作副本和SVN客户机最后一次更新得到的版本"><a href="#1、比较本地工作副本和SVN客户机最后一次更新得到的版本" class="headerlink" title="1、比较本地工作副本和SVN客户机最后一次更新得到的版本"></a>1、比较本地工作副本和SVN客户机最后一次更新得到的版本</h4><p>之前提到过工作副本中会有一个.svn的隐藏文件夹，里面记录这SVN客户端最后一次更新版本的文件状态，如果我们给工作副本中的文件进行修改并且保存，工作副本中的文件和.svn文件夹记录的文件状态就会出现差异，换句话说就是.svn可以标记出本地工作副本的变化</p>
+<p>比如说现在我们在svn_1这台机器上先更新一下该工作副本，得到版本3</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn up</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170702/1.png" alt=""></p>
+<p>编辑index.html,在里面加上几行HTML代码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># vi index.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170702/2.png" alt=""></p>
+<p>这个时候本地的工作副本的index.html和上一次更新后的index.html就不太一样了，这时候就可可以使用diff(di)命令进行一下差异比较，命令如下;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn di index.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170702/3.png" alt=""></p>
+<p>这时候看到终端里面输出了一堆信息，这就是差异比较的结果</p>
+<pre><code>Index: index.html //当前比较的文件名
+=================================================================== //华丽丽的分割线
+--- index.html    (revision 3) //行头的标记符号说明，如果行头是“-”减号表示这一行是最后一次更新得到的版本3的内容
++++ index.html    (working copy) //如果是“+”加号表示这是工作副本中被修改的内容
+@@ -0,0 +1,11 @@ // -0,0表示版本3中的index.html文件存在差异的行号，因为之前没有任何内容，所以是第0行到第0行，后面+1,11表示本地工作副本中的index.html文件存在差异的是第1行到第11行
++&lt;html&gt; //最后列出一些代码表示存在差异的内容是什么，因为方才我们是加入内容，所以这些行头全是“+”号
++    &lt;head&gt;
++        &lt;meta charset=&quot;UTF-8&quot;&gt;
++        &lt;title&gt;title&lt;/title&gt;
++    &lt;/head&gt;
++    &lt;body&gt;
++        &lt;p&gt;This is the 1st line content in index.html.&lt;/p&gt;
++        &lt;p&gt;This is the 2nd line content in index.html.&lt;/p&gt;
++        &lt;p&gt;This is the 3rd line content in index.html.&lt;/p&gt;
++    &lt;/body&gt;
++&lt;/html&gt;</code></pre><p>下面我先提交将修改后的内容提交一次，然后在进行修改操作，命令如下:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn ci -m "" index.html</span></span><br><span class="line"><span class="comment"># vi index.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170702/4.png" alt=""></p>
+<p>修改前：<br><img src="/images/20170702/5.png" alt=""></p>
+<p>修改后：<br><img src="/images/20170702/6.png" alt=""></p>
+<p>修改之后在进行比较一次，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn di index.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170702/7.png" alt=""></p>
+<p>刚才我们提交了一次，那这个时候.svn文件夹里保存的就是版本4的文件状态，然后我有编辑了titile标签，他们存在差异的只有一行，看一下现在的比较结果，</p>
+<pre><code>Index: index.html
+===================================================================
+--- index.html    (revision 4) //减号是修改之前版本4的内容
++++ index.html    (working copy) //加号是修改之后也就是工作副本的内容
+@@ -1,7 +1,7 @@ //这里告诉我们版本4的内容显示的是第1行到第7行，本地工作副本也是第2行到第7行，它会把有差异的行分为两行显示
+ &lt;html&gt;
+     &lt;head&gt;
+         &lt;meta charset=&quot;UTF-8&quot;&gt; //前面没有符号表示这一行没有变化
+-        &lt;title&gt;title&lt;/title&gt; //减号是修改之前版本4的内容
++        &lt;title&gt;index title&lt;/title&gt; //加号是修改之后也就是工作副本的内容
+     &lt;/head&gt;
+     &lt;body&gt;
+         &lt;p&gt;This is the 1st line content in index.html.&lt;/p&gt;</code></pre><p>其实也可以这么理解，当我们提交的时候SVN会把减号的那行内容删掉，然后把加号的内容添加进去。</p>
+<p>以上就是diff命令的第一种用法，比较工作副本和最后一次更新的差异。</p>
+<h4 id="2、比较本地工作副本和和任意历史版本的差异"><a href="#2、比较本地工作副本和和任意历史版本的差异" class="headerlink" title="2、比较本地工作副本和和任意历史版本的差异"></a>2、比较本地工作副本和和任意历史版本的差异</h4><p>现在我们SVN服务端已经有4个版本了，如果我现在想比较一下index.html的工作副本和版本2的差异，我们可以在前面的基础上添加一个参数，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn di -r 2 index.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170702/8.png" alt=""></p>
+<h4 id="3、比较任意两个历史版本的差异"><a href="#3、比较任意两个历史版本的差异" class="headerlink" title="3、比较任意两个历史版本的差异"></a>3、比较任意两个历史版本的差异</h4><p>比如现在最新版本是版本4，我想看一下 index.html这个文件的版本1和版本3有什么差异，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn di -r 1:3 index.html</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="4、批量比较差异"><a href="#4、批量比较差异" class="headerlink" title="4、批量比较差异"></a>4、批量比较差异</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn di</span></span><br></pre></td></tr></table></figure>
+
+<p>这个时候svn会扫描当前目录下的所有文件，把所有存在差异的文件都比较一遍，然后把他们一个一个列出来，如果改过的文件很多，那么输出的信息就会特别长，所以并不是很推荐这么用。</p>
+<h3 id="二、svn-mkdir-…"><a href="#二、svn-mkdir-…" class="headerlink" title="二、svn mkdir …"></a>二、svn mkdir …</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn mkdir doc</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/20170702/9.png" alt=""></p>
+<p>创建了一个名称位doc的文件夹并且直接加入到版本控制中</p>
+<h3 id="二、svn-cat-…"><a href="#二、svn-cat-…" class="headerlink" title="二、svn cat …"></a>二、svn cat …</h3><p>这个命令的作用是允许我们在不检出工作副本的情况加直接查看指定SVN服务端版本库中的文件，之前所有操作都是在工作副本所在目录下操作的，那么脱离了工作副本目录，前面的那些命令都是没有办法执行的，但是svn cat …却可以脱离工作副本的目录来执行。</p>
+<p>比如现在进入终端，我先离开工作副本的目录，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd ..</span></span><br><span class="line"><span class="comment"># svn cat svn://118.89.47.207/index.html //因为这里已经脱离了工作副本，所以这里必须输入完整的线上版本库的URL</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/20170702/10.png" alt=""></p>
+<p>这里表示在不检出的情况下在线的查看一下index.html文件内容，</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/SVN/" rel="tag"># SVN</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/01/9-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%B8%80)/" rel="prev" title="9-常见的SVN客户端命令(一)">
+      <i class="fa fa-chevron-left"></i> 9-常见的SVN客户端命令(一)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/03/11-%E5%B7%A5%E4%BD%9C%E5%89%AF%E6%9C%AC%E8%BF%98%E5%8E%9F/" rel="next" title="11-工作副本还原">
+      11-工作副本还原 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见SVN客户端命令-二"><span class="nav-number">1.</span> <span class="nav-text">常见SVN客户端命令(二)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、svn-diff-…"><span class="nav-number">2.</span> <span class="nav-text">一、svn diff …</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、比较本地工作副本和SVN客户机最后一次更新得到的版本"><span class="nav-number">2.1.</span> <span class="nav-text">1、比较本地工作副本和SVN客户机最后一次更新得到的版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、比较本地工作副本和和任意历史版本的差异"><span class="nav-number">2.2.</span> <span class="nav-text">2、比较本地工作副本和和任意历史版本的差异</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、比较任意两个历史版本的差异"><span class="nav-number">2.3.</span> <span class="nav-text">3、比较任意两个历史版本的差异</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、批量比较差异"><span class="nav-number">2.4.</span> <span class="nav-text">4、批量比较差异</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、svn-mkdir-…"><span class="nav-number">3.</span> <span class="nav-text">二、svn mkdir …</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、svn-cat-…"><span class="nav-number">4.</span> <span class="nav-text">二、svn cat …</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

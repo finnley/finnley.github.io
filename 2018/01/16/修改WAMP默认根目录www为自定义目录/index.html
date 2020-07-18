@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="前言 默认情况下， www 目录会在WAMP安装路径目录下。我们鼠标左键选择 www directory,就会自动跳转到该目录。      而我们下面的任务就是修改WAMP默认的根目录 www  环境 版本： WAMPSERVER 3.1.0 安装路径：D 盘根目录。    修改 httpd.conf 文件 httpd.conf 文件所在目录位 D:\wamp64\bin\apache\apach">
+<meta property="og:type" content="article">
+<meta property="og:title" content="修改WAMP默认根目录www为自定义目录">
+<meta property="og:url" content="https://notes.xuepincat.com/2018/01/16/%E4%BF%AE%E6%94%B9WAMP%E9%BB%98%E8%AE%A4%E6%A0%B9%E7%9B%AE%E5%BD%95www%E4%B8%BA%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E5%BD%95/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="前言 默认情况下， www 目录会在WAMP安装路径目录下。我们鼠标左键选择 www directory,就会自动跳转到该目录。      而我们下面的任务就是修改WAMP默认的根目录 www  环境 版本： WAMPSERVER 3.1.0 安装路径：D 盘根目录。    修改 httpd.conf 文件 httpd.conf 文件所在目录位 D:\wamp64\bin\apache\apach">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notes.xuepincat.com/images/php/wamp/2.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/php/wamp/3.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/php/wamp/1.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/php/wamp/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/php/wamp/5.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/php/wamp/17.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/php/wamp/18.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/php/wamp/8.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/php/wamp/9.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/php/wamp/11.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/php/wamp/12.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/php/wamp/10.png">
+<meta property="article:published_time" content="2018-01-15T16:10:12.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.317Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/php/wamp/2.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2018/01/16/%E4%BF%AE%E6%94%B9WAMP%E9%BB%98%E8%AE%A4%E6%A0%B9%E7%9B%AE%E5%BD%95www%E4%B8%BA%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E5%BD%95/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>修改WAMP默认根目录www为自定义目录 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/01/16/%E4%BF%AE%E6%94%B9WAMP%E9%BB%98%E8%AE%A4%E6%A0%B9%E7%9B%AE%E5%BD%95www%E4%B8%BA%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E5%BD%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          修改WAMP默认根目录www为自定义目录
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-01-16 00:10:12" itemprop="dateCreated datePublished" datetime="2018-01-16T00:10:12+08:00">2018-01-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>默认情况下， <code>www</code> 目录会在WAMP安装路径目录下。我们鼠标左键选择 <code>www directory</code>,就会自动跳转到该目录。</p>
+<a id="more"></a>
+
+<p><img src="/images/php/wamp/2.png" alt="wamp"></p>
+<p><img src="/images/php/wamp/3.png" alt="wamp"></p>
+<p>而我们下面的任务就是修改WAMP默认的根目录 <code>www</code></p>
+<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><p>版本： WAMPSERVER 3.1.0<br>安装路径：<code>D</code> 盘根目录。</p>
+<p><img src="/images/php/wamp/1.png" alt="wamp"></p>
+<h2 id="修改-httpd-conf-文件"><a href="#修改-httpd-conf-文件" class="headerlink" title="修改 httpd.conf 文件"></a>修改 <code>httpd.conf</code> 文件</h2><p><code>httpd.conf</code> 文件所在目录位 <code>D:\wamp64\bin\apache\apache2.4.27\conf</code> 下。</p>
+<p><img src="/images/php/wamp/4.png" alt="wamp"></p>
+<p>当然也可以直接左键软件选择 <code>Apache</code>下的 <code>httpd.conf</code></p>
+<p><img src="/images/php/wamp/5.png" alt="wamp"></p>
+<p>1.我们打开 <code>httpd.conf</code> 文件，找到 ** <code>INSTALL_DIR</code> ** 定义的地方</p>
+<p>** 修改前： **</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Define INSTALL_DIR d:/wamp64</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/php/wamp/17.png" alt="wamp"></p>
+<p>我们在它下面再定义自己的变量,后面的 ** <code>f:</code> ** 表示我自己定义的存放项目的目录盘符，我自己的是放在 ** <code>F</code> ** 盘。</p>
+<p>** 修改后：**</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Define WWW_DIR f:</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/php/wamp/18.png" alt="wamp"></p>
+<p>2.在文件搜索 <code>DocumentRoot</code> 字段，将 ** <code>INSTALL_DIR</code> ** 替换成第一步我自己定义的变量。</p>
+<p>** 修改前： **</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DocumentRoot <span class="string">"<span class="variable">$&#123;INSTALL_DIR&#125;</span>/www"</span></span><br><span class="line">&lt;Directory <span class="string">"<span class="variable">$&#123;INSTALL_DIR&#125;</span>/www/"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/php/wamp/8.png" alt="wamp"></p>
+<p>** 修改后：**</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DocumentRoot <span class="string">"<span class="variable">$&#123;WWW_DIR&#125;</span>/www"</span></span><br><span class="line">&lt;Directory <span class="string">"<span class="variable">$&#123;WWW_DIR&#125;</span>/www/"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/php/wamp/9.png" alt="wamp"></p>
+<h2 id="编辑-wampmanager-conf-文件"><a href="#编辑-wampmanager-conf-文件" class="headerlink" title="编辑 wampmanager.conf 文件"></a>编辑 <code>wampmanager.conf</code> 文件</h2><p><code>wampmanager.conf</code> 在安装路径 <code>D:\wamp64</code> 下</p>
+<p><img src="/images/php/wamp/11.png" alt="wamp"></p>
+<p>1.打开 <code>wampmanager.conf</code> 文件，在文件中搜索 <code>installDir</code> 字段，找到下面的代码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">installDir =<span class="string">"d:/wamp64"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/php/wamp/12.png" alt="wamp"></p>
+<p>2.在下面添加一句话，下面代码用来表示我自定义的项目目录，而不是使用WAMP默认的 <code>www</code> 的目录，我自己的 <code>www</code> 放在 <code>F</code> 盘。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">projectDir =<span class="string">"f:"</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="修改-config-inc-php-文件"><a href="#修改-config-inc-php-文件" class="headerlink" title="修改 config.inc.php 文件"></a>修改 <code>config.inc.php</code> 文件</h2><p><code>config.inc.php</code> 文件在 <code>D:\wamp64\scripts</code>目录下。</p>
+<p><img src="/images/php/wamp/10.png" alt="wamp"></p>
+<p>1.找到了下面的代码</p>
+<p>** 修改前： **</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$c_installDir &#x3D; $wampConf[&#39;installDir&#39;];</span><br><span class="line">$wwwDir &#x3D; $c_installDir.&#39;&#x2F;www&#39;;</span><br></pre></td></tr></table></figure>
+
+<p>发现WAMP默认的www默认的目录是在安装路径下的 <code>www</code>目录下, 于是我又在 <code>config.inc.php</code> 文件中搜索 <code>installDir</code>, 但是这个文件没有。</p>
+<p>于是向上找，找到了这样一句话</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$configurationFile &#x3D; &#39;..&#x2F;wampmanager.conf&#39;;</span><br></pre></td></tr></table></figure>
+
+<p>上一步中已经先修改了，所以这里直接修改 <code>config.inc.php</code> 文件就行了</p>
+<p>我这边原有的代码我没有删除，我只是使用 <code>//</code>注释掉了</p>
+<p>** 修改后：**</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$c_installDir &#x3D; $wampConf[&#39;installDir&#39;];</span><br><span class="line">$c_projectDir &#x3D; $wampConf[&#39;projectDir&#39;];</span><br><span class="line">&#x2F;&#x2F;$wwwDir &#x3D; $c_installDir.&#39;&#x2F;www&#39;;</span><br><span class="line">$wwwDir &#x3D; $c_projectDir.&#39;&#x2F;www&#39;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改-wampmanager-ini-文件"><a href="#修改-wampmanager-ini-文件" class="headerlink" title="修改 wampmanager.ini 文件"></a>修改 <code>wampmanager.ini</code> 文件</h2><p>找到下面代码</p>
+<p>** 修改前： **</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Type: item; Caption: <span class="string">"www directory"</span>; Action: shellexecute; FileName: <span class="string">"d:/wamp64/www"</span>; Glyph: 2</span><br></pre></td></tr></table></figure>
+
+<p>将  <code>d:/wamp64/www</code> 改成 <code>f:/www</code></p>
+<p>** 修改后：**</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Type: item; Caption: <span class="string">"www directory"</span>; Action: shellexecute; FileName: <span class="string">"f:/www"</span>; Glyph: 2</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改-wampmanager-tpl-文件"><a href="#修改-wampmanager-tpl-文件" class="headerlink" title="修改 wampmanager.tpl 文件"></a>修改 <code>wampmanager.tpl</code> 文件</h2><p>在 <code>wampmanager.tpl</code> 中，找到 <code>&quot;${w_wwwDirectory}&quot;</code> 这一项，修改FileName为自定义路径。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Type: item; Caption: <span class="string">"<span class="variable">$&#123;w_wwwDirectory&#125;</span>"</span>; Action: shellexecute; FileName: <span class="string">"<span class="variable">$&#123;wwwDir&#125;</span>"</span>; Glyph: 2</span><br></pre></td></tr></table></figure>
+
+<p>由于我这边是使用定义常量的方法更改www目录，所以这个配置没有需要修改的内容。</p>
+<p><strong>注意： <code>重启服务无效。需要关闭WAMP重新打开</code></strong></p>
+<p>到这里WAMP默认的www目录已经修改成了我们自定义的目录。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/PHP/" rel="tag"># PHP</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/12/30/Ubuntu16.04%E5%AE%89%E8%A3%85%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%ACGit/" rel="prev" title="Ubuntu16.04安装最新版本Git">
+      <i class="fa fa-chevron-left"></i> Ubuntu16.04安装最新版本Git
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/01/22/WAMP%E4%B8%8BApache%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA/" rel="next" title="WAMP下Apache配置虚拟主机">
+      WAMP下Apache配置虚拟主机 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境"><span class="nav-number">2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改-httpd-conf-文件"><span class="nav-number">3.</span> <span class="nav-text">修改 httpd.conf 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编辑-wampmanager-conf-文件"><span class="nav-number">4.</span> <span class="nav-text">编辑 wampmanager.conf 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改-config-inc-php-文件"><span class="nav-number">5.</span> <span class="nav-text">修改 config.inc.php 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改-wampmanager-ini-文件"><span class="nav-number">6.</span> <span class="nav-text">修改 wampmanager.ini 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改-wampmanager-tpl-文件"><span class="nav-number">7.</span> <span class="nav-text">修改 wampmanager.tpl 文件</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

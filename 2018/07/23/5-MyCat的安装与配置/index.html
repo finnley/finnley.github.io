@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="MyCat的安装与配置 准备条件  1. 一台IP为192.168.1.10的机器，目的是让它做另外4台151、152、153、154机器的MYSQL代理，将来连接直接连接10这台机器就可以了   2. 进入官网MyCat，找到下载连接，我选择的版本是 Mycat-server-1.6-release 版本发布  ![Book Shop](&#x2F;images&#x2F;mysql&#x2F;20180723&#x2F;1.png)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5-MyCat的安装与配置">
+<meta property="og:url" content="https://notes.xuepincat.com/2018/07/23/5-MyCat%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="MyCat的安装与配置 准备条件  1. 一台IP为192.168.1.10的机器，目的是让它做另外4台151、152、153、154机器的MYSQL代理，将来连接直接连接10这台机器就可以了   2. 进入官网MyCat，找到下载连接，我选择的版本是 Mycat-server-1.6-release 版本发布  ![Book Shop](&#x2F;images&#x2F;mysql&#x2F;20180723&#x2F;1.png)">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-07-23T01:08:09.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.286Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2018/07/23/5-MyCat%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>5-MyCat的安装与配置 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/07/23/5-MyCat%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          5-MyCat的安装与配置
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-23 09:08:09" itemprop="dateCreated datePublished" datetime="2018-07-23T09:08:09+08:00">2018-07-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="MyCat的安装与配置"><a href="#MyCat的安装与配置" class="headerlink" title="MyCat的安装与配置"></a>MyCat的安装与配置</h2><h3 id="准备条件"><a href="#准备条件" class="headerlink" title="准备条件"></a>准备条件</h3><ol>
+<li>一台IP为192.168.1.10的机器，目的是让它做另外4台151、152、153、154机器的MYSQL代理，将来连接直接连接10这台机器就可以了</li>
+</ol>
+<ol start="2">
+<li>进入官网<a href="http://www.mycat.io/" target="_blank" rel="noopener">MyCat</a>，找到下载连接，我选择的版本是 <code>Mycat-server-1.6-release 版本发布</code></li>
+</ol>
+<div align=center>
+![Book Shop](/images/mysql/20180723/1.png)
+</div>
+
+<p>进入centos终端进行下载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;dl.mycat.io&#x2F;1.6-RELEASE&#x2F;Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180723/2.png)
+</div>
+
+<h3 id="安装MyCat"><a href="#安装MyCat" class="headerlink" title="安装MyCat"></a>安装MyCat</h3><ol>
+<li>解压</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf Mycat-server-1.6-RELEASE-20161028204710-linux.tar.gz</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180723/3.png)
+</div>
+
+<p>发现多了一个mycat的目录</p>
+<p>我们将其剪切到 <code>/usr/local</code> 目录下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv mycat&#x2F; &#x2F;usr&#x2F;local&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>目录结构如下图所示</p>
+<div align=center>
+![Book Shop](/images/mysql/20180723/4.png)
+</div>
+
+<p>bin: 里面都是一些命令；<br>catlet: 我们人工的在里面写一些东西，按照我们自己的规则完成；<br>conf: 配置文件;<br>lib: 库里面的一些jar包；<br>logs: 相关日志</p>
+<ol start="2">
+<li>安装jdk</li>
+</ol>
+<p>因为mycat使用java写的，所以前提还需要安装好jdk<br>下载jdk</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget --no-check-certificate --no-cookies --header &quot;Cookie: oraclelicense&#x3D;accept-securebackup-cookie&quot; http:&#x2F;&#x2F;download.oracle.com&#x2F;otn-pub&#x2F;java&#x2F;jdk&#x2F;8u181-b13&#x2F;96a7b8442fe848ef90c96a2fad6ed6d1&#x2F;jdk-8u181-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>解压</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf jdk-8u181-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>配置环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+
+<p>在export PATH USER LOGNAME MAIL HOSTNAME HISTSIZE HISTCONTROL【在此下面写上自己的环境变量】</p>
+<h1 id="JAVA"><a href="#JAVA" class="headerlink" title="JAVA"></a>JAVA</h1><p>export PATH USER LOGNAME MAIL HOSTNAME HISTSIZE HISTCONTROL<br>export JAVA_HOME=/usr/local/jdk1.8.0_181<br>export PATH=$JAVA_HOME/bin:$PATH<br>export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</p>
+<p>使配置生效</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180723/5.png)
+</div>
+
+<p>执行过这条命令无需配置，直接可以使用。</p>
+<ol start="3">
+<li>配置</li>
+</ol>
+<p>配置只需要配置 <code>server.xml</code> 和 <code>schema.xml</code></p>
+<div align=center>
+![Book Shop](/images/mysql/20180723/6.png)
+</div>
+
+
+<p>首先进入 <code>conf</code> 目录, 配置 <code>servser.xml</code>，它是我们的主配置文件</p>
+<p>找到下面的内容</p>
+<div align=center>
+![Book Shop](/images/mysql/20180723/7.png)
+</div>
+
+<p><code>user name</code> 是 <code>root</code>, 意思是将来连接MyCat的时候用到的就是 <code>root</code> 这个用户，密码默认就是里面写的值 <code>123456</code> ，第三行的 <code>schemas</code> 也是将来我们连接的时候使用的schema里面的哪个库，这个库实际上并不是一个真正的库，它只是对我们实际库的映射，里面可以自行定义。比如我将其改为shop,表示可以通过root密码123456来连接shop这个库</p>
+<p>下面注释部分就是我们还可以执行一些权限，</p>
+<p>下面还一个 <code>user</code> 块，<code>readOnly</code> 表示这个用户只能查不能写， 我这里注释掉，只用了一个用户</p>
+<p>修改后配置如下入所示</p>
+<div align=center>
+![Book Shop](/images/mysql/20180723/8.png)
+</div>
+
+<p>接下来配置 <code>schema.xml</code> ,也就是让MyCat指定连接到MySQL服务器</p>
+<p>备份一下<code>schema.xml</code>， 然后打开<code>schema.xml</code></p>
+<p>配置之前需要到151机器上对10的机器进行授权</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant insert, update, delete, select on *.* to mycat@192.168.1.10 identified by &#39;123&#39;;</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180723/9.png)
+</div>
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp schema.xml schema.xml.bak</span><br><span class="line">vi schema.xml</span><br></pre></td></tr></table></figure>
+
+<p>我的配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot;?&gt;</span><br><span class="line">&lt;!DOCTYPE mycat:schema SYSTEM &quot;schema.dtd&quot;&gt;</span><br><span class="line">&lt;mycat:schema xmlns:mycat&#x3D;&quot;http:&#x2F;&#x2F;io.mycat&#x2F;&quot;&gt;</span><br><span class="line"></span><br><span class="line">	&lt;schema name&#x3D;&quot;shop&quot; checkSQLschema&#x3D;&quot;false&quot; sqlMaxLimit&#x3D;&quot;100&quot; dataNode&#x3D;&quot;dn1&quot;&gt;&lt;&#x2F;schema&gt;</span><br><span class="line">	&lt;!-- &lt;dataNode name&#x3D;&quot;dn1$0-743&quot; dataHost&#x3D;&quot;localhost1&quot; database&#x3D;&quot;db$0-743&quot;</span><br><span class="line">		&#x2F;&gt; --&gt;</span><br><span class="line">	&lt;dataNode name&#x3D;&quot;dn1&quot; dataHost&#x3D;&quot;localhost1&quot; database&#x3D;&quot;jd_shop&quot; &#x2F;&gt;</span><br><span class="line">	&lt;dataHost name&#x3D;&quot;localhost1&quot; maxCon&#x3D;&quot;1000&quot; minCon&#x3D;&quot;10&quot; balance&#x3D;&quot;0&quot;</span><br><span class="line">			  writeType&#x3D;&quot;0&quot; dbType&#x3D;&quot;mysql&quot; dbDriver&#x3D;&quot;native&quot; switchType&#x3D;&quot;1&quot;  slaveThreshold&#x3D;&quot;100&quot;&gt;</span><br><span class="line">		&lt;heartbeat&gt;select user()&lt;&#x2F;heartbeat&gt;</span><br><span class="line">		&lt;!-- can have multi write hosts --&gt;</span><br><span class="line">		&lt;!-- &lt;writeHost host&#x3D;&quot;hostM1&quot; url&#x3D;&quot;localhost:3306&quot; user&#x3D;&quot;root&quot;</span><br><span class="line">				   password&#x3D;&quot;123456&quot;&gt; --&gt;</span><br><span class="line">			&lt;!-- can have multi read hosts --&gt;</span><br><span class="line">			&lt;!-- &lt;readHost host&#x3D;&quot;hostS2&quot; url&#x3D;&quot;192.168.1.200:3306&quot; user&#x3D;&quot;root&quot; password&#x3D;&quot;xxx&quot; &#x2F;&gt; --&gt;</span><br><span class="line">		&lt;!-- &lt;&#x2F;writeHost&gt; --&gt;</span><br><span class="line">		&lt;writeHost host&#x3D;&quot;hostM1&quot; url&#x3D;&quot;192.168.1.151:3306&quot; user&#x3D;&quot;mycat&quot;</span><br><span class="line">				   password&#x3D;&quot;123&quot; &#x2F;&gt;</span><br><span class="line">		&lt;!-- &lt;writeHost host&#x3D;&quot;hostM2&quot; url&#x3D;&quot;localhost:3316&quot; user&#x3D;&quot;root&quot; password&#x3D;&quot;123456&quot;&#x2F;&gt; --&gt;</span><br><span class="line">	&lt;&#x2F;dataHost&gt;</span><br><span class="line">	&lt;!--</span><br><span class="line">		&lt;dataHost name&#x3D;&quot;sequoiadb1&quot; maxCon&#x3D;&quot;1000&quot; minCon&#x3D;&quot;1&quot; balance&#x3D;&quot;0&quot; dbType&#x3D;&quot;sequoiadb&quot; dbDriver&#x3D;&quot;jdbc&quot;&gt;</span><br><span class="line">		&lt;heartbeat&gt; 		&lt;&#x2F;heartbeat&gt;</span><br><span class="line">		 &lt;writeHost host&#x3D;&quot;hostM1&quot; url&#x3D;&quot;sequoiadb:&#x2F;&#x2F;1426587161.dbaas.sequoialab.net:11920&#x2F;SAMPLE&quot; user&#x3D;&quot;jifeng&quot; 	password&#x3D;&quot;jifeng&quot;&gt;&lt;&#x2F;writeHost&gt;</span><br><span class="line">		 &lt;&#x2F;dataHost&gt;</span><br><span class="line"></span><br><span class="line">	  &lt;dataHost name&#x3D;&quot;oracle1&quot; maxCon&#x3D;&quot;1000&quot; minCon&#x3D;&quot;1&quot; balance&#x3D;&quot;0&quot; writeType&#x3D;&quot;0&quot; 	dbType&#x3D;&quot;oracle&quot; dbDriver&#x3D;&quot;jdbc&quot;&gt; &lt;heartbeat&gt;select 1 from dual&lt;&#x2F;heartbeat&gt;</span><br><span class="line">		&lt;connectionInitSql&gt;alter session set nls_date_format&#x3D;&#39;yyyy-mm-dd hh24:mi:ss&#39;&lt;&#x2F;connectionInitSql&gt;</span><br><span class="line">		&lt;writeHost host&#x3D;&quot;hostM1&quot; url&#x3D;&quot;jdbc:oracle:thin:@127.0.0.1:1521:nange&quot; user&#x3D;&quot;base&quot; 	password&#x3D;&quot;123456&quot; &gt; &lt;&#x2F;writeHost&gt; &lt;&#x2F;dataHost&gt;</span><br><span class="line"></span><br><span class="line">		&lt;dataHost name&#x3D;&quot;jdbchost&quot; maxCon&#x3D;&quot;1000&quot; 	minCon&#x3D;&quot;1&quot; balance&#x3D;&quot;0&quot; writeType&#x3D;&quot;0&quot; dbType&#x3D;&quot;mongodb&quot; dbDriver&#x3D;&quot;jdbc&quot;&gt;</span><br><span class="line">		&lt;heartbeat&gt;select 	user()&lt;&#x2F;heartbeat&gt;</span><br><span class="line">		&lt;writeHost host&#x3D;&quot;hostM&quot; url&#x3D;&quot;mongodb:&#x2F;&#x2F;192.168.0.99&#x2F;test&quot; user&#x3D;&quot;admin&quot; password&#x3D;&quot;123456&quot; &gt;&lt;&#x2F;writeHost&gt; &lt;&#x2F;dataHost&gt;</span><br><span class="line"></span><br><span class="line">		&lt;dataHost name&#x3D;&quot;sparksql&quot; maxCon&#x3D;&quot;1000&quot; minCon&#x3D;&quot;1&quot; balance&#x3D;&quot;0&quot; dbType&#x3D;&quot;spark&quot; dbDriver&#x3D;&quot;jdbc&quot;&gt;</span><br><span class="line">		&lt;heartbeat&gt; &lt;&#x2F;heartbeat&gt;</span><br><span class="line">		 &lt;writeHost host&#x3D;&quot;hostM1&quot; url&#x3D;&quot;jdbc:hive2:&#x2F;&#x2F;feng01:10000&quot; user&#x3D;&quot;jifeng&quot; 	password&#x3D;&quot;jifeng&quot;&gt;&lt;&#x2F;writeHost&gt; &lt;&#x2F;dataHost&gt; --&gt;</span><br><span class="line"></span><br><span class="line">	&lt;!-- &lt;dataHost name&#x3D;&quot;jdbchost&quot; maxCon&#x3D;&quot;1000&quot; minCon&#x3D;&quot;10&quot; balance&#x3D;&quot;0&quot; dbType&#x3D;&quot;mysql&quot;</span><br><span class="line">		dbDriver&#x3D;&quot;jdbc&quot;&gt; &lt;heartbeat&gt;select user()&lt;&#x2F;heartbeat&gt; &lt;writeHost host&#x3D;&quot;hostM1&quot;</span><br><span class="line">		url&#x3D;&quot;jdbc:mysql:&#x2F;&#x2F;localhost:3306&quot; user&#x3D;&quot;root&quot; password&#x3D;&quot;123456&quot;&gt; &lt;&#x2F;writeHost&gt;</span><br><span class="line">		&lt;&#x2F;dataHost&gt; --&gt;</span><br><span class="line">&lt;&#x2F;mycat:schema&gt;</span><br></pre></td></tr></table></figure>
+
+<p>启动mycat,在bin/mycat目录下有一些常用命令，下面我们先看一下有哪些命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin&#x2F;mycat</span><br></pre></td></tr></table></figure>
+
+<p>会发现有下面的一些命令</p>
+<div align=center>
+![Book Shop](/images/mysql/20180723/10.png)
+</div>
+
+<p>选择start命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin&#x2F;mycat start</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180723/11.png)
+</div>
+
+<p>我们不知道是否启动成功，我们可以进入logs目录查看下日志,最后出现下面一句话表示启动成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MyCAT Server startup successfully. see logs in logs&#x2F;mycat.log</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以通过下面命令查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin&#x2F;mycat status</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180723/12.png)
+</div>
+
+<p>在M有Cat启动之后它的管理关口不是3306而是8066</p>
+<div align=center>
+![Book Shop](/images/mysql/20180723/13.png)
+</div>
+
+
+<p>现在我们使用MyCat去连接我们的数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p123456 -h 192.168.1.10 -P8066</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![Book Shop](/images/mysql/20180723/14.png)
+</div>
+
+<p>这个shop库就是对我们151机器上的jd_shop库的一些管理</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/07/23/4-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E9%97%B4%E4%BB%B6MyCat/" rel="prev" title="4-数据库中间件MyCat">
+      <i class="fa fa-chevron-left"></i> 4-数据库中间件MyCat
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/07/23/6-MyCat%E9%85%8D%E7%BD%AE%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%E4%B8%8E%E5%BF%83%E8%B7%B3%E6%A3%80%E6%B5%8B/" rel="next" title="6-MyCat配置读写分离与心跳检测">
+      6-MyCat配置读写分离与心跳检测 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MyCat的安装与配置"><span class="nav-number">1.</span> <span class="nav-text">MyCat的安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#准备条件"><span class="nav-number">1.1.</span> <span class="nav-text">准备条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装MyCat"><span class="nav-number">1.2.</span> <span class="nav-text">安装MyCat</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JAVA"><span class="nav-number"></span> <span class="nav-text">JAVA</span></a></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="问题 1、什么是冲突以及冲突产生的条件 2、如何尽可能的避免冲突 3、如何解决冲突  一、冲突及产生的条件 冲突出现的时机： 冲入通常出现与工作副本很长时间没有更新工作副本的情况下。如果我是一个人开发，那就不存在冲突了，如果我所在的研发团队人很多，而且我又个了好多天才做一次”svn update”，那么报冲突的概率就非常大了  冲突产生的原因: 工作副本的修改与我们执行svn update更新到的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="12-冲突">
+<meta property="og:url" content="https://notes.xuepincat.com/2017/07/04/12-%E5%86%B2%E7%AA%81/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="问题 1、什么是冲突以及冲突产生的条件 2、如何尽可能的避免冲突 3、如何解决冲突  一、冲突及产生的条件 冲突出现的时机： 冲入通常出现与工作副本很长时间没有更新工作副本的情况下。如果我是一个人开发，那就不存在冲突了，如果我所在的研发团队人很多，而且我又个了好多天才做一次”svn update”，那么报冲突的概率就非常大了  冲突产生的原因: 工作副本的修改与我们执行svn update更新到的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/1.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/2.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/3.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/5.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/6.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/7.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/8.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/9.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/10.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/11.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/12.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/13.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/14.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/15.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/16.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/17.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/20170704/18.png">
+<meta property="article:published_time" content="2017-07-04T05:45:42.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.286Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="SVN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/20170704/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2017/07/04/12-%E5%86%B2%E7%AA%81/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>12-冲突 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/04/12-%E5%86%B2%E7%AA%81/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          12-冲突
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-04 13:45:42" itemprop="dateCreated datePublished" datetime="2017-07-04T13:45:42+08:00">2017-07-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>1、什么是冲突以及冲突产生的条件<br>2、如何尽可能的避免冲突<br>3、如何解决冲突</p>
+<a id="more"></a>
+
+<h3 id="一、冲突及产生的条件"><a href="#一、冲突及产生的条件" class="headerlink" title="一、冲突及产生的条件"></a>一、冲突及产生的条件</h3><h4 id="冲突出现的时机："><a href="#冲突出现的时机：" class="headerlink" title="冲突出现的时机："></a>冲突出现的时机：</h4><p>冲入通常出现与工作副本很长时间没有更新工作副本的情况下。如果我是一个人开发，那就不存在冲突了，如果我所在的研发团队人很多，而且我又个了好多天才做一次”svn update”，那么报冲突的概率就非常大了</p>
+<h4 id="冲突产生的原因"><a href="#冲突产生的原因" class="headerlink" title="冲突产生的原因:"></a>冲突产生的原因:</h4><p>工作副本的修改与我们执行svn update更新到的数据正好在同一个地方。</p>
+<h4 id="冲突产生的过程"><a href="#冲突产生的过程" class="headerlink" title="冲突产生的过程:"></a>冲突产生的过程:</h4><p>比方说：<br>在一天早上，开发A和开发B来上班了。<br>在9:10的时候，他们都把工作副本更新到了版本4；<br>9:15开发A修改了index.html第10行；<br>9:20开发A把index.html的提交到了服务端，并且这个时候版本号增加到了5（版本5）；<br>9:30的时候研发B也修改了index.html第10行，这里注意的是开发B在9:10工作副本更新到版本4之后什么也没有做，现在上来就直接修改了index.html的第10行，也就是说这个时候他对开发A修改了index.html第10行这件事是不知情的；<br>9:35开发B又对index.html进行了一次提交操作。<br>这个时候冲突就产生了。</p>
+<p>开发B提交的时候服务端的版本已经是版本5了，而版本5中的index.html第10行由开发A提交上来的修改，而开发B也修改了这个地方，这个时候冲突就产生了，如果开发B修改的是第5行，第7行，第11行这些都不会产生冲突，但他偏偏修改了第10行，和正要更新的内容是同一处，由于开发B提交的时候他还没有更新到版本5，那么SVN服务端就会认为开发B对第10行在版本4之后已经被修改过的这个事情是不知情的，所以SVN服务端发现研发B也提交同一行也进行提交的时候就会爆出冲突信息给开发B，因为开发B不知情，所以服务端不知道该保留谁的版本才可以，这个就是冲入产生的过程。</p>
+<h3 id="二、如何避免冲突"><a href="#二、如何避免冲突" class="headerlink" title="二、如何避免冲突"></a>二、如何避免冲突</h3><p>现在我们已经知道为什么产生冲入了，那么我们可以想想办法如何才能尽可能的避免冲突。<br>按照上一个比方，如果开发B在9:25的时候更新一下工作副本那是不是就可以避免冲突了呢？当然是的，如果在9:25的时候先更新一下，那工作副本就是版本5了，研发B再去修改index.html第10行已经是开发A改过之后的版本了，那SVN服务端就认为研发B对研发A的上一次修改是知情的，既然已经知情了，那再去修改，就不会再产生冲突了。<br>所以经常更新工作副本可以在很大程度上避免冲突，所以尽可能避免冲突的方法就是经常更新</p>
+<h3 id="树冲突"><a href="#树冲突" class="headerlink" title="树冲突"></a>树冲突</h3><pre><code>冲突的产生其实都可以精确到某一行，我们常见的代码文件有html,js,css,php等等，这些实际上都是二进制的文本文件，所以这一类文件在版本控制中发生冲突的时候称之为二进制冲突。
+
+树冲突并没有比二进制冲突高明多少，发生树冲突的原因及条件都和二进制冲突是一样的，只不过树冲突是对于非二进制文件而言的，比如说图片文件，把前面所说的案例中的index.html文件替换位某一个文件，那么这个冲突就可以理解为树冲突了。
+树冲突是没有办法像二进制冲突一样精确到代码中的某一行的，我们去处理二进制冲突的时候只需要将发生冲突的那一行做一些处理就可以了。对于非二进制文件他没有行的概念，所以树冲突一旦出现，我们需要出现这个树冲突的整个文件进行替换或者其他的处理。</code></pre><h3 id="三、如何解决冲突"><a href="#三、如何解决冲突" class="headerlink" title="三、如何解决冲突"></a>三、如何解决冲突</h3><p>现在我这边要认为的制造一个冲突，切换到我腾讯云主机上的一个工作副本svn_1,首先讲工作副本更新一下，这样可以和服务端保持一致。<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn up</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/20170704/1.png" alt=""></p>
+<p>同时也将我本地的机器svn_2工作副本也更新一下<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn up</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/20170704/2.png" alt=""></p>
+<p>现在再回到svn_1的工作副本上，编辑一下index.html<br>修改前：<br><img src="/images/20170704/3.png" alt=""></p>
+<p>修改后：<br><img src="/images/20170704/4.png" alt=""></p>
+<p>然后将修改后的index.html文件提交到服务器<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn ci -m "" index.html</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/20170704/5.png" alt=""></p>
+<p>现在服务端的版本号已经增加到了版本5。<br>现在svn_2这台客户机在不知情的情况下也修改了index.html,并且还是修改了同一行<br>修改前：<br><img src="/images/20170704/6.png" alt=""></p>
+<p>修改后：</p>
+<p><img src="/images/20170704/7.png" alt=""></p>
+<p>然后也进行一次提交操作<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn ci -m "" index.html</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/20170704/8.png" alt=""></p>
+<p>这个时候会发现提交失败，报错了，“File ‘/index.html’ is out of date<br>”文件index.html已经过时了，虽然没有明显得告诉我们这个是冲突，但这个就已经基本上是冲突的前奏了，，看到这个提示并不是说一定就是冲突，但是这个90%的可能就是冲突了。</p>
+<p>现在再去更新一下工作副本，看一下会发生什么？<br><img src="/images/20170704/9.png" alt=""></p>
+<p>这个时候爆出了一个错误信息，并且给出了一些选项去选择怎么处理，看其中的一个“mc”,他意思是说保留一我们自己的版本，“tc”表示说保留对方的版本。</p>
+<p>如果这个时候我们不确定保留谁的版本，我们可以df显示差异，最后看看要保留谁的版本。<br>这边我们输入”df”显示差异</p>
+<p><img src="/images/20170704/10.png" alt=""></p>
+<p>它会把两个冲突的地方列出来给我们，在一排“+&lt;&lt;&lt;&lt;&lt;&lt;&lt;”到一排“+=======”之间的内容使我们自己的，“+=======”到“+&gt;&gt;&gt;&gt;&gt;&gt;&gt;”之间内容是对方的，就是和我发生冲突的那个人提交上来的，如果一时还无法决定可以输入“p”进行推迟提交，如果赢决定了可以输入”e”来编辑这个文件<br><img src="/images/20170704/11.png" alt=""></p>
+<p>我这边暂时不去修改它，输入【CTRL+X】退出，通常发生冲突，推荐大家输入【p】来推迟处理，因为很多情况下我们不能很快找到和我们发生冲突的来进行协商，所以这边输入【p】来推迟处理<br><img src="/images/20170704/12.png" alt=""></p>
+<h4 id="冲突处理"><a href="#冲突处理" class="headerlink" title="冲突处理"></a>冲突处理</h4><p>选择推迟处理之后SVN服务端就会把冲突的内容发送到svn_2的机器上，这样做还有一个好处，他不会影响线上的版本，冲突值存在svn_2的工作副本中，如果之前是选择【mc】或者是【tc】这样做会直接提交到服务端。</p>
+<p>现在我们要处理冲突，那么冲突的内容会出现在什么地方呢？<br>我们打开index.html</p>
+<p><img src="/images/20170704/13.png" alt=""></p>
+<p>我们会发现已经把方才看到的差异全部保存到index.html文件当中了，如果现在已经很确定了需要保留我自己的版本，需要讲对方的版本去掉，只需要将与自己无关的内容去掉就行了。<br>修改后：<br><img src="/images/20170704/14.png" alt=""></p>
+<p>这个是一种方式，还有另外一种方式，是通过命令的方式，</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn resolve index.html</span></span><br><span class="line"><span class="comment"># mc</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170704/15.png" alt=""></p>
+<p>这个时候再去看index.html文件内容，它已经把无关的信息都去掉了，只留下自己的版本。<br><img src="/images/20170704/16.png" alt=""></p>
+<p>上面就是冲突的处理过程，但是在处理之后还需要告诉服务端已经把这个冲突处理完毕了，服务端才会接受我们后面的提交请求，否则服务度阿奴会一直认为有一个冲突没有解决</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn resolved index.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170704/17.png" alt=""></p>
+<p>之后才能正常提交index.html，下面提交一下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn ci -m "" index.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/20170704/18.png" alt=""></p>
+<p>这个时候会发现提交成功了，服务器已经反悔了版本6的信息。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/SVN/" rel="tag"># SVN</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/07/03/11-%E5%B7%A5%E4%BD%9C%E5%89%AF%E6%9C%AC%E8%BF%98%E5%8E%9F/" rel="prev" title="11-工作副本还原">
+      <i class="fa fa-chevron-left"></i> 11-工作副本还原
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/05/13-%E9%94%81%E5%AE%9A%E4%B8%8E%E8%A7%A3%E9%94%81/" rel="next" title="13-锁定与解锁">
+      13-锁定与解锁 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、冲突及产生的条件"><span class="nav-number">2.</span> <span class="nav-text">一、冲突及产生的条件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#冲突出现的时机："><span class="nav-number">2.1.</span> <span class="nav-text">冲突出现的时机：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#冲突产生的原因"><span class="nav-number">2.2.</span> <span class="nav-text">冲突产生的原因:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#冲突产生的过程"><span class="nav-number">2.3.</span> <span class="nav-text">冲突产生的过程:</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、如何避免冲突"><span class="nav-number">3.</span> <span class="nav-text">二、如何避免冲突</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#树冲突"><span class="nav-number">4.</span> <span class="nav-text">树冲突</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、如何解决冲突"><span class="nav-number">5.</span> <span class="nav-text">三、如何解决冲突</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#冲突处理"><span class="nav-number">5.1.</span> <span class="nav-text">冲突处理</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

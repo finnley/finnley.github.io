@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="准备  * 本地环境 Ubuntu18.04 LTS  * 镜像 Ubuntu18.04.box  步骤 下载镜像  1. 比如我需要下载 ubuntu&#x2F;bionic64 ，可以打开官网 https:&#x2F;&#x2F;app.vagrantup.com&#x2F;ubuntu&#x2F;boxes&#x2F;bionic64 进行下载  ![vagrant](http:&#x2F;&#x2F;images.ornnth.com&#x2F;hexo&#x2F;vagrant&#x2F;48.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vagrant搭建开发环境">
+<meta property="og:url" content="https://notes.xuepincat.com/2019/05/02/Vagrant%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="准备  * 本地环境 Ubuntu18.04 LTS  * 镜像 Ubuntu18.04.box  步骤 下载镜像  1. 比如我需要下载 ubuntu&#x2F;bionic64 ，可以打开官网 https:&#x2F;&#x2F;app.vagrantup.com&#x2F;ubuntu&#x2F;boxes&#x2F;bionic64 进行下载  ![vagrant](http:&#x2F;&#x2F;images.ornnth.com&#x2F;hexo&#x2F;vagrant&#x2F;48.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2019-05-02T03:01:55.000Z">
+<meta property="article:modified_time" content="2020-07-14T17:46:35.614Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Vagrant">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2019/05/02/Vagrant%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Vagrant搭建开发环境 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/02/Vagrant%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vagrant搭建开发环境
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-02 11:01:55" itemprop="dateCreated datePublished" datetime="2019-05-02T11:01:55+08:00">2019-05-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-15 01:46:35" itemprop="dateModified" datetime="2020-07-15T01:46:35+08:00">2020-07-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Vagrant/" itemprop="url" rel="index"><span itemprop="name">Vagrant</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ul>
+<li>本地环境 <code>Ubuntu18.04 LTS</code></li>
+<li>镜像 <code>Ubuntu18.04.box</code></li>
+</ul>
+<h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h3><ol>
+<li>比如我需要下载 <code>ubuntu/bionic64</code> ，可以打开官网 <code>https://app.vagrantup.com/ubuntu/boxes/bionic64</code> 进行下载</li>
+</ol>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/48.png)
+</div>
+
+<p>图中的 <code>v20190501.0.0</code> 就是可以下载的版本号</p>
+<ol start="2">
+<li><p>点击上图进入版本详情页 <code>https://app.vagrantup.com/ubuntu/boxes/bionic64/versions/20190501.0.0</code></p>
+</li>
+<li><p>拼URL <code>https://app.vagrantup.com/centos/boxes/7/versions/1804.02&#39;+&#39;/providers/&#39;+&#39;供应商名字/&#39;+&#39;.box</code></p>
+</li>
+</ol>
+<p>公式：下载链接 = 产品版本链接 + 供应商英文意思 + 要下载的供应商名称（如virtualbox）+’.box’</p>
+<p>如上：生成的下载链接为：</p>
+<p><code>https://app.vagrantup.com/ubuntu/boxes/bionic64/versions/20190501.0.0/providers/virtualbox.box</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo wget https:&#x2F;&#x2F;app.vagrantup.com&#x2F;ubuntu&#x2F;boxes&#x2F;bionic64&#x2F;versions&#x2F;20190501.0.0&#x2F;providers&#x2F;virtualbox.box</span><br></pre></td></tr></table></figure>
+
+<h3 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h3><h2 id="初始化系统"><a href="#初始化系统" class="headerlink" title="初始化系统"></a>初始化系统</h2><ol>
+<li>将下载的镜像放到指定目录中，我存放的目录是 <code>/mnt/f/vagrant/box</code></li>
+</ol>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/49.png)
+</div>
+
+<ol start="2">
+<li>查看是否已经将镜像添加到vagrant中</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box list</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/50.png)
+</div>
+
+<p>此时镜像列表中并没有发现 <code>bionic</code> 的镜像</p>
+<ol start="3">
+<li>添加镜像</li>
+</ol>
+<p>命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box add &lt;自己命名的名称&gt; &lt;镜像名称&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box add bionic bionic-server-cloudimg-amd64-vagrant.box</span><br></pre></td></tr></table></figure>
+
+<p>添加完之后再次查看是否已经成功添加到vagrant</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box list</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/51.png)
+</div>
+
+<ol start="4">
+<li>创建一个名为 <code>bionic</code> 的目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ～&#x2F;vagrant&#x2F;</span><br><span class="line">sudo mkdir bionic</span><br><span class="line">sudo chmod 777 bionic&#x2F;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>初始化</li>
+</ol>
+<p>命令： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant init &lt;镜像名称&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd bionic&#x2F;</span><br><span class="line">vagrant init bionic</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/52.png)
+</div>
+
+<p>此时会在 <code>bionic</code> 目录中看到生成了一个 <code>Vagrantfile</code> 的配置文件</p>
+<ol start="6">
+<li><p>打开 <code>Vagrantfile</code> 文件，会看到 <code>config.vm.box = &quot;bionic&quot;</code> ， 其中 <code>bionic</code> 就是在上面初始化的时候也就是 <code>init</code> 后面输入的 <code>bionic</code> ,如果初始化的时候 <code>init</code> 后面没有接受参数后面可以在这个配置文件中改变这个值。</p>
+</li>
+<li><p>启动虚拟机</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/53.png)
+</div>
+
+<p>如图，一个虚拟机新建并启动完成。</p>
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>此时虚拟机已经新建完成，进入虚拟机</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/54.png)
+</div>
+
+<p>现在已经进入到了虚拟机内部，当前系统是 <code>Ubuntu 18.04</code>。</p>
+<h3 id="替换源"><a href="#替换源" class="headerlink" title="替换源"></a>替换源</h3><ol>
+<li>首先备份源</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp &#x2F;etc&#x2F;apt&#x2F;sources.list &#x2F;etc&#x2F;apt&#x2F;sources.list.bak</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/55.png)
+</div>
+
+<ol start="2">
+<li>编辑源</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim &#x2F;etc&#x2F;apt&#x2F;sources.list</span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>:.,$d</code> 删除里面内容替换为下面的阿里源,保存退出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic main restricted universe multiverse</span><br><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-security main restricted universe multiverse</span><br><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-updates main restricted universe multiverse</span><br><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-proposed main restricted universe multiverse</span><br><span class="line">deb http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-backports main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-security main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-updates main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-proposed main restricted universe multiverse</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ubuntu&#x2F; bionic-backports main restricted universe multiverse</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>更新源</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h2><h3 id="安装Nginx"><a href="#安装Nginx" class="headerlink" title="安装Nginx"></a>安装Nginx</h3><ol>
+<li>查看系统是否已经存在nginx</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-cache search nginx</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在/etc/apt目录下下载nginx_signing.key</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;nginx.org&#x2F;keys&#x2F;nginx_signing.key </span><br><span class="line">sudo apt-key add nginx_signing.key</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/56.png)
+</div>
+
+<ol start="3">
+<li>对于Ubuntu，将codename替换为 Ubuntu分发 代号，并将以下代码附加到 <code>/etc/apt/sources.list</code> 文件末尾，然后保存退出</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;ubuntu&#x2F; codename nginx </span><br><span class="line">deb-src http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;ubuntu&#x2F; codename nginx</span><br></pre></td></tr></table></figure>
+
+<p>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;ubuntu&#x2F; bionic nginx </span><br><span class="line">deb-src http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;ubuntu&#x2F; bionic nginx</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/57.png)
+</div>
+
+<ol start="4">
+<li>更新系统</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>安装</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install -y nginx</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/58.png)
+</div>
+
+<ol start="6">
+<li>查看是否安装成功</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -v</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/59.png)
+</div>
+
+<ol start="7">
+<li>查看nginx状态</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl status nginx</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>开启nginx服务并再次查看状态</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo systemctl start nginx</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/60.png)
+</div>
+
+<ol start="9">
+<li>测试</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -I &#39;http:&#x2F;&#x2F;127.0.0.1&#39;</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/61.png)
+</div>
+
+<ol start="10">
+<li>可以使用下面命令将nginx服务关闭</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo &#x2F;etc&#x2F;init.d&#x2F;nginx stop</span><br></pre></td></tr></table></figure>
+
+<p>或者使用 <code>ps -ef | grep nginx</code> 查看nginx状态</p>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/62.png)
+</div>
+
+
+<h3 id="安装MaraiaDB"><a href="#安装MaraiaDB" class="headerlink" title="安装MaraiaDB"></a>安装MaraiaDB</h3><ol>
+<li><p>打开官网 <code>https://downloads.mariadb.org/mariadb/repositories/#mirror=limestone</code> ， 找对对应的版本，我这里选择的是 <code>Ubuntu 18.04</code> 的版本 <code>MariaDB 10.3</code></p>
+</li>
+<li><p>打开 <code>/etc/apt/sources.list</code> 文件，在末尾添加下面内容</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># MariaDB 10.3 repository list - created 2019-05-02 08:16 UTC</span><br><span class="line"># http:&#x2F;&#x2F;downloads.mariadb.org&#x2F;mariadb&#x2F;repositories&#x2F;</span><br><span class="line">deb [arch&#x3D;amd64,arm64,ppc64el] http:&#x2F;&#x2F;mirror.lstn.net&#x2F;mariadb&#x2F;repo&#x2F;10.3&#x2F;ubuntu bionic main</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirror.lstn.net&#x2F;mariadb&#x2F;repo&#x2F;10.3&#x2F;ubuntu bionic main</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/63.png)
+</div>
+
+<ol start="3">
+<li>执行下面内容</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install software-properties-common</span><br><span class="line">sudo apt-key adv --recv-keys --keyserver hkp:&#x2F;&#x2F;keyserver.ubuntu.com:80 0xF1656F24C74CD1D8</span><br><span class="line">sudo add-apt-repository &#39;deb [arch&#x3D;amd64,arm64,ppc64el] http:&#x2F;&#x2F;mirror.lstn.net&#x2F;mariadb&#x2F;repo&#x2F;10.3&#x2F;ubuntu bionic main&#39;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>更新并安装</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install mariadb-server</span><br></pre></td></tr></table></figure>
+
+<p>期间需要两次设置数据库密码</p>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/83.png)
+</div>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/84.png)
+</div>
+
+<ol start="5">
+<li>安装安装</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql_secure_installation</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">vagrant@ubuntu-bionic:~$ mysql_secure_installation</span><br><span class="line"></span><br><span class="line">NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB</span><br><span class="line">      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!</span><br><span class="line"></span><br><span class="line">In order to log into MariaDB to secure it, we&#39;ll need the current</span><br><span class="line">password for the root user.  If you&#39;ve just installed MariaDB, and</span><br><span class="line">you haven&#39;t set the root password yet, the password will be blank,</span><br><span class="line">so you should just press enter here.</span><br><span class="line"></span><br><span class="line">Enter current password for root (enter for none): </span><br><span class="line">OK, successfully used password, moving on...</span><br><span class="line"></span><br><span class="line">Setting the root password ensures that nobody can log into the MariaDB</span><br><span class="line">root user without the proper authorisation.</span><br><span class="line"></span><br><span class="line">You already have a root password set, so you can safely answer &#39;n&#39;.</span><br><span class="line"></span><br><span class="line">Change the root password? [Y&#x2F;n] n</span><br><span class="line"> ... skipping.</span><br><span class="line"></span><br><span class="line">By default, a MariaDB installation has an anonymous user, allowing anyone</span><br><span class="line">to log into MariaDB without having to have a user account created for</span><br><span class="line">them.  This is intended only for testing, and to make the installation</span><br><span class="line">go a bit smoother.  You should remove them before moving into a</span><br><span class="line">production environment.</span><br><span class="line"></span><br><span class="line">Remove anonymous users? [Y&#x2F;n] y</span><br><span class="line"> ... Success!</span><br><span class="line"></span><br><span class="line">Normally, root should only be allowed to connect from &#39;localhost&#39;.  This</span><br><span class="line">ensures that someone cannot guess at the root password from the network.</span><br><span class="line"></span><br><span class="line">Disallow root login remotely? [Y&#x2F;n] y</span><br><span class="line"> ... Success!</span><br><span class="line"></span><br><span class="line">By default, MariaDB comes with a database named &#39;test&#39; that anyone can</span><br><span class="line">access.  This is also intended only for testing, and should be removed</span><br><span class="line">before moving into a production environment.</span><br><span class="line"></span><br><span class="line">Remove test database and access to it? [Y&#x2F;n] y</span><br><span class="line"> - Dropping test database...</span><br><span class="line"> ... Success!</span><br><span class="line"> - Removing privileges on test database...</span><br><span class="line"> ... Success!</span><br><span class="line"></span><br><span class="line">Reloading the privilege tables will ensure that all changes made so far</span><br><span class="line">will take effect immediately.</span><br><span class="line"></span><br><span class="line">Reload privilege tables now? [Y&#x2F;n] y</span><br><span class="line"> ... Success!</span><br><span class="line"></span><br><span class="line">Cleaning up...</span><br><span class="line"></span><br><span class="line">All done!  If you&#39;ve completed all of the above steps, your MariaDB</span><br><span class="line">installation should now be secure.</span><br><span class="line"></span><br><span class="line">Thanks for using MariaDB!</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>测试</li>
+</ol>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/64.png)
+</div>
+
+<h3 id="安装PHP7"><a href="#安装PHP7" class="headerlink" title="安装PHP7"></a>安装PHP7</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install software-properties-common</span><br><span class="line">sudo add-apt-repository ppa:ondrej&#x2F;php</span><br><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get install -y php7.3 php7.3-json php7.3-xml php7.3-fpm php7.3-cli  php7.3-gd php7.3-mysql php7.3-curl php7.3-pgsql php7.3-mbstring php7.3-cgi php7.3-dev</span><br></pre></td></tr></table></figure>
+
+<p>安装 <code>php7.3-dev</code> 是用来使用 <code>phpize</code> 的</p>
+<p>查看版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">php -v</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/65.png)
+</div>
+
+
+<h2 id="高级配置"><a href="#高级配置" class="headerlink" title="高级配置"></a>高级配置</h2><h3 id="端口转发"><a href="#端口转发" class="headerlink" title="端口转发"></a>端口转发</h3><p>官网 <code>https://www.vagrantup.com/docs/networking/forwarded_ports.html</code></p>
+<ol>
+<li>打开目录下的配置文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim Vagrantfile</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>config.vm.box = &quot;bionic&quot;</code> 这句话下面添加下面端口转发指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.network &quot;forwarded_port&quot;, guest: 80, host: 8080</span><br></pre></td></tr></table></figure>
+
+<p>表示我本地浏览器可以通过 <code>8080</code> 端口访问虚拟机 <code>80</code> 端口</p>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/66.png)
+</div>
+
+<ol start="2">
+<li>重启虚拟机</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant reload</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>测试</li>
+</ol>
+<p>在本地浏览中输入 <code>127.0.0.1:8080</code></p>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/67.png)
+</div>
+
+<h3 id="配置共享目录（挂载）"><a href="#配置共享目录（挂载）" class="headerlink" title="配置共享目录（挂载）"></a>配置共享目录（挂载）</h3><p>官网 <code>https://www.vagrantup.com/docs/synced-folders/nfs.html</code></p>
+<ol>
+<li>打开目录下的配置文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim Vagrantfile</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>config.vm.network &quot;forwarded_port&quot;, guest: 80, host: 8080</code> 这句话下面添加下面共享目录指令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.synced_folder &quot;&#x2F;mnt&#x2F;f&#x2F;www&#x2F;&quot;, &quot;&#x2F;home&#x2F;www&quot;, :nfs &#x3D;&gt; true</span><br></pre></td></tr></table></figure>
+
+<p>表示将我本机的 <code>/mnf/f/www/</code> 目录映射到虚拟机内的 <code>/home/www</code> 目录中</p>
+<p>进入虚拟机查看 <code>/home/www</code> 目录是否存在</p>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/68.png)
+</div>
+
+
+<ol start="2">
+<li>重启</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant reload</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在 <code>config.vm.synced_folder &quot;/mnt/f/www/&quot;, &quot;/home/www&quot;, :nfs =&gt; true</code> 添加私有网络配置, 因为设置 <code>nfs</code> 的时候一定要设置一个静态IP， 如果配置中将 <code>:nfs =&gt; true</code> 去掉的话，就不需要设置静态IP了</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.network &quot;private_network&quot; ,ip: &quot;192.168.43.43&quot;</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/69.png)
+</div>
+
+<ol start="4">
+<li>重启</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant reload</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><p>使用 <code>vagrant ssh</code> 进入虚拟机，此时会看到 <code>/home/www</code> 目录已经存在了</p>
+</li>
+<li><p>在虚拟机中可以使用 <code>ifconfig</code> 查看网络配置</p>
+</li>
+</ol>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/70.png)
+</div>
+
+<ol start="7">
+<li>此时就可以使用IP来访问</li>
+</ol>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/71.png)
+</div>
+
+<h3 id="修改虚拟机名称（虚拟机里面主机的名称）"><a href="#修改虚拟机名称（虚拟机里面主机的名称）" class="headerlink" title="修改虚拟机名称（虚拟机里面主机的名称）"></a>修改虚拟机名称（虚拟机里面主机的名称）</h3><p>打开Virtual,在虚拟机列表中显示的就是虚拟机名称</p>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/72.png)
+</div>
+
+<p>这里名称太长了，所以需要修改，这里修改为 <code>bionic</code></p>
+<p>打开配置文件找到 <code>config.vm.provider &quot;virtualbox&quot; do |vb|</code> 这一段，将注释去掉</p>
+<p>修改前：</p>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/73.png)
+</div>
+
+<p>修改后：</p>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/74.png)
+</div>
+
+<p>重启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant reload</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/75.png)
+</div>
+
+<h3 id="修改虚拟机主机名称"><a href="#修改虚拟机主机名称" class="headerlink" title="修改虚拟机主机名称"></a>修改虚拟机主机名称</h3><p>进入虚拟机</p>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/76.png)
+</div>
+
+<p>如图所示 <code>ubuntu-bionic</code> 就是主机名</p>
+<p>只需要在配置文件中添加 <code>config.vm.hostname = &quot;vmubuntu&quot;</code> ，然后重启</p>
+<h3 id="配置虚拟机内容和CPU"><a href="#配置虚拟机内容和CPU" class="headerlink" title="配置虚拟机内容和CPU"></a>配置虚拟机内容和CPU</h3><p>使用 <code>free -m</code> 查看内存,使用 <code>top</code> 命令，然后输入 <code>1</code> 查看CPU， 输入 <code>q</code> 退出</p>
+<p>配置虚拟机内存和CPU是在添加名称的地方进行修改的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vb.memory &#x3D; &quot;1024&quot;</span><br><span class="line">vb.cpus &#x3D; 2</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/77.png)
+</div>
+
+<p>然后重启 <code>vagrant reload</code></p>
+<h3 id="优化Nginx"><a href="#优化Nginx" class="headerlink" title="优化Nginx"></a>优化Nginx</h3><p>官网 <code>https://www.vagrantup.com/docs/synced-folders/virtualbox.html</code></p>
+<p>在nginx配置中添加 <code>sendfile off;</code> , 但是在 <code>Apache</code> 中已经默认关了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim nginx.conf</span><br></pre></td></tr></table></figure>
+
+<p>找到 <code>sendfile        on;</code> , 将其设置为 <code>off</code></p>
+<p>重启nginx服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo &#x2F;etc&#x2F;init.d&#x2F;nginx restart</span><br></pre></td></tr></table></figure>
+
+<h2 id="打包分发"><a href="#打包分发" class="headerlink" title="打包分发"></a>打包分发</h2><ol>
+<li>打包之前需要将虚拟机关闭</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant halt</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>打包</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant package</span><br></pre></td></tr></table></figure>
+
+<p>如果没有输入参数它会自动生成一个 <code>package.box</code> 的文件</p>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/78.png)
+</div>
+
+<p>如果带参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant package --output ubuntu1804.box</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/79.png)
+</div>
+
+<ol start="3">
+<li>可以通过U盘或者网盘进行拷贝分发，这里介绍通过配置文件进行分发</li>
+</ol>
+<p>比如这里我需要在虚拟机中安装redis</p>
+<p>打开配置文件，找到下面配置块</p>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/80.png)
+</div>
+
+<p>修改如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># Enable provisioning with a shell script. Additional provisioners such as</span><br><span class="line"># Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the</span><br><span class="line"># documentation for more information about their specific syntax and use.</span><br><span class="line"> config.vm.provision &quot;shell&quot;, inline: &lt;&lt;-SHELL</span><br><span class="line">#   apt-get update</span><br><span class="line">#   apt-get install -y apache2</span><br><span class="line">  sudo apt-get install -y redis-server</span><br><span class="line"> SHELL</span><br></pre></td></tr></table></figure>
+
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/81.png)
+</div>
+
+<p>重启,这样就会执行安装redis的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant reload --provision</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>进入虚拟机使用 <code>ps -ef | grep redis</code> 查看是否安装</li>
+</ol>
+<div align=center>
+![vagrant](http://images.ornnth.com/hexo/vagrant/82.png)
+</div>
+
+
+<ol start="5">
+<li>在打包的时候需要将网络配置全部关闭或者在设置了网络配置的情况下添加一个 <code>， auto_config: true</code> 这个参数</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Vagrant/" rel="tag"># Vagrant</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/04/11/6-ElasticSearch%E7%B4%A2%E5%BC%95/" rel="prev" title="6-ElasticSearch索引">
+      <i class="fa fa-chevron-left"></i> 6-ElasticSearch索引
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/05/03/Linux%E4%B8%8B%E5%AE%89%E8%A3%85PHP%E6%89%A9%E5%B1%95/" rel="next" title="Linux下安装PHP扩展">
+      Linux下安装PHP扩展 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤"><span class="nav-number">2.</span> <span class="nav-text">步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载镜像"><span class="nav-number">2.1.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建目录"><span class="nav-number">2.2.</span> <span class="nav-text">创建目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化系统"><span class="nav-number">3.</span> <span class="nav-text">初始化系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境配置"><span class="nav-number">4.</span> <span class="nav-text">环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#替换源"><span class="nav-number">4.1.</span> <span class="nav-text">替换源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装软件"><span class="nav-number">5.</span> <span class="nav-text">安装软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Nginx"><span class="nav-number">5.1.</span> <span class="nav-text">安装Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装MaraiaDB"><span class="nav-number">5.2.</span> <span class="nav-text">安装MaraiaDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装PHP7"><span class="nav-number">5.3.</span> <span class="nav-text">安装PHP7</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级配置"><span class="nav-number">6.</span> <span class="nav-text">高级配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#端口转发"><span class="nav-number">6.1.</span> <span class="nav-text">端口转发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置共享目录（挂载）"><span class="nav-number">6.2.</span> <span class="nav-text">配置共享目录（挂载）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改虚拟机名称（虚拟机里面主机的名称）"><span class="nav-number">6.3.</span> <span class="nav-text">修改虚拟机名称（虚拟机里面主机的名称）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改虚拟机主机名称"><span class="nav-number">6.4.</span> <span class="nav-text">修改虚拟机主机名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置虚拟机内容和CPU"><span class="nav-number">6.5.</span> <span class="nav-text">配置虚拟机内容和CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化Nginx"><span class="nav-number">6.6.</span> <span class="nav-text">优化Nginx</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打包分发"><span class="nav-number">7.</span> <span class="nav-text">打包分发</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="准备 本机系统：Windows10 家庭版 64位 NodeJS：v6.10.0LTS 64位  安装 双击安装包，点击 Next  勾选同意,点击 Next  选择安装盘符，我这边选择安装在 E 盘，然后点击 Next  Next  Install  Finish  检验是否安装成功 快捷键 CTRL + R 输入 cmd 打开CMD窗口  输入 node -v , 查看nodejs版本  输入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2-NodeJS的安装与配置——废话篇">
+<meta property="og:url" content="https://notes.xuepincat.com/2017/03/28/2-NodeJS%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="准备 本机系统：Windows10 家庭版 64位 NodeJS：v6.10.0LTS 64位  安装 双击安装包，点击 Next  勾选同意,点击 Next  选择安装盘符，我这边选择安装在 E 盘，然后点击 Next  Next  Install  Finish  检验是否安装成功 快捷键 CTRL + R 输入 cmd 打开CMD窗口  输入 node -v , 查看nodejs版本  输入">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/0.jpg">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/1.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/2.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/3.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/5.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/6.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/7.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/8.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/9.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/10.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/11.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/12.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/13.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/14.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/15.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/16.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/17.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/18.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/19.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/20.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/21.png">
+<meta property="article:published_time" content="2017-03-28T15:52:52.000Z">
+<meta property="article:modified_time" content="2020-07-16T16:31:41.701Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="NodeJS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/hexo/nodejs/0.jpg">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2017/03/28/2-NodeJS%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>2-NodeJS的安装与配置——废话篇 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/03/28/2-NodeJS%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2-NodeJS的安装与配置——废话篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-03-28 23:52:52" itemprop="dateCreated datePublished" datetime="2017-03-28T23:52:52+08:00">2017-03-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-17 00:31:41" itemprop="dateModified" datetime="2020-07-17T00:31:41+08:00">2020-07-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo-Next/" itemprop="url" rel="index"><span itemprop="name">Hexo+Next</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <div align="center">
+    <img src="/images/hexo/nodejs/0.jpg">
+</div>
+
+<a id="more"></a>
+
+<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><blockquote>
+<p>本机系统：<code>Windows10 家庭版 64位</code><br>NodeJS：<code>v6.10.0LTS 64位</code></p>
+</blockquote>
+<div align="center">
+    <img src="/images/hexo/nodejs/1.png">
+</div>
+
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>双击安装包，点击 <code>Next</code></p>
+<div align="center">
+    <img src="/images/hexo/nodejs/2.png">
+</div>
+
+<p>勾选同意,点击 <code>Next</code></p>
+<div align="center">
+    <img src="/images/hexo/nodejs/3.png">
+</div>
+
+<p>选择安装盘符，我这边选择安装在 <code>E</code> 盘，然后点击 <code>Next</code></p>
+<div align="center">
+    <img src="/images/hexo/nodejs/4.png">
+</div>
+
+<p><code>Next</code></p>
+<div align="center">
+    <img src="/images/hexo/nodejs/5.png">
+</div>
+
+<p><code>Install</code></p>
+<div align="center">
+    <img src="/images/hexo/nodejs/6.png">
+</div>
+
+<div align="center">
+    <img src="/images/hexo/nodejs/7.png">
+</div>
+
+<p><code>Finish</code></p>
+<div align="center">
+    <img src="/images/hexo/nodejs/8.png">
+</div>
+
+<h2 id="检验是否安装成功"><a href="#检验是否安装成功" class="headerlink" title="检验是否安装成功"></a>检验是否安装成功</h2><p>快捷键 <code>CTRL + R</code> 输入 <code>cmd</code> 打开CMD窗口</p>
+<div align="center">
+    <img src="/images/hexo/nodejs/9.png">
+</div>
+
+<p>输入 <code>node -v</code> , 查看nodejs版本</p>
+<p>输入 <code>npm -v</code> , 查看npm版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
+
+<div align="center">
+    <img src="/images/hexo/nodejs/10.png">
+</div>
+
+<p>安装完成后的目录如下显示</p>
+<div align="center">
+    <img src="/images/hexo/nodejs/11.png">
+</div>
+
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><h3 id="创建-node-global-和-node-cache-文件夹"><a href="#创建-node-global-和-node-cache-文件夹" class="headerlink" title="创建 node_global 和 node_cache 文件夹"></a>创建 <code>node_global</code> 和 <code>node_cache</code> 文件夹</h3><blockquote>
+<p>环境配置主要配置的是 <code>npm</code> 安装的 <code>全局模块</code> 所在路径，以及 <code>缓存cache</code> 的路径。</p>
+</blockquote>
+<blockquote>
+<p>之所以要配置为全局，是因为以后在执行类似： <code>npm install package_name [-g]</code> (中括号[]表示可选参数， <code>-g</code> 表示 <code>global全局安装</code> 的意思)的安装语句时，会将安装的模块安装到”<code>C:\用户\用户名\AppData\Roming\npm</code>”中，会占用C盘空间。</p>
+</blockquote>
+<blockquote>
+<p>所以我想将 <code>全局模块所在的路径</code> 和 <code>缓存</code> 放在nodejs安装的目录中，所以我需要在nodejs安装目录中创建两个文件夹 <code>node_global</code> 和 <code>node_cache</code></p>
+</blockquote>
+<p>两个文件夹如下图所示：</p>
+<div align="center">
+    <img src="/images/hexo/nodejs/12.png">
+</div>
+
+<p>创建完成两个文件夹之后，打开CMD窗口输入以下命令</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> prefix “E:\Program Files\nodejs\node_global”</span><br><span class="line">npm config <span class="built_in">set</span> cache “E:\Program Files\nodejs\node_cache”</span><br></pre></td></tr></table></figure>
+
+<div align="center">
+    <img src="/images/hexo/nodejs/13.png">
+</div>
+
+<p><strong>注意</strong></p>
+<blockquote>
+<p>在输入的时候windows系统支持按 <code>TAB</code> 键自动补全功能</p>
+</blockquote>
+<blockquote>
+<p>第二句话 <code>npm config set cache “E:\Program Files\nodejs\node_cache”</code> 不要一味地复制。如果复制，复制之后一定要记得把 <code>set</code> 后面的 <code>global</code> 改为 <code>cache</code></p>
+</blockquote>
+<blockquote>
+<p>我在这边掉坑了，因为是复制的上一句，所有最后安装的时候包会安装到 <code>cache</code> 文件夹中，所以这边一定要注意一下。</p>
+</blockquote>
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>右击 <code>我的电脑</code> -&gt; <code>属性</code> -&gt; <code>高级系统设置</code> -&gt; <code>高级</code> -&gt; <code>环境变量</code> -&gt; <code>新建</code></p>
+<div align="center">
+    <img src="/images/hexo/nodejs/14.png">
+</div>
+
+<p>变量名：<code>NODE_PATH</code><br>变量值：<code>E:\Program Files\nodejs\node_global\node_modules</code></p>
+<div align="center">
+    <img src="/images/hexo/nodejs/15.png">
+</div>
+
+<p> 编辑 <code>用户变量</code> 中的 <code>Path</code>, 修改为 <code>E:\Program Files\nodejs\node_global</code></p>
+<p>原始Path：</p>
+<div align="center">
+    <img src="/images/hexo/nodejs/16.png">
+</div>
+
+<div align="center">
+    <img src="/images/hexo/nodejs/17.png">
+</div>
+
+<p>修改后Path：</p>
+<div align="center">
+    <img src="/images/hexo/nodejs/18.png">
+</div>
+
+<p>然后点击 <code>确定</code> 结束环境变量的配置。</p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>配置完成后，我们安装个module模块测试一下下，我安装的是 <code>express</code> 模块，继续打开CMD窗口，输入以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install express -g         <span class="comment">#-g表示全局安装的意思</span></span><br></pre></td></tr></table></figure>
+
+<div align="center">
+    <img src="/images/hexo/nodejs/19.png">
+</div>
+
+<p>回车</p>
+<div align="center">
+    <img src="/images/hexo/nodejs/20.png">
+</div>
+
+<p>安装完没有爆出什么信息，安装成功。</p>
+<p>这时我们打开 <code>E:\Program Files\nodejs\node_global\node_modules</code> ，发现里面多了 <code>express</code> 文件夹</p>
+<div align="center">
+    <img src="/images/hexo/nodejs/21.png">
+</div>
+
+<p>到这里Node.js已经安装完成了。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+              <a href="/tags/NodeJS/" rel="tag"># NodeJS</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/03/27/1-Git%E7%9A%84%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/" rel="prev" title="1-Git的下载与安装——废话篇">
+      <i class="fa fa-chevron-left"></i> 1-Git的下载与安装——废话篇
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/03/29/3-GitHub%E7%9A%84%E6%B3%A8%E5%86%8C%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%B8%BB%E8%A7%92%E7%AF%87/" rel="next" title="3-GitHub的注册与配置——主角篇">
+      3-GitHub的注册与配置——主角篇 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检验是否安装成功"><span class="nav-number">3.</span> <span class="nav-text">检验是否安装成功</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境配置"><span class="nav-number">4.</span> <span class="nav-text">环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建-node-global-和-node-cache-文件夹"><span class="nav-number">4.1.</span> <span class="nav-text">创建 node_global 和 node_cache 文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置环境变量"><span class="nav-number">4.2.</span> <span class="nav-text">配置环境变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">5.</span> <span class="nav-text">测试</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

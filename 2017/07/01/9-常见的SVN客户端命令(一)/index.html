@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="常见SVN客户端命令 svn add -添加到版本控制  svn commit -提交修改到服务端（创建一个新的版本号）  svn update -更新工作副本  svn delete -从版本中删除文件或目录  add是把一个无版本控制的文件添加到版控制中； commit命令用于提交修改到服务端，并且他会创建一个新的版本号； update用于更新本地的工作副本； delete用户删除版本库中的文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="9-常见的SVN客户端命令(一)">
+<meta property="og:url" content="https://notes.xuepincat.com/2017/07/01/9-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%B8%80)/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="常见SVN客户端命令 svn add -添加到版本控制  svn commit -提交修改到服务端（创建一个新的版本号）  svn update -更新工作副本  svn delete -从版本中删除文件或目录  add是把一个无版本控制的文件添加到版控制中； commit命令用于提交修改到服务端，并且他会创建一个新的版本号； update用于更新本地的工作副本； delete用户删除版本库中的文">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/1.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/2.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/3.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/5.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/6.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/7.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/8.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/9.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/10.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/11.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/16.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/12.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/13.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/14.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/15.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/17.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/18.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/svn/20170701/19.png">
+<meta property="article:published_time" content="2017-07-01T04:37:30.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.279Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="SVN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/svn/20170701/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2017/07/01/9-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%B8%80)/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>9-常见的SVN客户端命令(一) | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/01/9-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%B8%80)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          9-常见的SVN客户端命令(一)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-01 12:37:30" itemprop="dateCreated datePublished" datetime="2017-07-01T12:37:30+08:00">2017-07-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="常见SVN客户端命令"><a href="#常见SVN客户端命令" class="headerlink" title="常见SVN客户端命令"></a>常见SVN客户端命令</h3><pre><code>svn add -添加到版本控制
+
+svn commit -提交修改到服务端（创建一个新的版本号）
+
+svn update -更新工作副本
+
+svn delete -从版本中删除文件或目录</code></pre><p>add是把一个无版本控制的文件添加到版控制中；<br>commit命令用于提交修改到服务端，并且他会创建一个新的版本号；<br>update用于更新本地的工作副本；<br>delete用户删除版本库中的文件或目录。</p>
+<a id="more"></a>
+
+<h3 id="基本操作"><a href="#基本操作" class="headerlink" title="基本操作"></a>基本操作</h3><p>首先介绍一下，第一台svn_1是我在腾讯云主机上一个创建的以为文件夹，用户检出用的，我在这个文件夹中也检出了一个repos版本库，也就是说这个既当做服务端用也当做客户端用。工作副本所在的目录是svn_1，它的用户名是mingo;第二台机器我是在我的本地机器上，它的工作副本所在目录是svn_2，SVN的用户名是mingo2。现在repos版本库中什么都没有，并且版本号位0.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">$ sudo su</span><br><span class="line"><span class="comment"># cd ~</span></span><br><span class="line"><span class="comment"># sudo mkdir svn_1</span></span><br><span class="line"><span class="comment"># cd svn_1/</span></span><br><span class="line"><span class="comment"># svn co svn://118.89.47.207</span></span><br><span class="line"></span><br><span class="line">Authentication realm: &lt;svn://118.89.47.207:3690&gt; 04a630e2-125b-4a85-b5c8-bbb913df8ee4</span><br><span class="line">Password <span class="keyword">for</span> <span class="string">'root'</span>: 系统用户密码</span><br><span class="line"></span><br><span class="line">Authentication realm: &lt;svn://118.89.47.207:3690&gt; 04a630e2-125b-4a85-b5c8-bbb913df8ee4</span><br><span class="line">Username: SVN用户名（mingo）</span><br><span class="line">Password <span class="keyword">for</span> <span class="string">'mingo'</span>: SVN用户密码(123456)</span><br><span class="line"></span><br><span class="line">-----------------------------------------------------------------------</span><br><span class="line">ATTENTION!  Your password <span class="keyword">for</span> authentication realm:</span><br><span class="line"></span><br><span class="line">   &lt;svn://118.89.47.207:3690&gt; 04a630e2-125b-4a85-b5c8-bbb913df8ee4</span><br><span class="line"></span><br><span class="line">can only be stored to disk unencrypted!  You are advised to configure</span><br><span class="line">your system so that Subversion can store passwords encrypted, <span class="keyword">if</span></span><br><span class="line">possible.  See the documentation <span class="keyword">for</span> details.</span><br><span class="line"></span><br><span class="line">You can avoid future appearances of this warning by setting the value</span><br><span class="line">of the <span class="string">'store-plaintext-passwords'</span> option to either <span class="string">'yes'</span> or <span class="string">'no'</span> <span class="keyword">in</span></span><br><span class="line"><span class="string">'/root/.subversion/servers'</span>.</span><br><span class="line">-----------------------------------------------------------------------</span><br><span class="line">Store password unencrypted (yes/no)? yes</span><br><span class="line">Checked out revision 0.</span><br><span class="line"></span><br><span class="line"><span class="comment"># ll</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/1.png" alt=""></p>
+<p>这个时候会发现svn_1文件夹下多出了.svn的文件夹，表示检出成功。</p>
+<h3 id="一、svn-add-…"><a href="#一、svn-add-…" class="headerlink" title="一、svn add …"></a>一、svn add …</h3><h4 id="1、现在我要在svn-1文件夹中创建一些文件和一些文件夹。"><a href="#1、现在我要在svn-1文件夹中创建一些文件和一些文件夹。" class="headerlink" title="1、现在我要在svn_1文件夹中创建一些文件和一些文件夹。"></a>1、现在我要在svn_1文件夹中创建一些文件和一些文件夹。</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># touch index.html about.html contact.html</span></span><br><span class="line"><span class="comment"># mkdir &#123;css,js,img&#125;</span></span><br></pre></td></tr></table></figure>
+<p><img src="/images/svn/20170701/2.png" alt=""></p>
+<p>这些是常见的WEB前端项目的目录结构大概就是这样。</p>
+<h4 id="2、进入js目录，创建一些常用的js文件"><a href="#2、进入js目录，创建一些常用的js文件" class="headerlink" title="2、进入js目录，创建一些常用的js文件"></a>2、进入js目录，创建一些常用的js文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd js</span></span><br><span class="line"><span class="comment"># touch app.js global.js</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/3.png" alt=""></p>
+<h4 id="3、进入css目录，创建一些常用的css文件"><a href="#3、进入css目录，创建一些常用的css文件" class="headerlink" title="3、进入css目录，创建一些常用的css文件"></a>3、进入css目录，创建一些常用的css文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cd ../css/</span></span><br><span class="line"><span class="comment"># touch reset.css style.css</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/4.png" alt=""></p>
+<p>目前这个svn_1副本中文件和文件夹都没有加入到版本控制中，这时候的所有文件都是无版本控制状态，如果要对这些文件进行控制，就需要做一个增加(add)的操作，也就是千米阿尼所说的add命令。</p>
+<p>比如说我现在要把index.html增加到版本控制中，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn add index.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/5.png" alt=""></p>
+<p>现在index.html就在版本控制之下了，就这么简单。</p>
+<p>比如现在我要把整个css文件夹添加到版本控制中，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn add css</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/6.png" alt=""></p>
+<p>这时我们会发现增加一个文件夹时，它默认会把这个目录下所有文件都递归加入到版本控制中，假设现在我只想增加js目录，暂时我还不想把js中的文件增加到版本控制中，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn add js --non-recursive</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/7.png" alt=""></p>
+<p>这个时候会发现它只增加了js文件夹，并没有把js文件夹下的所有文件都递归增加进去。</p>
+<p>比如现在项目中的无版本控制文件和目录已经很多了，一个一个去增加肯定非常麻烦，现在我我想一次性的把当前目录下的所有无版本控制的文件或文件夹做一个批量的增加操作，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn add *</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/8.png" alt=""></p>
+<p>*代表所有文件，这个时候会发现它把目录下的所有文件和目录都扫了一遍，把没有增加到版本控制里的增加到版本控制里，吴国增加过了它就会告诉你这些已经增加过了。</p>
+<p>这些无版本控制的文件增加到版本控制中之后，会发现js目录下明明有两个js文件也是无版本控制的，但是它没有被添加进去，所以这里要注意使用svn add * 命令进行批量的文件增加操作的时候，如果一个目录的本身已经在版本控制之下了，那么它就不会再去扫描这个目录之下的文件了。</p>
+<p>那么问题来了，如果目录很多呢？那么增加的时候岂不是没有个都要进去一次进行批量增加操作，这时候只需要在刚才命令后面添加一个参数，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn add * --force</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/9.png" alt=""></p>
+<p>加上这个命令之后就表示强制执行，这时候会发现js文件夹下的两个文件也被增加进来了。</p>
+<p>以上就是svn add 增加命令的操作。</p>
+<h3 id="二、svn-commit-…"><a href="#二、svn-commit-…" class="headerlink" title="二、svn commit …"></a>二、svn commit …</h3><p>刚才在工作副本里已经增加了一些文件和文件夹到版本控制中了，现在我要把这些增加的文件和文件夹提交到SVN的服务端。</p>
+<p>比如说我现在想提交index.html这个文件，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn ci -m &quot;备注&quot; 文件名</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn ci -m "this is index" index.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/10.png" alt=""></p>
+<p>commit可以缩写位ci，后面在添加一个-m参数，这个参数是一个提交备注 后面在添加一个引号，引号里面备注一些如这个文件是做什么用的，有什么注意事项。</p>
+<p>这个命令之后，index.html就被提交到了SVN服务端，而且它给出了一个提示，Committed revision 1,这就是之前说说的，每次提交都会创建一个新的版本号。</p>
+<p>注意svn提交操作-m参数是必须要加的，就算我们什么备注内容都不想写，这个-m参数也必须要写，不然是没有办法提交的，课件版本控制中的备注有多重要，就如同平时开发的注释一样。</p>
+<p>比如提交一个目录，只需要将文件名替换成目录名就行了，它就会把这个目录下的改动都提交上去。</p>
+<p>比如现在将目录下的所有改动进行批量提交，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn ci -m "" *</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/11.png" alt=""></p>
+<p>这就是把当前目录下的所有改动全部提交到服务端，并且将版本号给为了2。</p>
+<h3 id="三、svn-update-…"><a href="#三、svn-update-…" class="headerlink" title="三、svn update …"></a>三、svn update …</h3><p>如何讲自己的工作副本更新成服务端的最新版本，前面的操作我实在腾讯云主机下操作的，现在我切换到我的本地机器svn_2上，常见的是将全目录更新到最新版本，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn up</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/16.png" alt=""></p>
+<p>update可以缩写位up，看到更新提示，会发现目前已经更新到了版本2，这时候从svn_1上面提交的数据已经更新到了svn_2的这个机器上，这个是更新操作的默认情况。</p>
+<p>如果现在svn_2的某个开发人员想要看一下某个文件在版本1的时候是什么样子的，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn up -r 1 index.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/12.png" alt=""></p>
+<p>这个时候index.html就会更新成版本1，当然刚才我们没有在index.html里面写任何内容，所以都是空白的，如果index.html在版本1到版本2之间做过修改，那么我们可以把一个文件更新到任意一个历史版本去查看它当时的文件内容是什么。</p>
+<p>假设现在我们已经看了历史版本，现在想把index.html更新到最新版本，当然我们可以使用前面的方法，把版本号改为2，命令如下;</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn up -r 2 index.html</span></span><br></pre></td></tr></table></figure>
+<p>现在我不执行上面的这句话，比如我现在有好多文件都更新到了历史版本，我觉的一个一个更新到最新版本很麻烦，有没有批量的操作呢？首先我们想到的是将svn_2全部更新高最新版本，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn up</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/13.png" alt=""></p>
+<p>这时我们会发现并没有index.html的更新信息，看前面的更新操作，如果文件被更新到一个版本号，它是会有文件名出现的，然而这里并没有，那么说明index.html并没有更新到最新版本，课件这样做是行不通的，这是为什么呢？</p>
+<pre><code>注意点：
+svn updatetex特性，默认情况下，每个文件只会从服务端更新一次最新版本。怎么理解这句话呢？
+意思就是说对服务端来讲index.html目前的最新版本号是2，那我之前已经更新过一次了，再来一次svn up,我也不管你客户机上是历史版本还是什么鬼，反正默认情况下我是不会再让你更新了，你重复执行svn update也没有用，除非现在有其他人对index.html做了修改，并且提交到了版本3，这个时候在执行svn up就把index.html更新到最新版本3，对于服务端来讲版本3来没有更新过，那现在执行了svn up，既然你没有更新过，我就让你更新一次，所以就能更新到版本3。</code></pre><p>现在问题来了，如果不用前面所说的指定版本号的方式更新成最新版本，有没有其他办法把历史版本批量更新到最新版本的方法吗？命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn up *</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/14.png" alt=""></p>
+<p>这时会发现加上*之后所有文件会强制更新到最新版本。</p>
+<h3 id="四、svn-delete-…"><a href="#四、svn-delete-…" class="headerlink" title="四、svn delete …"></a>四、svn delete …</h3><p>有人可能会认为可以使用linux中的删除命令(rm)把文件删掉就行了，</p>
+<p><img src="/images/svn/20170701/15.png" alt=""></p>
+<p>乍一看，确实是删除掉了，不见了，但是现在我们再执行一个svn up,这时候会发现index.html又被恢复了，所以要注意一点Linux中的删除和SVN中的删除是两回事，我们说从版本库中删除一个文件是把服务端上的那个文件也删除掉，并不是单纯的把本地上的一个文件删除。</p>
+<p>这个时候可能会发现，使用svn up不加*的时候默认情况下不是说每个文件只能更细一次最新版本吗？现在怎么又更新给我们了。</p>
+<pre><code>注意：
+svn update 特性,当工作副本缺失某个文件的时候，使用svn up更新，服务端还是会把缺失的文件的最新版本更新给我们的。</code></pre><p>前面说到的更新命令的情况，一个文件被更新到历史版本，想更新会最新版本，我们也可以通过这种方式，把这个历史版本文件删除，就是使用系统命令来删除，然后来使用svn up的方式来更新就可以把这个文件恢复到最新版本了，这也是一个办法，但是有点偏门，没有svn up *来的方便。</p>
+<p>删除svn版本库中的文件命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn delete contact.html -m "备注"</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn del contact.html</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn remove contact.html</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn rm contact.html</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn rm contact.html</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/17.png" alt=""></p>
+<p>这四个方法都是等价的，效果都一样，后面也可以添加备注，只不过删除命令的备注并不像提交一样是强制的，这里删除是可以不添加-m参数的，这里的-m参数是一个可选参数。</p>
+<p>删除之后还需要提交一下，这边出现了一个问题提示这样的信息。</p>
+<pre><code>svn: E170001: Commit failed (details follow):
+svn: E170001: Authorization failed</code></pre><p>这表示该svn用户(mingo2)并没有提交的权限，我们需要进入服务端版本库中修改权限，打开repos版本库，进入conf/目录下打开authz文件<br><img src="/images/svn/20170701/18.png" alt=""><br>修改前：</p>
+<pre><code>@dev = r</code></pre><p>修改前：</p>
+<pre><code>@dev = rw</code></pre><p>然后在执行提交操作，就可以了。</p>
+<p>提交之后版本变成3，因为对于服务端来说工作副本有文件被删除了是一种版本的变化，需要提交才能把服务端文件删除。</p>
+<p>现在在回到svn-1腾讯云主机上，做一个svn up操作，命令如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># svn up</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/svn/20170701/19.png" alt=""></p>
+<p>这样工作副本也更新到了最新版本3，并且contact.html也被删除了。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/SVN/" rel="tag"># SVN</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/06/30/8-SVN%E4%B8%ADcheckout%E4%B8%8Eexport%E7%9A%84%E5%8C%BA%E5%88%AB/" rel="prev" title="8-SVN中checkout与export的区别">
+      <i class="fa fa-chevron-left"></i> 8-SVN中checkout与export的区别
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/07/02/10-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%BA%8C)/" rel="next" title="10-常见的SVN客户端命令(二)">
+      10-常见的SVN客户端命令(二) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见SVN客户端命令"><span class="nav-number">1.</span> <span class="nav-text">常见SVN客户端命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本操作"><span class="nav-number">2.</span> <span class="nav-text">基本操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一、svn-add-…"><span class="nav-number">3.</span> <span class="nav-text">一、svn add …</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、现在我要在svn-1文件夹中创建一些文件和一些文件夹。"><span class="nav-number">3.1.</span> <span class="nav-text">1、现在我要在svn_1文件夹中创建一些文件和一些文件夹。</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、进入js目录，创建一些常用的js文件"><span class="nav-number">3.2.</span> <span class="nav-text">2、进入js目录，创建一些常用的js文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、进入css目录，创建一些常用的css文件"><span class="nav-number">3.3.</span> <span class="nav-text">3、进入css目录，创建一些常用的css文件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、svn-commit-…"><span class="nav-number">4.</span> <span class="nav-text">二、svn commit …</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、svn-update-…"><span class="nav-number">5.</span> <span class="nav-text">三、svn update …</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、svn-delete-…"><span class="nav-number">6.</span> <span class="nav-text">四、svn delete …</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是 Network Namespace 通过后台执行的方式 docker run -d 创建一个 Container, 并为该容器起一个名字为 test1, 使用的 Image 为 busybox, 它是一个非常小的 linux image, 在里面运行一个 while 无限循环的 shell 命令,这个 Container 会一直在后台执行  1   sudo docker run -d -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络命名空间">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/04/20/Docker-%E7%BD%91%E7%BB%9C%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="什么是 Network Namespace 通过后台执行的方式 docker run -d 创建一个 Container, 并为该容器起一个名字为 test1, 使用的 Image 为 busybox, 它是一个非常小的 linux image, 在里面运行一个 while 无限循环的 shell 命令,这个 Container 会一直在后台执行  1   sudo docker run -d -">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/1.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/2.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/3.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/4.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/5.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/6.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/docker/network-namespace/213.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/7.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/8.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/9.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/10.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/11.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/12.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/13.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/14.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/15.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/16.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/17.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/18.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/19.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/20.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/21.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/22.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/23.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/24.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/25.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/26.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/network-namespace/27.png">
+<meta property="article:published_time" content="2020-04-20T13:03:53.000Z">
+<meta property="article:modified_time" content="2020-07-18T18:38:33.364Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/docker/network-namespace/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/04/20/Docker-%E7%BD%91%E7%BB%9C%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>网络命名空间 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/04/20/Docker-%E7%BD%91%E7%BB%9C%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          网络命名空间
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-04-20 21:03:53" itemprop="dateCreated datePublished" datetime="2020-04-20T21:03:53+08:00">2020-04-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-19 02:38:33" itemprop="dateModified" datetime="2020-07-19T02:38:33+08:00">2020-07-19</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="什么是-Network-Namespace"><a href="#什么是-Network-Namespace" class="headerlink" title="什么是 Network Namespace"></a>什么是 Network Namespace</h2><p>通过后台执行的方式 <code>docker run -d</code> 创建一个 Container, 并为该容器起一个名字为 test1, 使用的 Image 为 <code>busybox</code>, 它是一个非常小的 linux image, 在里面运行一个 while 无限循环的 shell 命令,这个 Container 会一直在后台执行</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d --name test1 busybox &#x2F;bin&#x2F;sh -c &quot;while true; do sleep 3600; done&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/1.png" alt=""></p>
+<p>通过 <code>docker exec ...</code> 进入容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker exec -it 7cde98cd0902 &#x2F;bin&#x2F;sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/2.png" alt=""></p>
+<p>此时已经进入到了busybox这个Container里面，可以运行一些命令，如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip a</span><br></pre></td></tr></table></figure>
+
+<p>该命令显示当前容器的网络接口,一个是 loopback 0,也就是本地回环口，地址是 127.0.0.1，还有一个是 eth0@if6，它有MAC地址，还有个127.17.0.2的IP地址</p>
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/3.png" alt=""></p>
+<p>图片的内容其实就是网络的 <code>Namespace</code> </p>
+<p>现在 <code>exit</code> 退出,当前还是处于 docker host 中，在这个里面也可以运行 <code>ip a</code></p>
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/4.png" alt=""></p>
+<p>会看到 host 里面也有一些接口，这些接口和在 Container 里面看到的接口是不一样的，而且它们是完全隔离的</p>
+<p>之前通过 <code>docker run ...</code> 创建了一个容器，同时也就创建了一个 linux 的 network namespace, 这个 network namespace 和主机的 network namespace 是隔离开的， 这就是通过 Linux Network Namespace 实现了容器网络的隔离</p>
+<p>同理，如果再创建第二个容器，它也会有一套独立的 Network Namespace </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d --name test2 busybox &#x2F;bin&#x2F;sh -c &quot;while true; do sleep 3600; done&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/5.png" alt=""></p>
+<p>现在不进入 test2 的容器，而是直接使用 <code>ip a</code> 命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker exec 95ebe7e56051 ip a</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/6.png" alt=""></p>
+<p>此时会打印出 test2 这个容器的网络命名空间</p>
+<p><img src="http://images.notes.xuepincat.com/docker/network-namespace/213.png" alt=""></p>
+<p>第一个容器的地址是 <code>172.17.0.2</code>, 第二个容器的地址是 <code>172.17.0.3</code>， 它们两个是一套独立的网络命名空间，而且在test1的容器里面是可以ping通test2的地址的</p>
+<p>比如现在进入test1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker exec -it 7cde98cd0902 &#x2F;bin&#x2F;sh</span><br></pre></td></tr></table></figure>
+
+<p>ping test2 容器的 ip</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping 172.17.0.3</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/7.png" alt=""></p>
+<p>所以刚才创建的两个容器它们的网络是相通的，也就说明它们两个独立的Namespace也是可以通信的</p>
+<h2 id="Network-Namespace-管理"><a href="#Network-Namespace-管理" class="headerlink" title="Network Namespace 管理"></a>Network Namespace 管理</h2><ul>
+<li>创建</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns add test1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>查看本机的已有的 network namespace</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns list</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>删除</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns delete test1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/8.png" alt=""></p>
+<ul>
+<li>docker创建的network namespace是隐藏了，没法通过ip命令查看</li>
+</ul>
+<p>现在重新创建两个 network namespace</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns add test1</span><br><span class="line">sudo ip netns add test2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/9.png" alt=""></p>
+<ul>
+<li>查看 Linux 下 Namespace IP</li>
+</ul>
+<p>通过 <code>docker run ...</code> 创建了两台 test1 和 test2 的容器，每个容器都有自己的独立的 Network Namespace, 可以通过 <code>docker exec ...</code> 查看 network namespace 里面的IP地址、端口<br>同理怎么查看通过Linux Namespace创建的IP呢？</p>
+<p>下面查看通过linux创建的network namespace的ip</p>
+<p>如查看test1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test1 ip a</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/10.png" alt=""></p>
+<p>在 test1 的 network namespace 里面执行 <code>ip a</code> 命令，会看到有一个本地的回环口，这个回环口的特点是它没有地址，它没有127.0.0.1的这个地址，另外它的状态是 <code>DOWN</code> 的，也就是它没有 <code>UP</code> 起来，没有运行起来</p>
+<p>除了可以在命令空间里面运行 <code>ip a</code> 之外，还可以运行 <code>ip link</code>,就像直接在主机下运行 <code>ip link</code> 一样,比如下面的可以看到本机的一些link,并且像本机的一些回环口状态都是 <code>UP</code> 的，有些是 <code>DOWN</code> 的</p>
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/11.png" alt=""></p>
+<p>现在在 test1 里面执行 ip link,会看到只有一个 link， </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test1 ip link</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/12.png" alt=""></p>
+<ul>
+<li>启动</li>
+</ul>
+<p>如果想将 ip loopback 0的端口给 UP 起来，执行下面命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test1 ip link set dev lo up</span><br></pre></td></tr></table></figure>
+
+<p>上面命令的意思表示在 test1 的 Namespace 执行了 <code>ip link set dev lo up</code> 这条命令，这条命令就是让 lo 0的端口 UP 起来，因为之前是 <code>DOWN</code> 的</p>
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/13.png" alt=""></p>
+<p>但是现在看到它的状态变成了 ‘UNKNOWN’，为什么没有启动起来呢？</p>
+<p>看上面的一张图片，其实本地的回环端口也是 <code>UNKNOWN</code>, 端口如果要 UP 起来是需要两端是连起来的，比如 etho 会去和 Mac 里面虚拟化的一个端口连起来，单个端口是无法 UP 起来的，必须是一对</p>
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/14.png" alt=""></p>
+<p>比如本机有两个 linux network namespace,test1和test2,它们分别有一个本地的回环端口，现在将 test1 和 test2 连起来，连接起来就需要接口，类似的比如将两台计算机连起来需要网线一样，网线必须插到每个计算机的网口上，同样的在 linux network namespace 里面有个叫 <code>Veth pair</code> 的东西，我们可以通过创建一对 <code>Veth pair</code>,然后将其中一个放入到 test1 的 network namespace 里面，另一个放入到 test2 的network namespace 里面，这样的话这一对端口就通过了一条线连起来了，因为这两个端口分别是在两个 network namespace 里面，所以说如果给两个端口都配个ip地址，它们两个就可以通了，这也就是刚开始通过 busybox 创建了两个容器，然后运行起来，它们就可以相互ping通，这个原理其实是一样的</p>
+<p>下面就是使用 Linux 的命令创建去创建一对接口，然后放到 namespace 里面，并为它们配IP地址，然后去ping</p>
+<ul>
+<li>创建一对veth接口</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip link add veth-test1 type veth peer name veth-test2</span><br></pre></td></tr></table></figure>
+
+<p>然后再去执行 <code>ip link</code>,会发现多了一对 veth 的接口，分别是 veth-test2 和 veth-test1,它们都有Mac地址，但是没有IP，并且状态是都 DOWN</p>
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/15.png" alt=""></p>
+<ul>
+<li>将 veth-test1 接口添加到 namespace test1 中</li>
+</ul>
+<p>上面看到本机执行 ip link 可以看到 9和10两个接口，在 test1 的 namespace 里面 只有 loopback 0</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test1 ip link</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/16.png" alt=""></p>
+<p>然后执行下面命令,将 veth-test1 接口添加到 namespace test1 中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip link set veth-test1 netns test1</span><br></pre></td></tr></table></figure>
+
+<p>执行完之后看下 test1 namespace 里面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test1 ip link</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/17.png" alt=""></p>
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/18.png" alt=""></p>
+<p>从图片中可以看到 veth-test1 端口 已经添加到 test1 中了</p>
+<p>接着再看下本地的 ip link,会发现10已经不见了，只剩下9了，说明已经把10添加到 test1里面去了</p>
+<ul>
+<li>将 veth-test2 添加到 namespace test2 中</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip link set veth-test2 netns test2</span><br></pre></td></tr></table></figure>
+
+<p>然后再去看下本地,发现9也不见了</p>
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/19.png" alt=""></p>
+<p>再看下test2的namespace里面也多了个端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test2 ip link</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/20.png" alt=""></p>
+<p>上面的操作就是将两个 veth 分别添加到 linux 的test1 和 test2 的 namespace 中了，但是现在他们的状态都是 DOWN 的，而且没有IP地址，只有MAC地址</p>
+<ul>
+<li>为两个端口配置IP地址</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test1 ip addr add 192.168.1.1&#x2F;24 dev veth-test1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test2 ip addr add 192.168.1.2&#x2F;24 dev veth-test2</span><br></pre></td></tr></table></figure>
+
+<p>比如第一条命令表示在 test1 的 namesapce 里面去执行后面的 <code>ip addr add ...</code> 命令，也就是给 dev veth-test1 端口分配一个 192.168.1.1 的IP地址，掩码是24</p>
+<p>同理test2也是</p>
+<p>然后再查看下 test1 和 test2 的ip link 情况</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test1 ip link</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test2 ip link</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/21.png" alt=""></p>
+<p>此时去查看的时候还是没有看到 IP 地址的，而且还是 <code>DOWN</code> 的</p>
+<ul>
+<li>启动两个端口</li>
+</ul>
+<p>在test1 的namespace 里面将 veth-test1的端口启动起来，同理在test2的namespace里面将 veth-test2的端口也启动起来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test1 ip link set dev veth-test1 up</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test2 ip link set dev veth-test2 up</span><br></pre></td></tr></table></figure>
+
+<p>现在再去查看下 test1 和 test2 的ip link 情况</p>
+<p>test1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test1 ip link</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test1 ip a</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/22.png" alt=""></p>
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/23.png" alt=""></p>
+<p>同样看下 test2 的地址，地址也有了，状态也是 UP 了</p>
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/24.png" alt=""></p>
+<p>  上面的一些操作分别给veth-test1端口去配IP地址，然后 veth-test2 也配IP地址，并且将它们UP起来，现在也就是 test1和test2 namespace已经连接起来了，连起来后如果在test1里面test2接口的IP地址是什么情况呢？</p>
+<ul>
+<li>ping 联通测试</li>
+</ul>
+<p>test1 现在本地的地址是 192.168.1.1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test1 ip a</span><br></pre></td></tr></table></figure>
+
+<p>然后去ping test2,发现已经通了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test1 ping 192.168.1.2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/25.png" alt=""></p>
+<p>同样的在test2中去ping test1的IP</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ip netns exec test2 ping 192.168.1.1</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/26.png" alt=""></p>
+<p>上面就是通过 Linux 的 Network Namespace 做的一个实验，这个和刚开始通过 busybox 创建的两个容器的之间是通的原理是基本上是完全一样的,如果创建一个容器，同时也会创建一个 network namespace, 就是这个容器的独立的网络命令空间，因为容器它本身会有自己的IP地址</p>
+<p>比如通过 <code>docker run ...</code> 基于 busybox 创建了两个 Container, 一个test1,一个test2,然后通过 exec 执行 <code>ip a</code> 命令，在 test1 里面看到地址是 172.17.0.2,在test2 里面看到的地址是 172.17.0.3</p>
+<p>并且在 test1 (172.17.0.2)里面是可以ping通test2的 (172.17.0.3)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker exec -it test1 &#x2F;bin&#x2F;sh</span><br><span class="line">ping 127.0.0.3</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/network-namespace/27.png" alt=""></p>
+<p>这种就是两个 network namespace 是连在一起的，上面的实验是通过一对 veth 接口连在一起的，在 docker 中两个container又是怎么连在一起的呢？另外在容器里面也是可以访问外部网络的比如访问百度，这些又是怎么实现的呢？</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/04/19/Vagrant-%E9%80%9A%E8%BF%87Vagrant%E6%90%AD%E5%BB%BA%E5%A4%9A%E5%8F%B0CentOS%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="prev" title="通过Vagrant搭建多台CentOS服务器">
+      <i class="fa fa-chevron-left"></i> 通过Vagrant搭建多台CentOS服务器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/25/Docker-bridge/" rel="next" title="Docker bridge">
+      Docker bridge <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是-Network-Namespace"><span class="nav-number">1.</span> <span class="nav-text">什么是 Network Namespace</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Network-Namespace-管理"><span class="nav-number">2.</span> <span class="nav-text">Network Namespace 管理</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

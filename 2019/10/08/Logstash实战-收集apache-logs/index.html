@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="收集 Apache 日志 比如有如下的日志，现在需要将这条非结构化的数据转化为 json  1 2 3 4 5 6 7 8 9 10   66.249.73.135 - - [20&#x2F;May&#x2F;2015:21:05:11 +0000] &quot;GET &#x2F;blog&#x2F;tags&#x2F;xsendevent HTTP&#x2F;1.1&quot; 200 10049 &quot;-&quot; &quot;Mozilla&#x2F;5.0 (iPhone; CPU iPhone">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Logstash实战-收集apache logs">
+<meta property="og:url" content="https://notes.xuepincat.com/2019/10/08/Logstash%E5%AE%9E%E6%88%98-%E6%94%B6%E9%9B%86apache-logs/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="收集 Apache 日志 比如有如下的日志，现在需要将这条非结构化的数据转化为 json  1 2 3 4 5 6 7 8 9 10   66.249.73.135 - - [20&#x2F;May&#x2F;2015:21:05:11 +0000] &quot;GET &#x2F;blog&#x2F;tags&#x2F;xsendevent HTTP&#x2F;1.1&quot; 200 10049 &quot;-&quot; &quot;Mozilla&#x2F;5.0 (iPhone; CPU iPhone">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/42.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/50.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/51.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/52.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/53.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/54.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/55.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/56.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/57.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/58.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/59.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/60.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/61.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/62.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/63.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/64.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/65.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/66.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/67.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/68.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/69.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/70.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/71.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/73.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/72.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/74.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/75.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/elastic/logstash/76.png">
+<meta property="article:published_time" content="2019-10-08T15:42:44.000Z">
+<meta property="article:modified_time" content="2020-07-02T15:48:28.978Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Logstash">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/elastic/logstash/42.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2019/10/08/Logstash%E5%AE%9E%E6%88%98-%E6%94%B6%E9%9B%86apache-logs/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Logstash实战-收集apache logs | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/10/08/Logstash%E5%AE%9E%E6%88%98-%E6%94%B6%E9%9B%86apache-logs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Logstash实战-收集apache logs
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-10-08 23:42:44" itemprop="dateCreated datePublished" datetime="2019-10-08T23:42:44+08:00">2019-10-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-02 23:48:28" itemprop="dateModified" datetime="2020-07-02T23:48:28+08:00">2020-07-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Logstash/" itemprop="url" rel="index"><span itemprop="name">Logstash</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="收集-Apache-日志"><a href="#收集-Apache-日志" class="headerlink" title="收集 Apache 日志"></a>收集 Apache 日志</h2><p>比如有如下的日志，现在需要将这条非结构化的数据转化为 json</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">66.249.73.135 - - [20&#x2F;May&#x2F;2015:21:05:11 +0000] &quot;GET &#x2F;blog&#x2F;tags&#x2F;xsendevent HTTP&#x2F;1.1&quot; 200 10049 &quot;-&quot; &quot;Mozilla&#x2F;5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit&#x2F;536.26 (KHTML, like Gecko) Version&#x2F;6.0 Mobile&#x2F;10A5376e Safari&#x2F;8536.25 (compatible; Googlebot&#x2F;2.1; +http:&#x2F;&#x2F;www.google.com&#x2F;bot.html)&quot;</span><br><span class="line">198.46.149.143 - - [20&#x2F;May&#x2F;2015:21:05:29 +0000] &quot;GET &#x2F;blog&#x2F;geekery&#x2F;disabling-battery-in-ubuntu-vms.html?utm_source&#x3D;feedburner&amp;utm_medium&#x3D;feed&amp;utm_campaign&#x3D;Feed%3A+semicomplete%2Fmain+%28semicomplete.com+-+Jordan+Sissel%29 HTTP&#x2F;1.1&quot; 200 9316 &quot;-&quot; &quot;Tiny Tiny RSS&#x2F;1.11 (http:&#x2F;&#x2F;tt-rss.org&#x2F;)&quot;</span><br><span class="line">198.46.149.143 - - [20&#x2F;May&#x2F;2015:21:05:34 +0000] &quot;GET &#x2F;blog&#x2F;geekery&#x2F;solving-good-or-bad-problems.html?utm_source&#x3D;feedburner&amp;utm_medium&#x3D;feed&amp;utm_campaign&#x3D;Feed%3A+semicomplete%2Fmain+%28semicomplete.com+-+Jordan+Sissel%29 HTTP&#x2F;1.1&quot; 200 10756 &quot;-&quot; &quot;Tiny Tiny RSS&#x2F;1.11 (http:&#x2F;&#x2F;tt-rss.org&#x2F;)&quot;</span><br><span class="line">82.165.139.53 - - [20&#x2F;May&#x2F;2015:21:05:15 +0000] &quot;GET &#x2F;projects&#x2F;xdotool&#x2F; HTTP&#x2F;1.0&quot; 200 12292 &quot;-&quot; &quot;-&quot;</span><br><span class="line">100.43.83.137 - - [20&#x2F;May&#x2F;2015:21:05:01 +0000] &quot;GET &#x2F;blog&#x2F;tags&#x2F;standards HTTP&#x2F;1.1&quot; 200 13358 &quot;-&quot; &quot;Mozilla&#x2F;5.0 (compatible; YandexBot&#x2F;3.0; +http:&#x2F;&#x2F;yandex.com&#x2F;bots)&quot;</span><br><span class="line">63.140.98.80 - - [20&#x2F;May&#x2F;2015:21:05:28 +0000] &quot;GET &#x2F;blog&#x2F;tags&#x2F;puppet?flav&#x3D;rss20 HTTP&#x2F;1.1&quot; 200 14872 &quot;http:&#x2F;&#x2F;www.semicomplete.com&#x2F;blog&#x2F;tags&#x2F;puppet?flav&#x3D;rss20&quot; &quot;Tiny Tiny RSS&#x2F;1.11 (http:&#x2F;&#x2F;tt-rss.org&#x2F;)&quot;</span><br><span class="line">63.140.98.80 - - [20&#x2F;May&#x2F;2015:21:05:50 +0000] &quot;GET &#x2F;blog&#x2F;geekery&#x2F;solving-good-or-bad-problems.html?utm_source&#x3D;feedburner&amp;utm_medium&#x3D;feed&amp;utm_campaign&#x3D;Feed%3A+semicomplete%2Fmain+%28semicomplete.com+-+Jordan+Sissel%29 HTTP&#x2F;1.1&quot; 200 10756 &quot;-&quot; &quot;Tiny Tiny RSS&#x2F;1.11 (http:&#x2F;&#x2F;tt-rss.org&#x2F;)&quot;</span><br><span class="line">66.249.73.135 - - [20&#x2F;May&#x2F;2015:21:05:00 +0000] &quot;GET &#x2F;?flav&#x3D;atom HTTP&#x2F;1.1&quot; 200 32352 &quot;-&quot; &quot;Mozilla&#x2F;5.0 (compatible; Googlebot&#x2F;2.1; +http:&#x2F;&#x2F;www.google.com&#x2F;bot.html)&quot;</span><br><span class="line">180.76.6.56 - - [20&#x2F;May&#x2F;2015:21:05:56 +0000] &quot;GET &#x2F;robots.txt HTTP&#x2F;1.1&quot; 200 - &quot;-&quot; &quot;Mozilla&#x2F;5.0 (Windows NT 5.1; rv:6.0.2) Gecko&#x2F;20100101 Firefox&#x2F;6.0.2&quot;</span><br><span class="line">46.105.14.53 - - [20&#x2F;May&#x2F;2015:21:05:15 +0000] &quot;GET &#x2F;blog&#x2F;tags&#x2F;puppet?flav&#x3D;rss20 HTTP&#x2F;1.1&quot; 200 14872 &quot;-&quot; &quot;UniversalFeedParser&#x2F;4.2-pre-314-svn +http:&#x2F;&#x2F;feedparser.org&#x2F;&quot;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>配置文件 </p>
+<p>vim conf/apache_logs/ls.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; &quot;headers&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; rubydebug</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>复制一条日志内容在postman 中请求上面实例日志，输出结果如下：</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/42.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">       &quot;message&quot; &#x3D;&gt; &quot;83.149.9.216 - - [17&#x2F;May&#x2F;2015:10:05:03 +0000] \&quot;GET &#x2F;presentations&#x2F;logstash-monitorama-2013&#x2F;images&#x2F;kibana-search.png HTTP&#x2F;1.1\&quot; 200 203023 \&quot;http:&#x2F;&#x2F;semicomplete.com&#x2F;presentations&#x2F;logstash-monitorama-2013&#x2F;\&quot; \&quot;Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10_9_1) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;32.0.1700.77 Safari&#x2F;537.36\&quot;&quot;,</span><br><span class="line">      &quot;@version&quot; &#x3D;&gt; &quot;1&quot;,</span><br><span class="line">          &quot;host&quot; &#x3D;&gt; &quot;127.0.0.1&quot;,</span><br><span class="line">    &quot;@timestamp&quot; &#x3D;&gt; 2019-10-08T16:00:41.167Z</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问网站 <code>https://grokdebug.herokuapp.com/discover?#</code> 将日志内容输入进去，点击 <code>Discover</code> 按钮</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/50.png" alt=""></p>
+<p>然后将日志内容和 pattern 复制到 Debugger 中,是可以解析出来的</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/51.png" alt=""></p>
+<p>修改 ls.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &quot;%&#123;COMBINEDAPACHELOG&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; &quot;headers&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; rubydebug</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后重新请求</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">46.105.14.53 - - [20&#x2F;May&#x2F;2015:21:05:15 +0000] &quot;GET &#x2F;blog&#x2F;tags&#x2F;puppet?flav&#x3D;rss20 HTTP&#x2F;1.1&quot; 200 14872 &quot;-&quot; &quot;UniversalFeedParser&#x2F;4.2-pre-314-svn +http:&#x2F;&#x2F;feedparser.org&#x2F;&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/52.png" alt=""></p>
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/53.png" alt=""></p>
+<p>如果不想要 message，可以在 remove_field 中将message添加进去</p>
+<p>修改如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &quot;%&#123;COMBINEDAPACHELOG&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; rubydebug</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/54.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">           &quot;host&quot; &#x3D;&gt; &quot;127.0.0.1&quot;,</span><br><span class="line">       &quot;clientip&quot; &#x3D;&gt; &quot;46.105.14.53&quot;,</span><br><span class="line">      &quot;timestamp&quot; &#x3D;&gt; &quot;20&#x2F;May&#x2F;2015:21:05:15 +0000&quot;,</span><br><span class="line">       &quot;response&quot; &#x3D;&gt; &quot;200&quot;,</span><br><span class="line">           &quot;verb&quot; &#x3D;&gt; &quot;GET&quot;,</span><br><span class="line">     &quot;@timestamp&quot; &#x3D;&gt; 2020-07-01T15:04:21.509Z,</span><br><span class="line">          &quot;ident&quot; &#x3D;&gt; &quot;-&quot;,</span><br><span class="line">    &quot;httpversion&quot; &#x3D;&gt; &quot;1.1&quot;,</span><br><span class="line">          &quot;bytes&quot; &#x3D;&gt; &quot;14872&quot;,</span><br><span class="line">          &quot;agent&quot; &#x3D;&gt; &quot;\&quot;UniversalFeedParser&#x2F;4.2-pre-314-svn +http:&#x2F;&#x2F;feedparser.org&#x2F;\&quot;&quot;,</span><br><span class="line">           &quot;auth&quot; &#x3D;&gt; &quot;-&quot;,</span><br><span class="line">        &quot;request&quot; &#x3D;&gt; &quot;&#x2F;blog&#x2F;tags&#x2F;puppet?flav&#x3D;rss20&quot;,</span><br><span class="line">       &quot;referrer&quot; &#x3D;&gt; &quot;\&quot;-\&quot;&quot;,</span><br><span class="line">       &quot;@version&quot; &#x3D;&gt; &quot;1&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>返回结果中会看到有两个时间，一个是 <code>@timestamp</code> 是写这条日志的当前时间，还有一个 <code>timestamp</code> 是日志的时间，现在想要将 <code>timestamp</code> 字段给 <code>@timestamp</code> 并且保留日志的写入时间</p>
+<p>修改如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &quot;%&#123;COMBINEDAPACHELOG&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        copy &#x3D;&gt; &#123;</span><br><span class="line">            &quot;@timestamp&quot; &#x3D;&gt; &quot;@read_timestamp&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; rubydebug</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>请求后返回结果</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/55.png" alt=""></p>
+<p>也可以使用ruby来进行复制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &quot;%&#123;COMBINEDAPACHELOG&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; rubydebug</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/56.png" alt=""></p>
+<p>接着将 timestamp 提取出来赋值给 @timestamp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &quot;%&#123;COMBINEDAPACHELOG&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;timestamp&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; rubydebug</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/57.png" alt=""></p>
+<p>现在 timestamp 不需要要，可以移除掉</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &quot;%&#123;COMBINEDAPACHELOG&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;timestamp&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;, &quot;timestamp&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; rubydebug</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/58.png" alt=""></p>
+<p>添加 geoip</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &quot;%&#123;COMBINEDAPACHELOG&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;timestamp&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;, &quot;timestamp&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; rubydebug</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/59.png" alt=""></p>
+<p>geoip 字段太多，如果想要值保留其中一些</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &quot;%&#123;COMBINEDAPACHELOG&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;timestamp&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;, &quot;timestamp&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; rubydebug</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/60.png" alt=""></p>
+<p>现在想继续解析 agent 的内容为结构化数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &quot;%&#123;COMBINEDAPACHELOG&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;timestamp&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    useragent &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;agent&quot;</span><br><span class="line">        target &#x3D;&gt; &quot;useragent&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;, &quot;timestamp&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; rubydebug</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/61.png" alt=""></p>
+<p>使用 metadata,将 timestamp 解析到 metadata 中，这样就不用再做删除操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][debug]&quot; &#x3D;&gt; true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &#39;%&#123;IPORHOST:clientip&#125; %&#123;USER:ident&#125; %&#123;USER:auth&#125; \[%&#123;HTTPDATE:timestamp&#125;\] &quot;(?:%&#123;WORD:verb&#125; %&#123;NOTSPACE:request&#125;(?: HTTP&#x2F;%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)&quot; %&#123;NUMBER:response&#125; (?:%&#123;NUMBER:bytes&#125;|-) %&#123;QS:referrer&#125; %&#123;QS:agent&#125;&#39;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;timestamp&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    useragent &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;agent&quot;</span><br><span class="line">        target &#x3D;&gt; &quot;useragent&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;, &quot;timestamp&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; rubydebug</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/62.png" alt=""></p>
+<p>接着修改 timestamp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][debug]&quot; &#x3D;&gt; true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &#39;%&#123;IPORHOST:clientip&#125; %&#123;USER:ident&#125; %&#123;USER:auth&#125; \[%&#123;HTTPDATE:[@metadata][timestamp]&#125;\] &quot;(?:%&#123;WORD:verb&#125; %&#123;NOTSPACE:request&#125;(?: HTTP&#x2F;%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)&quot; %&#123;NUMBER:response&#125; (?:%&#123;NUMBER:bytes&#125;|-) %&#123;QS:referrer&#125; %&#123;QS:agent&#125;&#39;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;timestamp&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    useragent &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;agent&quot;</span><br><span class="line">        target &#x3D;&gt; &quot;useragent&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;, &quot;timestamp&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    stdout &#123;</span><br><span class="line">        codec &#x3D;&gt; rubydebug</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/63.png" alt=""></p>
+<p>此时timestamp还没有被改掉，但是已经被解析到 metadata 中了，也就以为这之前做的下面一块已经没有作用了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">date &#123;</span><br><span class="line">    match &#x3D;&gt; [&quot;timestamp&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是现在看不到metadata,如果想要看到需要将output中的 metadata 设置为 true</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][debug]&quot; &#x3D;&gt; true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &#39;%&#123;IPORHOST:clientip&#125; %&#123;USER:ident&#125; %&#123;USER:auth&#125; \[%&#123;HTTPDATE:[@metadata][timestamp]&#125;\] &quot;(?:%&#123;WORD:verb&#125; %&#123;NOTSPACE:request&#125;(?: HTTP&#x2F;%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)&quot; %&#123;NUMBER:response&#125; (?:%&#123;NUMBER:bytes&#125;|-) %&#123;QS:referrer&#125; %&#123;QS:agent&#125;&#39;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;timestamp&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    useragent &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;agent&quot;</span><br><span class="line">        target &#x3D;&gt; &quot;useragent&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;, &quot;timestamp&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    if [@metadata][debug] &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; rubydebug &#123;</span><br><span class="line">                metadata &#x3D;&gt; true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; dots</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/64.png" alt=""></p>
+<p>接着将date的接下换成metadata</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][debug]&quot; &#x3D;&gt; true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &#39;%&#123;IPORHOST:clientip&#125; %&#123;USER:ident&#125; %&#123;USER:auth&#125; \[%&#123;HTTPDATE:[@metadata][timestamp]&#125;\] &quot;(?:%&#123;WORD:verb&#125; %&#123;NOTSPACE:request&#125;(?: HTTP&#x2F;%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)&quot; %&#123;NUMBER:response&#125; (?:%&#123;NUMBER:bytes&#125;|-) %&#123;QS:referrer&#125; %&#123;QS:agent&#125;&#39;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;[@metadata][timestamp]&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    useragent &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;agent&quot;</span><br><span class="line">        target &#x3D;&gt; &quot;useragent&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;, &quot;timestamp&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    if [@metadata][debug] &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; rubydebug &#123;</span><br><span class="line">                metadata &#x3D;&gt; true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; dots</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/65.png" alt=""></p>
+<p>现在已经不需要使用 remoe_field 中的 timestamp 了，可以删掉</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][debug]&quot; &#x3D;&gt; true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &#39;%&#123;IPORHOST:clientip&#125; %&#123;USER:ident&#125; %&#123;USER:auth&#125; \[%&#123;HTTPDATE:[@metadata][timestamp]&#125;\] &quot;(?:%&#123;WORD:verb&#125; %&#123;NOTSPACE:request&#125;(?: HTTP&#x2F;%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)&quot; %&#123;NUMBER:response&#125; (?:%&#123;NUMBER:bytes&#125;|-) %&#123;QS:referrer&#125; %&#123;QS:agent&#125;&#39;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;[@metadata][timestamp]&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    useragent &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;agent&quot;</span><br><span class="line">        target &#x3D;&gt; &quot;useragent&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    if [@metadata][debug] &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; rubydebug &#123;</span><br><span class="line">                metadata &#x3D;&gt; true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; dots</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以到上面去拿其他的测试日志，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">63.140.98.80 - - [20&#x2F;May&#x2F;2015:21:05:28 +0000] &quot;GET &#x2F;blog&#x2F;tags&#x2F;puppet?flav&#x3D;rss20 HTTP&#x2F;1.1&quot; 200 14872 &quot;http:&#x2F;&#x2F;www.semicomplete.com&#x2F;blog&#x2F;tags&#x2F;puppet?flav&#x3D;rss20&quot; &quot;Tiny Tiny RSS&#x2F;1.11 (http:&#x2F;&#x2F;tt-rss.org&#x2F;)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后在 postman 中请求</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/66.png" alt=""></p>
+<p>在返回的结果中看到有个 bytes,现在打算将 bytes 转换成数字</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][debug]&quot; &#x3D;&gt; true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &#39;%&#123;IPORHOST:clientip&#125; %&#123;USER:ident&#125; %&#123;USER:auth&#125; \[%&#123;HTTPDATE:[@metadata][timestamp]&#125;\] &quot;(?:%&#123;WORD:verb&#125; %&#123;NOTSPACE:request&#125;(?: HTTP&#x2F;%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)&quot; %&#123;NUMBER:response&#125; (?:%&#123;NUMBER:bytes&#125;|-) %&#123;QS:referrer&#125; %&#123;QS:agent&#125;&#39;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;[@metadata][timestamp]&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        convert &#x3D;&gt; &#123;</span><br><span class="line">            &quot;bytes&quot; &#x3D;&gt; &quot;integer&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    useragent &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;agent&quot;</span><br><span class="line">        target &#x3D;&gt; &quot;useragent&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    if [@metadata][debug] &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; rubydebug &#123;</span><br><span class="line">                metadata &#x3D;&gt; true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; dots</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/67.png" alt=""></p>
+<p>如果日志中存在不标准的导致解析失败，就会遇到下面情况,_grokparsefaiure和_geoip_lookup_failure，比如将日志的时间戳写错，比如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">63.140.98.80 - - [20&#x2F;May&#x2F;2015:21:045:28 +0000] &quot;GET &#x2F;blog&#x2F;tags&#x2F;puppet?flav&#x3D;rss20 HTTP&#x2F;1.1&quot; 200 14872 &quot;http:&#x2F;&#x2F;www.semicomplete.com&#x2F;blog&#x2F;tags&#x2F;puppet?flav&#x3D;rss20&quot; &quot;Tiny Tiny RSS&#x2F;1.11 (http:&#x2F;&#x2F;tt-rss.org&#x2F;)&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/68.png" alt=""></p>
+<p>如果遇到上面错误就需要进行处理，如果tas中有grokparsefailure,就把它输入到其他es索引中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][debug]&quot; &#x3D;&gt; true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &#39;%&#123;IPORHOST:clientip&#125; %&#123;USER:ident&#125; %&#123;USER:auth&#125; \[%&#123;HTTPDATE:[@metadata][timestamp]&#125;\] &quot;(?:%&#123;WORD:verb&#125; %&#123;NOTSPACE:request&#125;(?: HTTP&#x2F;%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)&quot; %&#123;NUMBER:response&#125; (?:%&#123;NUMBER:bytes&#125;|-) %&#123;QS:referrer&#125; %&#123;QS:agent&#125;&#39;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;[@metadata][timestamp]&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        convert &#x3D;&gt; &#123;</span><br><span class="line">            &quot;bytes&quot; &#x3D;&gt; &quot;integer&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    useragent &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;agent&quot;</span><br><span class="line">        target &#x3D;&gt; &quot;useragent&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][index]&quot; &#x3D;&gt; &quot;apache_logs_%&#123;+YYYY.MM&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if &quot;_grokparsefailure&quot; in [tags] &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">            replace &#x3D;&gt; &#123;</span><br><span class="line">                &quot;[@metadata][index]&quot; &#x3D;&gt; &quot;apache_logs_failure_%&#123;+YYYY.MM&#125;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    if [@metadata][debug] &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; rubydebug &#123;</span><br><span class="line">                metadata &#x3D;&gt; true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; dots</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/69.png" alt=""></p>
+<p>如果输入一个正常的日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">63.140.98.80 - - [20&#x2F;May&#x2F;2015:21:05:28 +0000] &quot;GET &#x2F;blog&#x2F;tags&#x2F;puppet?flav&#x3D;rss20 HTTP&#x2F;1.1&quot; 200 14872 &quot;http:&#x2F;&#x2F;www.semicomplete.com&#x2F;blog&#x2F;tags&#x2F;puppet?flav&#x3D;rss20&quot; &quot;Tiny Tiny RSS&#x2F;1.11 (http:&#x2F;&#x2F;tt-rss.org&#x2F;)&quot;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/70.png" alt=""></p>
+<p>还可以添加 elasticsearch 输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][debug]&quot; &#x3D;&gt; true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &#39;%&#123;IPORHOST:clientip&#125; %&#123;USER:ident&#125; %&#123;USER:auth&#125; \[%&#123;HTTPDATE:[@metadata][timestamp]&#125;\] &quot;(?:%&#123;WORD:verb&#125; %&#123;NOTSPACE:request&#125;(?: HTTP&#x2F;%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)&quot; %&#123;NUMBER:response&#125; (?:%&#123;NUMBER:bytes&#125;|-) %&#123;QS:referrer&#125; %&#123;QS:agent&#125;&#39;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;[@metadata][timestamp]&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        convert &#x3D;&gt; &#123;</span><br><span class="line">            &quot;bytes&quot; &#x3D;&gt; &quot;integer&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    useragent &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;agent&quot;</span><br><span class="line">        target &#x3D;&gt; &quot;useragent&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;, &quot;message&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][index]&quot; &#x3D;&gt; &quot;apache_logs_%&#123;+YYYY.MM&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if &quot;_grokparsefailure&quot; in [tags] &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">            replace &#x3D;&gt; &#123;</span><br><span class="line">                &quot;[@metadata][index]&quot; &#x3D;&gt; &quot;apache_logs_failure_%&#123;+YYYY.MM&#125;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    if [@metadata][debug] &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; rubydebug &#123;</span><br><span class="line">                metadata &#x3D;&gt; true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; dots</span><br><span class="line">        &#125;</span><br><span class="line">        elasticsearch &#123;</span><br><span class="line">            index &#x3D;&gt; &quot;%&#123;[$metadata][index]&#125;&quot;</span><br><span class="line">            document_type &#x3D;&gt; &quot;doc&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/71.png" alt=""></p>
+<p>优化：</p>
+<p>如果有 _grokparsefailure 就不需要删除 message</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    http &#123;</span><br><span class="line">        port &#x3D;&gt; 7474</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    #file &#123;</span><br><span class="line">    #    path &#x3D;&gt; &quot;&#x2F;Users&#x2F;finnley&#x2F;elastic&#x2F;learning&#x2F;logstash&#x2F;demo_data&#x2F;apache_logs&#x2F;apache_logs&quot;</span><br><span class="line">    #    start_position &#x3D;&gt; &quot;beginning&quot;</span><br><span class="line">    #&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][debug]&quot; &#x3D;&gt; true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &#39;%&#123;IPORHOST:clientip&#125; %&#123;USER:ident&#125; %&#123;USER:auth&#125; \[%&#123;HTTPDATE:[@metadata][timestamp]&#125;\] &quot;(?:%&#123;WORD:verb&#125; %&#123;NOTSPACE:request&#125;(?: HTTP&#x2F;%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)&quot; %&#123;NUMBER:response&#125; (?:%&#123;NUMBER:bytes&#125;|-) %&#123;QS:referrer&#125; %&#123;QS:agent&#125;&#39;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;[@metadata][timestamp]&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        convert &#x3D;&gt; &#123;</span><br><span class="line">            &quot;bytes&quot; &#x3D;&gt; &quot;integer&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    useragent &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;agent&quot;</span><br><span class="line">        target &#x3D;&gt; &quot;useragent&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][index]&quot; &#x3D;&gt; &quot;apache_logs_%&#123;+YYYY.MM&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if &quot;_grokparsefailure&quot; in [tags] &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">            replace &#x3D;&gt; &#123;</span><br><span class="line">                &quot;[@metadata][index]&quot; &#x3D;&gt; &quot;apache_logs_failure_%&#123;+YYYY.MM&#125;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">            remove_field &#x3D;&gt; [&quot;message&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    if [@metadata][debug] &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; rubydebug &#123;</span><br><span class="line">                metadata &#x3D;&gt; true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; dots</span><br><span class="line">        &#125;</span><br><span class="line">        elasticsearch &#123;</span><br><span class="line">            index &#x3D;&gt; &quot;%&#123;[@metadata][index]&#125;&quot;</span><br><span class="line">            document_type &#x3D;&gt; &quot;doc&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>请求了一个错误的格式日志记录,message 显示出来了，没有去掉，如果请求一个正确的就看不到message了</p>
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/73.png" alt=""></p>
+<p>到这里收集 apache log 的配置就完成了，下面可以将 input 改为 file</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    #http &#123;</span><br><span class="line">    #    port &#x3D;&gt; 7474</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line">    file &#123;</span><br><span class="line">        path &#x3D;&gt; &quot;&#x2F;Users&#x2F;finnley&#x2F;elastic&#x2F;learning&#x2F;logstash&#x2F;demo_data&#x2F;apache_logs&#x2F;apache_logs&quot;</span><br><span class="line">        start_position &#x3D;&gt; &quot;beginning&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    #mutate &#123;</span><br><span class="line">    #    add_field &#x3D;&gt; &#123;</span><br><span class="line">    #        &quot;[@metadata][debug]&quot; &#x3D;&gt; true</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &#39;%&#123;IPORHOST:clientip&#125; %&#123;USER:ident&#125; %&#123;USER:auth&#125; \[%&#123;HTTPDATE:[@metadata][timestamp]&#125;\] &quot;(?:%&#123;WORD:verb&#125; %&#123;NOTSPACE:request&#125;(?: HTTP&#x2F;%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)&quot; %&#123;NUMBER:response&#125; (?:%&#123;NUMBER:bytes&#125;|-) %&#123;QS:referrer&#125; %&#123;QS:agent&#125;&#39;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;[@metadata][timestamp]&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        convert &#x3D;&gt; &#123;</span><br><span class="line">            &quot;bytes&quot; &#x3D;&gt; &quot;integer&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    useragent &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;agent&quot;</span><br><span class="line">        target &#x3D;&gt; &quot;useragent&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][index]&quot; &#x3D;&gt; &quot;apache_logs_%&#123;+YYYY.MM&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if &quot;_grokparsefailure&quot; in [tags] &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">            replace &#x3D;&gt; &#123;</span><br><span class="line">                &quot;[@metadata][index]&quot; &#x3D;&gt; &quot;apache_logs_failure_%&#123;+YYYY.MM&#125;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">            remove_field &#x3D;&gt; [&quot;message&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    if [@metadata][debug] &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; rubydebug &#123;</span><br><span class="line">                metadata &#x3D;&gt; true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; dots</span><br><span class="line">        &#125;</span><br><span class="line">        elasticsearch &#123;</span><br><span class="line">            index &#x3D;&gt; &quot;%&#123;[@metadata][index]&#125;&quot;</span><br><span class="line">            document_type &#x3D;&gt; &quot;doc&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/72.png" alt=""></p>
+<p>当看到屏幕中输出一些 <code>.</code> 就意味着数据在不断输入，可以看下文本的 Kibana 看下数据是否进去了</p>
+<p>另外还可以使用下面方式读取数据,file可以源源不断的读取数据,不知道什么时候会结束</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">input &#123;</span><br><span class="line">    #http &#123;</span><br><span class="line">    #    port &#x3D;&gt; 7474</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line">    stdin &#123;&#125;</span><br><span class="line"></span><br><span class="line">    #file &#123;</span><br><span class="line">    #    path &#x3D;&gt; &quot;&#x2F;Users&#x2F;finnley&#x2F;elastic&#x2F;learning&#x2F;logstash&#x2F;demo_data&#x2F;apache_logs&#x2F;apache_logs&quot;</span><br><span class="line">    #    start_position &#x3D;&gt; &quot;beginning&quot;</span><br><span class="line">    #&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">filter &#123;</span><br><span class="line">    #mutate &#123;</span><br><span class="line">    #    add_field &#x3D;&gt; &#123;</span><br><span class="line">    #        &quot;[@metadata][debug]&quot; &#x3D;&gt; true</span><br><span class="line">    #    &#125;</span><br><span class="line">    #&#125;</span><br><span class="line"></span><br><span class="line">    grok &#123;</span><br><span class="line">        match &#x3D;&gt; &#123;</span><br><span class="line">            &quot;message&quot; &#x3D;&gt; &#39;%&#123;IPORHOST:clientip&#125; %&#123;USER:ident&#125; %&#123;USER:auth&#125; \[%&#123;HTTPDATE:[@metadata][timestamp]&#125;\] &quot;(?:%&#123;WORD:verb&#125; %&#123;NOTSPACE:request&#125;(?: HTTP&#x2F;%&#123;NUMBER:httpversion&#125;)?|%&#123;DATA:rawrequest&#125;)&quot; %&#123;NUMBER:response&#125; (?:%&#123;NUMBER:bytes&#125;|-) %&#123;QS:referrer&#125; %&#123;QS:agent&#125;&#39;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    ruby &#123;</span><br><span class="line">        code &#x3D;&gt; &quot;event.set(&#39;@read_timestamp&#39;, event.get(&#39;@timestamp&#39;))&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    # 20&#x2F;May&#x2F;2015:21:05:15 +0000</span><br><span class="line">    date &#123;</span><br><span class="line">        match &#x3D;&gt; [&quot;[@metadata][timestamp]&quot;, &quot;dd&#x2F;MMM&#x2F;yyyy:HH:mm:ss Z&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        convert &#x3D;&gt; &#123;</span><br><span class="line">            &quot;bytes&quot; &#x3D;&gt; &quot;integer&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    geoip &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;clientip&quot;</span><br><span class="line">        fields &#x3D;&gt; [&quot;location&quot;, &quot;country_name&quot;, &quot;city_name&quot;, &quot;region_name&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    useragent &#123;</span><br><span class="line">        source &#x3D;&gt; &quot;agent&quot;</span><br><span class="line">        target &#x3D;&gt; &quot;useragent&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        remove_field &#x3D;&gt; [&quot;headers&quot;]</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    mutate &#123;</span><br><span class="line">        add_field &#x3D;&gt; &#123;</span><br><span class="line">            &quot;[@metadata][index]&quot; &#x3D;&gt; &quot;apache_logs_%&#123;+YYYY.MM&#125;&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if &quot;_grokparsefailure&quot; in [tags] &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">            replace &#x3D;&gt; &#123;</span><br><span class="line">                &quot;[@metadata][index]&quot; &#x3D;&gt; &quot;apache_logs_failure_%&#123;+YYYY.MM&#125;&quot;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        mutate &#123;</span><br><span class="line">            remove_field &#x3D;&gt; [&quot;message&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">output &#123;</span><br><span class="line">    if [@metadata][debug] &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; rubydebug &#123;</span><br><span class="line">                metadata &#x3D;&gt; true</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        stdout &#123;</span><br><span class="line">            codec &#x3D;&gt; dots</span><br><span class="line">        &#125;</span><br><span class="line">        elasticsearch &#123;</span><br><span class="line">            index &#x3D;&gt; &quot;%&#123;[@metadata][index]&#125;&quot;</span><br><span class="line">            document_type &#x3D;&gt; &quot;doc&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>使用标准输出将日志输出给 logstash</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat &#x2F;Users&#x2F;finnley&#x2F;elastic&#x2F;learning&#x2F;logstash&#x2F;demo_data&#x2F;apache_logs&#x2F;apache_logs|bin&#x2F;logstash -f conf&#x2F;apache_logs&#x2F;ls.conf</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/74.png" alt=""></p>
+<p>还是看到屏幕中有 <code>.</code> 出现就表示有数据输入了，然后到es查看数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET _cat&#x2F;indices&#x2F;apache_logs_*</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/75.png" alt=""></p>
+<p>从索引中看到已经有数据生成了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">GET apache_logs_2015.05&#x2F;_search</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/elastic/logstash/76.png" alt=""></p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Logstash/" rel="tag"># Logstash</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/10/08/Logstash%E5%AE%9E%E6%88%98%E5%BB%BA%E8%AE%AE/" rel="prev" title="Logstash实战建议">
+      <i class="fa fa-chevron-left"></i> Logstash实战建议
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/04/19/Vagrant-%E9%80%9A%E8%BF%87Vagrant%E6%90%AD%E5%BB%BA%E5%A4%9A%E5%8F%B0CentOS%E6%9C%8D%E5%8A%A1%E5%99%A8/" rel="next" title="通过Vagrant搭建多台CentOS服务器">
+      通过Vagrant搭建多台CentOS服务器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#收集-Apache-日志"><span class="nav-number">1.</span> <span class="nav-text">收集 Apache 日志</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

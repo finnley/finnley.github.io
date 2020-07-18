@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="安装Redis镜像  1. 创建net2网络并改名  1 2   docker pull yyyyttttwwww&#x2F;redis docker tag docker.io&#x2F;yyyyttttwwww&#x2F;redis redis    2. 创建net2网络  1   docker network create --subnet&#x3D;172.19.0.0&#x2F;16 net2    3. 创建Redis容器  1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker-9-配置RedisCluster集群">
+<meta property="og:url" content="https://notes.xuepincat.com/2018/11/19/Docker-9-%E9%85%8D%E7%BD%AERedisCluster%E9%9B%86%E7%BE%A4/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="安装Redis镜像  1. 创建net2网络并改名  1 2   docker pull yyyyttttwwww&#x2F;redis docker tag docker.io&#x2F;yyyyttttwwww&#x2F;redis redis    2. 创建net2网络  1   docker network create --subnet&#x3D;172.19.0.0&#x2F;16 net2    3. 创建Redis容器  1">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-11-19T11:32:08.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.266Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Linux - CentOS - Docker">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2018/11/19/Docker-9-%E9%85%8D%E7%BD%AERedisCluster%E9%9B%86%E7%BE%A4/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Docker-9-配置RedisCluster集群 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/11/19/Docker-9-%E9%85%8D%E7%BD%AERedisCluster%E9%9B%86%E7%BE%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker-9-配置RedisCluster集群
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-11-19 19:32:08" itemprop="dateCreated datePublished" datetime="2018-11-19T19:32:08+08:00">2018-11-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="安装Redis镜像"><a href="#安装Redis镜像" class="headerlink" title="安装Redis镜像"></a>安装Redis镜像</h2><ol>
+<li>创建net2网络并改名</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pull yyyyttttwwww&#x2F;redis</span><br><span class="line">docker tag docker.io&#x2F;yyyyttttwwww&#x2F;redis redis</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建net2网络</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create --subnet&#x3D;172.19.0.0&#x2F;16 net2</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>创建Redis容器</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name r1 -p 5001:6379 --net&#x3D;net2 --ip 172.19.0.2 redis bash</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>进入容器</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it r1 bash</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置Redis节点"><a href="#配置Redis节点" class="headerlink" title="配置Redis节点"></a>配置Redis节点</h2><p>进入容器后需要修改Redis配置文件，修改Redis配置文件后Redis才可以启动，因为Redis默认是关闭了RedisCluster集群功能</p>
+<p>配置文件所在路径 <code>/usr/redis/redis.conf</code></p>
+<h3 id="参数介绍"><a href="#参数介绍" class="headerlink" title="参数介绍"></a>参数介绍</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">daemonize yes                   #以后台进程运行</span><br><span class="line">cluster-enabled yes             #开启集群</span><br><span class="line">cluster-config-file nodes.conf  #集群配置文件,一旦搭建起RedisCluster集群，集群里的一些节点信息保存在什么文件里面，文件名随便取，这里取的nodes.conf</span><br><span class="line">cluster-node-timeout 15000      #超时时间 集群内部节点和节点连接超时时间</span><br><span class="line">appendonly yes                  #开启AOF模式 Redis开启日志功能 一旦宕机可以通过AOF日志恢复Redis数据</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h3><ol>
+<li>打开配置文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;usr&#x2F;redis&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><p>找到上面的配置项并修改保存退出</p>
+</li>
+<li><p>启动Redis,首先进入Redis所在目录</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;src</span><br><span class="line">.&#x2F;redis-server ..&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建r2节点"><a href="#创建r2节点" class="headerlink" title="创建r2节点"></a>创建r2节点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name r2 -p 5002:6379 --net&#x3D;net2 --ip 172.19.0.3 redis bash</span><br><span class="line">#进入r2节点</span><br><span class="line">docker exec -it r2 bash</span><br><span class="line">#配置</span><br><span class="line">vi &#x2F;usr&#x2F;redis&#x2F;redis.conf</span><br><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;src</span><br><span class="line">.&#x2F;redis-server ..&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建r3节点"><a href="#创建r3节点" class="headerlink" title="创建r3节点"></a>创建r3节点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name r3 -p 5003:6379 --net&#x3D;net2 --ip 172.19.0.4 redis bash</span><br><span class="line">#进入r3节点</span><br><span class="line">docker exec -it r3 bash</span><br><span class="line">#配置</span><br><span class="line">vi &#x2F;usr&#x2F;redis&#x2F;redis.conf</span><br><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;src</span><br><span class="line">.&#x2F;redis-server ..&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建r4节点"><a href="#创建r4节点" class="headerlink" title="创建r4节点"></a>创建r4节点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name r4 -p 5004:6379 --net&#x3D;net2 --ip 172.19.0.5 redis bash</span><br><span class="line">#进入r4节点</span><br><span class="line">docker exec -it r4 bash</span><br><span class="line">#配置</span><br><span class="line">vi &#x2F;usr&#x2F;redis&#x2F;redis.conf</span><br><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;src</span><br><span class="line">.&#x2F;redis-server ..&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建r5节点"><a href="#创建r5节点" class="headerlink" title="创建r5节点"></a>创建r5节点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name r5 -p 5005:6379 --net&#x3D;net2 --ip 172.19.0.6 redis bash</span><br><span class="line">#进入r5节点</span><br><span class="line">docker exec -it r5 bash</span><br><span class="line">#配置</span><br><span class="line">vi &#x2F;usr&#x2F;redis&#x2F;redis.conf</span><br><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;src</span><br><span class="line">.&#x2F;redis-server ..&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建r6节点"><a href="#创建r6节点" class="headerlink" title="创建r6节点"></a>创建r6节点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name r6 -p 5006:6379 --net&#x3D;net2 --ip 172.19.0.7 redis bash</span><br><span class="line">#进入r6节点</span><br><span class="line">docker exec -it r6 bash</span><br><span class="line">#配置</span><br><span class="line">vi &#x2F;usr&#x2F;redis&#x2F;redis.conf</span><br><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;src</span><br><span class="line">.&#x2F;redis-server ..&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装redis-trib-rb"><a href="#安装redis-trib-rb" class="headerlink" title="安装redis-trib.rb"></a>安装redis-trib.rb</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cp &#x2F;usr&#x2F;redis&#x2F;src&#x2F;redis-trib.rb &#x2F;usr&#x2F;redis&#x2F;cluster&#x2F;</span><br><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;cluster</span><br><span class="line">apt-get install ruby</span><br><span class="line">apt-get install rubygems</span><br><span class="line">gem install redis</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建Redis集群"><a href="#创建Redis集群" class="headerlink" title="创建Redis集群"></a>创建Redis集群</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;redis-trib.rb create --replicas 1 172.19.0.2:6379 172.19.0.3:6379 172.10.0.4:6379 172.19.0.5:6379 172.19.0.6:6379 172.19.0.7:6379</span><br></pre></td></tr></table></figure>
+
+<p>–replicas 1参数表示为每个主节点创建一个从节点</p>
+<h2 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h2><ol>
+<li>进入r1容器</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it r1 bash</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>进入Redis所在目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>创建cluster空目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir cluster</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>将redis-trib工具拷贝到空目录中</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd src&#x2F;</span><br><span class="line">cp redis-trib.rb ..&#x2F;cluster&#x2F;</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>进入cluster创建集群</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ..&#x2F;cluster</span><br><span class="line">.&#x2F;redis-trib.rb create --replicas 1 172.19.0.2:6379 172.19.0.3:6379 172.10.0.4:6379 172.19.0.5:6379 172.19.0.6:6379 172.19.0.7:6379</span><br></pre></td></tr></table></figure>
+
+<p>在创建过程中提示下面错误</p>
+<div align=center>
+![](http://images.ornnth.com/images/docker/113.png)
+</div>
+
+<p>解决方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">核对一下Redis的配置文件，应该把bind设置为0.0.0.0</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux-CentOS-Docker/" rel="tag"># Linux - CentOS - Docker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/11/18/Docker-8-Redis%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98%E4%BB%8B%E7%BB%8D/" rel="prev" title="8-Redis高速缓存介绍">
+      <i class="fa fa-chevron-left"></i> 8-Redis高速缓存介绍
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/12/16/Vagrant%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" rel="next" title="Vagrant常用命令">
+      Vagrant常用命令 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Redis镜像"><span class="nav-number">1.</span> <span class="nav-text">安装Redis镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Redis节点"><span class="nav-number">2.</span> <span class="nav-text">配置Redis节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数介绍"><span class="nav-number">2.1.</span> <span class="nav-text">参数介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置步骤"><span class="nav-number">2.2.</span> <span class="nav-text">配置步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r2节点"><span class="nav-number">3.</span> <span class="nav-text">创建r2节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r3节点"><span class="nav-number">4.</span> <span class="nav-text">创建r3节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r4节点"><span class="nav-number">5.</span> <span class="nav-text">创建r4节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r5节点"><span class="nav-number">6.</span> <span class="nav-text">创建r5节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r6节点"><span class="nav-number">7.</span> <span class="nav-text">创建r6节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装redis-trib-rb"><span class="nav-number">8.</span> <span class="nav-text">安装redis-trib.rb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Redis集群"><span class="nav-number">9.</span> <span class="nav-text">创建Redis集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体步骤"><span class="nav-number">10.</span> <span class="nav-text">具体步骤</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

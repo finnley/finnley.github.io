@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Array 的创建与访问 create from python list 创建一个一维数组  1 2 3 4 5 6 7 8   import numpy as np  # create from python list list_1 &#x3D; [1, 2, 3, 4] list_1  array_1 &#x3D; np.array(list_1) array_1     创建一个二维数组  1 2 3 4 5">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Numpy入门">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/05/07/1-Numpy%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="Array 的创建与访问 create from python list 创建一个一维数组  1 2 3 4 5 6 7 8   import numpy as np  # create from python list list_1 &#x3D; [1, 2, 3, 4] list_1  array_1 &#x3D; np.array(list_1) array_1     创建一个二维数组  1 2 3 4 5">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/1.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/2.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/3.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/4.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/5.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/6.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/7.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/8.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/9.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/10.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/11.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/12.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/13.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/14.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/15.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/16.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/17.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/18.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/19.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/20.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/21.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/22.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/23.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/24.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/25.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/26.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/27.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/28.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/29.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/30.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/31.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/32.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/33.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/34.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/35.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/36.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/37.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/38.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/39.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/40.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/array/41.png">
+<meta property="article:published_time" content="2020-05-07T13:16:20.000Z">
+<meta property="article:modified_time" content="2020-05-23T23:14:19.274Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Numpy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://images.notes.xuepincat.com/array/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/05/07/1-Numpy%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Numpy入门 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/05/07/1-Numpy%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Numpy入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-05-07 21:16:20" itemprop="dateCreated datePublished" datetime="2020-05-07T21:16:20+08:00">2020-05-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">数据分析</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Array-的创建与访问"><a href="#Array-的创建与访问" class="headerlink" title="Array 的创建与访问"></a>Array 的创建与访问</h2><h4 id="create-from-python-list"><a href="#create-from-python-list" class="headerlink" title="create from python list"></a>create from python list</h4><p>创建一个一维数组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line"># create from python list</span><br><span class="line">list_1 &#x3D; [1, 2, 3, 4]</span><br><span class="line">list_1</span><br><span class="line"></span><br><span class="line">array_1 &#x3D; np.array(list_1)</span><br><span class="line">array_1</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p><img src="http://images.notes.xuepincat.com/array/1.png" alt=""></p>
+<p>创建一个二维数组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line"># create from python list</span><br><span class="line">list_1 &#x3D; [1, 2, 3, 4]</span><br><span class="line">list_1</span><br><span class="line"></span><br><span class="line">array_1 &#x3D; np.array(list_1)</span><br><span class="line">array_1</span><br><span class="line"></span><br><span class="line">list_2 &#x3D; [5, 6, 7, 8]</span><br><span class="line">array_2 &#x3D; np.array([list_1, list_2])</span><br><span class="line">array_2</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/2.png" alt=""></p>
+<h4 id="shape"><a href="#shape" class="headerlink" title="shape"></a>shape</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_2.shape</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/3.png" alt=""></p>
+<h4 id="size"><a href="#size" class="headerlink" title="size"></a>size</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_2.size</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/4.png" alt=""></p>
+<h4 id="dtype"><a href="#dtype" class="headerlink" title="dtype"></a>dtype</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array_2.dtype</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/5.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array_3 &#x3D; np.array([[1.0, 2, 3], [4.0, 5, 6]])</span><br><span class="line">array_3.dtype</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/6.png" alt=""></p>
+<h4 id="arange"><a href="#arange" class="headerlink" title="arange"></a>arange</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array_4 &#x3D; np.arange(1, 10)</span><br><span class="line">array_4</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/7.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array_4 &#x3D; np.arange(1, 10, 2)</span><br><span class="line">array_4</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/8.png" alt=""></p>
+<h4 id="zeros"><a href="#zeros" class="headerlink" title="zeros"></a>zeros</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.zeros(5)</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/9.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.zeros([2, 3])</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/10.png" alt=""></p>
+<h4 id="eye"><a href="#eye" class="headerlink" title="eye"></a>eye</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.eye(5)</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/11.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.eye(5).dtype</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/12.png" alt=""></p>
+<h4 id="访问"><a href="#访问" class="headerlink" title="访问"></a>访问</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; np.arange(1, 10)</span><br><span class="line">a</span><br><span class="line">a[1]</span><br><span class="line">a[1:5]</span><br><span class="line"></span><br><span class="line">b &#x3D; np.array([[1, 2, 3], [4, 5, 6]])</span><br><span class="line">b</span><br><span class="line"></span><br><span class="line"># 访问第一行第0个元素</span><br><span class="line">b[1][0]</span><br><span class="line"></span><br><span class="line"># 或者</span><br><span class="line">b[1, 0]</span><br><span class="line"></span><br><span class="line">c &#x3D; np.array([[1, 2, 3], [4, 5 ,6], [7, 8, 8]])</span><br><span class="line">c</span><br><span class="line"></span><br><span class="line"># 第一个表示行的范围，从第0行到第2行，也就是0行(1,2,3)和1行(4,5,6)</span><br><span class="line"># 第二个表示列的范围，从第一列开始，也就是1列(2,5,8)和2列(3,6,8)</span><br><span class="line">c[:2, 1:]</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/13.png" alt=""></p>
+<p><img src="http://images.notes.xuepincat.com/array/14.png" alt=""></p>
+<h2 id="数据与矩阵的运算"><a href="#数据与矩阵的运算" class="headerlink" title="数据与矩阵的运算"></a>数据与矩阵的运算</h2><h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import numpy as np</span><br><span class="line">np.random.randn(10)</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/15.png" alt=""></p>
+<h4 id="randint"><a href="#randint" class="headerlink" title="randint"></a>randint</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.random.randint(10)</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/16.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.random.randint(10, size&#x3D;(2, 3))</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/17.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.random.randint(10, size&#x3D;20)</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/18.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.random.randint(10, size&#x3D;20).reshape(4, 5)</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/19.png" alt=""></p>
+<h4 id="数据的运算"><a href="#数据的运算" class="headerlink" title="数据的运算"></a>数据的运算</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; np.random.randint(10, size&#x3D;20).reshape(4, 5)</span><br><span class="line">b &#x3D; np.random.randint(10, size&#x3D;20).reshape(4, 5)</span><br><span class="line">a</span><br><span class="line">b</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/20.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a + b</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/21.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a - b</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/22.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a * b</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/23.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a &#x2F; b</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/24.png" alt=""></p>
+<h3 id="矩阵"><a href="#矩阵" class="headerlink" title="矩阵"></a>矩阵</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.mat([[1,2,3], [4,5,6]])</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/25.png" alt=""></p>
+<h4 id="数据与矩阵的转换"><a href="#数据与矩阵的转换" class="headerlink" title="数据与矩阵的转换"></a>数据与矩阵的转换</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 数组与矩阵之间的转换</span><br><span class="line">a</span><br><span class="line">np.mat(a)</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/26.png" alt=""></p>
+<h4 id="矩阵的运算"><a href="#矩阵的运算" class="headerlink" title="矩阵的运算"></a>矩阵的运算</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">b</span><br><span class="line">A &#x3D; np.mat(a)</span><br><span class="line">B &#x3D; np.mat(b)</span><br><span class="line">A</span><br><span class="line">B</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/27.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A + B</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/28.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A - B</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/29.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A * B</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/30.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; np.mat(np.random.randint(10, size&#x3D;20).reshape(4, 5))</span><br><span class="line">b &#x3D; np.mat(np.random.randint(10, size&#x3D;20).reshape(5, 4))</span><br><span class="line">a</span><br><span class="line">b</span><br><span class="line">a * b</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/31.png" alt=""></p>
+<h3 id="Array-常用函数"><a href="#Array-常用函数" class="headerlink" title="Array 常用函数"></a>Array 常用函数</h3><h4 id="unique"><a href="#unique" class="headerlink" title="unique"></a>unique</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; np.random.randint(10, size&#x3D;20).reshape(4, 5)</span><br><span class="line">np.unique(a)</span><br><span class="line">a</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/32.png" alt=""></p>
+<h4 id="sum"><a href="#sum" class="headerlink" title="sum"></a>sum</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 求列的和</span><br><span class="line">sum(a)</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/33.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 求行的和 第一行的和</span><br><span class="line">sum(a[0])</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/34.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 求第一列的和</span><br><span class="line">sum(a[:,0])</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/35.png" alt=""></p>
+<h4 id="max"><a href="#max" class="headerlink" title="max"></a>max</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a.max()</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/36.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 求某一行或某一列的最大值</span><br><span class="line">max(a[0])</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/37.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 求第0列的最大值</span><br><span class="line">max(a[:, 0])</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/38.png" alt=""></p>
+<h2 id="Array的input和output"><a href="#Array的input和output" class="headerlink" title="Array的input和output"></a>Array的input和output</h2><h3 id="使用pickle序列化numpy-array"><a href="#使用pickle序列化numpy-array" class="headerlink" title="使用pickle序列化numpy array"></a>使用pickle序列化numpy array</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">import pickle</span><br><span class="line">import numpy as np</span><br><span class="line"></span><br><span class="line">x &#x3D; np.arange(10)</span><br><span class="line">x</span><br><span class="line"></span><br><span class="line"># 将x序列化到硬盘 </span><br><span class="line"># 打开一个文件 写 而二进制</span><br><span class="line">f &#x3D; open(&#39;x.pkl&#39;, &#39;wb&#39;)</span><br><span class="line"></span><br><span class="line"># 将x对象dump到f这个文件中</span><br><span class="line">pickle.dump(x, f)</span><br><span class="line"></span><br><span class="line"># 查看当前目录文件</span><br><span class="line">!ls</span><br><span class="line"></span><br><span class="line"># 从一个序列化的文件中读取对象</span><br><span class="line"># 打开一个文件 读二进制文件</span><br><span class="line">f &#x3D; open(&#39;x.pkl&#39;, &#39;rb&#39;)</span><br><span class="line"></span><br><span class="line">pickle.load(f)</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/39.png" alt=""></p>
+<h3 id="Numpy-序列化"><a href="#Numpy-序列化" class="headerlink" title="Numpy 序列化"></a>Numpy 序列化</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># numpy 序列化</span><br><span class="line">np.save(&#39;one_array&#39;, x)</span><br><span class="line"></span><br><span class="line">!ls</span><br><span class="line"></span><br><span class="line">np.load(&#39;one_array.npy&#39;)</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/40.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># 序列化多个</span><br><span class="line">y &#x3D; np.arange(20)</span><br><span class="line">y</span><br><span class="line"></span><br><span class="line">np.savez(&#39;two_array.npz&#39;, a&#x3D;x, b&#x3D;y)</span><br><span class="line"></span><br><span class="line">!ls</span><br><span class="line"></span><br><span class="line">c &#x3D; np.load(&#39;two_array.npz&#39;)</span><br><span class="line"></span><br><span class="line">c[&#39;a&#39;]</span><br><span class="line">c[&#39;b&#39;]</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/array/41.png" alt=""></p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Numpy/" rel="tag"># Numpy</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/05/06/Docker-%E5%A4%9A%E5%AE%B9%E5%99%A8%E9%83%A8%E7%BD%B2%E5%BA%94%E7%94%A8/" rel="prev" title="多容器部署应用">
+      <i class="fa fa-chevron-left"></i> 多容器部署应用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/05/18/1-Elasticsearch%E5%85%A5%E9%97%A8/" rel="next" title="Elasticsearch入门">
+      Elasticsearch入门 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Array-的创建与访问"><span class="nav-number">1.</span> <span class="nav-text">Array 的创建与访问</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#create-from-python-list"><span class="nav-number">1.0.1.</span> <span class="nav-text">create from python list</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shape"><span class="nav-number">1.0.2.</span> <span class="nav-text">shape</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#size"><span class="nav-number">1.0.3.</span> <span class="nav-text">size</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dtype"><span class="nav-number">1.0.4.</span> <span class="nav-text">dtype</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#arange"><span class="nav-number">1.0.5.</span> <span class="nav-text">arange</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#zeros"><span class="nav-number">1.0.6.</span> <span class="nav-text">zeros</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#eye"><span class="nav-number">1.0.7.</span> <span class="nav-text">eye</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#访问"><span class="nav-number">1.0.8.</span> <span class="nav-text">访问</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据与矩阵的运算"><span class="nav-number">2.</span> <span class="nav-text">数据与矩阵的运算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数组"><span class="nav-number">2.1.</span> <span class="nav-text">数组</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#randint"><span class="nav-number">2.1.1.</span> <span class="nav-text">randint</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据的运算"><span class="nav-number">2.1.2.</span> <span class="nav-text">数据的运算</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#矩阵"><span class="nav-number">2.2.</span> <span class="nav-text">矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据与矩阵的转换"><span class="nav-number">2.2.1.</span> <span class="nav-text">数据与矩阵的转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#矩阵的运算"><span class="nav-number">2.2.2.</span> <span class="nav-text">矩阵的运算</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array-常用函数"><span class="nav-number">2.3.</span> <span class="nav-text">Array 常用函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#unique"><span class="nav-number">2.3.1.</span> <span class="nav-text">unique</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sum"><span class="nav-number">2.3.2.</span> <span class="nav-text">sum</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#max"><span class="nav-number">2.3.3.</span> <span class="nav-text">max</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Array的input和output"><span class="nav-number">3.</span> <span class="nav-text">Array的input和output</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用pickle序列化numpy-array"><span class="nav-number">3.1.</span> <span class="nav-text">使用pickle序列化numpy array</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Numpy-序列化"><span class="nav-number">3.2.</span> <span class="nav-text">Numpy 序列化</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="hexo d 提交失败 Description 在第一次使用 hexo d 提交的时候会出现失败报错    Reason 因为没安装 hexo-deployer-git 插件  Solution 在站点目录下输入下面的命令进行插件安装  1   npm install hexo-deployer-git --save     然后再使用 hexo -d 命令就可以提交了  设置 RSS RSS 广">
+<meta property="og:type" content="article">
+<meta property="og:title" content="7-hexo其他配置——补缺篇">
+<meta property="og:url" content="https://notes.xuepincat.com/2017/04/20/7-hexo%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E8%A1%A5%E7%BC%BA%E7%AF%87/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="hexo d 提交失败 Description 在第一次使用 hexo d 提交的时候会出现失败报错    Reason 因为没安装 hexo-deployer-git 插件  Solution 在站点目录下输入下面的命令进行插件安装  1   npm install hexo-deployer-git --save     然后再使用 hexo -d 命令就可以提交了  设置 RSS RSS 广">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/0.jpeg">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/1.jpg">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/2.jpg">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/19.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/20.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/21.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/3.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/4.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/5.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/6.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/7.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/8.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/9.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/10.jpg">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/12.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/13.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/14.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/15.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/16.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/17.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/18.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/11.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/github/29.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/github/30.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/github/31.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/github/32.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/github/33.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/github/34.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/github/35.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/github/36.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/blog/github/37.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/github/38.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/hexo/other-setting/github/39.png">
+<meta property="article:published_time" content="2017-04-20T03:45:03.000Z">
+<meta property="article:modified_time" content="2020-07-18T03:53:06.635Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Git">
+<meta property="article:tag" content="GitHub">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://images.notes.xuepincat.com/hexo/other-setting/0.jpeg">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2017/04/20/7-hexo%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E8%A1%A5%E7%BC%BA%E7%AF%87/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>7-hexo其他配置——补缺篇 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/04/20/7-hexo%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E8%A1%A5%E7%BC%BA%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          7-hexo其他配置——补缺篇
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-04-20 11:45:03" itemprop="dateCreated datePublished" datetime="2017-04-20T11:45:03+08:00">2017-04-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-18 11:53:06" itemprop="dateModified" datetime="2020-07-18T11:53:06+08:00">2020-07-18</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo-Next/" itemprop="url" rel="index"><span itemprop="name">Hexo+Next</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="http://images.notes.xuepincat.com/hexo/other-setting/0.jpeg" alt=""></p>
+<a id="more"></a>
+
+<h1 id="hexo-d-提交失败"><a href="#hexo-d-提交失败" class="headerlink" title="hexo d 提交失败"></a>hexo d 提交失败</h1><h2 id="Description"><a href="#Description" class="headerlink" title="Description"></a>Description</h2><p>在第一次使用 <code>hexo d</code> 提交的时候会出现失败报错</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/1.jpg" alt=""></p>
+<h2 id="Reason"><a href="#Reason" class="headerlink" title="Reason"></a>Reason</h2><p>因为没安装 <code>hexo-deployer-git</code> 插件</p>
+<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>在站点目录下输入下面的命令进行插件安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/2.jpg" alt=""></p>
+<p>然后再使用 <code>hexo -d</code> 命令就可以提交了</p>
+<h1 id="设置-RSS"><a href="#设置-RSS" class="headerlink" title="设置 RSS"></a>设置 RSS</h1><p>RSS 广泛用于网上新闻频道，blog和 wiki。使用 RSS 订阅能更快地获取信息，网站提供 RSS 输出，有利于让用户获取网站内容的最新更新。网络用户可以在客户端借助于支持 RSS 的聚合工具软件，在不打开网站内容页面的情况下阅读支持 RSS 输出的网站内容。</p>
+<p>安装 <a href="https://github.com/hexojs/hexo-generator-feed" target="_blank" rel="noopener" title="hexo-generator-feed">hexo-generator-feed</a> 插件. </p>
+<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-feed --save</span><br></pre></td></tr></table></figure>
+
+<h2 id="Options"><a href="#Options" class="headerlink" title="Options"></a>Options</h2><p>You can configure this plugin in _config.yml.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># RSS</span><br><span class="line">feed:</span><br><span class="line">  type: atom</span><br><span class="line">  path: atom.xml</span><br><span class="line">  limit: 20</span><br><span class="line">  hub:</span><br><span class="line">  content:</span><br><span class="line">  content_limit: 140</span><br><span class="line">  content_limit_delim: &#39; &#39;</span><br><span class="line">  order_by: -date</span><br><span class="line">  icon: icon.png</span><br><span class="line">  autodiscovery: true</span><br><span class="line">  template:</span><br></pre></td></tr></table></figure>
+
+<h1 id="Local-Search"><a href="#Local-Search" class="headerlink" title="Local Search"></a>Local Search</h1><p>添加百度/谷歌/本地 自定义站点内容搜索</p>
+<ol>
+<li>安装 <code>hexo-generator-searchdb</code>，在站点的根目录下执行以下命令：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>编辑 <code>站点配置文件</code>，新增以下内容到任意位置：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># Local Search</span><br><span class="line">search:</span><br><span class="line">  path: search.xml</span><br><span class="line">  field: post</span><br><span class="line">  format: html</span><br><span class="line">  limit: 10000</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>编辑 <code>主题配置文件</code>，启用本地搜索功能：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># Local search</span><br><span class="line">local_search:</span><br><span class="line">  enable: true</span><br></pre></td></tr></table></figure>
+
+<h1 id="设置「阅读全文」按钮"><a href="#设置「阅读全文」按钮" class="headerlink" title="设置「阅读全文」按钮"></a>设置「阅读全文」按钮</h1><p>在文章中使用 <code>&lt;!-- more --&gt;</code> 手动进行截断，Hexo 提供的方式 <label style="color:white; background-color:green">推荐</label></p>
+<p>或者通过安装插件的方式</p>
+<p><a href="https://github.com/ashisherc/hexo-auto-excerpt" target="_blank" rel="noopener">hexo-auto-excerpt</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-auto-excerpt</span><br></pre></td></tr></table></figure>
+
+<h1 id="添加标题翻译插件"><a href="#添加标题翻译插件" class="headerlink" title="添加标题翻译插件"></a>添加标题翻译插件</h1><p>hexo生成的默认文章链接格式是这样的：<code>https://blog.mariojd.cn/2013/07/14/&lt;Markdown file name&gt;/</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;localhost:4000&#x2F;2018&#x2F;01&#x2F;20&#x2F;8-hexo其他配置——补缺篇&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>这个配置在hexo站点配置文件的_config.yml里面：<code>permalink: :year/:month/:day/:title/</code>，这种默认的配置缺点很明显，当文件名是中文的时候url链接里就有中文出现，看起来low的同时也非常不利于seo优化，下面介绍两种解决方案</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/19.png" alt=""></p>
+<ul>
+<li>解决方案</li>
+</ul>
+<p>在 <a href="https://hexo.io/plugins/index.html" target="_blank" rel="noopener">hexo plugins</a>  搜索“translate”</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/20.png" alt=""></p>
+<p>安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-translate-title --save</span><br></pre></td></tr></table></figure>
+
+<p>1.配置hexo根项目下的_config.yml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">translate_title:</span><br><span class="line">  translate_way: google  # google,youdao,baidu_with_appid,baidu_no_appid</span><br><span class="line">  youdao_api_key: &#39;&#39; # Your youdao_api_key</span><br><span class="line">  youdao_keyfrom: xxxx-blog # Your youdao_keyfrom</span><br><span class="line">  is_need_proxy: false     # true | false</span><br><span class="line">  proxy_url: http:&#x2F;&#x2F;localhost:50018 # Your proxy_url</span><br><span class="line">  baidu_appid: &#39;&#39; # Your baidu_appid</span><br><span class="line">  baidu_appkey: &#39;&#39; # Your baidu_appkey</span><br></pre></td></tr></table></figure>
+
+<p>2.修改hexo根目录下的_config.yml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">permalink: :year&#x2F;:month:day&#x2F;:translate_title.html</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/21.png" alt=""></p>
+<h1 id="提交百度谷歌收录"><a href="#提交百度谷歌收录" class="headerlink" title="提交百度谷歌收录"></a>提交百度谷歌收录</h1><h2 id="添加百度站点"><a href="#添加百度站点" class="headerlink" title="添加百度站点"></a>添加百度站点</h2><h3 id="访问-百度站点"><a href="#访问-百度站点" class="headerlink" title="访问 百度站点"></a>访问 <a href="https://ziyuan.baidu.com/site/index#/" target="_blank" rel="noopener">百度站点</a></h3><p><img src="http://images.notes.xuepincat.com/hexo/other-setting/3.png" alt=""></p>
+<h3 id="添加网站"><a href="#添加网站" class="headerlink" title="添加网站"></a>添加网站</h3><p><img src="http://images.notes.xuepincat.com/hexo/other-setting/4.png" alt=""></p>
+<h3 id="选择领域"><a href="#选择领域" class="headerlink" title="选择领域"></a>选择领域</h3><p><img src="http://images.notes.xuepincat.com/hexo/other-setting/5.png" alt=""></p>
+<h3 id="下载验证文件"><a href="#下载验证文件" class="headerlink" title="下载验证文件"></a>下载验证文件</h3><p>下一步，选择文件验证，并点击 <code>下载验证文件</code>，根据页面提示步骤将文件放到指定目录中</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/6.png" alt=""></p>
+<p>这里是放在 <code>source</code> 目录中</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/7.png" alt=""></p>
+<h3 id="设置-skip-render"><a href="#设置-skip-render" class="headerlink" title="设置 skip_render"></a>设置 skip_render</h3><p>修改站点配置文件 ，找到 <code>skip_render</code>，添加站点验证文件名，表示每次 <code>hexo g</code> 忽略该文件，如果不添加，每次重新生成都会将验证文件内容覆盖</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/8.png" alt=""></p>
+<h3 id="完成验证"><a href="#完成验证" class="headerlink" title="完成验证"></a>完成验证</h3><p><img src="http://images.notes.xuepincat.com/hexo/other-setting/9.png" alt=""></p>
+<p>稍等一会即可验证通过</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/10.jpg" alt=""></p>
+<blockquote>
+<p>有3种验证方式：</p>
+<ul>
+<li>HTML文件验证：将验证文件放置于您所配置域名的根目录下，即放在博客的本地根目录的source文件夹下（要设置skip_render）。</li>
+<li>HTML标签验证：baidu_site_verification后添加HTML标签content后的内容（推荐）</li>
+<li>CNAME验证：按要求添加一条CNAME解析</li>
+</ul>
+</blockquote>
+<h2 id="生成sitemap站点地图"><a href="#生成sitemap站点地图" class="headerlink" title="生成sitemap站点地图"></a>生成sitemap站点地图</h2><blockquote>
+<p>站点地图是一种文件，您可以通过该文件列出您网站上的网页，从而将您网站内容的组织架构告知 Google 等搜索引擎。搜索引擎网页抓取工具会读取此文件，以便更加智能地抓取您的网站。</p>
+</blockquote>
+<p>我们需要使用插件自动生成网站的 sitemap，然后将生成的 sitemap 提交到百度和其他搜索引擎。<br>先安装谷歌和百度的插件</p>
+<h3 id="安装插件"><a href="#安装插件" class="headerlink" title="安装插件"></a>安装插件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-sitemap --save</span><br><span class="line">npm install hexo-generator-baidu-sitemap --save</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改站点配置文件-config-yml"><a href="#修改站点配置文件-config-yml" class="headerlink" title="修改站点配置文件 _config.yml"></a>修改站点配置文件 _config.yml</h3><p>在站点配置文件下添加下面代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># 自动生成sitemap</span><br><span class="line">sitemap:</span><br><span class="line">  path: sitemap.xml</span><br><span class="line">baidusitemap:</span><br><span class="line">  path: baidusitemap.xml</span><br></pre></td></tr></table></figure>
+
+<p>修改 <code>_config.yml</code> 中的 <code>URL</code> 地址，把URL地址修改成你的网站地址。</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/12.png" alt=""></p>
+<p>配置完之后执行 <code>hexo g</code> 就会在你的博客的目录 <code>public</code> 中生成相对应的sitemap文件</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/13.png" alt=""></p>
+<h3 id="添加-robots-txt"><a href="#添加-robots-txt" class="headerlink" title="添加 robots.txt"></a>添加 robots.txt</h3><p>robots.txt是搜索引擎蜘蛛协议，告诉引擎哪些要收录，哪些禁止收录。<br>source文件夹下新建 robots.txt，内容如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">User-agent: *</span><br><span class="line">Allow: &#x2F;</span><br><span class="line">Allow: &#x2F;home&#x2F;</span><br><span class="line">Allow: &#x2F;about&#x2F;</span><br><span class="line">Allow: &#x2F;archives&#x2F;</span><br><span class="line">Allow: &#x2F;categories&#x2F;</span><br><span class="line">Allow: &#x2F;tags&#x2F;</span><br><span class="line">Disallow: &#x2F;js&#x2F;</span><br><span class="line">Disallow: &#x2F;css&#x2F;</span><br><span class="line">Disallow: &#x2F;fonts&#x2F;</span><br><span class="line">Disallow: &#x2F;vendors&#x2F;</span><br><span class="line">Disallow: &#x2F;fancybox&#x2F;</span><br><span class="line">Disallow: &#x2F;categories&#x2F;</span><br><span class="line"></span><br><span class="line">Sitemap: https:&#x2F;&#x2F;notex.xuepincat.com&#x2F;sitemap.xml</span><br><span class="line">Sitemap: https:&#x2F;&#x2F;notex.xuepincat.com&#x2F;baidusitemap.xml</span><br></pre></td></tr></table></figure>
+
+<h3 id="提交sitemap"><a href="#提交sitemap" class="headerlink" title="提交sitemap"></a>提交sitemap</h3><p>百度：在百度站长平台–链接提交–自动提交–sitemap，添加<a href="https://notes.xuepincat.com/baidusitemap.xml">https://notes.xuepincat.com/baidusitemap.xml</a></p>
+<p>对于百度，除了 sitemap 还有主动推动和自动推送这两种方式，主动推送的原理是每次 deploy 的时候都把所有链接推送给百度，自动推送则是每次网站被访问时都把该链接推送给百度。</p>
+<h3 id="设置百度主动提交"><a href="#设置百度主动提交" class="headerlink" title="设置百度主动提交"></a>设置百度主动提交</h3><h4 id="安装插件-1"><a href="#安装插件-1" class="headerlink" title="安装插件"></a>安装插件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-baidu-url-submit --save</span><br></pre></td></tr></table></figure>
+
+<h4 id="修改站点配置文件"><a href="#修改站点配置文件" class="headerlink" title="修改站点配置文件"></a>修改站点配置文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">baidu_url_submit:</span><br><span class="line">  count: 10 ## 比如10，代表提交最新的十个链接</span><br><span class="line">  host: https:&#x2F;&#x2F;notes.xuepincat.com ## 在百度站长平台中注册的域名</span><br><span class="line">  token: your_token ## 请注意这是您的秘钥， 请不要发布在公众仓库里!</span><br><span class="line">  path: baidu_urls.txt ## 文本文档的地址， 新链接会保存在此文本文档里</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>其中 count 表示一次推送提交最新的N个链接；host 和 token 可以在百度站点页面-&gt;数据引入-&gt;链接提交可以找到；path 为生成的文件名，里面存有推送的，我们网站的链接地址。</p>
+</blockquote>
+<p>确保 your_site 项跟百度注册的站点一致。</p>
+<p>同样修改站点配置文件的 deploy 项，我们原来已经有 git 的 deploy，现在增加对 baidu 的推送，最终是这样子的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">- type: git</span><br><span class="line">  repo: https:&#x2F;&#x2F;github.com&#x2F;growvv&#x2F;growvv.github.io.git   </span><br><span class="line">  branch: master                                         </span><br><span class="line"></span><br><span class="line">- type: baidu_url_submitter</span><br></pre></td></tr></table></figure>
+
+<p>重新生成发布 hexo d</p>
+<p>另外还有自动推送，需要在主题配置文件下设置，将baidu_push设置为true：</p>
+<h2 id="Google-Webmaster-tools"><a href="#Google-Webmaster-tools" class="headerlink" title="Google Webmaster tools"></a>Google Webmaster tools</h2><p>设置 <a href="https://www.google.com/webmasters/tools/" target="_blank" rel="noopener">Google站点管理工具</a> 的验证字符串，用于提交 sitemap</p>
+<p>我这里选择的是网域验证，它会验证主域名下的所有子域名，输入完域名后点击 【继续】 按钮</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/14.png" alt=""></p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/15.png" alt=""></p>
+<p>根据步骤将记录复制，然后在域名服务上添加一条TXT类型的解析记录</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/16.png" alt=""></p>
+<p>添加完点击【验证】按钮，期间可能出现验证失败的情况，需要耐心等待一会</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/17.png" alt=""></p>
+<p>如果验证成功将出现下面提示，然后点击完成按钮或者前往资源页面</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/18.png" alt=""></p>
+<h1 id="百度统计"><a href="#百度统计" class="headerlink" title="百度统计"></a>百度统计</h1><ol>
+<li><p>登录 <a href="https://tongji.baidu.com/web/10000040270/homepage/index/" target="_blank" rel="noopener">百度统计</a>，定位到站点的代码获取页面</p>
+</li>
+<li><p>复制 hm.js? 后面那串统计脚本 id，如下图所示：</p>
+</li>
+</ol>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/11.png" alt=""></p>
+<ol start="3">
+<li>编辑 <code>主题配置文件</code>， 修改字段 <code>baidu_analytics</code>，值设置成你的百度统计脚本 id。</li>
+</ol>
+<h1 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h1><p>有时候家里和公司有两台电脑，hexo博客的源码文件是在家里的PC上，但是现在想在公司的PC上写博客，总不能在公司写好，然后带回家中在上传博客，这样太麻烦了，太不人性化了。</p>
+<h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>添加 <code>README.md</code> 文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"# My Blog"</span> &gt;&gt; README.md</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/github/29.png" alt=""></p>
+<p>进入存放博客目录,初始化仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/github/30.png" alt=""></p>
+<h2 id="添加文件到本地仓库"><a href="#添加文件到本地仓库" class="headerlink" title="添加文件到本地仓库"></a>添加文件到本地仓库</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add README.md</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/github/31.png" alt=""></p>
+<h2 id="提交分支"><a href="#提交分支" class="headerlink" title="提交分支"></a>提交分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git commit -m <span class="string">"first commit"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/github/32.png" alt=""></p>
+<h2 id="查看分支"><a href="#查看分支" class="headerlink" title="查看分支"></a>查看分支</h2><p>查看本地分支</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/github/33.png" alt=""></p>
+<h2 id="创建分支"><a href="#创建分支" class="headerlink" title="创建分支"></a>创建分支</h2><p>默认是 <code>master</code> 分支，现在创建一个名为 <code>hexo</code> 的分支</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gti branch hexo</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/github/34.png" alt=""></p>
+<h2 id="查看分支-1"><a href="#查看分支-1" class="headerlink" title="查看分支"></a>查看分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/github/35.png" alt=""></p>
+<h2 id="切换分支"><a href="#切换分支" class="headerlink" title="切换分支"></a>切换分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout hexo</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/github/36.png" alt=""></p>
+<p>这时候已经切换到了 <code>hexo</code> 分支上</p>
+<h2 id="推送分支"><a href="#推送分支" class="headerlink" title="推送分支"></a>推送分支</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin git@github.com:ornnth/ornnth.github.io.git</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/blog/github/37.png" alt=""></p>
+<h2 id="提交到分支-hexo"><a href="#提交到分支-hexo" class="headerlink" title="提交到分支 hexo"></a>提交到分支 <code>hexo</code></h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -u origin hexo</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/github/38.png" alt=""></p>
+<h2 id="GitHub查看分支"><a href="#GitHub查看分支" class="headerlink" title="GitHub查看分支"></a>GitHub查看分支</h2><p>进入GitHub，会返现多了一个分支 <code>hexo</code>。</p>
+<p><img src="http://images.notes.xuepincat.com/hexo/other-setting/github/39.png" alt=""></p>
+<h2 id="后续推送整个源码"><a href="#后续推送整个源码" class="headerlink" title="后续推送整个源码"></a>后续推送整个源码</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"remark"</span></span><br><span class="line">git push -u push hexo</span><br></pre></td></tr></table></figure>
+
+<p>这样 <code>master</code> 分支用来存放静态的网页文件， <code>hexo</code> 用来存放 <code>hexo</code> 源码文件。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Hexo/" rel="tag"># Hexo</a>
+              <a href="/tags/Git/" rel="tag"># Git</a>
+              <a href="/tags/GitHub/" rel="tag"># GitHub</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/04/01/6-NexT%E7%9A%84%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E6%9F%A5%E6%BC%8F%E7%AF%87/" rel="prev" title="6-NexT的简单配置——查漏篇">
+      <i class="fa fa-chevron-left"></i> 6-NexT的简单配置——查漏篇
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/06/hello-world/" rel="next" title="Hello World">
+      Hello World <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hexo-d-提交失败"><span class="nav-number">1.</span> <span class="nav-text">hexo d 提交失败</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Description"><span class="nav-number">1.1.</span> <span class="nav-text">Description</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reason"><span class="nav-number">1.2.</span> <span class="nav-text">Reason</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution"><span class="nav-number">1.3.</span> <span class="nav-text">Solution</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设置-RSS"><span class="nav-number">2.</span> <span class="nav-text">设置 RSS</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Install"><span class="nav-number">2.1.</span> <span class="nav-text">Install</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Options"><span class="nav-number">2.2.</span> <span class="nav-text">Options</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Local-Search"><span class="nav-number">3.</span> <span class="nav-text">Local Search</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设置「阅读全文」按钮"><span class="nav-number">4.</span> <span class="nav-text">设置「阅读全文」按钮</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加标题翻译插件"><span class="nav-number">5.</span> <span class="nav-text">添加标题翻译插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#提交百度谷歌收录"><span class="nav-number">6.</span> <span class="nav-text">提交百度谷歌收录</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加百度站点"><span class="nav-number">6.1.</span> <span class="nav-text">添加百度站点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#访问-百度站点"><span class="nav-number">6.1.1.</span> <span class="nav-text">访问 百度站点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加网站"><span class="nav-number">6.1.2.</span> <span class="nav-text">添加网站</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择领域"><span class="nav-number">6.1.3.</span> <span class="nav-text">选择领域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#下载验证文件"><span class="nav-number">6.1.4.</span> <span class="nav-text">下载验证文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置-skip-render"><span class="nav-number">6.1.5.</span> <span class="nav-text">设置 skip_render</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完成验证"><span class="nav-number">6.1.6.</span> <span class="nav-text">完成验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成sitemap站点地图"><span class="nav-number">6.2.</span> <span class="nav-text">生成sitemap站点地图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装插件"><span class="nav-number">6.2.1.</span> <span class="nav-text">安装插件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改站点配置文件-config-yml"><span class="nav-number">6.2.2.</span> <span class="nav-text">修改站点配置文件 _config.yml</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#添加-robots-txt"><span class="nav-number">6.2.3.</span> <span class="nav-text">添加 robots.txt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提交sitemap"><span class="nav-number">6.2.4.</span> <span class="nav-text">提交sitemap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置百度主动提交"><span class="nav-number">6.2.5.</span> <span class="nav-text">设置百度主动提交</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装插件-1"><span class="nav-number">6.2.5.1.</span> <span class="nav-text">安装插件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修改站点配置文件"><span class="nav-number">6.2.5.2.</span> <span class="nav-text">修改站点配置文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Google-Webmaster-tools"><span class="nav-number">6.3.</span> <span class="nav-text">Google Webmaster tools</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#百度统计"><span class="nav-number">7.</span> <span class="nav-text">百度统计</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#场景"><span class="nav-number">8.</span> <span class="nav-text">场景</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解决办法"><span class="nav-number">8.1.</span> <span class="nav-text">解决办法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加文件到本地仓库"><span class="nav-number">8.2.</span> <span class="nav-text">添加文件到本地仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提交分支"><span class="nav-number">8.3.</span> <span class="nav-text">提交分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看分支"><span class="nav-number">8.4.</span> <span class="nav-text">查看分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建分支"><span class="nav-number">8.5.</span> <span class="nav-text">创建分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看分支-1"><span class="nav-number">8.6.</span> <span class="nav-text">查看分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#切换分支"><span class="nav-number">8.7.</span> <span class="nav-text">切换分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推送分支"><span class="nav-number">8.8.</span> <span class="nav-text">推送分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#提交到分支-hexo"><span class="nav-number">8.9.</span> <span class="nav-text">提交到分支 hexo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitHub查看分支"><span class="nav-number">8.10.</span> <span class="nav-text">GitHub查看分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后续推送整个源码"><span class="nav-number">8.11.</span> <span class="nav-text">后续推送整个源码</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
