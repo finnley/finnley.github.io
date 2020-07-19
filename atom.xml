@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-07-19T09:42:08.346Z</updated>
+  <updated>2020-07-19T15:00:23.480Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -17,15 +17,16 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>数据持久化-Data Volume</title>
-    <link href="https://notes.xuepincat.com/2020/07/19/Docker-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-Data-Volume/"/>
-    <id>https://notes.xuepincat.com/2020/07/19/Docker-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-Data-Volume/</id>
+    <title>数据持久化</title>
+    <link href="https://notes.xuepincat.com/2020/07/19/Docker-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/"/>
+    <id>https://notes.xuepincat.com/2020/07/19/Docker-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/</id>
     <published>2020-07-19T08:01:02.000Z</published>
-    <updated>2020-07-19T09:42:08.346Z</updated>
+    <updated>2020-07-19T15:00:23.480Z</updated>
     
     <summary type="html">
     
-      有些容器本身会产生一些数据，如果我们不想这些数据随着 Container 的小时而丢失，想保证数据的安全，比如我们使用的数据库，启动一个数据库容器，数据据会有一些数据表等数据，如果把这个 Container 删除了，那么表数据也会随之被删除，这种是不安全的，所以想保留这些数据，此时就会使用到 Data Volume
+      Data Volume
+有些容器本身会产生一些数据，如果我们不想这些数据随着 Container 的小时而丢失，想保证数据的安全，比如我们使用的数据库，启动一个数据库容器，数据据会有一些数据表等数据，如果把这个 Container 删除了，那么表数据也会随之被删除，这种是不安全的，所以想保留这些数据，此时就会使用到 Data Volume
 
 在 Dockerfile 中有个关键字 volume,可以通过这个关键字指定该容器中某个目录中产生的数据挂载到 Linux 主机的某个目录中，并且会创建一个叫 Docker Volume 的对象
 
@@ -33,8 +34,6 @@
 
 1
 
-
-sudo docke
     
     </summary>
     
