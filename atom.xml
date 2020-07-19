@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-07-12T03:33:47.505Z</updated>
+  <updated>2020-07-19T07:14:07.178Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>多机通信</title>
+    <link href="https://notes.xuepincat.com/2020/07/19/Docker-%E5%A4%9A%E6%9C%BA%E9%80%9A%E4%BF%A1/"/>
+    <id>https://notes.xuepincat.com/2020/07/19/Docker-%E5%A4%9A%E6%9C%BA%E9%80%9A%E4%BF%A1/</id>
+    <published>2020-07-19T01:51:33.000Z</published>
+    <updated>2020-07-19T07:14:07.178Z</updated>
+    
+    <summary type="html">
+    
+      比如有两个容器分别在两个不容的机器上，两个机器本身是可以通信的，docker 除了有 bridge,none,host 之外还有另外一种网络 Overlay,可以创建一个叫 Overlay 的网络，来基于这个网络实现多机器通信
+
+如果要实现多机器通信，还需要借助第三方分布式存储，比如创建了一个网络，图中左边部分，它的网段是 172.17.0.0, 掩码24位，如果在左边的机器创建一个容器，分配的地址是 172.17.0.2,然后要保证在右边机器上创建容器的时候 172.17.0.2 的地址不会被再用，比如会去分配一个 172.17.0.3,或者 172.17.0.4 之类的
+
+那右边的机器是怎
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
+    
+  </entry>
   
   <entry>
     <title>ES实战入门</title>
@@ -949,52 +974,6 @@ sudo docker network inspect none
 
 
 sudo 
-    
-    </summary>
-    
-    
-      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
-    
-    
-      <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>容器端口映射</title>
-    <link href="https://notes.xuepincat.com/2020/04/29/Docker-%E5%AE%B9%E5%99%A8%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84/"/>
-    <id>https://notes.xuepincat.com/2020/04/29/Docker-%E5%AE%B9%E5%99%A8%E7%AB%AF%E5%8F%A3%E6%98%A0%E5%B0%84/</id>
-    <published>2020-04-29T14:19:17.000Z</published>
-    <updated>2020-07-18T18:37:02.738Z</updated>
-    
-    <summary type="html">
-    
-      案例
-比如创建一个网站，那么服务肯定要能够被别人访问到，如在本地创建了一个Nginx的服务
-
-1
-
-
-sudo docker run --name web -d nginx
-
-
-
-
-这样就创建了 Nginx 的 Container，现在通过 docker 创建了 nginx 的 Server
-
-
-
-但是现在 Nginx 的服务还访问不了，如果想访问只能通过下面的方式访问
-
-1
-
-
-sudo docker exec -it web /bin/bash
-
-
-
-
-如果需要访问，就需要将服务暴露给外面，其实NGINX的网络空间 netowork namespace 是独立的，它有自己的IP地址，NGI
     
     </summary>
     

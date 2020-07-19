@@ -211,6 +211,98 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/07/20/3-MySQL%E5%8F%8C%E4%B8%BB%E7%83%AD%E5%A4%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/20/3-MySQL%E5%8F%8C%E4%B8%BB%E7%83%AD%E5%A4%87/" class="post-title-link" itemprop="url">3-MySQL双主热备</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-20 17:29:25" itemprop="dateCreated datePublished" datetime="2018-07-20T17:29:25+08:00">2018-07-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          解决问题
+解决问题
+ 1. Master挂掉不会影响业务
+
+对于现有架构只有一个Master，将来我们扩展多个Slave，但是现有Master挂掉就会影响现有架构业务，也就是Master挂掉，Slave写数据就不知道怎么写入数据了，而且Slave不知道监听哪台Master了，所以将来我们可以给Master备份另外一台Master，这样可以实现一个心跳感应。
+
+ 2. 心跳感应
+
+心跳感应就是其中一台Master挂掉我们可以立马切换到另一台Master
+
+场景
+假设我们现有一台Master和一台Slave，然后Master开启了它的binary log，Salve去监听binary log，监听
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/07/20/3-MySQL%E5%8F%8C%E4%B8%BB%E7%83%AD%E5%A4%87/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/07/20/CentOS-7-%E5%BC%80%E6%94%BE3306%E7%AB%AF%E5%8F%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1091,123 +1183,6 @@ public function actionBind()
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/03/02/06-%E7%AE%A1%E7%90%86%E5%91%98%E5%90%8E%E7%AB%AF%E9%A1%B5%E9%9D%A2%E6%90%AD%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/03/02/06-%E7%AE%A1%E7%90%86%E5%91%98%E5%90%8E%E7%AB%AF%E9%A1%B5%E9%9D%A2%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">06-管理员后端页面搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-03-02 10:44:13" itemprop="dateCreated datePublished" datetime="2018-03-02T10:44:13+08:00">2018-03-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%E2%80%94%E2%80%94%E5%BE%AE%E4%BF%A1%E5%9B%BE%E4%B9%A6%E5%95%86%E5%9F%8E/" itemprop="url" rel="index"><span itemprop="name">项目实战——微信图书商城</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          默认页面
-在 yii.book.shop/views 文件夹下创建 default 文件夹，并在 default 文件夹新建 index.php 文件，该文件就是默认的首页。
-
-![Book Shop](/images/book-shop/06/1.png)index.php页面代码
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-
-
-<!DOCTYPE html>
-<html><head><meta http-equiv="Content-Type" content="text/html;
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/03/02/06-%E7%AE%A1%E7%90%86%E5%91%98%E5%90%8E%E7%AB%AF%E9%A1%B5%E9%9D%A2%E6%90%AD%E5%BB%BA/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1279,7 +1254,7 @@ public function actionBind()
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">166</span>
+          <span class="site-state-item-count">167</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
