@@ -211,6 +211,90 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/07/19/Docker-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-Data-Volume/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/19/Docker-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-Data-Volume/" class="post-title-link" itemprop="url">数据持久化-Data Volume</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-07-19 16:01:02 / Modified: 17:42:08" itemprop="dateCreated datePublished" datetime="2020-07-19T16:01:02+08:00">2020-07-19</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          有些容器本身会产生一些数据，如果我们不想这些数据随着 Container 的小时而丢失，想保证数据的安全，比如我们使用的数据库，启动一个数据库容器，数据据会有一些数据表等数据，如果把这个 Container 删除了，那么表数据也会随之被删除，这种是不安全的，所以想保留这些数据，此时就会使用到 Data Volume
+
+在 Dockerfile 中有个关键字 volume,可以通过这个关键字指定该容器中某个目录中产生的数据挂载到 Linux 主机的某个目录中，并且会创建一个叫 Docker Volume 的对象
+
+ * 创建一个 MySQL 的 Container
+
+1
+
+
+sudo docke
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/19/Docker-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96-Data-Volume/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/07/19/Docker-%E5%A4%9A%E6%9C%BA%E9%80%9A%E4%BF%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1181,99 +1265,6 @@ brew tap exolnet/homebrew-deprecated
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/06/13/Mac%E5%AE%89%E8%A3%85Homebrew%E5%B9%B6%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/13/Mac%E5%AE%89%E8%A3%85Homebrew%E5%B9%B6%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/" class="post-title-link" itemprop="url">Mac安装Homebrew并更换国内镜像源</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2020-06-13 07:38:14" itemprop="dateCreated datePublished" datetime="2020-06-13T07:38:14+08:00">2020-06-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Mac/" itemprop="url" rel="index"><span itemprop="name">Mac</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          什么是Homebrew?
-Homebrew 是 mac 的包管理工具，相当于Redhat Linux(Centos/RHEL/Fedora)的 yum 或者Debian Linux(Debian/Ubuntu)的 apt-get ，使用Homebrew能非常方便的下载需要的软件包，比如安装php，直接执行以下语句即可安装：
-
-1
-
-
-brew install php
-
-
-注意：它虽然叫Homebrew，但实际使用的时候，命令是 brew 。
-怎样安装Homebrew
-执行以下命令即可，如果很慢或中断，请开科学上网工具并开启全局模式：
-/usr/bin/ruby -e “$(curl -fsSL
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/13/Mac%E5%AE%89%E8%A3%85Homebrew%E5%B9%B6%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1345,7 +1336,7 @@ brew install php
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">167</span>
+          <span class="site-state-item-count">168</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

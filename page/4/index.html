@@ -211,6 +211,109 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/09/21/input-%E6%8F%92%E4%BB%B6%E8%AF%A6%E8%A7%A3%E5%8F%8Aglob%E8%AE%B2%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/21/input-%E6%8F%92%E4%BB%B6%E8%AF%A6%E8%A7%A3%E5%8F%8Aglob%E8%AE%B2%E8%A7%A3/" class="post-title-link" itemprop="url">input 插件详解及glob讲解</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-21 15:53:53" itemprop="dateCreated datePublished" datetime="2019-09-21T15:53:53+08:00">2019-09-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-06-27 22:09:34" itemprop="dateModified" datetime="2020-06-27T22:09:34+08:00">2020-06-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Logstash/" itemprop="url" rel="index"><span itemprop="name">Logstash</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          Input Plugin
+ * input 插件指定数据源，一个 pipeline 可以有多个 input 插件，常用有下面几个插件
+
+ 1. stdin
+    
+    
+ 2. file
+    
+    
+ 3. kafka
+    
+    stdin
+    最简单的输入，从标准输入读取数据，通用配置为：
+    
+    
+
+ * codec 类型为 codec
+
+logstash 会去检查我们输入的字符串是否存在 codec ,如果不存在就会认为配置是有问题的
+
+ * type 类型为 string , 自定义该事件的类型，可用于后续判断
+
+比如 web 日志的可以打上 web
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/09/21/input-%E6%8F%92%E4%BB%B6%E8%AF%A6%E8%A7%A3%E5%8F%8Aglob%E8%AE%B2%E8%A7%A3/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/09/18/Logstash%E5%85%A5%E9%97%A8%E5%8F%8A%E6%9E%B6%E6%9E%84%E7%AE%80%E4%BB%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1146,97 +1249,6 @@ sudo gpasswd -a vagrant docker
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/19/5-Docker-Image%E6%A6%82%E8%BF%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/19/5-Docker-Image%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">Docker Image概述</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-05-19 09:46:13" itemprop="dateCreated datePublished" datetime="2019-05-19T09:46:13+08:00">2019-05-19</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          什么是Image
- * Image 是 文件 和 meta data 的集合 (root filesystem)
-   
-    这里的文件其实就是 root filesystem
-   
-   
- * 分层的，并且每一层都可以添加改变删除文件，称为一个新的image
-   
-    对于Linux系统可以分为内核空间和用户空间，内核空间就是Linux Kernel,称之为 bootfs ,用户空间就是在 bootfs 上面去做的各种Linux发行版，如Ubuntu，CentOS，Debain
-   
-    Docker里面Image也是分层的，并且每一层都可以添修改或者删除文件，使之称为一
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/05/19/5-Docker-Image%E6%A6%82%E8%BF%B0/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1308,7 +1320,7 @@ sudo gpasswd -a vagrant docker
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">167</span>
+          <span class="site-state-item-count">168</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
