@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-07-19T15:00:23.480Z</updated>
+  <updated>2020-07-20T17:00:24.153Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,52 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>项目部署</title>
+    <link href="https://notes.xuepincat.com/2020/07/20/Docker-%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/"/>
+    <id>https://notes.xuepincat.com/2020/07/20/Docker-%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</id>
+    <published>2020-07-20T13:51:11.000Z</published>
+    <updated>2020-07-20T17:00:24.153Z</updated>
+    
+    <summary type="html">
+    
+      Bind Mount 实时更新
+通过Dockerfile将一个flask的application构建成docker image
+
+Dockerfile
+
+1
+2
+3
+4
+5
+6
+7
+8
+
+
+FROM python:2.7
+LABEL maintainer=&quot;Finnley&lt;mingmin.yuen@gmail.com&gt;&quot;
+
+COPY . /skeleton
+WORKDIR /skeleton
+RUN pip install -r requirements.txt
+EXPOSE 5000
+ENTRYPOINT [&quot;scripts/dev.sh&quot;]
+
+
+COPY . /skeleton: 将当前目
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
+    
+  </entry>
   
   <entry>
     <title>数据持久化</title>
@@ -910,58 +956,6 @@ array
       <category term="Python" scheme="https://notes.xuepincat.com/tags/Python/"/>
     
       <category term="Numpy" scheme="https://notes.xuepincat.com/tags/Numpy/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>多容器部署应用</title>
-    <link href="https://notes.xuepincat.com/2020/05/06/Docker-%E5%A4%9A%E5%AE%B9%E5%99%A8%E9%83%A8%E7%BD%B2%E5%BA%94%E7%94%A8/"/>
-    <id>https://notes.xuepincat.com/2020/05/06/Docker-%E5%A4%9A%E5%AE%B9%E5%99%A8%E9%83%A8%E7%BD%B2%E5%BA%94%E7%94%A8/</id>
-    <published>2020-05-06T15:45:55.000Z</published>
-    <updated>2020-07-18T19:57:11.169Z</updated>
-    
-    <summary type="html">
-    
-      * 背景
-
-有个项目叫 flask-redis ,里面有个 hello 函数，该作用是当访问该 url 时，redis中会有个key,这个key每次都是会增加的，比如第一次访问的时候值就是1，并且会返回一句话，第二次访问的时候key的值会自动加1
-
-app.py 
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-
-
-from flask import Flask
-from redis import Redis
-import os
-import socket
-
-app = Flask(__name__)
-redis = Redis(host=os.envir
-    
-    </summary>
-    
-    
-      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
-    
-    
-      <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
     
   </entry>
   

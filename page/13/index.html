@@ -211,6 +211,93 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/03/04/08-%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/04/08-%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/" class="post-title-link" itemprop="url">08-业务代码优化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-03-04 23:07:30" itemprop="dateCreated datePublished" datetime="2018-03-04T23:07:30+08:00">2018-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%E2%80%94%E2%80%94%E5%BE%AE%E4%BF%A1%E5%9B%BE%E4%B9%A6%E5%95%86%E5%9F%8E/" itemprop="url" rel="index"><span itemprop="name">项目实战——微信图书商城</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          统一布局
+默认首页和错误页面统一布局优化
+所谓统一布局就是将所有相关页面共同的部分把它提取出来，减少了我们视图层的代码。比如我们常见的网站有共同的头部，尾部，只有中间的部分不同，这时候我就可以将头部和尾部进行统一布局，将中间差异的部分放到视图层中去实现。
+
+在 yii.book.shop/views 目录下有个 layouts 文件夹，我们所有的统一布局都是放在这个文件夹下的，虽然也是可以不用放在这个文件夹里面，但是Yii默认是放在这个文件夹下面的。
+
+![Book Shop](/images/book-shop/08/1.png)layouts 目录下有个 main.php 文件,我们将里面
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/03/04/08-%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/03/03/07-%E4%BC%9A%E5%91%98%E7%AB%AF%E9%A1%B5%E9%9D%A2%E6%90%AD%E5%BB%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1133,115 +1220,6 @@ php compo
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/01/22/WAMP%E4%B8%8BApache%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/01/22/WAMP%E4%B8%8BApache%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA/" class="post-title-link" itemprop="url">WAMP下Apache配置虚拟主机</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-01-22 14:30:08" itemprop="dateCreated datePublished" datetime="2018-01-22T14:30:08+08:00">2018-01-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          配置 httpd-vhosts.conf 文件
-httpd-vhosts.conf在 D:\wamp64\bin\apache\apache2.4.27\conf\extra 目录下。
-
-
-
-在下面输入下面代码
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-
-
-# local.f.com
-<VirtualHost *:80>
-    ServerName local.f.com
-    DocumentRoot f:/www/
-    <Directory "f:/www//">
-        Require all granted
-        Allow from al
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/01/22/WAMP%E4%B8%8BApache%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1313,7 +1291,7 @@ httpd-vhosts.conf在 D:\wamp64\bin\apache\apache2.4.27\conf\extra 目录下。
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">168</span>
+          <span class="site-state-item-count">169</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
