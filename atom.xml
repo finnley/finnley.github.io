@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-07-20T17:00:24.153Z</updated>
+  <updated>2020-07-22T23:15:57.252Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -17,11 +17,43 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Compose介绍</title>
+    <link href="https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/"/>
+    <id>https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/</id>
+    <published>2020-07-21T17:26:28.000Z</published>
+    <updated>2020-07-22T23:15:57.252Z</updated>
+    
+    <summary type="html">
+    
+      背景
+如果一个 APP 有多个容器组成，去部署的时候会非常繁琐，需要去维护多个 Docker Image,要从 Dockerfile build image 或者 Dockerhub 拉取 image
+
+另外需要创建多个 Container,而且每个 Container 的配置还不一样
+
+还要去管理这些 Container,比如它们的启动停止删除等
+
+所以就想有没有可以批处理的工具，这种情况就需要使用个 Docker Compose
+
+比如可以定义一个文件，在文件中定义 Application 需要的一些 Container,这些定好后使用一条命令就可以完成这些个容器的启动停止删除等操作
+
+D
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
     <title>项目部署</title>
     <link href="https://notes.xuepincat.com/2020/07/20/Docker-%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/"/>
     <id>https://notes.xuepincat.com/2020/07/20/Docker-%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</id>
     <published>2020-07-20T13:51:11.000Z</published>
-    <updated>2020-07-20T17:00:24.153Z</updated>
+    <updated>2020-07-21T14:23:27.284Z</updated>
     
     <summary type="html">
     
@@ -885,77 +917,6 @@ GET test_index/_mapping
     
     
       <category term="Elasticsearch" scheme="https://notes.xuepincat.com/tags/Elasticsearch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Numpy入门</title>
-    <link href="https://notes.xuepincat.com/2020/05/07/1-Numpy%E5%85%A5%E9%97%A8/"/>
-    <id>https://notes.xuepincat.com/2020/05/07/1-Numpy%E5%85%A5%E9%97%A8/</id>
-    <published>2020-05-07T13:16:20.000Z</published>
-    <updated>2020-05-23T23:14:19.274Z</updated>
-    
-    <summary type="html">
-    
-      Array 的创建与访问
-create from python list
-创建一个一维数组
-
-1
-2
-3
-4
-5
-6
-7
-8
-
-
-import numpy as np
-
-# create from python list
-list_1 = [1, 2, 3, 4]
-list_1
-
-array_1 = np.array(list_1)
-array_1
-
-
-
-
-创建一个二维数组
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-
-
-import numpy as np
-
-# create from python list
-list_1 = [1, 2, 3, 4]
-list_1
-
-array
-    
-    </summary>
-    
-    
-      <category term="数据分析" scheme="https://notes.xuepincat.com/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
-    
-    
-      <category term="Python" scheme="https://notes.xuepincat.com/tags/Python/"/>
-    
-      <category term="Numpy" scheme="https://notes.xuepincat.com/tags/Numpy/"/>
     
   </entry>
   

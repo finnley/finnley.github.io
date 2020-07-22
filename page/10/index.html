@@ -211,6 +211,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/10/07/1-%E5%88%9D%E8%AF%86Token/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/07/1-%E5%88%9D%E8%AF%86Token/" class="post-title-link" itemprop="url">1-初识Token</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-07 02:48:50" itemprop="dateCreated datePublished" datetime="2018-10-07T02:48:50+08:00">2018-10-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BE%AE%E4%BF%A1/" itemprop="url" rel="index"><span itemprop="name">微信</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          作用
+在开发一些接口中如广告位banner接口,商品product接口等，这些接口都没有做权限的控制，换句话说任何人都可以访问这些接口，只要知道接口的路由地址，所有人都可以访问和调用这些接口。这些接口是可以公开访问的，但是也有些接口是不能公开访问的。
+
+在API中并不存在用户登录的概念，我们可以用令牌来管理用户的身份，也就是将传统网站的用户登录的概念转换成用户来获取一个令牌，这个令牌用来代表用户的身份，并且这个身份还是分级别的，比如有些级别是管理员级别的，有些级别是普通用户界别的，虽然都类似于用户输入了账户和密码，但是在理解和概念上不一样的。
+
+用户在每次调用接口的时候都会携带所获取的令牌，如
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/10/07/1-%E5%88%9D%E8%AF%86Token/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/27/%E8%85%BE%E8%AE%AF%E4%BA%91%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1078,127 +1164,6 @@ enabled=1
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/09/Ubuntu%E9%85%8D%E5%90%88Vultr%E6%90%AD%E5%BB%BAShadowsocks/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/09/09/Ubuntu%E9%85%8D%E5%90%88Vultr%E6%90%AD%E5%BB%BAShadowsocks/" class="post-title-link" itemprop="url">Ubuntu配合Vultr搭建Shadowsocks</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-09-09 00:31:12" itemprop="dateCreated datePublished" datetime="2018-09-09T00:31:12+08:00">2018-09-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Ubuntu/" itemprop="url" rel="index"><span itemprop="name">Ubuntu</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          环境安装
-1
-2
-3
-
-
-sudo apt-get update
-sudo apt-get install -y python-pip python-setuptools m2crypto
-pip install shadowsocks
-
-
-![](/images/shadowsocks/1.png)最后一行安装 shadowsocks 时候可能会警告提示，不用理会，只要最后一行有shadowsocks2.8.2（目前最新版本）出现就ok了
-
-配置
-1
-
-
-nano ss.sh
-
-
-复制下面的脚本代码
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/09/09/Ubuntu%E9%85%8D%E5%90%88Vultr%E6%90%AD%E5%BB%BAShadowsocks/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1270,7 +1235,7 @@ nano ss.sh
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">169</span>
+          <span class="site-state-item-count">170</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -211,6 +211,99 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/03/05/09-%E4%BD%BF%E7%94%A8Cookie%E5%AE%9E%E7%8E%B0%E7%AE%A1%E7%90%86%E5%91%98%E7%99%BB%E5%BD%95%E9%80%80%E5%87%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/05/09-%E4%BD%BF%E7%94%A8Cookie%E5%AE%9E%E7%8E%B0%E7%AE%A1%E7%90%86%E5%91%98%E7%99%BB%E5%BD%95%E9%80%80%E5%87%BA/" class="post-title-link" itemprop="url">09-使用Cookie实现管理员登录退出</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-03-05 21:52:17" itemprop="dateCreated datePublished" datetime="2018-03-05T21:52:17+08:00">2018-03-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%E2%80%94%E2%80%94%E5%BE%AE%E4%BF%A1%E5%9B%BE%E4%B9%A6%E5%95%86%E5%9F%8E/" itemprop="url" rel="index"><span itemprop="name">项目实战——微信图书商城</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          登录功能
+前提
+首先将 UserController 控制器继承自 BaseWebController
+
+代码逻辑
+** 首先判断是否是 GET 请求还是 POST 请求
+** 如果是 GET 提请求就直接展示登录页面
+** 如果是 POST 请求则进行代码逻辑处理
+** 获取登录用户名 login_name 和 登录密码 login_pwd,并将他们保存到变量中
+** 对上一步中获取的参数进行基本的验证（只要是用书输入的信息我们都不要去相信它）
+例如：如果没有输入用户名和密码则提示输入正确的用户名和密码
+** 业务逻辑判断
+例如：从用户表中查找登录用户名这个字段等于输入的登录用户名这条记录是
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/03/05/09-%E4%BD%BF%E7%94%A8Cookie%E5%AE%9E%E7%8E%B0%E7%AE%A1%E7%90%86%E5%91%98%E7%99%BB%E5%BD%95%E9%80%80%E5%87%BA/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/03/04/08-%E4%B8%9A%E5%8A%A1%E4%BB%A3%E7%A0%81%E4%BC%98%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1128,98 +1221,6 @@ php compo
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/01/22/Composer%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/01/22/Composer%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">Composer安装教程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-01-22 15:00:52" itemprop="dateCreated datePublished" datetime="2018-01-22T15:00:52+08:00">2018-01-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          下载 ** Composer **
-![composer](/images/blog/php/composer/1.png)双击开始安装
-
-![composer](/images/blog/php/composer/2.png)Next
-
-![composer](/images/blog/php/composer/3.png)Next
-
-![composer](/images/blog/php/composer/4.png)Next
-
-![composer](/images/blog/php/composer/5.png)Next
-
-![composer](/images/blog/php/c
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/01/22/Composer%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1291,7 +1292,7 @@ php compo
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">169</span>
+          <span class="site-state-item-count">170</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
