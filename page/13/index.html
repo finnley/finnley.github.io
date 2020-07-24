@@ -211,6 +211,95 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/03/06/10-%E4%BF%A1%E6%81%AF%E7%BC%96%E8%BE%91%E5%92%8C%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/06/10-%E4%BF%A1%E6%81%AF%E7%BC%96%E8%BE%91%E5%92%8C%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9/" class="post-title-link" itemprop="url">10-信息编辑和密码修改</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-03-06 16:47:47" itemprop="dateCreated datePublished" datetime="2018-03-06T16:47:47+08:00">2018-03-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%E2%80%94%E2%80%94%E5%BE%AE%E4%BF%A1%E5%9B%BE%E4%B9%A6%E5%95%86%E5%9F%8E/" itemprop="url" rel="index"><span itemprop="name">项目实战——微信图书商城</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          展示信息使用的是 GET 方法，点击保存按钮修改信息使用的是 POST 方法。
+
+代码业务逻辑
+
+** 首先判断是否是GET请求，如果是GET请求则直接页面展示，如果不是则进行编辑业务逻辑处理。
+
+** 在修改信息的时候，页面会默认将用户的信息展示出来，所以在展示页面的业务代码中还需要将用户信息展示出来，系获取当前登陆人的信息。
+
+1. 我们在 `BaseController.php` 前面定义一个成员变量 `public $current_user = null;` ,用于展示当前登录人信息，然后再检查登录态的方法里面对这个成员变量进行赋值 `$this -> current_user = 
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/03/06/10-%E4%BF%A1%E6%81%AF%E7%BC%96%E8%BE%91%E5%92%8C%E5%AF%86%E7%A0%81%E4%BF%AE%E6%94%B9/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/03/05/09-%E4%BD%BF%E7%94%A8Cookie%E5%AE%9E%E7%8E%B0%E7%AE%A1%E7%90%86%E5%91%98%E7%99%BB%E5%BD%95%E9%80%80%E5%87%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1115,116 +1204,10 @@ composer create-project --prefer-dist --stability=dev yiisoft/yii2-app-basic yii
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/02/11/%E4%BD%BF%E7%94%A8Composer%E5%AE%89%E8%A3%85Yii%E6%A1%86%E6%9E%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/02/11/%E4%BD%BF%E7%94%A8Composer%E5%AE%89%E8%A3%85Yii%E6%A1%86%E6%9E%B6/" class="post-title-link" itemprop="url">使用Composer安装Yii框架</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-02-11 16:08:59" itemprop="dateCreated datePublished" datetime="2018-02-11T16:08:59+08:00">2018-02-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          1
-2
-3
-4
-5
-6
-7
-8
-
-
-## 安装Composer
-# curl -sS http://install.phpcomposer.com/installer | php
-
-## 安装插件 按爪滚全局插件
-# php composer.phar global require "fxp/composer-asset-plugin:~1.1.1"
-
-## 安装框架
-# php composer.phar create-project --prefer yiisoft/yii2-app-basic basic 2.0.7
-
-
-有时候会输入下面语句会出现下面的错误
-
-1
-
-
-php compo
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/02/11/%E4%BD%BF%E7%94%A8Composer%E5%AE%89%E8%A3%85Yii%E6%A1%86%E6%9E%B6/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/12/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/">14</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/14/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1292,7 +1275,7 @@ php compo
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">170</span>
+          <span class="site-state-item-count">171</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -40,8 +40,9 @@
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/cases/23.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/cases/24.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/cases/25.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/cases/architecture.png">
 <meta property="article:published_time" content="2020-07-20T13:51:11.000Z">
-<meta property="article:modified_time" content="2020-07-22T23:56:54.342Z">
+<meta property="article:modified_time" content="2020-07-23T15:45:32.708Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
@@ -258,7 +259,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-23 07:56:54" itemprop="dateModified" datetime="2020-07-23T07:56:54+08:00">2020-07-23</time>
+                <time title="Modified: 2020-07-23 23:45:32" itemprop="dateModified" datetime="2020-07-23T23:45:32+08:00">2020-07-23</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -363,6 +364,31 @@
 <p>设置信息后就看到下面页面了</p>
 <p><img src="https://images.notes.xuepincat.com/docker/cases/25.png" alt=""></p>
 <p>到这里 docker 搭建的 wordpress 就部署完成了</p>
+<h2 id="部署投票系统"><a href="#部署投票系统" class="headerlink" title="部署投票系统"></a>部署投票系统</h2><ol>
+<li>项目介绍</li>
+</ol>
+<p><img src="https://images.notes.xuepincat.com/docker/cases/architecture.png" alt=""></p>
+<p>部署的 Application 分为5个模块，有两个模块是 web application,需要暴露给外部访问的web应用，一个是 Voting App,用于用户投票使用，一个是 Result APP,用于投票结果显示。</p>
+<p>Voting App 连接的是 Redis 缓存，因为 Voting App 访问量很大，对于访问量很大的投票需要先将投票结果写入到缓存中，后面有个 Java Worker 去取结果再将结果写到数据库中。</p>
+<p>Result App 直接去数据库中获取最新的投票结果。</p>
+<p>Result App  是一个 JavaScript 项目，Voting App 是一个 Python Flask 项目，Java Worker 是一个 Java 项目</p>
+<ol start="2">
+<li>docker-compose.yml</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  voting-app:</span><br><span class="line">    build: .&#x2F;voting-app&#x2F;.</span><br><span class="line">    volumes:</span><br><span class="line">     - .&#x2F;voting-app:&#x2F;app</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;5000:80&quot;</span><br><span class="line">    links:</span><br><span class="line">      - redis</span><br><span class="line">    networks:</span><br><span class="line">      - front-tier</span><br><span class="line">      - back-tier</span><br><span class="line"></span><br><span class="line">  result-app:</span><br><span class="line">    build: .&#x2F;result-app&#x2F;.</span><br><span class="line">    volumes:</span><br><span class="line">      - .&#x2F;result-app:&#x2F;app</span><br><span class="line">    ports:</span><br><span class="line">      - &quot;5001:80&quot;</span><br><span class="line">    links:</span><br><span class="line">      - db</span><br><span class="line">    networks:</span><br><span class="line">      - front-tier</span><br><span class="line">      - back-tier</span><br><span class="line"></span><br><span class="line">  worker:</span><br><span class="line">    build: .&#x2F;worker</span><br><span class="line">    links:</span><br><span class="line">      - db</span><br><span class="line">      - redis</span><br><span class="line">    networks:</span><br><span class="line">      - back-tier</span><br><span class="line"></span><br><span class="line">  redis:</span><br><span class="line">    image: redis</span><br><span class="line">    ports: [&quot;6379&quot;]</span><br><span class="line">    networks:</span><br><span class="line">      - back-tier</span><br><span class="line"></span><br><span class="line">  db:</span><br><span class="line">    image: postgres:9.4</span><br><span class="line">    volumes:</span><br><span class="line">      - &quot;db-data:&#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data&quot;</span><br><span class="line">    networks:</span><br><span class="line">      - back-tier</span><br><span class="line"></span><br><span class="line">volumes:</span><br><span class="line">  db-data:</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  front-tier:</span><br><span class="line">  back-tier:</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>启动</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>访问测试</li>
+</ol>
+<p>投票</p>
+<p><code>127.0.0.1:5000</code></p>
+<p>结果</p>
+<p><code>127.0.0.1:5001</code></p>
 
     </div>
 
@@ -475,7 +501,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bind-Mount-实时更新"><span class="nav-number">1.</span> <span class="nav-text">Bind Mount 实时更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署-wordpress"><span class="nav-number">2.</span> <span class="nav-text">部署 wordpress</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bind-Mount-实时更新"><span class="nav-number">1.</span> <span class="nav-text">Bind Mount 实时更新</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署-wordpress"><span class="nav-number">2.</span> <span class="nav-text">部署 wordpress</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署投票系统"><span class="nav-number">3.</span> <span class="nav-text">部署投票系统</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -491,7 +517,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">170</span>
+          <span class="site-state-item-count">171</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

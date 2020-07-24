@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-07-23T00:09:58.545Z</updated>
+  <updated>2020-07-24T17:35:47.454Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -17,11 +17,47 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>容器编排 Swarm</title>
+    <link href="https://notes.xuepincat.com/2020/07/24/Docker-%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92-Swarm/"/>
+    <id>https://notes.xuepincat.com/2020/07/24/Docker-%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92-Swarm/</id>
+    <published>2020-07-23T16:09:23.000Z</published>
+    <updated>2020-07-24T17:35:47.454Z</updated>
+    
+    <summary type="html">
+    
+      背景
+实际生产环境比较复杂，有可能部署在一台机器上根本无法满足实际需求，可能包含的容器比较多，在生产环境中遇到的情况比如在集群中部署应用，就会涉及到非常多的容器，从而也会给我们带来一些问题
+
+ * 怎么去管理这么多容器？
+ * 需要增加容器，怎么能方便的横向扩展？
+ * 如果容器 down 了，怎么能自动恢复？
+ * 如何去更新容器而不影响业务？
+ * 如何去监控追踪容易的健康状态？
+ * 怎么去调度容器，可能涉及到很多集群，可能这台机器资源比较紧张，另外机器资源比较充足？
+ * 如何保护隐私数据？
+
+Swarm 是内置于 Docker 的编排工具，容器编排工具并不只有 Swarm
+
+架构
+
+
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Compose介绍</title>
     <link href="https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/"/>
     <id>https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/</id>
     <published>2020-07-21T17:26:28.000Z</published>
-    <updated>2020-07-23T00:09:58.545Z</updated>
+    <updated>2020-07-23T15:46:49.938Z</updated>
     
     <summary type="html">
     
@@ -53,7 +89,7 @@ D
     <link href="https://notes.xuepincat.com/2020/07/20/Docker-%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/"/>
     <id>https://notes.xuepincat.com/2020/07/20/Docker-%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</id>
     <published>2020-07-20T13:51:11.000Z</published>
-    <updated>2020-07-22T23:56:54.342Z</updated>
+    <updated>2020-07-23T15:45:32.708Z</updated>
     
     <summary type="html">
     
@@ -883,40 +919,6 @@ GET test_index/_mapping
     
     
       <category term="爬虫" scheme="https://notes.xuepincat.com/tags/%E7%88%AC%E8%99%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Elasticsearch入门</title>
-    <link href="https://notes.xuepincat.com/2020/05/18/1-Elasticsearch%E5%85%A5%E9%97%A8/"/>
-    <id>https://notes.xuepincat.com/2020/05/18/1-Elasticsearch%E5%85%A5%E9%97%A8/</id>
-    <published>2020-05-18T15:00:38.000Z</published>
-    <updated>2020-05-23T23:14:19.269Z</updated>
-    
-    <summary type="html">
-    
-      常用术语
- * 文档 Document
-
-用户存储在 es 中的数据文档，是es中存储的最小数据单元，相当于MYSQL表中的一行数据
-
- * 索引 Index
-
-由具有相同字段的文档列表组成，一个文档的集合，在MYSQL中对应的是一个Table
-
-可能之前会将Index对比成数据库中的Database,原因是Index下有不同的Type即不同的类型，但是在6.0之后官方已经不允许在一个 Index 下创建多个 Type 了，也就是说一个 Index 只有一个 Type,并且在未来的大版本中将 Type 的概念去掉，所以将Index类比成Database已经不合适了
-
- * 节点 Node
-
-一
-    
-    </summary>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/categories/Elasticsearch/"/>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/tags/Elasticsearch/"/>
     
   </entry>
   
