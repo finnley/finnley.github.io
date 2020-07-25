@@ -211,6 +211,112 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/03/11-%E5%B7%A5%E4%BD%9C%E5%89%AF%E6%9C%AC%E8%BF%98%E5%8E%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/07/03/11-%E5%B7%A5%E4%BD%9C%E5%89%AF%E6%9C%AC%E8%BF%98%E5%8E%9F/" class="post-title-link" itemprop="url">11-工作副本还原</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-03 13:00:52" itemprop="dateCreated datePublished" datetime="2017-07-03T13:00:52+08:00">2017-07-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          相当于SVN版本的”CTRL+Z”,比如说我更新了工作副本之后，进行了项目文件的编辑，添加删除修改了一些操作，还没来得及提交，则时候接到通知，说要该需求了，被修改的内容都不需要提交到服务端了，接下来就不要还原工作副本了，把当前工作副本中的内容还原成最后一次更新得到的版本，命令如下：
+
+1
+
+
+svn revert [--recursice] [filename|*]
+
+
+主要内容是还原单个文件和批量还原目录下的所有更改。
+
+比如现在修改index.html
+修改前：
+
+
+
+修改后：
+
+
+
+然后在修改下about.html
+修改前是空白内容
+修改后：
+
+
+在修改js/app.js文件
+修改前也是
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/07/03/11-%E5%B7%A5%E4%BD%9C%E5%89%AF%E6%9C%AC%E8%BF%98%E5%8E%9F/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/02/10-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%BA%8C)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1096,134 +1202,6 @@ $ sudo apt-get install subversion
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/24/Ubuntu-16-04-%E6%90%AD%E5%BB%BANodeJs%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/24/Ubuntu-16-04-%E6%90%AD%E5%BB%BANodeJs%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">Ubuntu 16.04 搭建NodeJs环境</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-24 17:40:07" itemprop="dateCreated datePublished" datetime="2017-06-24T17:40:07+08:00">2017-06-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Ubuntu/" itemprop="url" rel="index"><span itemprop="name">Ubuntu</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          1.下载文件
-到官网上看了一下，最新版本的node是v6.11.0的。
-
-
-
-安装包，我放在/opt目录下
-
-
-
-2.解压文件
-1
-
-
-$ sudo tar xvf node-v6.11.0-linux-x64.tar.xz
-
-
-
-
-解压完之后得到了这样的文件夹。
-
-
-
-3.对文件夹重命名
-1
-
-
-$ sudo mv node-v6.11.0-linux-x64 node
-
-
-
-
-给该文件夹赋予相应的权限
-
-1
-
-
-$ sudo chmod 777 /opt/node -R
-
-
-
-
-4.安装nodejs和npm
-安装nodejs：
-
-1
-
-
-$ sudo ln -s /opt/node/bin
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/24/Ubuntu-16-04-%E6%90%AD%E5%BB%BANodeJs%E7%8E%AF%E5%A2%83/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1295,7 +1273,7 @@ $ sudo ln -s /opt/node/bin
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">171</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-07-24T17:35:47.454Z</updated>
+  <updated>2020-07-25T03:50:27.970Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,38 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Docker-集群通过service部署wordpress</title>
+    <link href="https://notes.xuepincat.com/2020/07/25/Docker-swarm%E9%9B%86%E7%BE%A4%E9%80%9A%E8%BF%87service%E9%83%A8%E7%BD%B2wordpress/"/>
+    <id>https://notes.xuepincat.com/2020/07/25/Docker-swarm%E9%9B%86%E7%BE%A4%E9%80%9A%E8%BF%87service%E9%83%A8%E7%BD%B2wordpress/</id>
+    <published>2020-07-25T02:00:14.000Z</published>
+    <updated>2020-07-25T03:50:27.970Z</updated>
+    
+    <summary type="html">
+    
+      在 swarm 里面创建 service 的时候，service 是创建在哪个节点上是不知道的，比如创建两个service,一个 wordpress 的 service,一个 mysql 的 service,这两个 servie 需要通信，这个两个容器有可能不在docker的节点上，那它们如何去通信呢？
+
+可以通过 overlay 的方式让两个容器都连接到 overlay 的网络上，这样不管它们是否在同一台机器上，这两个容器都是可以相互通信的
+
+ 1. 创建 overlay 的 network
+
+在swarm-manager节点上创建overlay的网络driver,名字叫demo
+
+1
+
+
+
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
+    
+  </entry>
   
   <entry>
     <title>容器编排 Swarm</title>
@@ -880,45 +912,6 @@ GET test_index/_mapping
     
     
       <category term="Elasticsearch" scheme="https://notes.xuepincat.com/tags/Elasticsearch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>爬虫入门-计算机网络知识点回顾</title>
-    <link href="https://notes.xuepincat.com/2020/05/20/%E7%88%AC%E8%99%AB%E5%85%A5%E9%97%A8-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
-    <id>https://notes.xuepincat.com/2020/05/20/%E7%88%AC%E8%99%AB%E5%85%A5%E9%97%A8-%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/</id>
-    <published>2020-05-20T14:02:14.000Z</published>
-    <updated>2020-05-23T23:14:19.324Z</updated>
-    
-    <summary type="html">
-    
-      为什么学爬虫需要了解计算机网络
- 1. 遇到问题可以懂得分析，可以迅速排查问题
-    
-    
- 2. 了解模拟登录原理（了解HTTP协议）
-    
-    
- 3. 反爬 （反爬其实也是基于一些协议制定的一些策略，当了解一些底层协议，那么反爬也就逃不过这些协议，有助于解决目标网站反爬问题）
-    
-    
- 4. 遇到非浏览器的客户端的数据
-    
-    
-
-什么是网络协议
- 1. 全球上百亿的联网设备连接在一起，两两通信，比如上海的一个网卡发送出去的数据，北京或者美国就能收到，而且两者根本不知道对方在哪里，这就很神奇？
-    
-    
- 2. 整个互联网的通信设备非常多，
-    
-    </summary>
-    
-    
-      <category term="爬虫" scheme="https://notes.xuepincat.com/categories/%E7%88%AC%E8%99%AB/"/>
-    
-    
-      <category term="爬虫" scheme="https://notes.xuepincat.com/tags/%E7%88%AC%E8%99%AB/"/>
     
   </entry>
   

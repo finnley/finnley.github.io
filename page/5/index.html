@@ -211,6 +211,102 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/" class="post-title-link" itemprop="url">Dockerfile语法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-26 13:29:37" itemprop="dateCreated datePublished" datetime="2019-05-26T13:29:37+08:00">2019-05-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          FROM
+尽量使用官方的image作为base image!
+
+ * FROM scratch #制作base image
+ * FROM centos #使用base image
+ * FROM ubuntu:16.04
+
+LABEL
+Metadata不可少，有点像代码中的注释
+
+ * LABEL maintainer=”email@example.com“
+ * LABEL version=”1.0”
+ * LABEL description=”This is description”
+
+RUN
+每运行一次run,对于image都会生成新的一层，所以对于run,为了美观,复杂的RUN请用反
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/25/8-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84-Docker-%E9%95%9C%E5%83%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1173,97 +1269,6 @@ ls
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/02/Vagrant%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/02/Vagrant%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">Vagrant搭建开发环境</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-05-02 11:01:55" itemprop="dateCreated datePublished" datetime="2019-05-02T11:01:55+08:00">2019-05-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-15 01:46:35" itemprop="dateModified" datetime="2020-07-15T01:46:35+08:00">2020-07-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vagrant/" itemprop="url" rel="index"><span itemprop="name">Vagrant</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          准备
- * 本地环境 Ubuntu18.04 LTS
- * 镜像 Ubuntu18.04.box
-
-步骤
-下载镜像
- 1. 比如我需要下载 ubuntu/bionic64 ，可以打开官网 https://app.vagrantup.com/ubuntu/boxes/bionic64 进行下载
-
-![vagrant](http://images.ornnth.com/hexo/vagrant/48.png)图中的 v20190501.0.0 就是可以下载的版本号
-
- 2. 点击上图进入版本详情页 https://app.vagrantup.com/ubuntu/boxes/bionic64/ve
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/05/02/Vagrant%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1335,7 +1340,7 @@ ls
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">171</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

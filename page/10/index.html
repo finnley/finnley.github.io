@@ -211,6 +211,96 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/10/13/%E4%B8%8B%E5%8D%95%E4%B8%8E%E6%94%AF%E4%BB%98%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/13/%E4%B8%8B%E5%8D%95%E4%B8%8E%E6%94%AF%E4%BB%98%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/" class="post-title-link" itemprop="url">下单与支付详细流程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-13 00:04:01" itemprop="dateCreated datePublished" datetime="2018-10-13T00:04:01+08:00">2018-10-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BE%AE%E4%BF%A1/" itemprop="url" rel="index"><span itemprop="name">微信</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          ![token](http://notes.ornnth.com/images/token/5.png) 1. 在小程序中用户选择了一组商品之后首先需要调用图中的下单接口，将相关的所请求的数据发送到服务器；
+    
+    
+ 2. 然后服务器API会去做库存检测；如果库存检测通过之后就会保存用户的订单，认为下单成功，并且将订单检测的相关信息返回给小程序；
+    
+    
+ 3. 小程序根据服务器下单的的库存检测的结果决定是否要发起支付，如果库存量通过，并且也没有出现其他的问题，那么小程序就认为下单成功了，就会调用API里面的支付接口（调用支付API）；
+    
+    
+ 4. 小程
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/10/13/%E4%B8%8B%E5%8D%95%E4%B8%8E%E6%94%AF%E4%BB%98%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/10/07/2-%E5%BE%AE%E4%BF%A1%E8%BA%AB%E4%BB%BD%E4%BD%93%E7%B3%BB%E8%AE%BE%E8%AE%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1028,128 +1118,6 @@ service docker restart
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/22/CentOS-7-%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/09/22/CentOS-7-%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">CentOS-7-搭建LNMP开发环境</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-09-22 11:06:10" itemprop="dateCreated datePublished" datetime="2018-09-22T11:06:10+08:00">2018-09-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          更新系统
-更新系统
-1
-
-
-yum update -y
-
-
-查看系统版本
-1
-2
-
-
-cat /etc/centos-release
-CentOS Linux release 7.5.1804 (Core)
-
-
-安装 Nginx
-配置 nginx 官方源
-安装 stable版
-
-1
-
-
-nano /etc/yum.repos.d/nginx.repo
-
-
-复制粘贴下面代码
-
-1
-2
-3
-4
-5
-
-
-[nginx]
-name=nginx repo
-baseurl=http://nginx.org/packages/centos/7/$basearch/
-gpgcheck=0
-enabled=1
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/09/22/CentOS-7-%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1221,7 +1189,7 @@ enabled=1
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">171</span>
+          <span class="site-state-item-count">172</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
