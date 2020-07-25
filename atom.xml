@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-07-25T03:50:27.970Z</updated>
+  <updated>2020-07-25T13:40:18.111Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>集群服务通信-Routing Mesh</title>
+    <link href="https://notes.xuepincat.com/2020/07/25/Docker-%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1-Routing-Mesh/"/>
+    <id>https://notes.xuepincat.com/2020/07/25/Docker-%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1-Routing-Mesh/</id>
+    <published>2020-07-25T04:41:57.000Z</published>
+    <updated>2020-07-25T13:40:18.111Z</updated>
+    
+    <summary type="html">
+    
+      有两个service,一个 mysql,一个wordpress,通过service的创建，将它们部署到了swarm cluster里面，这两个service位于不同的节点
+
+这个两个service之间是可以相互通信的，并且它们之间是可以通过service name进行通信，这里就涉及到DNS服务发现的概念
+
+
+
+通过 docker compose 部署 application的时候，application里面的service如果连接到了一个网络上，它们之间是可以通过 service name qu 相互访问的，这个底层是通过DNS服务实现的
+
+swarm 有内置一个DNS服务发现功能，在创建一
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
+    
+  </entry>
   
   <entry>
     <title>Docker-集群通过service部署wordpress</title>
@@ -863,47 +892,6 @@ GET test_index/_mapping
     &quot;mappings&quot;: {
       &quot;doc&quot;: {
         &quot;pr
-    
-    </summary>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/categories/Elasticsearch/"/>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/tags/Elasticsearch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>倒排索引与分词</title>
-    <link href="https://notes.xuepincat.com/2020/05/23/2-%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%88%86%E8%AF%8D/"/>
-    <id>https://notes.xuepincat.com/2020/05/23/2-%E5%80%92%E6%8E%92%E7%B4%A2%E5%BC%95%E4%B8%8E%E5%88%86%E8%AF%8D/</id>
-    <published>2020-05-23T06:29:51.000Z</published>
-    <updated>2020-05-31T06:02:57.253Z</updated>
-    
-    <summary type="html">
-    
-      目录与索引
-对于书本，一般都会有目录，它的作用就是可以快速让用户知道它在讲什么，并方便用户定位相看的内容，用户可以方便用户查看章节，还有指明章节的名称和页码
-
-如何快速查找一个关键词所在的页面？
-
-有些书还有可能会有索引，它会将一些关键词列举出来，列出它们在那一页出现，方便用户查找
-
-书与搜索引擎类似，目录页对应的正排索引，而索引页对应倒排索引
-
- * 正排索引
-
-可以通过文档ID获取到文档的内容，或者单词关联，这里的单词就是将文档分词之后每个分词的结果
-
-正排索引维护的是文档id到文档内容、单词的关联关系
-
- * 倒排索引
-
-维护的是单词到文档id的关联关系
-
-正排索引
-文档ID文档内容1e
     
     </summary>
     
