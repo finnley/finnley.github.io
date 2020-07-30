@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Docker Swarm Mode Architecture   Docker Swarm 分为 Manager 节点和 Worker 节点，Manager 节点主要是负责管理，位置 Cluster 的状态，并且对外提供接口，可以通过 Manager 节点部署 Application, Service 和 Stacks  Kubernetes Architecture   K8S 中类似 Mana">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker-Kubernetes入门">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/07/26/Docker-Kubernetes%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="Docker Swarm Mode Architecture   Docker Swarm 分为 Manager 节点和 Worker 节点，Manager 节点主要是负责管理，位置 Cluster 的状态，并且对外提供接口，可以通过 Manager 节点部署 Application, Service 和 Stacks  Kubernetes Architecture   K8S 中类似 Mana">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/1.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/2.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/3.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/4.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/5.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/6.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/8.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/9.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/10.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/11.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/12.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/13.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/14.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/15.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/16.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/17.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/18.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/19.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/20.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/22.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/23.png">
+<meta property="article:published_time" content="2020-07-26T02:38:15.000Z">
+<meta property="article:modified_time" content="2020-07-30T16:51:26.853Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="Docker Kubernetes">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/docker/k8s/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/07/26/Docker-Kubernetes%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Docker-Kubernetes入门 | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/07/26/Docker-Kubernetes%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Docker-Kubernetes入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-07-26 10:38:15" itemprop="dateCreated datePublished" datetime="2020-07-26T10:38:15+08:00">2020-07-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-31 00:51:26" itemprop="dateModified" datetime="2020-07-31T00:51:26+08:00">2020-07-31</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Docker-Swarm-Mode-Architecture"><a href="#Docker-Swarm-Mode-Architecture" class="headerlink" title="Docker Swarm Mode Architecture"></a>Docker Swarm Mode Architecture</h2><p><img src="https://images.notes.xuepincat.com/docker/k8s/1.png" alt=""></p>
+<p>Docker Swarm 分为 Manager 节点和 Worker 节点，Manager 节点主要是负责管理，位置 Cluster 的状态，并且对外提供接口，可以通过 Manager 节点部署 Application, Service 和 Stacks</p>
+<h2 id="Kubernetes-Architecture"><a href="#Kubernetes-Architecture" class="headerlink" title="Kubernetes Architecture"></a>Kubernetes Architecture</h2><p><img src="https://images.notes.xuepincat.com/docker/k8s/2.png" alt=""></p>
+<p>K8S 中类似 Manager 节点称为 Master 节点，Worker 节点称为 Node 节点，Master 节点对外会提供一些接口，可通过这些接口对集群进行一些操作，比如查看整个 Cluster 集群的整体状态，或者将 APP 通过 API 部署到集群中</p>
+<h4 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h4><p><img src="https://images.notes.xuepincat.com/docker/k8s/3.png" alt=""></p>
+<p>Master 可以算是一个 k8s 集群的大脑，它有个 API Server,它主要是暴露给外界访问的，用户可以使用 CLI 或者 UI 通过 API Server 与集群进行交互</p>
+<p>Scheduler 是一个调度模块，通过API下达一个命令比如部署应用，这个应用可能需要两个容器，这两个容器运行在哪个节点上，Scheduler 就会通过一些调度算法来决定容器运行在哪个节点</p>
+<p>Controller 主要做一些控制款里，比如容器要做一些负载均衡，做一些扩展，就可以通过 Controller 来控制</p>
+<p>etcd 作为底层的分布式 key-vaue Store 存储，主要存储 k8s 集群的状态和配置</p>
+<h4 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h4><p><img src="https://images.notes.xuepincat.com/docker/k8s/4.png" alt=""></p>
+<p>Node 里面有个非常重要的概念叫做 Pod, Pod 在 k8s 里面属于可以调度的最小单位，Pod 指的是具有相同的 Namespace 的一些 Container 组合, <code>具有相同的 Namespace</code> 是指所有的 Namespace,比如 User Namesapce, Network Namespace,尤其指 Network Namespace,这个容器可能有一个，也可能有多个，如果是多个，它们共享一个 Network Namespace</p>
+<p>最下面的几个模块，比如 Docker</p>
+<p>kubelet: Node 节点是受 Master 节点控制的，那么 Master 节点是如何控制 Node 节点的呢？比如要在 Node 节点上创建 Pod，以及如何创建 Pod 里面的 Container 和 Volume ，就可以通过 kubelet 来操作</p>
+<p>kube-proxy: k8s 总也有 service 的概念，如果 service 想要暴露一些端口给外界访问，就需要通过 kube-proxy 做端口的代理和转发，k8s 中 service 也可以做负载均衡，service 服务的发现和负载均衡也是通过 kube-proxy 实现的</p>
+<p>Fluentd: 主要负责日志的采集存储以及查询</p>
+<h2 id="使用-minikube-搭建单节点集群"><a href="#使用-minikube-搭建单节点集群" class="headerlink" title="使用 minikube 搭建单节点集群"></a>使用 minikube 搭建单节点集群</h2><ol>
+<li>本地 安装 minikube</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install minikube</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装 kubectl</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew instlall kubectl</span><br></pre></td></tr></table></figure>
+
+<p>or</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install kubernetes-cli</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>查看版本</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube version</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl version</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/5.png" alt=""></p>
+<ol start="4">
+<li>创建单节点 k8s 集群</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube start</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/6.png" alt=""></p>
+<ol start="5">
+<li>kubectl context</li>
+</ol>
+<p>kubectl 是一个 client 的 CLI,如要要连接 k8s 集群，k8s 集群提供了 API Server,CLI 如果要去连接 API Server,就必须要要有一些基本的配置信息，比如API地址，端口以及一些验证信息，我们可以将这些配置信息称为 context</p>
+<p>可以通过下面命令查看当前 config 基本信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl config view</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/8.png" alt=""></p>
+<p>可以看到 minikube 创建的 k8s 集群的 server 的地址和端口以及认证信息,以及 context 的名字叫 minikube </p>
+<p>可以通过下面命令查看 context</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl config get-contexts</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/9.png" alt=""></p>
+<p>可以看到有条叫 minikube 的 context, 还有一条是之前使用的记录，比如有两个集群，这里就可以有两个 context,本地可以使用同一个命令去使用不同的 context 去连接不同的 k8s 集群</p>
+<ol start="6">
+<li>查看 cluster 状态</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl cluster-info</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/10.png" alt=""></p>
+<ol start="7">
+<li>minikube ssh</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube ssh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/11.png" alt=""></p>
+<p>可以通过上面的命令进入到通过 minikube 创建的 VirtualBox 的虚机里面，在虚机里面可以执行一些命令，比如 <code>docker version</code></p>
+<h2 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h2><p>Pod 是 K8S 中最小调度单位,k8s中不对容器直接操作，因为 Pod 是最小单位</p>
+<p>Pod 和 Container 有什么关系呢？一个 Pod 中可以包含一个或者多个 Container</p>
+<p>Pod 又有着什么特性呢？</p>
+<p>一个 Pod 共享一个 Namespace,这个 Namespace 包含了用户，网络，存储等等，假如一个 Pod 中有两个容器，那么这两个容器共享一个 Network Namespace,它们俩之间的通信可以通过 localhost 进行通信，就像在本地一个 Namespace 中启动了两个进程，这个两个进程如果进行网络通信，可以直接 localhost</p>
+<ol>
+<li>创建一个名为 pod_nginx.yml 文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80</span><br></pre></td></tr></table></figure>
+
+<p>该文件定义了一个 pod 的 yml，里面是 k8s API 格式，通过该文件可以创建一个 k8s 资源（resource），资源的类型是 <code>Pod</code>, metadata 里面记录的是 pod 的名称和 label</p>
+<p>spec 里面定义了 Pod 中的容器，可以包含多个容器，上面只定义了一个 Container,这个 Container 的名字叫 nginx, image使用的是 nginx, 端口通过 ContainerPort 指定 nginx 暴露的端口为 80</p>
+<ol start="2">
+<li>根据 yml 文件创建 resource</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f pod_nginx.yml</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/12.png" alt=""></p>
+<ol start="3">
+<li>查看</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/13.png" alt=""></p>
+<p>可以看到有一个 nginx 的 pod 在后台运行，状态是 <code>Running</code>, READY 是 <code>1/1</code> 表示服务已经启动了</p>
+<p>nginx 是一个容器，首先一个 Pod，这个 Pod 里面跑了一个 Container,那么这个 Container 又是在哪里呢？</p>
+<p>可以通过下面命令显示 Pod 的详细信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -o wide</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/14.png" alt=""></p>
+<p>可以看到有 IP ，有 Node，是运行在 minikube 节点上的,IP 是 172.17.0.3，这个地址其实就是容器的地址</p>
+<ol start="4">
+<li>进入容器</li>
+</ol>
+<p>一种传统的方式是进入到 minikube 中，然后通过 docker 命令对容器进行操作</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube ssh</span><br></pre></td></tr></table></figure>
+
+<p>可通过 <code>docker ps</code> 看到一些运行中的 container，可以复制 Container 的ID，然后使用下面命令运行 shell 命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 38f7338627c2 sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/15.png" alt=""></p>
+<p>查看网络</p>
+<p>退出后查看下网络,此时是在 minikube 创建的虚机里面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network ls</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/16.png" alt=""></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network inspect bridge</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/17.png" alt=""></p>
+<p>里面可以看到有一个 endpoint, 名字是 <code>k8s_POD_nginx_default_ed73f69f-49a2-4f50-b55d-d7626af6a9f9_0</code>, 这就可以表示创建的 nginx 容器是连接到了 bridge 网络上面的，IP 地址就是上面使用 <code>kubectl get pods -o wide</code> 看到的IP地址</p>
+<p>除了上面的方法外，还可以通过下面的方式访问容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl exec -it nginx sh</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/18.png" alt=""></p>
+<p>其中 nginx 是 pod 的名称,因为 nginx 的 pod 只有一个容器，就可以使用 <code>kubectl exec -it [pod name]</code> 交互式的进入到 nginx 这个 Pod 里面的 <code>k8s_POD_nginx_default_ed73f69f-49a2-4f50-b55d-d7626af6a9f9_0</code> 这个容器</p>
+<p>如果一个 pod 中有多个容器呢？</p>
+<p>使用 <code>kubectl exec -it nginx sh</code> 默认进入的是第一个容器</p>
+<p>如果想进入第二个容器，可以通过 <code>kubectl exec -h</code> 命令帮助，可以看到 kubectl 支持的一些参数，比如 <code>-c</code>,就可以通过 <code>-c</code> 指定进入到哪个容器</p>
+<p>另外还有 <code>describe</code> 命令，可以具体描述一个resource，k8s 中 一个 pod 就是一个 resource,比如下面可以 describe nginx 这个 pod</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pods nginx</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/19.png" alt=""></p>
+<p>这样就可以打印出 nginx 这个 pod 的详细信息</p>
+<ol start="5">
+<li>网络</li>
+</ol>
+<p>上面的图中可以看到启动的nginx容器连接在 monikube 中的 docker 的 bridge 的网络上面，IP 地址是 <code>172.17.0.3</code>,当前处于 minikube 的虚机的外面，如果想要访问该地址需要先进入到虚机中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube ssh</span><br></pre></td></tr></table></figure>
+
+<p>看下能否ping通该地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping 172.17.0.3</span><br></pre></td></tr></table></figure>
+
+<p>发现是可 ping 通的，接着使用 curl 命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl 172.17.0.3</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/20.png" alt=""></p>
+<p>直接获取到了 NGINX 的 欢迎页面，现在在 minikube 中是可以访问到 nginx 的服务的，但是启动nginx服务的初中并不是让自己访问的，而是让外界可以访问到，下面打算将 nginx 的服务映射到外部接口上</p>
+<p>使用 <code>ip a</code> 查看下minikube 的地址是 <code>192.168.64.2</code>,使用 <code>exit</code> 退出 minikube 后这个地址在外面是可以访问的，可以在外面 Ping 下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ping 192.168.64.2</span><br></pre></td></tr></table></figure>
+
+<p>下面将NGINX服务映射到上面的地址上，将本地8080端口映射到pod中的容器的nginx80端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl port-forward nginx 8080:80</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/22.png" alt=""></p>
+<p>此时打开浏览器，输入 <code>127.0.0.1:8080</code> 回车后就会看到下面页面</p>
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/23.png" alt=""></p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Docker-Kubernetes/" rel="tag"># Docker Kubernetes</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/25/Docker-%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1-Routing-Mesh/" rel="prev" title="集群服务通信-Routing Mesh">
+      <i class="fa fa-chevron-left"></i> 集群服务通信-Routing Mesh
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Swarm-Mode-Architecture"><span class="nav-number">1.</span> <span class="nav-text">Docker Swarm Mode Architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kubernetes-Architecture"><span class="nav-number">2.</span> <span class="nav-text">Kubernetes Architecture</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Master"><span class="nav-number">2.0.1.</span> <span class="nav-text">Master</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node"><span class="nav-number">2.0.2.</span> <span class="nav-text">Node</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-minikube-搭建单节点集群"><span class="nav-number">3.</span> <span class="nav-text">使用 minikube 搭建单节点集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pod"><span class="nav-number">4.</span> <span class="nav-text">Pod</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">174</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

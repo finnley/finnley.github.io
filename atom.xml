@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-07-25T13:40:18.111Z</updated>
+  <updated>2020-07-30T16:51:26.853Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Docker-Kubernetes入门</title>
+    <link href="https://notes.xuepincat.com/2020/07/26/Docker-Kubernetes%E5%85%A5%E9%97%A8/"/>
+    <id>https://notes.xuepincat.com/2020/07/26/Docker-Kubernetes%E5%85%A5%E9%97%A8/</id>
+    <published>2020-07-26T02:38:15.000Z</published>
+    <updated>2020-07-30T16:51:26.853Z</updated>
+    
+    <summary type="html">
+    
+      Docker Swarm Mode Architecture
+
+
+Docker Swarm 分为 Manager 节点和 Worker 节点，Manager 节点主要是负责管理，位置 Cluster 的状态，并且对外提供接口，可以通过 Manager 节点部署 Application, Service 和 Stacks
+
+Kubernetes Architecture
+
+
+K8S 中类似 Manager 节点称为 Master 节点，Worker 节点称为 Node 节点，Master 节点对外会提供一些接口，可通过这些接口对集群进行一些操作，比如查看整个 Cluster 集群的整体状态，或者
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
+    
+    
+      <category term="Docker Kubernetes" scheme="https://notes.xuepincat.com/tags/Docker-Kubernetes/"/>
+    
+  </entry>
   
   <entry>
     <title>集群服务通信-Routing Mesh</title>
@@ -826,72 +855,6 @@ GET /my_index/_search?q=user:alfred
  2. Request Body Search
 
 es 提供的完备查
-    
-    </summary>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/categories/Elasticsearch/"/>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/tags/Elasticsearch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Mapping</title>
-    <link href="https://notes.xuepincat.com/2020/05/24/3-Mapping/"/>
-    <id>https://notes.xuepincat.com/2020/05/24/3-Mapping/</id>
-    <published>2020-05-23T16:01:17.000Z</published>
-    <updated>2020-05-31T06:02:57.254Z</updated>
-    
-    <summary type="html">
-    
-      什么是 Mapping
-类似数据库中表结构定义，主要作用如下：
-
-- 定义 Index 下的字段名（Field Name）
-- 定义字段的类型，比如数值型，字符串型，布尔型等
-- 定义倒排索引相关配置，比如是否索引，记录 postion 等
-
- * request
-
-1
-
-
-GET test_index/_mapping
-
-
- * response
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-
-
-{
-  &quot;test_index&quot;: {
-    &quot;mappings&quot;: {
-      &quot;doc&quot;: {
-        &quot;pr
     
     </summary>
     

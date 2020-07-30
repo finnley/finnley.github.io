@@ -211,6 +211,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/07/19/1-MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/19/1-MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">1-MySQL主从复制工作原理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-19 18:44:52" itemprop="dateCreated datePublished" datetime="2018-07-19T18:44:52+08:00">2018-07-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          MySQL主从复制的工作原理
+解决问题
+ 1. 数据分布
+
+MySQL主从复制可以从一台MySQL服务器扩展到N台，假设我们现在扩展到了150台，我们就可以将50台机器放在电信的网络中，50台机器放在联通的网络当中，还有50台机器可以放在移动的网络当中，这样就可以无论我们无论在哪个网络中访问都比较快，可以做到避免跨网络的访问。
+
+另外我们还可以将我们的服务器按地域进行分，比如我们可以在国外放一部分，在北方放一部分，在南方放一部分，这样就可以做到没有地域性访问的差异了。
+
+ 2. 负载均衡
+
+我们还可以将MySQL做成读写分离，我们将一部分服务器做成写操作，另一部分服务器做读的操作，并且读和写的
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/07/19/1-MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/06/29/01-%E6%A0%91%E8%8E%93%E6%B4%BE%E5%BC%80%E5%90%AFSSH/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1086,105 +1177,6 @@ public function actionBind()
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/03/01/03-%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/03/01/03-%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/" class="post-title-link" itemprop="url">03-错误日志设计与实现</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-03-01 17:43:21" itemprop="dateCreated datePublished" datetime="2018-03-01T17:43:21+08:00">2018-03-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E6%88%98%E2%80%94%E2%80%94Yii%E5%AE%9E%E6%88%98/" itemprop="url" rel="index"><span itemprop="name">项目实战——Yii实战</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          框架错误处理和记录
-通过 errorHandler 制定处理控制器和方法
-打开 yii.book.shop/config/web.php 文件，存在下面代码：
-
-1
-2
-3
-
-
-'errorHandler' => [
-     'errorAction' => 'site/error',
- ],
-
-
-上面代码表示默认指向的是 site 控制器下的 error 方法。
-
-该方法实在 controller下的 SiteController 控制器下
-
-![Book Shop](/images/yii/9.png)![Book Shop](/images/book-shop/03/2.png)它默认
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/03/01/03-%E9%94%99%E8%AF%AF%E6%97%A5%E5%BF%97%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1256,7 +1248,7 @@ public function actionBind()
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">173</span>
+          <span class="site-state-item-count">174</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1269,7 +1261,7 @@ public function actionBind()
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">44</span>
+        <span class="site-state-item-count">45</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
