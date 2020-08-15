@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-07-30T16:51:26.853Z</updated>
+  <updated>2020-08-15T07:24:45.497Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -17,11 +17,90 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>使用Kubeadm搭建多节点K8S集群</title>
+    <link href="https://notes.xuepincat.com/2020/08/02/DevOps-%E4%BD%BF%E7%94%A8Kubeadm%E6%90%AD%E5%BB%BA%E5%A4%9A%E8%8A%82%E7%82%B9K8S%E9%9B%86%E7%BE%A4/"/>
+    <id>https://notes.xuepincat.com/2020/08/02/DevOps-%E4%BD%BF%E7%94%A8Kubeadm%E6%90%AD%E5%BB%BA%E5%A4%9A%E8%8A%82%E7%82%B9K8S%E9%9B%86%E7%BE%A4/</id>
+    <published>2020-08-02T15:54:23.000Z</published>
+    <updated>2020-08-15T07:24:45.497Z</updated>
+    
+    <summary type="html">
+    
+      准备三台机器
+ 1. 创建一个 kubeadm 的目录，在该目录中创建创建一个名为 Vagrantfile 的文件,键入下面内容
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+
+
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.require_version &quot;&gt;= 1.6.0&quot;
+
+boxes = [
+    {
+        :
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
+    
+    
+      <category term="Docker k8s" scheme="https://notes.xuepincat.com/tags/Docker-k8s/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Docker-Kubernetes入门</title>
     <link href="https://notes.xuepincat.com/2020/07/26/Docker-Kubernetes%E5%85%A5%E9%97%A8/"/>
     <id>https://notes.xuepincat.com/2020/07/26/Docker-Kubernetes%E5%85%A5%E9%97%A8/</id>
     <published>2020-07-26T02:38:15.000Z</published>
-    <updated>2020-07-30T16:51:26.853Z</updated>
+    <updated>2020-08-02T15:37:34.166Z</updated>
     
     <summary type="html">
     
@@ -801,60 +880,6 @@ cerebro
 
 
 GET /my_index/_search?q=alfred&amp;df=user&amp;sort=a
-    
-    </summary>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/categories/Elasticsearch/"/>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/tags/Elasticsearch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Search API</title>
-    <link href="https://notes.xuepincat.com/2020/05/28/4-Search-API/"/>
-    <id>https://notes.xuepincat.com/2020/05/28/4-Search-API/</id>
-    <published>2020-05-27T16:37:46.000Z</published>
-    <updated>2020-05-31T06:02:57.462Z</updated>
-    
-    <summary type="html">
-    
-      Search API
-实现对 es 存储的数据进行查询分析，endpoint 为 _search 
-
-可以指定索引查询，也可以一次查询多个
-
-1
-2
-3
-4
-
-
-GET /_search
-GET /my_index/_search
-GET /my_index1, my_index2/_search
-GET /my_*/_search
-
-
-查询主要有两种形式
-
- 1. URI Search
-
-操作简单，方便通过命令行测试
-
-仅包含部分查询语法
-
-1
-
-
-GET /my_index/_search?q=user:alfred
-
-
- 2. Request Body Search
-
-es 提供的完备查
     
     </summary>
     

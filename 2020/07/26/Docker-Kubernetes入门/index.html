@@ -49,8 +49,27 @@
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/20.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/22.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/23.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/24.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/25.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/26.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/27.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/28.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/29.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/docker/k8s/30.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/31.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/32.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/33.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/34.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/35.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/36.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/37.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/38.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/40.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/41.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/42.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/k8s/43.png">
 <meta property="article:published_time" content="2020-07-26T02:38:15.000Z">
-<meta property="article:modified_time" content="2020-07-30T16:51:26.853Z">
+<meta property="article:modified_time" content="2020-08-02T15:37:34.166Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="Docker Kubernetes">
 <meta name="twitter:card" content="summary">
@@ -267,7 +286,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-31 00:51:26" itemprop="dateModified" datetime="2020-07-31T00:51:26+08:00">2020-07-31</time>
+                <time title="Modified: 2020-08-02 23:37:34" itemprop="dateModified" datetime="2020-08-02T23:37:34+08:00">2020-08-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -444,6 +463,139 @@
 <p><img src="https://images.notes.xuepincat.com/docker/k8s/22.png" alt=""></p>
 <p>此时打开浏览器，输入 <code>127.0.0.1:8080</code> 回车后就会看到下面页面</p>
 <p><img src="https://images.notes.xuepincat.com/docker/k8s/23.png" alt=""></p>
+<ol start="6">
+<li>删除 Pod</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete -f pod_nginx.yml</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/24.png" alt=""></p>
+<h2 id="Pod-扩展"><a href="#Pod-扩展" class="headerlink" title="Pod 扩展"></a>Pod 扩展</h2><ul>
+<li>ReplicationController</li>
+</ul>
+<p>创建名为 <code>rc_nginx.yml</code> 的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: ReplicationController </span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    app: nginx</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      name: nginx</span><br><span class="line">      labels:</span><br><span class="line">        app: nginx</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: nginx</span><br><span class="line">        image: nginx</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 80</span><br></pre></td></tr></table></figure>
+
+<p>k8s 中可以使用 ReplicaSet 类型的资源可以创建具有一定数量的比如 replicas 为 3 的，即3个nginx的Pod</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f rc_nginx.yml</span><br></pre></td></tr></table></figure>
+
+<p>创建完后可以通过下面命令查看 ReplicationController</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get rc</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/25.png" alt=""></p>
+<p>通过下面命令查看下 pod</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/26.png" alt=""></p>
+<p>可以看到创建了 3 个 pod,这三个 pod 就是一个横向的扩展</p>
+<p>现在有3个pod正在运行，如果将其中的一个 pod 删除 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete pods nginx-bjlpc</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/27.png" alt=""></p>
+<p>会看到删除了一个pod的同事会再次为我们创建一个 pod，也就是通过 <code>ReplicationController</code> 创建 Pod,它会维持一个数目，如果 pod 异常退出或者删除，它会重新创建一个pod来填补这个空白</p>
+<p>如果想要扩展可通过 <code>scale</code> 参数,</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl scale rc nginx --replicas&#x3D;2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/28.png" alt=""></p>
+<p>已经变成两个了</p>
+<p>可以 scale 成 4个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl scale rc nginx --replicas&#x3D;4</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/29.png" alt=""></p>
+<p>现在已经有了4个pod，每个pod容器都会监听80端口，通过下面命令查看</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods -o wide</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/docker/k8s/30.png" alt=""></p>
+<p>4个pod的container都运行在minikube的节点行，并且有4个IP地址，它们都会监听80端口</p>
+<p>最后删除 rc_nginx.yml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete -f rc_nginx.yml</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/31.png" alt=""></p>
+<ul>
+<li>ReplicaSet</li>
+</ul>
+<p>创建名为 <code>rs_nginx.yml</code> 的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps&#x2F;v1</span><br><span class="line">kind: ReplicaSet</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">  labels:</span><br><span class="line">    tier: frontend</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      tier: frontend</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      name: nginx</span><br><span class="line">      labels:</span><br><span class="line">        tier: frontend</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: nginx</span><br><span class="line">        image: nginx</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 80</span><br></pre></td></tr></table></figure>
+
+<p>执行下面命令创建</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f rs_nginx.yml</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/32.png" alt=""></p>
+<p>使用 scale 进行扩展</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl scale rs nginx --replicas&#x3D;2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/33.png" alt=""></p>
+<p>删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete -f rs_nginx.yml</span><br></pre></td></tr></table></figure>
+
+<h2 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h2><ol>
+<li>创建一个名为 <code>deployment_nginx.yml</code> 文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: apps&#x2F;v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx-deployment</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: nginx</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: nginx</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: nginx</span><br><span class="line">        image: nginx:1.12.2</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 80</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f deployment_nginx.yml</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/34.png" alt=""></p>
+<p>可以看到有个叫 nginx-deployment 的 deployments, ReplicaSet 会在 nginx-deployment 的后面加一串数字</p>
+<p>查看下 Pod,会发现又会在后面添加一串数字</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pods</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/35.png" alt=""></p>
+<ol start="3">
+<li>常用命令</li>
+</ol>
+<ul>
+<li>查看 deployment 详细信息</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get deployment -o wide</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/36.png" alt=""></p>
+<ul>
+<li>升级 deployment</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl set image deployment nginx-deployment nginx&#x3D;nginx:1.13</span><br></pre></td></tr></table></figure>
+
+<p>然后再使用下面命令查看下是否升级成功</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get deployment -o wide</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/37.png" alt=""></p>
+<p>上面图中可以看到已经升级成功</p>
+<p>再通过下面命令查看下 rs</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get rs</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/38.png" alt=""></p>
+<p>会看到旧的已经被撤销了</p>
+<p>另外可以通过下面命令查看 history</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout history deployment nginx-deployment</span><br></pre></td></tr></table></figure>
+
+<p>可以看到整个 rollout 的历史,图中可以看到有1和2，其实还可以会到1的版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout undo deployment nginx-deployment</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/40.png" alt=""></p>
+<p>图中已经会滚到 nignx:1.12 的版本了</p>
+<p>接着再查看下 history</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl rollout history deployment nginx-deployment</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/41.png" alt=""></p>
+<p>会看到历史版本已经增加到了3</p>
+<p>现在还是回到 nginx：1.13 的版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl set image deployment nginx-deployment nginx&#x3D;nginx:1.13</span><br></pre></td></tr></table></figure>
+
+<p>上面的操作可以很轻松的更新部署和回滚历史版本</p>
+<ul>
+<li>将 deployment 暴露给外部访问</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl expose deployment nginx-deployment --type&#x3D;NodePort</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get svc</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/42.png" alt=""></p>
+<p>看到第二行，它表示它监听了 minikube 的 32754 端口，minikube 的IP地址是 <code>192.168.64.2</code>,端口是 <code>32754</code>,这个地址值这个集群的地址或者说是k8s集群的Node地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl 192.168.64.2:32754</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/docker/k8s/43.png" alt=""></p>
 
     </div>
 
@@ -494,7 +646,10 @@
     <a href="/2020/07/25/Docker-%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1-Routing-Mesh/" rel="prev" title="集群服务通信-Routing Mesh">
       <i class="fa fa-chevron-left"></i> 集群服务通信-Routing Mesh
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/08/02/DevOps-%E4%BD%BF%E7%94%A8Kubeadm%E6%90%AD%E5%BB%BA%E5%A4%9A%E8%8A%82%E7%82%B9K8S%E9%9B%86%E7%BE%A4/" rel="next" title="使用Kubeadm搭建多节点K8S集群">
+      使用Kubeadm搭建多节点K8S集群 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -553,7 +708,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Swarm-Mode-Architecture"><span class="nav-number">1.</span> <span class="nav-text">Docker Swarm Mode Architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kubernetes-Architecture"><span class="nav-number">2.</span> <span class="nav-text">Kubernetes Architecture</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Master"><span class="nav-number">2.0.1.</span> <span class="nav-text">Master</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node"><span class="nav-number">2.0.2.</span> <span class="nav-text">Node</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-minikube-搭建单节点集群"><span class="nav-number">3.</span> <span class="nav-text">使用 minikube 搭建单节点集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pod"><span class="nav-number">4.</span> <span class="nav-text">Pod</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Swarm-Mode-Architecture"><span class="nav-number">1.</span> <span class="nav-text">Docker Swarm Mode Architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kubernetes-Architecture"><span class="nav-number">2.</span> <span class="nav-text">Kubernetes Architecture</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Master"><span class="nav-number">2.0.1.</span> <span class="nav-text">Master</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node"><span class="nav-number">2.0.2.</span> <span class="nav-text">Node</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-minikube-搭建单节点集群"><span class="nav-number">3.</span> <span class="nav-text">使用 minikube 搭建单节点集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pod"><span class="nav-number">4.</span> <span class="nav-text">Pod</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pod-扩展"><span class="nav-number">5.</span> <span class="nav-text">Pod 扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deployment"><span class="nav-number">6.</span> <span class="nav-text">Deployment</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -569,7 +724,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">174</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -582,7 +737,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-count">46</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
