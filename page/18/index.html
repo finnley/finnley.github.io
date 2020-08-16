@@ -211,6 +211,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/04/01/6-NexT%E7%9A%84%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E6%9F%A5%E6%BC%8F%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/04/01/6-NexT%E7%9A%84%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E6%9F%A5%E6%BC%8F%E7%AF%87/" class="post-title-link" itemprop="url">6-NexT的简单配置——查漏篇</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-04-01 22:27:05" itemprop="dateCreated datePublished" datetime="2017-04-01T22:27:05+08:00">2017-04-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-17 00:32:20" itemprop="dateModified" datetime="2020-07-17T00:32:20+08:00">2020-07-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Hexo-Next/" itemprop="url" rel="index"><span itemprop="name">Hexo+Next</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          前言
+之前写了关于怎么使用GitHub+Hexo搭建个人博客，本来以为结束了，后面才发现只写了一些怎么搭建,配置，上传的过程，下面是一些常用的主题配置。当然这些配置在Next官方文档上都有。
+
+设置菜单
+默认主页
+
+
+
+菜单配置包括三个部分，第一是菜单项（名称和链接），第二是菜单项的显示文本，第三是菜单项对应的图标。
+
+NexT 使用的是 Font Awesome 提供的图标， Font Awesome 提供了 600+ 的图标，可以满足绝大的多数的场景，同时无须担心在 Retina 屏幕下 图标模糊的问题。
+
+编辑 主题配置文件 ，找到 menu ,修改以下内容：
+
+
+
+
+
+设定菜单内容，对
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/04/01/6-NexT%E7%9A%84%E7%AE%80%E5%8D%95%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E6%9F%A5%E6%BC%8F%E7%AF%87/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/03/31/5-Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E7%BB%88%E7%BB%93%E7%AF%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -805,20 +904,20 @@ npm -v
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">176</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

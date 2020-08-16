@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-08-15T07:24:45.497Z</updated>
+  <updated>2020-08-16T03:47:30.355Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -17,11 +17,76 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>kubectl基本使用</title>
+    <link href="https://notes.xuepincat.com/2020/08/15/DevOps-kubectl%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"/>
+    <id>https://notes.xuepincat.com/2020/08/15/DevOps-kubectl%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</id>
+    <published>2020-08-15T13:00:35.000Z</published>
+    <updated>2020-08-16T03:47:30.355Z</updated>
+    
+    <summary type="html">
+    
+      前提准备
+准备了3台机器，一个master节点，两个node节点
+
+
+
+进入到 master 节点
+
+1
+
+
+vagrant ssh k8s-master
+
+
+查看下有哪些节点
+
+1
+
+
+kubectl get node
+
+
+
+
+kubectl 自动补全
+设置自动补全
+
+ * Linux
+
+1
+
+
+source &lt;(kubectl completion bash)
+
+
+ * Mac
+
+1
+
+
+source &lt;(kubectl completion zsh)
+
+
+完成之后当使用 kubectl get ,然后按下 tab 键，就会提示一些内容
+
+再比如 输入 kubectl get n,然后按下
+    
+    </summary>
+    
+    
+      <category term="DevOps" scheme="https://notes.xuepincat.com/categories/DevOps/"/>
+    
+    
+      <category term="DevOps k8s kubectl" scheme="https://notes.xuepincat.com/tags/DevOps-k8s-kubectl/"/>
+    
+  </entry>
+  
+  <entry>
     <title>使用Kubeadm搭建多节点K8S集群</title>
     <link href="https://notes.xuepincat.com/2020/08/02/DevOps-%E4%BD%BF%E7%94%A8Kubeadm%E6%90%AD%E5%BB%BA%E5%A4%9A%E8%8A%82%E7%82%B9K8S%E9%9B%86%E7%BE%A4/"/>
     <id>https://notes.xuepincat.com/2020/08/02/DevOps-%E4%BD%BF%E7%94%A8Kubeadm%E6%90%AD%E5%BB%BA%E5%A4%9A%E8%8A%82%E7%82%B9K8S%E9%9B%86%E7%BE%A4/</id>
     <published>2020-08-02T15:54:23.000Z</published>
-    <updated>2020-08-15T07:24:45.497Z</updated>
+    <updated>2020-08-15T16:09:21.267Z</updated>
     
     <summary type="html">
     
@@ -836,50 +901,6 @@ github 地址
 
 cerebro
 
-    
-    </summary>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/categories/Elasticsearch/"/>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/tags/Elasticsearch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>URI Search</title>
-    <link href="https://notes.xuepincat.com/2020/05/28/5-URI-Search/"/>
-    <id>https://notes.xuepincat.com/2020/05/28/5-URI-Search/</id>
-    <published>2020-05-28T15:20:50.000Z</published>
-    <updated>2020-05-31T08:40:37.498Z</updated>
-    
-    <summary type="html">
-    
-      通过 url query 参数来实现搜索，常用参数如下：
-
- * q 指定查询的语句，语法为 Query String Syntax
-   
-   
- * df (default field)q中不指定字段时默认查询的字段，如果不指定，es会查询所有字段
-   
-   
- * sort 排序
-   
-   
- * timeout 指定超时时间，默认不超时，如果在指定时间内没有返回结果就会以超时报错
-   
-   
- * from,size 用于分页
-   
-   
-
- * URI Search
-
-1
-
-
-GET /my_index/_search?q=alfred&amp;df=user&amp;sort=a
     
     </summary>
     

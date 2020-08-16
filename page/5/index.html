@@ -211,6 +211,91 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/06/18/13-%E5%AE%B9%E5%99%A8%E7%9A%84%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/06/18/13-%E5%AE%B9%E5%99%A8%E7%9A%84%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6/" class="post-title-link" itemprop="url">容器的资源限制</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-06-18 23:40:41" itemprop="dateCreated datePublished" datetime="2019-06-18T23:40:41+08:00">2019-06-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          通过虚拟化技术，可以在物理机上面创建很多虚拟机，对于一台物理设备来说它的内存，CPU一些物理资源的配置是有限的，假如在上面创建虚拟机，每一个虚拟机的资源其实也是可以配置限定的
+
+同样的对于容器， Container 是运行在 Linux 机器上的， Linux 本身资源是有限的，如果在上面运行非常多的容器，每个容器都需要占一些 CPU 和内存，如果我们不给它们做一些限制，我们默认去创建容器，这些容器会尽最大可能去占有资源，比如这个物理机它有多少内存，如果 Container 里面运行程序的话，这个程序会不停的吃内存，直到占满整个机器的内存，这样的话容器就会退出，因为内存不够了
+
+指定 CPU 
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/06/18/13-%E5%AE%B9%E5%99%A8%E7%9A%84%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/06/17/12-%E5%AE%B9%E5%99%A8%E6%93%8D%E4%BD%9C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1153,106 +1238,6 @@ Docker Engine 是Docker中一个非常重要的概念，是一个核心的组件
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/18/3-CentOS7%E5%AE%89%E8%A3%85Docker/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/18/3-CentOS7%E5%AE%89%E8%A3%85Docker/" class="post-title-link" itemprop="url">CentOS7安装Docker</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-05-18 23:37:05" itemprop="dateCreated datePublished" datetime="2019-05-18T23:37:05+08:00">2019-05-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          参考官方文档【Install Docker Engine on CentOS】. 
-
-Uninstall old versions
-1
-2
-3
-4
-5
-6
-7
-8
-
-
-$ sudo yum remove docker \
-                  docker-client \
-                  docker-client-latest \
-                  docker-common \
-                  docker-latest \
-                  docker-latest-logrotate \
-  
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/05/18/3-CentOS7%E5%AE%89%E8%A3%85Docker/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1324,20 +1309,20 @@ $ sudo yum remove docker \
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-count">176</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
