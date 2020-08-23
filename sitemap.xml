@@ -1334,13 +1334,6 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Docker/</loc>
-    <lastmod>2020-08-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/tags/Linux/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
@@ -1356,6 +1349,13 @@
   
   <url>
     <loc>https://notes.xuepincat.com/tags/SVN/</loc>
+    <lastmod>2020-08-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/Docker/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1453,6 +1453,13 @@
   </url>
   
   <url>
+    <loc>https://notes.xuepincat.com/tags/DevOps-k8s-kubectl/</loc>
+    <lastmod>2020-08-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://notes.xuepincat.com/tags/Linux-Docker/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
@@ -1461,13 +1468,6 @@
   
   <url>
     <loc>https://notes.xuepincat.com/tags/Linux-CentOS-MySQL/</loc>
-    <lastmod>2020-08-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/tags/DevOps-k8s-kubectl/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1558,14 +1558,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Linux-Ubuntu-Node/</loc>
+    <loc>https://notes.xuepincat.com/tags/Linux-Ubuntu/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Linux-Ubuntu/</loc>
+    <loc>https://notes.xuepincat.com/tags/Linux-Ubuntu-Node/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1644,13 +1644,6 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/PHP/</loc>
-    <lastmod>2020-08-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
@@ -1658,7 +1651,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/Docker/</loc>
+    <loc>https://notes.xuepincat.com/categories/PHP/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1666,6 +1659,13 @@
   
   <url>
     <loc>https://notes.xuepincat.com/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</loc>
+    <lastmod>2020-08-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/categories/Docker/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
