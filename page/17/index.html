@@ -211,6 +211,109 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/28/6-SVN%E6%9C%8D%E5%8A%A1%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%90%AF%E5%8A%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/28/6-SVN%E6%9C%8D%E5%8A%A1%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%90%AF%E5%8A%A8/" class="post-title-link" itemprop="url">6-SVN服务设置自启动</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-28 09:35:33" itemprop="dateCreated datePublished" datetime="2017-06-28T09:35:33+08:00">2017-06-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          所谓SVN服务自启动就是SVN服务开机的自动运行，在Linux中自动运行通常需要配合Shell脚本
+
+在Ubuntu系统中的/etc/rc.local，/etc目录下有个叫rc.local的文件，这个脚本文件默认情况下是绑定了所有启动级别，意思是不管启动级别是多少，这个脚本都会在系统启动之后自动运行一次。
+
+现在我们来打开这个文件
+
+1
+
+
+# vi /etc/rc/local
+
+
+
+
+里面的大概内容如下：
+
+
+
+我们只需要在这个文件里面添加系统启动后要执行的命令(svnserve -d -r /路径)就可以了。
+
+
+
+然后保存退出就可以了，当然配置自启动不仅仅有这一种，还有其他的方式。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/28/6-SVN%E6%9C%8D%E5%8A%A1%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%90%AF%E5%8A%A8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/27/5-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E8%AE%BF%E9%97%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1188,110 +1291,6 @@ $ hexo s
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/04/20/7-hexo%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E8%A1%A5%E7%BC%BA%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/04/20/7-hexo%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E8%A1%A5%E7%BC%BA%E7%AF%87/" class="post-title-link" itemprop="url">7-hexo其他配置——补缺篇</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-04-20 11:45:03" itemprop="dateCreated datePublished" datetime="2017-04-20T11:45:03+08:00">2017-04-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-18 11:53:06" itemprop="dateModified" datetime="2020-07-18T11:53:06+08:00">2020-07-18</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo-Next/" itemprop="url" rel="index"><span itemprop="name">Hexo+Next</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          hexo d 提交失败
-Description
-在第一次使用 hexo d 提交的时候会出现失败报错
-
-
-
-Reason
-因为没安装 hexo-deployer-git 插件
-
-Solution
-在站点目录下输入下面的命令进行插件安装
-
-1
-
-
-npm install hexo-deployer-git --save
-
-
-
-
-然后再使用 hexo -d 命令就可以提交了
-
-设置 RSS
-RSS 广泛用于网上新闻频道，blog和 wiki。使用 RSS 订阅能更快地获取信息，网站提供 RSS 输出，有利于让用户获取网站内容的最新更新。网络用户可以在客户端借助于支持 RSS 的聚合工具软件，在不打
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/04/20/7-hexo%E5%85%B6%E4%BB%96%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E8%A1%A5%E7%BC%BA%E7%AF%87/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1363,7 +1362,7 @@ RSS 广泛用于网上新闻频道，blog和 wiki。使用 RSS 订阅能更快�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">176</span>
+          <span class="site-state-item-count">177</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
