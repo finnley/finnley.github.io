@@ -1292,13 +1292,6 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Elasticsearch/</loc>
-    <lastmod>2020-08-23</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/tags/Hexo/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
@@ -1307,6 +1300,13 @@
   
   <url>
     <loc>https://notes.xuepincat.com/tags/Git/</loc>
+    <lastmod>2020-08-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/Elasticsearch/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1623,14 +1623,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/Elasticsearch/</loc>
+    <loc>https://notes.xuepincat.com/categories/Hexo-Next/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/Hexo-Next/</loc>
+    <loc>https://notes.xuepincat.com/categories/Elasticsearch/</loc>
     <lastmod>2020-08-23</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
