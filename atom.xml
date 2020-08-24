@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-08-16T04:20:19.322Z</updated>
+  <updated>2020-08-24T13:34:22.055Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -21,12 +21,12 @@
     <link href="https://notes.xuepincat.com/2020/08/16/DevOps-k8s%E8%8A%82%E7%82%B9%E5%92%8C%E6%A0%87%E7%AD%BE/"/>
     <id>https://notes.xuepincat.com/2020/08/16/DevOps-k8s%E8%8A%82%E7%82%B9%E5%92%8C%E6%A0%87%E7%AD%BE/</id>
     <published>2020-08-16T04:13:32.000Z</published>
-    <updated>2020-08-16T04:20:19.322Z</updated>
+    <updated>2020-08-24T13:34:22.055Z</updated>
     
     <summary type="html">
     
       节点
-对于一个集群会包含几个节点，一个是 master 节点，另外还有一些 worker 节点，在 master 节点上会运行一些核心服务，比如调度，API服务等，在 worker 节点上主要完成一些任务的调度，比如部署一些容器或者 APP ，一般会选择一些特定的 node,worker 节点上进行部署
+对于一个集群会包含几个节点，一个是 master 节点，另外还有一些 worker 节点，在 master 节点上会运行一些核心服务，比如调度，API服务等，在 worker 节点上主要完成一些任务的调度，比如部署一些容器或者 APP ，一般会选择一些特定的 node 也就是 worker 节点上进行部署
 
 可以通过下面命令获取当前集群上有哪些节点
 
@@ -34,6 +34,9 @@
 
 
 kubectl get node
+
+
+从返回的信息可以看到有 NAME, STATUS, ROLES, AGE, VERSION这些信息
     
     </summary>
     
