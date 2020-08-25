@@ -21,25 +21,25 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="前提准备 准备了3台机器，一个master节点，两个node节点    进入到 master 节点  1   vagrant ssh k8s-master   查看下有哪些节点  1   kubectl get node     kubectl 自动补全 设置自动补全   * Linux  1   source">
+  <meta name="description" content="kubectl 自动补全 设置自动补全  通过下面命令可以看到 kubectl 在不同的平台上面实现自动补全的方式  1   kubectl completion -h    * Linux  1   source">
 <meta property="og:type" content="article">
 <meta property="og:title" content="kubectl基本使用">
 <meta property="og:url" content="https://notes.xuepincat.com/2020/08/15/DevOps-kubectl%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="Notes">
-<meta property="og:description" content="前提准备 准备了3台机器，一个master节点，两个node节点    进入到 master 节点  1   vagrant ssh k8s-master   查看下有哪些节点  1   kubectl get node     kubectl 自动补全 设置自动补全   * Linux  1   source">
+<meta property="og:description" content="kubectl 自动补全 设置自动补全  通过下面命令可以看到 kubectl 在不同的平台上面实现自动补全的方式  1   kubectl completion -h    * Linux  1   source">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://images.notes.xuepincat.com/devops/k8s/1.png">
-<meta property="og:image" content="https://images.notes.xuepincat.com/devops/k8s/2.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/devops/k8s/3.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/devops/k8s/4.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/devops/k8s/5.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/devops/k8s/1.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/devops/k8s/2.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/devops/k8s/6.png">
 <meta property="article:published_time" content="2020-08-15T13:00:35.000Z">
-<meta property="article:modified_time" content="2020-08-16T03:47:30.355Z">
+<meta property="article:modified_time" content="2020-08-25T15:48:48.150Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="DevOps k8s kubectl">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://images.notes.xuepincat.com/devops/k8s/1.png">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/devops/k8s/3.png">
 
 <link rel="canonical" href="https://notes.xuepincat.com/2020/08/15/DevOps-kubectl%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
 
@@ -252,7 +252,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-16 11:47:30" itemprop="dateModified" datetime="2020-08-16T11:47:30+08:00">2020-08-16</time>
+                <time title="Modified: 2020-08-25 23:48:48" itemprop="dateModified" datetime="2020-08-25T23:48:48+08:00">2020-08-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -275,16 +275,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="前提准备"><a href="#前提准备" class="headerlink" title="前提准备"></a>前提准备</h2><p>准备了3台机器，一个master节点，两个node节点</p>
-<p><img src="https://images.notes.xuepincat.com/devops/k8s/1.png" alt=""></p>
-<p>进入到 master 节点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh k8s-master</span><br></pre></td></tr></table></figure>
+        <h2 id="kubectl-自动补全"><a href="#kubectl-自动补全" class="headerlink" title="kubectl 自动补全"></a>kubectl 自动补全</h2><p>设置自动补全</p>
+<p>通过下面命令可以看到 kubectl 在不同的平台上面实现自动补全的方式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl completion -h</span><br></pre></td></tr></table></figure>
 
-<p>查看下有哪些节点</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get node</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://images.notes.xuepincat.com/devops/k8s/2.png" alt=""></p>
-<h2 id="kubectl-自动补全"><a href="#kubectl-自动补全" class="headerlink" title="kubectl 自动补全"></a>kubectl 自动补全</h2><p>设置自动补全</p>
 <ul>
 <li>Linux</li>
 </ul>
@@ -293,16 +287,20 @@
 <ul>
 <li>Mac</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source &lt;(kubectl completion zsh)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Load the kubectl completion code for zsh[1] into the current shell</span><br><span class="line">source &lt;(kubectl completion zsh)</span><br><span class="line"># Set the kubectl completion code for zsh[1] to autoload on startup</span><br><span class="line">kubectl completion zsh &gt; &quot;$&#123;fpath[1]&#125;&#x2F;_kubectl&quot;</span><br></pre></td></tr></table></figure>
 
 <p>完成之后当使用 <code>kubectl get</code> ,然后按下 <code>tab</code> 键，就会提示一些内容</p>
-<p>再比如 输入 <code>kubectl get n</code>,然后按下 <code>tab</code> 键，就会提示可以数据哪些命令</p>
+<p>比如输入 <code>kubectl get n</code>,然后按下 <code>tab</code> 键，就会提示可以输入哪些命令</p>
 <p><img src="https://images.notes.xuepincat.com/devops/k8s/3.png" alt=""></p>
-<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>当在本地使用 <code>kubectl get node</code> 命令时，它是怎么和minikube cluster进行通信的呢？也就是当使用 <code>kubectl</code> 命令去连接集群的时候，它是怎么怎么知道集群是在哪里的呢？</p>
-<p>这里就需要一个配置文件，kubectl 会默认去寻找当前用户目录下一个名为 <code>.kube</code> 的目录，这个目录中有个文件叫 <code>config</code> ,里面配置的信息就是让 kubectl 和 minikube 集群进行通信的配置，配置里面记录了 cluster 的地址，端口，证书等信息</p>
-<p>可以在本地查看配置信息</p>
-<ul>
-<li>查看当前 current-context</li>
+<h2 id="kubectl-工作原理"><a href="#kubectl-工作原理" class="headerlink" title="kubectl 工作原理"></a>kubectl 工作原理</h2><p>首先启动本地的 minikube</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">minikube start</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>当使用 <code>kubectl get node</code> 命令时，它是怎么和minikube cluster进行通信的呢？也就是当使用 <code>kubectl</code> 命令去连接集群的时候，它是怎么怎么知道集群是在哪里的呢？</p>
+</blockquote>
+<p>这里就需要一个配置文件，kubectl 默认会去寻找当前用户目录下一个名为 <code>.kube</code> 的目录，该目录中有个文件叫 <code>config</code> ,里面配置的信息就是让 <code>kubectl</code> 和 <code>minikube</code> 集群进行通信的配置信息，配置信息里面记录了 cluster 的地址，端口，证书等信息</p>
+<h4 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h4><ul>
+<li>查看当前 <code>current-context</code></li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl config current-context</span><br></pre></td></tr></table></figure>
 
@@ -313,17 +311,36 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl config get-contexts</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://images.notes.xuepincat.com/devops/k8s/5.png" alt=""></p>
-<p>可以看到有个 <code>*</code> 表示 current-context 是minikube的context,实际上在本地可以存在多个context的</p>
-<p>再比如现在有使用 kubeadm 搭建了一个三节点集群（一个master节点，两个node节点），当访问这个集群的时候必须进入到 master 节点才可以去访问，现在打算在本地直接访问这个集群，可以将 kubeadm 创建的集群的 kubectl 的配置文件配置到本地config中</p>
-<p>进入 master 节点</p>
+<p><code>*</code> 表示 current-context 是 <code>minikube</code> 的 context,实际上在本地可以存在多个context的</p>
+<ul>
+<li>本地配置多 context </li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/devops/k8s/1.png" alt=""></p>
+<p>查看下有哪些节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get node</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/devops/k8s/2.png" alt=""></p>
+<p>比如现在使用 kubeadm 搭建了一个三节点集群（一个master节点，两个node节点），当访问这个集群的时候必须进入到 master 节点才可以去访问</p>
+<p>现在打算像 minikube 一样在本地直接访问这个集群，可以将 kubeadm 创建的集群的 kubectl 的配置文件配置到本地 <code>config</code> 中</p>
+<ol>
+<li>首先进入 master 节点</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh k8s-master</span><br></pre></td></tr></table></figure>
 
-<p>进入到 <code>.kube</code> 目录</p>
+<ol start="2">
+<li>进入到 <code>.kube</code> 目录</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd .kube</span><br></pre></td></tr></table></figure>
 
+<ol start="3">
+<li>配置</li>
+</ol>
 <p><code>.kube</code> 中有个 <code>config</code> 文件，可以使用 <code>more config</code> 查看些配置文件内容</p>
-<p>可以根据配置文件中的格式将 kubeadm 中的复制粘贴到本机的 config 配置文件中</p>
-<p>配置完后，使用命令 <code>kubectl get node</code> 查看下，返回的信息还是 minikube 的，如果需要切换到 kubeadm,可以使用下面命令</p>
+<p>可以根据配置文件中的格式将 kubeadm 中的复制粘贴到本机的 <code>config</code> 配置文件中</p>
+<p>配置完后，使用命令 <code>kubectl get node</code> 查看下，返回的信息还是 minikube 的,这是因为当前使用的还是 minikube 的配置</p>
+<ol start="4">
+<li>切换到 kubeadm</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl config use-context kubeadm</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://images.notes.xuepincat.com/devops/k8s/6.png" alt=""></p>
@@ -440,7 +457,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前提准备"><span class="nav-number">1.</span> <span class="nav-text">前提准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kubectl-自动补全"><span class="nav-number">2.</span> <span class="nav-text">kubectl 自动补全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">3.</span> <span class="nav-text">原理</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#kubectl-自动补全"><span class="nav-number">1.</span> <span class="nav-text">kubectl 自动补全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kubectl-工作原理"><span class="nav-number">2.</span> <span class="nav-text">kubectl 工作原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用命令"><span class="nav-number">2.0.1.</span> <span class="nav-text">常用命令</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

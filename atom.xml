@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-08-24T13:34:22.055Z</updated>
+  <updated>2020-08-24T23:39:45.568Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://notes.xuepincat.com/2020/08/16/DevOps-k8s%E8%8A%82%E7%82%B9%E5%92%8C%E6%A0%87%E7%AD%BE/"/>
     <id>https://notes.xuepincat.com/2020/08/16/DevOps-k8s%E8%8A%82%E7%82%B9%E5%92%8C%E6%A0%87%E7%AD%BE/</id>
     <published>2020-08-16T04:13:32.000Z</published>
-    <updated>2020-08-24T13:34:22.055Z</updated>
+    <updated>2020-08-24T23:39:45.568Z</updated>
     
     <summary type="html">
     
@@ -37,6 +37,13 @@ kubectl get node
 
 
 从返回的信息可以看到有 NAME, STATUS, ROLES, AGE, VERSION这些信息
+
+除此之外，可以通过下面命令指定某个具体 node
+
+1
+
+
+kubectl get node
     
     </summary>
     
@@ -53,35 +60,20 @@ kubectl get node
     <link href="https://notes.xuepincat.com/2020/08/15/DevOps-kubectl%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/"/>
     <id>https://notes.xuepincat.com/2020/08/15/DevOps-kubectl%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</id>
     <published>2020-08-15T13:00:35.000Z</published>
-    <updated>2020-08-16T03:47:30.355Z</updated>
+    <updated>2020-08-25T15:48:48.150Z</updated>
     
     <summary type="html">
     
-      前提准备
-准备了3台机器，一个master节点，两个node节点
-
-
-
-进入到 master 节点
-
-1
-
-
-vagrant ssh k8s-master
-
-
-查看下有哪些节点
-
-1
-
-
-kubectl get node
-
-
-
-
-kubectl 自动补全
+      kubectl 自动补全
 设置自动补全
+
+通过下面命令可以看到 kubectl 在不同的平台上面实现自动补全的方式
+
+1
+
+
+kubectl completion -h
+
 
  * Linux
 
@@ -94,14 +86,14 @@ source &lt;(kubectl completion bash)
  * Mac
 
 1
+2
+3
+4
 
 
+# Load the kubectl completion code for zsh[1] into the current shell
 source &lt;(kubectl completion zsh)
-
-
-完成之后当使用 kubectl get ,然后按下 tab 键，就会提示一些内容
-
-再比如 输入 kubectl get n,然后按下
+# Set the kubectl completion code for zsh[1
     
     </summary>
     
@@ -118,7 +110,7 @@ source &lt;(kubectl completion zsh)
     <link href="https://notes.xuepincat.com/2020/08/02/DevOps-%E4%BD%BF%E7%94%A8Kubeadm%E6%90%AD%E5%BB%BA%E5%A4%9A%E8%8A%82%E7%82%B9K8S%E9%9B%86%E7%BE%A4/"/>
     <id>https://notes.xuepincat.com/2020/08/02/DevOps-%E4%BD%BF%E7%94%A8Kubeadm%E6%90%AD%E5%BB%BA%E5%A4%9A%E8%8A%82%E7%82%B9K8S%E9%9B%86%E7%BE%A4/</id>
     <published>2020-08-02T15:54:23.000Z</published>
-    <updated>2020-08-23T17:20:03.698Z</updated>
+    <updated>2020-08-25T15:26:17.045Z</updated>
     
     <summary type="html">
     
@@ -171,6 +163,8 @@ source &lt;(kubectl completion zsh)
 44
 45
 46
+47
+48
 
 
 # -*- mode: ruby -*-
@@ -180,7 +174,7 @@ Vagrant.require_version &quot;&gt;= 1.6.0&quot;
 
 boxes = [
     {
-        :
+   
     
     </summary>
     

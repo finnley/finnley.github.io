@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-24 21:34:22" itemprop="dateModified" datetime="2020-08-24T21:34:22+08:00">2020-08-24</time>
+                <time title="Modified: 2020-08-25 07:39:45" itemprop="dateModified" datetime="2020-08-25T07:39:45+08:00">2020-08-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,6 +277,13 @@ kubectl get node
 
 
 从返回的信息可以看到有 NAME, STATUS, ROLES, AGE, VERSION这些信息
+
+除此之外，可以通过下面命令指定某个具体 node
+
+1
+
+
+kubectl get node
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/08/16/DevOps-k8s%E8%8A%82%E7%82%B9%E5%92%8C%E6%A0%87%E7%AD%BE/#more" rel="contents">
@@ -334,7 +341,7 @@ kubectl get node
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-16 11:47:30" itemprop="dateModified" datetime="2020-08-16T11:47:30+08:00">2020-08-16</time>
+                <time title="Modified: 2020-08-25 23:48:48" itemprop="dateModified" datetime="2020-08-25T23:48:48+08:00">2020-08-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -357,31 +364,16 @@ kubectl get node
     <div class="post-body" itemprop="articleBody">
 
       
-          前提准备
-准备了3台机器，一个master节点，两个node节点
-
-
-
-进入到 master 节点
-
-1
-
-
-vagrant ssh k8s-master
-
-
-查看下有哪些节点
-
-1
-
-
-kubectl get node
-
-
-
-
-kubectl 自动补全
+          kubectl 自动补全
 设置自动补全
+
+通过下面命令可以看到 kubectl 在不同的平台上面实现自动补全的方式
+
+1
+
+
+kubectl completion -h
+
 
  * Linux
 
@@ -394,14 +386,14 @@ source <(kubectl completion bash)
  * Mac
 
 1
+2
+3
+4
 
 
+# Load the kubectl completion code for zsh[1] into the current shell
 source <(kubectl completion zsh)
-
-
-完成之后当使用 kubectl get ,然后按下 tab 键，就会提示一些内容
-
-再比如 输入 kubectl get n,然后按下
+# Set the kubectl completion code for zsh[1
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/08/15/DevOps-kubectl%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/#more" rel="contents">
@@ -459,7 +451,7 @@ source <(kubectl completion zsh)
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-24 01:20:03" itemprop="dateModified" datetime="2020-08-24T01:20:03+08:00">2020-08-24</time>
+                <time title="Modified: 2020-08-25 23:26:17" itemprop="dateModified" datetime="2020-08-25T23:26:17+08:00">2020-08-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -531,6 +523,8 @@ source <(kubectl completion zsh)
 44
 45
 46
+47
+48
 
 
 # -*- mode: ruby -*-
@@ -540,7 +534,7 @@ Vagrant.require_version ">= 1.6.0"
 
 boxes = [
     {
-        :
+   
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/08/02/DevOps-%E4%BD%BF%E7%94%A8Kubeadm%E6%90%AD%E5%BB%BA%E5%A4%9A%E8%8A%82%E7%82%B9K8S%E9%9B%86%E7%BE%A4/#more" rel="contents">
