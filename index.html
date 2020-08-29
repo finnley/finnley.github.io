@@ -211,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/08/16/DevOps-k8s%E8%8A%82%E7%82%B9%E5%92%8C%E6%A0%87%E7%AD%BE/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/08/16/DevOps-Node,Label,Pod/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -225,7 +225,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/08/16/DevOps-k8s%E8%8A%82%E7%82%B9%E5%92%8C%E6%A0%87%E7%AD%BE/" class="post-title-link" itemprop="url">DevOps-k8s节点和标签</a>
+            <a href="/2020/08/16/DevOps-Node,Label,Pod/" class="post-title-link" itemprop="url">DevOps-Node,Label,Pod</a>
         </h2>
 
         <div class="post-meta">
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-25 07:39:45" itemprop="dateModified" datetime="2020-08-25T07:39:45+08:00">2020-08-25</time>
+                <time title="Modified: 2020-08-30 01:56:48" itemprop="dateModified" datetime="2020-08-30T01:56:48+08:00">2020-08-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -265,10 +265,11 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          节点
+          Node
 对于一个集群会包含几个节点，一个是 master 节点，另外还有一些 worker 节点，在 master 节点上会运行一些核心服务，比如调度，API服务等，在 worker 节点上主要完成一些任务的调度，比如部署一些容器或者 APP ，一般会选择一些特定的 node 也就是 worker 节点上进行部署
 
-可以通过下面命令获取当前集群上有哪些节点
+查看节点信息
+ 1. 可以通过下面命令获取当前集群上有哪些节点
 
 1
 
@@ -276,17 +277,16 @@
 kubectl get node
 
 
-从返回的信息可以看到有 NAME, STATUS, ROLES, AGE, VERSION这些信息
 
-除此之外，可以通过下面命令指定某个具体 node
+
+从返回的信息比较精简，可以看到有 NAME, STATUS, ROLES, AGE, VERSION这些信息
+
+ 2. 可以通过下面命令指定某个具体 node
 
 1
-
-
-kubectl get node
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/08/16/DevOps-k8s%E8%8A%82%E7%82%B9%E5%92%8C%E6%A0%87%E7%AD%BE/#more" rel="contents">
+              <a class="btn" href="/2020/08/16/DevOps-Node,Label,Pod/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -341,7 +341,7 @@ kubectl get node
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-25 23:48:48" itemprop="dateModified" datetime="2020-08-25T23:48:48+08:00">2020-08-25</time>
+                <time title="Modified: 2020-08-29 23:52:10" itemprop="dateModified" datetime="2020-08-29T23:52:10+08:00">2020-08-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -451,7 +451,7 @@ source <(kubectl completion zsh)
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-08-25 23:26:17" itemprop="dateModified" datetime="2020-08-25T23:26:17+08:00">2020-08-25</time>
+                <time title="Modified: 2020-08-29 23:27:43" itemprop="dateModified" datetime="2020-08-29T23:27:43+08:00">2020-08-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">

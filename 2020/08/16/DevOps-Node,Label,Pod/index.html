@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Node 对于一个集群会包含几个节点，一个是 master 节点，另外还有一些 worker 节点，在 master 节点上会运行一些核心服务，比如调度，API服务等，在 worker 节点上主要完成一些任务的调度，比如部署一些容器或者 APP ，一般会选择一些特定的 node 也就是 worker 节点上进行部署  查看节点信息  1. 可以通过下面命令获取当前集群上有哪些节点  1   kub">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DevOps-Node,Label,Pod">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/08/16/DevOps-Node,Label,Pod/index.html">
+<meta property="og:site_name" content="Notes">
+<meta property="og:description" content="Node 对于一个集群会包含几个节点，一个是 master 节点，另外还有一些 worker 节点，在 master 节点上会运行一些核心服务，比如调度，API服务等，在 worker 节点上主要完成一些任务的调度，比如部署一些容器或者 APP ，一般会选择一些特定的 node 也就是 worker 节点上进行部署  查看节点信息  1. 可以通过下面命令获取当前集群上有哪些节点  1   kub">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://images.notes.xuepincat.com/devops/node/1.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/devops/node/2.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/devops/node/3.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/devops/node/4.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/devops/node/5.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/devops/label/1.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/devops/label/2.png">
+<meta property="og:image" content="http://images.notes.xuepincat.com/devops/label/3.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/devops/label/4.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/devops/label/5.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/devops/label/6.png">
+<meta property="article:published_time" content="2020-08-16T04:13:32.000Z">
+<meta property="article:modified_time" content="2020-08-29T17:56:48.244Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="DevOps k8s">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://images.notes.xuepincat.com/devops/node/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/08/16/DevOps-Node,Label,Pod/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>DevOps-Node,Label,Pod | Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/08/16/DevOps-Node,Label,Pod/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          DevOps-Node,Label,Pod
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-08-16 12:13:32" itemprop="dateCreated datePublished" datetime="2020-08-16T12:13:32+08:00">2020-08-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-08-30 01:56:48" itemprop="dateModified" datetime="2020-08-30T01:56:48+08:00">2020-08-30</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/DevOps/" itemprop="url" rel="index"><span itemprop="name">DevOps</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p>对于一个集群会包含几个节点，一个是 <code>master</code> 节点，另外还有一些 <code>worker</code> 节点，在 <code>master</code> 节点上会运行一些核心服务，比如调度，API服务等，在 <code>worker</code> 节点上主要完成一些任务的调度，比如部署一些容器或者 APP ，一般会选择一些特定的 node 也就是 worker 节点上进行部署</p>
+<h4 id="查看节点信息"><a href="#查看节点信息" class="headerlink" title="查看节点信息"></a>查看节点信息</h4><ol>
+<li>可以通过下面命令获取当前集群上有哪些节点</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get node</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/devops/node/1.png" alt=""></p>
+<p>从返回的信息比较精简，可以看到有 NAME, STATUS, ROLES, AGE, VERSION这些信息</p>
+<ol start="2">
+<li>可以通过下面命令指定某个具体 node</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get node k8s-master</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/devops/node/2.png" alt=""></p>
+<p>这样就可以返回我们想要查看的名字的节点信息</p>
+<ol start="3">
+<li>如果想要查看某个node的详细信息,可以通过下面命令</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe node k8s-master</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/devops/node/3.png" alt=""></p>
+<p><img src="http://images.notes.xuepincat.com/devops/node/4.png" alt=""></p>
+<p>从返回的详细信息里面可以看到有一些基本信息外还可以看到 Label, Capacity(物理信息如CPU，内存等)，System Info(系统信息)，一些在 master 节点上运行的 Container，还有一些cpu，memory的使用情况</p>
+<ol start="4">
+<li>通过 <code>-o</code> 参数输出信息</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get node -o wide</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/devops/node/5.png" alt=""></p>
+<p>不光有参数 wide,还可以使用 yaml,将信息以yaml格式进行输出,如</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get node -o yaml</span><br></pre></td></tr></table></figure>
+
+<p>除了 yaml 格式以外，还可以输出 json 格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get node -o json</span><br></pre></td></tr></table></figure>
+
+<h2 id="Label"><a href="#Label" class="headerlink" title="Label"></a>Label</h2><p>当使用 <code>kubectl describe node k8s-master</code> 命令的时候在上面看到一些 <code>Labels</code></p>
+<p><img src="http://images.notes.xuepincat.com/devops/label/1.png" alt=""></p>
+<p>这些 <code>label</code> 像 <code>key-value</code> 的格式</p>
+<p>label 起到了 <code>过滤</code> 的作用，比如商品有一些标签，用户可以把相同标签的商品过滤出来</p>
+<h4 id="获取-label"><a href="#获取-label" class="headerlink" title="获取 label"></a>获取 label</h4><p>可以使用下面命令将节点的标签labels显示出来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get node --show-labels</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/devops/label/2.png" alt=""></p>
+<h4 id="设置-label"><a href="#设置-label" class="headerlink" title="设置 label"></a>设置 label</h4><p>我们可以给k8s对象设置label，比如为k8s-master这个node添加一个label <code>env=test</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label node k8s-master env&#x3D;test</span><br></pre></td></tr></table></figure>
+
+<p><img src="http://images.notes.xuepincat.com/devops/label/3.png" alt=""></p>
+<h4 id="删除-label"><a href="#删除-label" class="headerlink" title="删除 label"></a>删除 label</h4><p>只需要传递 label 的名字后跟 <code>-</code> 即可删除</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label node k8s-master env-</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/devops/label/4.png" alt=""></p>
+<h4 id="roles"><a href="#roles" class="headerlink" title="roles"></a>roles</h4><p>通过命令 <code>kubectl get node</code> 看到只有 master 节点具有 Roles,其他两个 worker 节点不具备角色</p>
+<p><img src="https://images.notes.xuepincat.com/devops/label/5.png" alt=""></p>
+<p>其实 <code>roles</code> 是一种特殊的 <code>label</code>,在显示label的时候里面是有一个叫 <code>node-role.kubernetes.io/master=</code> 的标签，这个就是设置 <code>role</code> 的 label</p>
+<p>设置 node1 和 node2 为 worker</p>
+<ul>
+<li>node1:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label node k8s-node1 node-role.kubernetes.io&#x2F;worker&#x3D;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>node2:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl label node k8s-node2 node-role.kubernetes.io&#x2F;worker&#x3D;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/devops/label/6.png" alt=""></p>
+<h2 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h2><p>一个 Pod 中可能存在多个 Container,也就是说一个Pod中只少有一个 Container</p>
+<p>如何将一组容器划分为一个 Pod 呢？它们之间必然有一些共同的特性</p>
+<ol>
+<li><p>一个或者一组应用容器，它们分享物理资源，比如 volume</p>
+</li>
+<li><p>分享相同的命名空间的容器</p>
+</li>
+</ol>
+<p>比如网络空间,具有相同的IP地址，就类似与两个容器运行在一台机器上，如果他们之间要通信是没有限制的，因为在同一台机器上，就可以通过127.0.0.1，就相当于在一台电脑上启了两个进程，比如一个后台，一个数据库，它们之间是可以相互通信的</p>
+<ol start="3">
+<li>Pod 是k8s中 <code>最小</code> 的调度单位</li>
+</ol>
+<p>k8s 有个组件叫 scheduler,当给k8s下达命令创建pod时，scheduler会到k8s的节点上看应该将pod创建在哪个节点上，这就是调度，调度是以pod为单位的，并不是以容器为单位</p>
+<p>同一个 pod 的容器肯定是在同一个节点上，不会被分到两个不同的节点上，因为pod已经是最小的了</p>
+<h4 id="Pod-的定义"><a href="#Pod-的定义" class="headerlink" title="Pod 的定义"></a>Pod 的定义</h4><p>创建一个 <code>pod</code> 的目录，在该目录中创建一个名为 <code>nginx_busybox.yml</code> 的文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx-busybox</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80</span><br><span class="line">  - name: busybox</span><br><span class="line">    image: busybox</span><br><span class="line">    command: [&quot;&#x2F;bin&#x2F;sh&quot;]</span><br><span class="line">    args: [&quot;-c&quot;, &quot;while true; do echo hello; sleep 10;done&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>文件中定义了 pod 的名称是 <code>nginx-busybox</code>,该pod中有两个容器，一个是nginx,一个是busybox</p>
+<h4 id="创建-Pod"><a href="#创建-Pod" class="headerlink" title="创建 Pod"></a>创建 Pod</h4><p>当前k8s环境是minikube</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl create -f nginx_busybox.yml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  pod git:(master) ✗ kubectl create -f nginx_busybox.yml</span><br><span class="line">pod&#x2F;nginx-busybox created</span><br><span class="line">➜  pod git:(master) ✗</span><br></pre></td></tr></table></figure>
+
+<p>这样就创建了一个pod</p>
+<h4 id="查看创建状态"><a href="#查看创建状态" class="headerlink" title="查看创建状态"></a>查看创建状态</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  pod git:(master) ✗ kubectl get pod</span><br><span class="line">NAME            READY   STATUS    RESTARTS   AGE</span><br><span class="line">nginx-busybox   2&#x2F;2     Running   0          57s</span><br><span class="line">➜  pod git:(master) ✗</span><br></pre></td></tr></table></figure>
+
+<p>看到 READY 是 <code>2/2</code> 表示这个pod中的两个容器创建成功，并且 STATUS 都是 Running 运行状态</p>
+<p>也可以通过 <code>-o wide</code> 参数查看pod的详细信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod -o wide</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">➜  pod git:(master) ✗ kubectl get pod -o wide</span><br><span class="line">NAME            READY   STATUS    RESTARTS   AGE   IP           NODE       NOMINATED NODE   READINESS GATES</span><br><span class="line">nginx-busybox   2&#x2F;2     Running   0          3m    172.17.0.3   minikube   &lt;none&gt;           &lt;none&gt;</span><br><span class="line">➜  pod git:(master) ✗</span><br></pre></td></tr></table></figure>
+
+<p><code>172.17.0.3</code> 这个IP地址是nginx和busybox共享的一个地址</p>
+<p>如果想要看到更相信信息可以使用 <code>describe</code> 参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pod nginx-busybox</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line">➜  pod git:(master) ✗ kubectl describe pod nginx-busybox</span><br><span class="line">Name:         nginx-busybox</span><br><span class="line">Namespace:    default</span><br><span class="line">Priority:     0</span><br><span class="line">Node:         minikube&#x2F;192.168.64.2</span><br><span class="line">Start Time:   Sun, 30 Aug 2020 01:33:50 +0800</span><br><span class="line">Labels:       &lt;none&gt;</span><br><span class="line">Annotations:  &lt;none&gt;</span><br><span class="line">Status:       Running</span><br><span class="line">IP:           172.17.0.3</span><br><span class="line">IPs:</span><br><span class="line">  IP:  172.17.0.3</span><br><span class="line">Containers:</span><br><span class="line">  nginx:</span><br><span class="line">    Container ID:   docker:&#x2F;&#x2F;f8ba55111dc140e036bb772ecb179f58e11f970b63a2a9090a15e0c867148f09</span><br><span class="line">    Image:          nginx</span><br><span class="line">    Image ID:       docker-pullable:&#x2F;&#x2F;nginx@sha256:b0ad43f7ee5edbc0effbc14645ae7055e21bc1973aee5150745632a24a752661</span><br><span class="line">    Port:           80&#x2F;TCP</span><br><span class="line">    Host Port:      0&#x2F;TCP</span><br><span class="line">    State:          Running</span><br><span class="line">      Started:      Sun, 30 Aug 2020 01:34:16 +0800</span><br><span class="line">    Ready:          True</span><br><span class="line">    Restart Count:  0</span><br><span class="line">    Environment:    &lt;none&gt;</span><br><span class="line">    Mounts:</span><br><span class="line">      &#x2F;var&#x2F;run&#x2F;secrets&#x2F;kubernetes.io&#x2F;serviceaccount from default-token-5qgrc (ro)</span><br><span class="line">  busybox:</span><br><span class="line">    Container ID:  docker:&#x2F;&#x2F;ed230c8f3886588efbbde56d8ed4b838d1a0d7b4582851eeca9a6ebadc4da6ce</span><br><span class="line">    Image:         busybox</span><br><span class="line">    Image ID:      docker-pullable:&#x2F;&#x2F;busybox@sha256:4f47c01fa91355af2865ac10fef5bf6ec9c7f42ad2321377c21e844427972977</span><br><span class="line">    Port:          &lt;none&gt;</span><br><span class="line">    Host Port:     &lt;none&gt;</span><br><span class="line">    Command:</span><br><span class="line">      &#x2F;bin&#x2F;sh</span><br><span class="line">    Args:</span><br><span class="line">      -c</span><br><span class="line">      while true; do echo hello; sleep 10;done</span><br><span class="line">    State:          Running</span><br><span class="line">      Started:      Sun, 30 Aug 2020 01:34:26 +0800</span><br><span class="line">    Ready:          True</span><br><span class="line">    Restart Count:  0</span><br><span class="line">    Environment:    &lt;none&gt;</span><br><span class="line">    Mounts:</span><br><span class="line">      &#x2F;var&#x2F;run&#x2F;secrets&#x2F;kubernetes.io&#x2F;serviceaccount from default-token-5qgrc (ro)</span><br><span class="line">Conditions:</span><br><span class="line">  Type              Status</span><br><span class="line">  Initialized       True</span><br><span class="line">  Ready             True</span><br><span class="line">  ContainersReady   True</span><br><span class="line">  PodScheduled      True</span><br><span class="line">Volumes:</span><br><span class="line">  default-token-5qgrc:</span><br><span class="line">    Type:        Secret (a volume populated by a Secret)</span><br><span class="line">    SecretName:  default-token-5qgrc</span><br><span class="line">    Optional:    false</span><br><span class="line">QoS Class:       BestEffort</span><br><span class="line">Node-Selectors:  &lt;none&gt;</span><br><span class="line">Tolerations:     node.kubernetes.io&#x2F;not-ready:NoExecute for 300s</span><br><span class="line">                 node.kubernetes.io&#x2F;unreachable:NoExecute for 300s</span><br><span class="line">Events:</span><br><span class="line">  Type    Reason     Age    From               Message</span><br><span class="line">  ----    ------     ----   ----               -------</span><br><span class="line">  Normal  Scheduled  5m3s   default-scheduler  Successfully assigned default&#x2F;nginx-busybox to minikube</span><br><span class="line">  Normal  Pulling    5m2s   kubelet, minikube  Pulling image &quot;nginx&quot;</span><br><span class="line">  Normal  Pulled     4m37s  kubelet, minikube  Successfully pulled image &quot;nginx&quot;</span><br><span class="line">  Normal  Created    4m37s  kubelet, minikube  Created container nginx</span><br><span class="line">  Normal  Started    4m37s  kubelet, minikube  Started container nginx</span><br><span class="line">  Normal  Pulling    4m37s  kubelet, minikube  Pulling image &quot;busybox&quot;</span><br><span class="line">  Normal  Pulled     4m28s  kubelet, minikube  Successfully pulled image &quot;busybox&quot;</span><br><span class="line">  Normal  Created    4m28s  kubelet, minikube  Created container busybox</span><br><span class="line">  Normal  Started    4m27s  kubelet, minikube  Started container busybox</span><br><span class="line">➜  pod git:(master) ✗</span><br></pre></td></tr></table></figure>
+
+<h4 id="进入pod中的容器"><a href="#进入pod中的容器" class="headerlink" title="进入pod中的容器"></a>进入pod中的容器</h4><p>比如想运行一个查看时间的命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl exec nginx-busybox date</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  pod git:(master) ✗ kubectl exec nginx-busybox date</span><br><span class="line">kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.</span><br><span class="line">Defaulting container name to nginx.</span><br><span class="line">Use &#39;kubectl describe pod&#x2F;nginx-busybox -n default&#39; to see all of the containers in this pod.</span><br><span class="line">Sat Aug 29 17:40:52 UTC 2020</span><br><span class="line">➜  pod git:(master) ✗</span><br></pre></td></tr></table></figure>
+
+<p>会看到输出了一个时间，但是这个时间是容器nginx的时间，因为从返回的信息中可以看到默认的容器是nginx（Defaulting container name to nginx.）</p>
+<p>如果想要让date命令在 busybox 这个容器中执行可以 <code>-c</code> 参数来指定哪个容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl exec nginx-busybox -c nginx date</span><br><span class="line">kubectl exec nginx-busybox -c busybox date</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">➜  pod git:(master) ✗ kubectl exec nginx-busybox -c nginx date</span><br><span class="line">kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.</span><br><span class="line">Sat Aug 29 17:44:22 UTC 2020</span><br><span class="line">➜  pod git:(master) ✗ kubectl exec nginx-busybox -c busybox date</span><br><span class="line">kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.</span><br><span class="line">Sat Aug 29 17:44:29 UTC 2020</span><br><span class="line">➜  pod git:(master) ✗</span><br></pre></td></tr></table></figure>
+
+<p>也可以查看下所指容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubectl exec nginx-busybox -c nginx hostname</span><br><span class="line">kubectl exec nginx-busybox -c busybox hostname</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">➜  pod git:(master) ✗ kubectl exec nginx-busybox -c nginx hostname</span><br><span class="line">kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.</span><br><span class="line">nginx-busybox</span><br><span class="line">➜  pod git:(master) ✗ kubectl exec nginx-busybox -c busybox hostname</span><br><span class="line">kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.</span><br><span class="line">nginx-busybox</span><br><span class="line">➜  pod git:(master) ✗</span><br></pre></td></tr></table></figure>
+
+<p>如果想进入shell里面可以使用 <code>-it</code> 参数,默认会进入到nginx的shell中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl exec -it nginx-busybox sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">➜  pod git:(master) ✗ kubectl exec -it nginx-busybox sh</span><br><span class="line">kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.</span><br><span class="line">Defaulting container name to nginx.</span><br><span class="line">Use &#39;kubectl describe pod&#x2F;nginx-busybox -n default&#39; to see all of the containers in this pod.</span><br><span class="line">#</span><br><span class="line">#</span><br><span class="line">#</span><br><span class="line">#</span><br></pre></td></tr></table></figure>
+
+<p>如果想进入 busybox 容器的shell中，需要使用 <code>-c</code> 参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl exec -it nginx-busybox -c busybox sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">➜  pod git:(master) ✗ kubectl exec -it nginx-busybox -c busybox sh</span><br><span class="line">kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.</span><br><span class="line">&#x2F; #</span><br><span class="line">&#x2F; #</span><br><span class="line">&#x2F; #</span><br></pre></td></tr></table></figure>
+
+<p>因为nginx和busybox具有相同的网络命名空间，nginx负责提供web服务，就可以使用 <code>wget 127.0.0.1</code> 进行访问</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">➜  pod git:(master) ✗ kubectl exec -it nginx-busybox -c busybox sh</span><br><span class="line">kubectl exec [POD] [COMMAND] is DEPRECATED and will be removed in a future version. Use kubectl kubectl exec [POD] -- [COMMAND] instead.</span><br><span class="line">&#x2F; #</span><br><span class="line">&#x2F; #</span><br><span class="line">&#x2F; # ip a</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1000</span><br><span class="line">    link&#x2F;loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1&#x2F;8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: sit0@NONE: &lt;NOARP&gt; mtu 1480 qdisc noop qlen 1000</span><br><span class="line">    link&#x2F;sit 0.0.0.0 brd 0.0.0.0</span><br><span class="line">15: eth0@if16: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue</span><br><span class="line">    link&#x2F;ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.17.0.3&#x2F;16 brd 172.17.255.255 scope global eth0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">&#x2F; #</span><br><span class="line">&#x2F; #</span><br><span class="line">&#x2F; # wget 127.0.0.1</span><br><span class="line">Connecting to 127.0.0.1 (127.0.0.1:80)</span><br><span class="line">saving to &#39;index.html&#39;</span><br><span class="line">index.html           100% |*******************************************************************|   612  0:00:00 ETA</span><br><span class="line">&#39;index.html&#39; saved</span><br><span class="line">&#x2F; #</span><br><span class="line">&#x2F; #</span><br><span class="line">&#x2F; # more index.html</span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;title&gt;Welcome to nginx!&lt;&#x2F;title&gt;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">    body &#123;</span><br><span class="line">        width: 35em;</span><br><span class="line">        margin: 0 auto;</span><br><span class="line">        font-family: Tahoma, Verdana, Arial, sans-serif;</span><br><span class="line">    &#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br><span class="line">&lt;&#x2F;head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;h1&gt;Welcome to nginx!&lt;&#x2F;h1&gt;</span><br><span class="line">&lt;p&gt;If you see this page, the nginx web server is successfully installed and</span><br><span class="line">working. Further configuration is required.&lt;&#x2F;p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;For online documentation and support please refer to</span><br><span class="line">&lt;a href&#x3D;&quot;http:&#x2F;&#x2F;nginx.org&#x2F;&quot;&gt;nginx.org&lt;&#x2F;a&gt;.&lt;br&#x2F;&gt;</span><br><span class="line">Commercial support is available at</span><br><span class="line">&lt;a href&#x3D;&quot;http:&#x2F;&#x2F;nginx.com&#x2F;&quot;&gt;nginx.com&lt;&#x2F;a&gt;.&lt;&#x2F;p&gt;</span><br><span class="line"></span><br><span class="line">&lt;p&gt;&lt;em&gt;Thank you for using nginx.&lt;&#x2F;em&gt;&lt;&#x2F;p&gt;</span><br><span class="line">&lt;&#x2F;body&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br><span class="line">&#x2F; #</span><br></pre></td></tr></table></figure>
+
+<p>可以获取到index.html就表示它们是可以相互访问的，分享了共同的网络命令空间</p>
+<h4 id="删除-Pod"><a href="#删除-Pod" class="headerlink" title="删除 Pod"></a>删除 Pod</h4><p>删除 nginx_busybox.yml 中定义的pod</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete -f nginx_busybox.yml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">➜  pod git:(master) ✗ kubectl delete -f nginx_busybox.yml</span><br><span class="line">pod &quot;nginx-busybox&quot; deleted</span><br><span class="line">➜  pod git:(master) ✗</span><br><span class="line">➜  pod git:(master) ✗ kubectl get pod</span><br><span class="line">No resources found in default namespace.</span><br><span class="line">➜  pod git:(master) ✗</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/DevOps-k8s/" rel="tag"># DevOps k8s</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/15/DevOps-kubectl%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" rel="prev" title="kubectl基本使用">
+      <i class="fa fa-chevron-left"></i> kubectl基本使用
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Node"><span class="nav-number">1.</span> <span class="nav-text">Node</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看节点信息"><span class="nav-number">1.0.1.</span> <span class="nav-text">查看节点信息</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Label"><span class="nav-number">2.</span> <span class="nav-text">Label</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#获取-label"><span class="nav-number">2.0.1.</span> <span class="nav-text">获取 label</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置-label"><span class="nav-number">2.0.2.</span> <span class="nav-text">设置 label</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-label"><span class="nav-number">2.0.3.</span> <span class="nav-text">删除 label</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#roles"><span class="nav-number">2.0.4.</span> <span class="nav-text">roles</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pod"><span class="nav-number">3.</span> <span class="nav-text">Pod</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Pod-的定义"><span class="nav-number">3.0.1.</span> <span class="nav-text">Pod 的定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-Pod"><span class="nav-number">3.0.2.</span> <span class="nav-text">创建 Pod</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看创建状态"><span class="nav-number">3.0.3.</span> <span class="nav-text">查看创建状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#进入pod中的容器"><span class="nav-number">3.0.4.</span> <span class="nav-text">进入pod中的容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除-Pod"><span class="nav-number">3.0.5.</span> <span class="nav-text">删除 Pod</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="John Doe"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">167</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
