@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-08-29T17:56:48.244Z</updated>
+  <updated>2020-08-30T03:58:46.973Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -17,11 +17,11 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>DevOps-Node,Label,Pod</title>
-    <link href="https://notes.xuepincat.com/2020/08/16/DevOps-Node,Label,Pod/"/>
-    <id>https://notes.xuepincat.com/2020/08/16/DevOps-Node,Label,Pod/</id>
+    <title>DevOps-kubenetes中的基本概念和操作</title>
+    <link href="https://notes.xuepincat.com/2020/08/16/DevOps-kubenetes%E4%B8%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8C%E6%93%8D%E4%BD%9C/"/>
+    <id>https://notes.xuepincat.com/2020/08/16/DevOps-kubenetes%E4%B8%AD%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8C%E6%93%8D%E4%BD%9C/</id>
     <published>2020-08-16T04:13:32.000Z</published>
-    <updated>2020-08-29T17:56:48.244Z</updated>
+    <updated>2020-08-30T03:58:46.973Z</updated>
     
     <summary type="html">
     
@@ -51,7 +51,7 @@ kubectl get node
       <category term="DevOps" scheme="https://notes.xuepincat.com/categories/DevOps/"/>
     
     
-      <category term="DevOps k8s" scheme="https://notes.xuepincat.com/tags/DevOps-k8s/"/>
+      <category term="DevOps k8s node label pod namespace" scheme="https://notes.xuepincat.com/tags/DevOps-k8s-node-label-pod-namespace/"/>
     
   </entry>
   
