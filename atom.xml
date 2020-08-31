@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-08-30T03:58:46.973Z</updated>
+  <updated>2020-08-31T16:27:54.255Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,71 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ComputerNetwork-Classic Protocal and Data Package</title>
+    <link href="https://notes.xuepincat.com/2020/08/30/ComputerNetwork-Classic-Protocal-and-Data-Package/"/>
+    <id>https://notes.xuepincat.com/2020/08/30/ComputerNetwork-Classic-Protocal-and-Data-Package/</id>
+    <published>2020-08-30T15:43:59.000Z</published>
+    <updated>2020-08-31T16:27:54.255Z</updated>
+    
+    <summary type="html">
+    
+      TCP 数据包构成
+
+
+ 1. 以太网标头
+
+包含 MAC 地址信息
+
+ 2. IP 标头
+
+包含对方 IP 信息
+
+ 3. TCP 标头
+
+包含 TCP 传输类型，以及数据包长度等
+
+ 4. 应用层数据包
+
+
+
+如上图所示，上层协议的数据包都是由下层的数据包包含所构成，比如物理层包含IP数据包，IP数据包又包含TCP段，TCP段中又包含了用户数据
+
+物理层：物理层包含了以太网的首部和尾部，以及IP数据包
+
+IP层：IP数据包包含了IP的首部，以及TCP段，TCP段是常用的抓包的常用层级，用来分析三次握手，四次挥手，比如POST了一个超过1480字节的数据包，那么该数据包就需要分多个数据包进行
+    
+    </summary>
+    
+    
+      <category term="DevOps" scheme="https://notes.xuepincat.com/categories/DevOps/"/>
+    
+    
+      <category term="TCP" scheme="https://notes.xuepincat.com/tags/TCP/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DevOps-练手一</title>
+    <link href="https://notes.xuepincat.com/2020/08/30/DevOps-%E7%BB%83%E6%89%8B%E4%B8%80/"/>
+    <id>https://notes.xuepincat.com/2020/08/30/DevOps-%E7%BB%83%E6%89%8B%E4%B8%80/</id>
+    <published>2020-08-30T04:29:22.000Z</published>
+    <updated>2020-08-30T06:09:31.052Z</updated>
+    
+    <summary type="html">
+    
+      搭建 GitLab Server
+    
+    </summary>
+    
+    
+      <category term="DevOps" scheme="https://notes.xuepincat.com/categories/DevOps/"/>
+    
+    
+      <category term="DevOps" scheme="https://notes.xuepincat.com/tags/DevOps/"/>
+    
+  </entry>
   
   <entry>
     <title>DevOps-kubenetes中的基本概念和操作</title>
@@ -796,99 +861,6 @@ Node3会在6个主副分片中随机选择3个分片，发送 search request
     
     
       <category term="Elasticsearch" scheme="https://notes.xuepincat.com/tags/Elasticsearch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MacOS10.15 安装PHP7.1</title>
-    <link href="https://notes.xuepincat.com/2020/06/13/MacOS10-15-%E5%AE%89%E8%A3%85PHP7-1/"/>
-    <id>https://notes.xuepincat.com/2020/06/13/MacOS10-15-%E5%AE%89%E8%A3%85PHP7-1/</id>
-    <published>2020-06-13T00:50:33.000Z</published>
-    <updated>2020-07-12T03:33:47.511Z</updated>
-    
-    <summary type="html">
-    
-      查看当前版本
-MAC新版本10.15 系统自带的PHP是7.3
-
-1
-
-
-php -v
-
-
-
-
-查看已有版本
-1
-
-
-brew search php
-
-
-
-
-添加软件源，安装低版本php
-Formula的库默认也是在github上的，其实以前是和brew软件在同一个版本库中，后来分开了，叫做Homebrew-core，意思是官方维护的核心Formula，有官方就有民间，执行以下命令查看你目前有几个Formula库：
-
-1
-
-
-brew tap
-
-
-下面是我机子上的
-
-
-
-可以使用下面命令添加php7.1软件源
-
-1
-
-
-brew tap exolnet/homebrew-deprecated
-
-    
-    </summary>
-    
-    
-      <category term="Mac" scheme="https://notes.xuepincat.com/categories/Mac/"/>
-    
-    
-      <category term="Mac" scheme="https://notes.xuepincat.com/tags/Mac/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Mac安装Homebrew并更换国内镜像源</title>
-    <link href="https://notes.xuepincat.com/2020/06/13/Mac%E5%AE%89%E8%A3%85Homebrew%E5%B9%B6%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/"/>
-    <id>https://notes.xuepincat.com/2020/06/13/Mac%E5%AE%89%E8%A3%85Homebrew%E5%B9%B6%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/</id>
-    <published>2020-06-12T23:38:14.000Z</published>
-    <updated>2020-07-12T03:33:47.696Z</updated>
-    
-    <summary type="html">
-    
-      什么是Homebrew?
-Homebrew 是 mac 的包管理工具，相当于Redhat Linux(Centos/RHEL/Fedora)的 yum 或者Debian Linux(Debian/Ubuntu)的 apt-get ，使用Homebrew能非常方便的下载需要的软件包，比如安装php，直接执行以下语句即可安装：
-
-1
-
-
-brew install php
-
-
-注意：它虽然叫Homebrew，但实际使用的时候，命令是 brew 。
-怎样安装Homebrew
-执行以下命令即可，如果很慢或中断，请开科学上网工具并开启全局模式：
-/usr/bin/ruby -e “$(curl -fsSL
-    
-    </summary>
-    
-    
-      <category term="Mac" scheme="https://notes.xuepincat.com/categories/Mac/"/>
-    
-    
-      <category term="Mac" scheme="https://notes.xuepincat.com/tags/Mac/"/>
     
   </entry>
   
