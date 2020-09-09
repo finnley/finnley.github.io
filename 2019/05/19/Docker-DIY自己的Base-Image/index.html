@@ -21,34 +21,33 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="什么是Container  * 通过 Image 创建 (copy)  先有 image ，然后通过 image 创建 container   * 在 Image layer 之上建立一个 container layer (可读写)  container 是在原先的 image 的基础上增加了一层，叫做 container layer,这一层是可读可写的，而Image 本身是只读的，contain">
+  <meta name="description" content="移除 sudo 1   sudo docker image ls   每次使用docker命令的时候都要使用 sudo ,现在将 sudo 去掉，直接使用 docker image ls 指令,这其实就是让当前用户拥有执行docker指令的权限   1. 创建 docker 用户组，其实这个用户组在安装的时候就已经存在了  1   sudo groupadd docker      2. 将当前用">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Container">
-<meta property="og:url" content="https://notes.xuepincat.com/2019/05/19/7-Container/index.html">
+<meta property="og:title" content="DIY自己的Base Image">
+<meta property="og:url" content="https://notes.xuepincat.com/2019/05/19/Docker-DIY%E8%87%AA%E5%B7%B1%E7%9A%84Base-Image/index.html">
 <meta property="og:site_name" content="Notes">
-<meta property="og:description" content="什么是Container  * 通过 Image 创建 (copy)  先有 image ，然后通过 image 创建 container   * 在 Image layer 之上建立一个 container layer (可读写)  container 是在原先的 image 的基础上增加了一层，叫做 container layer,这一层是可读可写的，而Image 本身是只读的，contain">
+<meta property="og:description" content="移除 sudo 1   sudo docker image ls   每次使用docker命令的时候都要使用 sudo ,现在将 sudo 去掉，直接使用 docker image ls 指令,这其实就是让当前用户拥有执行docker指令的权限   1. 创建 docker 用户组，其实这个用户组在安装的时候就已经存在了  1   sudo groupadd docker      2. 将当前用">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/137.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/138.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/139.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/140.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/141.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/142.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/143.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/144.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/145.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/146.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/147.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/148.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/149.png">
-<meta property="article:published_time" content="2019-05-19T09:37:58.000Z">
-<meta property="article:modified_time" content="2020-05-23T23:14:19.272Z">
-<meta property="article:author" content="John Doe">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/127.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/128.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/129.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/130.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/219.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/131.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/132.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/133.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/134.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/135.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/220.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/136.png">
+<meta property="article:published_time" content="2019-05-19T06:27:33.000Z">
+<meta property="article:modified_time" content="2020-09-08T16:04:02.726Z">
+<meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://notes.xuepincat.com/images/docker/137.png">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/docker/127.png">
 
-<link rel="canonical" href="https://notes.xuepincat.com/2019/05/19/7-Container/">
+<link rel="canonical" href="https://notes.xuepincat.com/2019/05/19/Docker-DIY%E8%87%AA%E5%B7%B1%E7%9A%84Base-Image/">
 
 
 <script id="page-configurations">
@@ -61,7 +60,7 @@
   };
 </script>
 
-  <title>Container | Notes</title>
+  <title>DIY自己的Base Image | Notes</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
     <script>
@@ -229,11 +228,11 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/19/7-Container/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/19/Docker-DIY%E8%87%AA%E5%B7%B1%E7%9A%84Base-Image/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -242,7 +241,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Container
+          DIY自己的Base Image
         </h1>
 
         <div class="post-meta">
@@ -252,14 +251,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-05-19 17:37:58" itemprop="dateCreated datePublished" datetime="2019-05-19T17:37:58+08:00">2019-05-19</time>
+              <time title="Created: 2019-05-19 14:27:33" itemprop="dateCreated datePublished" datetime="2019-05-19T14:27:33+08:00">2019-05-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2020-09-09 00:04:02" itemprop="dateModified" datetime="2020-09-09T00:04:02+08:00">2020-09-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -282,104 +281,124 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="什么是Container"><a href="#什么是Container" class="headerlink" title="什么是Container"></a>什么是Container</h2><ul>
-<li>通过 Image 创建 (copy)</li>
-</ul>
-<p>先有 image ，然后通过 image 创建 container</p>
-<ul>
-<li>在 Image layer 之上建立一个 container layer (可读写)</li>
-</ul>
-<p>container 是在原先的 image 的基础上增加了一层，叫做 container layer,这一层是可读可写的，而Image 本身是只读的，container需要运行程序或者安装软件所以需要一个可写的空间</p>
+        <h2 id="移除-sudo"><a href="#移除-sudo" class="headerlink" title="移除 sudo"></a>移除 sudo</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker image ls</span><br></pre></td></tr></table></figure>
+
+<p>每次使用docker命令的时候都要使用 <code>sudo</code> ,现在将 <code>sudo</code> 去掉，直接使用 <code>docker image ls</code> 指令,这其实就是让当前用户拥有执行docker指令的权限</p>
 <a id="more"></a>
 
-<ul>
-<li><p>类比面向对象: 类和实例</p>
-</li>
-<li><p>Image 负责 app 的存储和分发，Container 负责运行 app</p>
-</li>
-</ul>
-<p><img src="/images/docker/137.png" alt=""></p>
-<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><ol>
-<li>查看环境中有哪些 Image</li>
+<ol>
+<li>创建 docker 用户组，其实这个用户组在安装的时候就已经存在了</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image list</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker</span><br></pre></td></tr></table></figure>
 
-<p>或者 </p>
+<p><img src="/images/docker/127.png" alt=""></p>
+<ol start="2">
+<li>将当前用户添加到docker 的 group 中，vagrant 表示当前用户，docker 表示 docker的group</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gpasswd -a vagrant docker</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/128.png" alt=""></p>
+<ol start="3">
+<li>这个时候去使用docker命令会发现还是会提示权限问题</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/docker/138.png" alt=""></p>
+<p><img src="/images/docker/129.png" alt=""></p>
+<ol start="4">
+<li>重启 Docker 进程</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service docker restart</span><br></pre></td></tr></table></figure>
+
+<p>到这里再去执行docker命令还是会提示权限问题，我们需要退出，重新使用 <code>ssh</code> 连接</p>
+<p><img src="/images/docker/130.png" alt=""></p>
+<h2 id="构建-Base-Image"><a href="#构建-Base-Image" class="headerlink" title="构建 Base Image"></a>构建 Base Image</h2><p>在构建之前，我们先拉取官方提供的一个叫 <code>hello-world</code> 的 image</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull hello-world</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/219.png" alt=""></p>
+<p>这个 <code>hello-world</code> 其实就是一个 Base Image,这个 Base Image 里面包含了一个可执行文件，我们去执行这个image就是去创建一个容器 container,创建容器后就可以启动 <code>run</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<p>这样就会去执行 <code>hello-world</code> container，屏幕中就会打印出一段话</p>
+<p><img src="/images/docker/131.png" alt=""></p>
+<p>现在自己去创建一个 <code>hello-docker</code> 的image</p>
+<ol>
+<li>创建 <code>hello-docker</code> 目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir hello-docker</span><br></pre></td></tr></table></figure>
+
 <ol start="2">
-<li>查看当前环境中正在运行的 Container</li>
+<li>进入目录</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container list</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd hello-docker</span><br></pre></td></tr></table></figure>
 
-<p>或者 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container ls</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/139.png" alt=""></p>
 <ol start="3">
-<li>基于 Image 创建 Container,可以通过下面指令进行创建</li>
+<li>创建一个名为 <code>hello.c</code> 的文件</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run &lt;Image Name&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim hello.c</span><br></pre></td></tr></table></figure>
 
-<p>如：</p>
+<p>如果没有安装vim，需要使用下面指令进行安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y vim</span><br></pre></td></tr></table></figure>
+
+<p>内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;hello docker\n&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>保存退出</p>
+<ol start="4">
+<li>将 <code>hello.c</code> 编译成二进制可执行文件</li>
+</ol>
+<p>如果没有安装 <code>gcc</code> ，可以使用下面命令进行安装 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y gcc</span><br><span class="line">sudo yum install -y glibc-static</span><br></pre></td></tr></table></figure>
+
+<p>开始编译，输出 <code>hello</code> 的可执行文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -static hello.c -o hello</span><br></pre></td></tr></table></figure>
+
+<p>然后就会在当前目录下生成一个 <code>hello</code> 的可执行文件</p>
+<p><img src="/images/docker/132.png" alt=""></p>
+<p>我们可以执行下面指令直接执行这个文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;hello</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/133.png" alt=""></p>
+<ol start="5">
+<li>通过Dockerfile将可执行文件构建打包成Image,首先需要创建 Dockerfile</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim Dockerfile</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>键入内容</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM scratch</span><br><span class="line">ADD hello &#x2F;</span><br><span class="line">CMD [&quot;&#x2F;hello&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>第一行我们可以通过Base Image,在Base Image之上去安装一些软件形成一个新的Image,但是现在就是在写一个Base Image,所以不能从一个Base Image去安装，所以需要从 <code>scratch</code> 安装</p>
+<p>第二行将hello添加到 image 的根目录中</p>
+<p>第三行运行 command,就是运行的根目录下面的 hello , 这个 hello 就是通过第二步添加进来的</p>
+<p>保存退出</p>
+<ol start="6">
+<li>构建</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t finnley&#x2F;hello-docker .</span><br></pre></td></tr></table></figure>
+<p><code>-t</code> 指定Tag</p>
+<p><code>finnley</code> 是我自己取的用户名</p>
+<p><code>hello-docker</code> image的名称</p>
+<p><code>.</code> 表示在当前目录中找 <code>Dockerfile</code></p>
+<p><img src="/images/docker/134.png" alt=""></p>
+<p>Step共分3步，所以这个Image有3层</p>
+<ol start="7">
+<li>查看</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/135.png" alt=""></p>
+<p>可以通过下面命令查看image分层</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker history [docker image id]</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/220.png" alt=""></p>
+<p>可以看到这个image只要两层，第一层是添加了文件，第二层是运行执行命令，在Dockerfile中第一行是 <code>FROM scratch</code> ,表示这里不是基于任何 Base Image 的，所以它不算是一层，所以这里的 Docker Image 只有两层</p>
+<ol start="8">
+<li>运行</li>
+</ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run finnley&#x2F;hello-docker</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/docker/140.png" alt=""></p>
-<p>现在再去使用 <code>docker container ls</code> 查看运行中的 container</p>
-<p><img src="/images/docker/141.png" alt=""></p>
-<p>此时会发现本地并没有运行中的容器，因为之前运行的 <code>hello-docker</code> 在运行之后就退出了，它不是一个常驻内存的进程</p>
-<p>我们可以使用下面指令列举所有容器，包括正在运行的和已经退出的</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container ls -a</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/142.png" alt=""></p>
-<p>图中就可以看到刚才运行的 hello-docker,列表中 COMMAND 一项的值是 <code>/hello</code> , 这个是在 Dockerfile 中写的 <code>CMD [&quot;/hello&quot;]</code>, 执行的就是 <code>hello</code> 的可执行文件，当通过 Image 去创建一个 Container 并运行的时候，它默认会去执行 <code>CMD</code> 里面的命令， 因为这个 <code>CMD</code> 是一个运行完就结束，不是一个常驻内存的进程，所以容器一旦运行后就退出， <code>hello</code> 也就运行结束了</p>
-<p><img src="/images/docker/143.png" alt=""></p>
-<ol start="4">
-<li>运行 centos,然后查看运行中的镜像,还是发现什么都没有，使用 <code>docker container ls -a</code></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker run centos</span><br><span class="line">docker container ls</span><br><span class="line">docker container ls -a</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/144.png" alt=""></p>
-<p>图中可以看到 centos 对应的 <code>STATUS</code> 一栏的值是 <code>Existed</code> , <code>COMMAND</code> 一栏运行的命令是 <code>/bin/bash</code> ，由此可见运行 <code>/bin/bash</code> 也不会常驻内存</p>
-<ol start="5">
-<li>使用交互式运行</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it centos</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/145.png" alt=""></p>
-<p>此时就会进入 centos 的操作系统里面，现在重新打开一个 Terminal ,然后使用命令 <code>docker container ls</code> 查看容器</p>
-<p><img src="/images/docker/146.png" alt=""></p>
-<p>关于 <code>-it</code> 的参数可以使用 <code>docker run --help</code> 指令进行查看具体意思</p>
-<p>在交互式操作页面有就是进入了 centos ，我们可以进行一些操作，如安装软件， 创建文件等等</p>
-<ol start="6">
-<li>可以使用 <code>exit</code> 退出，退出之后 Container 将不再运行</li>
-</ol>
-<p><img src="/images/docker/147.png" alt=""></p>
-<p>使用 <code>docker container ls -a</code> 可以查看刚刚退出运行的容器</p>
-<p><img src="/images/docker/148.png" alt=""></p>
-<ol start="7">
-<li>图中可以看到很多退出的容器记录，我们每创建一次容器，就是在 Image 之上多了一层，列表中有多个centos , 这些 centos 的 Container 就是在原先 Cengos Image 基础之上多可一层，使用下面指令将退出的容器删除</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container rm &lt;Container ID&gt;</span><br></pre></td></tr></table></figure>
-
-<p>如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container rm 01af02e46c67</span><br></pre></td></tr></table></figure>
-
-<p>Container ID 其实也不需要写全，也可以写前面的几个字母就行了</p>
-<p>如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container rm bd</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/149.png" alt=""></p>
-<p>命令 <code>docker container ls -a</code> 和 命令 <code>docker ps -a</code> 具有相同功能</p>
-<p>命令 <code>dcoker container rm &lt;Container ID&gt;</code> 和 <code>docker rm &lt;Container ID&gt;</code> 具有相同功能</p>
-<p>命令 <code>docker image ls</code> 和命令 <code>docker images</code> 具有相同功能</p>
-<p>命令 <code>docker image rm &lt;Image&gt;</code> 和命令 <code>docker rmi &lt;Image&gt;</code> 具有相同功能</p>
-<p>命令 <code>docker container ls -aq</code> 和命令 <code>docker container ls -a | awk {&#39;print$1</code>‘}` 效果一样</p>
-<p>命令 <code>docker rm $(docker container ls -aq)</code> 移除所有退出状态的container</p>
-<p>命令 <code>docker container ls -a1</code> 和命令 <code>docker container ls -a | awk {&#39;print$</code>‘}<code>效果一样，返回第一列的</code>Container ID` ， 此时就可以使用命令 docker rm $(docker container ls -aq) 删除所有 Container</p>
-<p>命令 <code>docker container ls -f &quot;status=exited&quot; -q</code> 列出所有退出的容器</p>
-<p>清除命令 <code>docker rm $(docker container ls -f &quot;status=exited&quot; -q)</code></p>
+<p><img src="/images/docker/136.png" alt=""></p>
 
     </div>
 
@@ -427,12 +446,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/05/19/6-DIY%E8%87%AA%E5%B7%B1%E7%9A%84Base-Image/" rel="prev" title="DIY自己的Base Image">
-      <i class="fa fa-chevron-left"></i> DIY自己的Base Image
+    <a href="/2019/05/19/Docker-Image%E6%A6%82%E8%BF%B0/" rel="prev" title="Docker Image概述">
+      <i class="fa fa-chevron-left"></i> Docker Image概述
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/05/25/8-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84-Docker-%E9%95%9C%E5%83%8F/" rel="next" title="构建自己的 Docker 镜像">
-      构建自己的 Docker 镜像 <i class="fa fa-chevron-right"></i>
+    <a href="/2019/05/19/Docker-Container/" rel="next" title="Container">
+      Container <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -492,15 +511,15 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Container"><span class="nav-number">1.</span> <span class="nav-text">什么是Container</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用命令"><span class="nav-number">2.</span> <span class="nav-text">常用命令</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#移除-sudo"><span class="nav-number">1.</span> <span class="nav-text">移除 sudo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建-Base-Image"><span class="nav-number">2.</span> <span class="nav-text">构建 Base Image</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="John Doe"
+    <img class="site-author-image" itemprop="image" alt="Finnley"
       src="https://images.notes.xuepincat.com/avatar.jpg">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">Finnley</p>
   <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -508,7 +527,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">169</span>
+          <span class="site-state-item-count">168</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -560,7 +579,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
 </div>
 
         

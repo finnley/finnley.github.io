@@ -32,9 +32,15 @@
 <meta property="og:image" content="https://images.notes.xuepincat.com/network/2.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/network/3.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/network/4.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/network/5.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/network/6.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/network/7.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/network/8.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/network/9.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/network/10.png">
 <meta property="article:published_time" content="2020-08-30T15:43:59.000Z">
-<meta property="article:modified_time" content="2020-08-31T16:27:54.255Z">
-<meta property="article:author" content="John Doe">
+<meta property="article:modified_time" content="2020-09-08T15:59:22.028Z">
+<meta property="article:author" content="Finnley">
 <meta property="article:tag" content="TCP">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://images.notes.xuepincat.com/network/1.png">
@@ -224,7 +230,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -250,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-01 00:27:54" itemprop="dateModified" datetime="2020-09-01T00:27:54+08:00">2020-09-01</time>
+                <time title="Modified: 2020-09-08 23:59:22" itemprop="dateModified" datetime="2020-09-08T23:59:22+08:00">2020-09-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -302,8 +308,71 @@
 <p>下面部分是响应状态码是101，使用的是交换协议，交换协议升级后变成websocket</p>
 <p>这个就是握手协议，握手完后websocket就会发送数据包</p>
 <h2 id="TCP-三次握手"><a href="#TCP-三次握手" class="headerlink" title="TCP 三次握手"></a>TCP 三次握手</h2><ul>
-<li>三次握手的最主要目的是保证连接是双工和可靠，可靠更多的是通过重传机制来保证的，双工是指发送和接收是可以同时进行的</li>
+<li><p>三次握手的最主要目的是保证连接是双工和可靠，可靠更多的是通过重传机制来保证的，双工是指发送和接收是可以同时进行的,并且连接的双方都是相互发送和接收</p>
+</li>
+<li><p>因为连接是全双工的，双方都必须受到对方的FIN包及确认才可关闭</p>
+</li>
+<li><p>三次握手连接</p>
+</li>
 </ul>
+<p><img src="https://images.notes.xuepincat.com/network/5.png" alt=""></p>
+<p>首先客户端发送SYN包，seq包去请求连接，服务端响应SYN包和ACK包，表示可以连接，客户端收到相应的收到ACK包去建立连接，至此三次握手结束</p>
+<ul>
+<li>四次挥手关闭</li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/network/6.png" alt=""></p>
+<p>主动连接方发送FIN包请求关闭，被动接收方回复ACK包表示已经收到了请求并且被动接收方完成关闭操作之后回复FIN包表示可以关闭，主动关闭方再回复ACK包表示关闭，至此双方都完成关闭 </p>
+<h2 id="为什么-time-wait-需要等待-2MSL"><a href="#为什么-time-wait-需要等待-2MSL" class="headerlink" title="为什么 time_wait 需要等待 2MSL"></a>为什么 time_wait 需要等待 2MSL</h2><p>MSL: Maximum Segment Lifetime, 30s–1min,最大段生命周期，一个周期是30秒到一分钟</p>
+<p>2MSL 也就是最大两分钟左右</p>
+<ul>
+<li><p>第一个原因是保证TCP协议的全双工连接能够可靠关闭</p>
+</li>
+<li><p>第二个原因是保证这次连接的重复数据段从网络中消失</p>
+</li>
+</ul>
+<h2 id="为什么会出现大量-close-wait"><a href="#为什么会出现大量-close-wait" class="headerlink" title="为什么会出现大量 close_wait"></a>为什么会出现大量 close_wait</h2><ul>
+<li><p>一般首次close_wait会出现在被动关闭方</p>
+</li>
+<li><p>大部分原因是并发请求太多导致</p>
+</li>
+<li><p>被动关闭方未及时释放端口资源导致</p>
+</li>
+</ul>
+<h2 id="为什么TCP需要流量控制"><a href="#为什么TCP需要流量控制" class="headerlink" title="为什么TCP需要流量控制"></a>为什么TCP需要流量控制</h2><ol>
+<li><p>由于通讯双方网速不同，通讯方任一方发送过快都会导致对方消息处理不过来，所以就需要把数据放到缓冲区中</p>
+</li>
+<li><p>如果缓冲区满了，发送区还在疯狂发送，那接收方只能把数据包丢弃。因此需要控制发送速率</p>
+</li>
+<li><p>缓冲区剩余大小称之为接收窗口，用变量 win 表示，如果缓冲区的 win=0,则发送方停止发送</p>
+</li>
+</ol>
+<p><img src="https://images.notes.xuepincat.com/network/7.png" alt=""></p>
+<p>图中长方形小块表示缓冲区的窗口，黄色为空闲窗口，红色表示已经占用的窗口，每次数据交互都会影响数据的变化，因为发送到缓冲区的同时，缓冲区的接收方也在消费窗口的数据</p>
+<p>比如第一次发送了2K的数据，接收方win的变化原来是4个，现在是2个，回复发送方说我还有两个，是一个ACK包，接着发送方再发送了2K的数据，如果接收方在回传之前没有处理，那就正好占满窗口，如果已经处理了1K，所以占用了3个窗口，还剩一个窗口，那么回复的还是ACK包，win=1,窗口还剩一个，最后发送方再发送1K，接收方窗口正好存满，满了之后回复发送方win=0,这样发送方停止发送，这样流量就得到了控制</p>
+<p>当接收方缓冲区有了空间，也就是win&gt;0时，发送方其实有个周期的探测包，探测接收方窗口的大小</p>
+<p>UDP是不需要流量控制的，因为UDP是一种非连接的，不可靠的连接，所以在不可靠的通信的UDP上面，每一次发送就需要绑定一个IP和端口，发送出去就不需要确认了，也就是不需要三次握手，那么流量控制也就不需要了</p>
+<h2 id="为什么TCP需要拥塞控制-如何调整网络负载"><a href="#为什么TCP需要拥塞控制-如何调整网络负载" class="headerlink" title="为什么TCP需要拥塞控制(如何调整网络负载)"></a>为什么TCP需要拥塞控制(如何调整网络负载)</h2><ul>
+<li><p>流量控制和拥塞空中是两个概念，拥塞控制是调节网络的负载</p>
+</li>
+<li><p>接收方网络资源繁忙，因未及时响应ACK会导致发送方重传大量数据，这样将会导致网络拥堵</p>
+</li>
+<li><p>拥塞控制是动态调整win大小，不只是依赖缓冲区大小确定窗口大小</p>
+</li>
+</ul>
+<h4 id="TCP-拥塞控制"><a href="#TCP-拥塞控制" class="headerlink" title="TCP 拥塞控制"></a>TCP 拥塞控制</h4><ol>
+<li>慢开始和拥塞避免</li>
+</ol>
+<p>慢开始是指TCP链接刚刚建立，一点一点提速，试探一下网络的承受能力，以免直接扰乱网络通道秩序</p>
+<p><img src="https://images.notes.xuepincat.com/network/8.png" alt=""></p>
+<p>如图，首先一开始窗口大小是1个， 发送方直接发送一个请求包过去，接收方回复一个，然后发送方直接乘以2翻倍，发送两个，如果两个都返回的话就再次翻倍，发送四个， 然后一次是指数级的提升,乘以2</p>
+<p><img src="https://images.notes.xuepincat.com/network/9.png" alt=""></p>
+<p>如图，首先连接建立好之后先初始话一个拥塞窗口，拥塞窗口是1，然后每过一个往返延迟时间就是1，也就是一个RPT，也就是一个请求回来的时间，它的窗口是直接翻倍，乘以2；慢启动还有一个阈值，阈值是有上限的，如果窗口超过阈值，就会进入拥塞避免的阶段，在该阶段中一个RPT会以加1的形式进行递增；再往后如果遇到网络拥塞，拥塞窗口会直接变成1，然后拥塞避免的阈值会降到当前最大的拥塞窗口的一半，然后还是进入慢启动阶段，然后进入拥塞避免阶段</p>
+<p>比如图中出现已经达到24个拥塞窗口，然后因为突然拥塞直接降为1，那么传输会受到很大影响，由一个很大的值直接变成1，所以后面会上面的算法进行了优化</p>
+<ol start="2">
+<li>快速重传和快速恢复</li>
+</ol>
+<p><img src="https://images.notes.xuepincat.com/network/10.png" alt=""></p>
+<p>如图,优化的是如果受到3个重复ACK就执行快速重传，快速重传会将当前拥塞窗口降为原来的一半，拥塞避免的阈值也降为原来的一半，进入快速恢复的阶段，在这个阶段，因为受到3个重复的ACK，并且这个阶段内重复丢包的数据包就会重新发送一遍，窗口是加1的形式递增，每收到一个加1，直到把所有的包都发送完毕就退出快速恢复阶段进入拥塞避免阶段</p>
 
     </div>
 
@@ -413,15 +482,15 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP-数据包构成"><span class="nav-number">1.</span> <span class="nav-text">TCP 数据包构成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-协议"><span class="nav-number">2.</span> <span class="nav-text">HTTP 协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Websocket-握手协议"><span class="nav-number">3.</span> <span class="nav-text">Websocket 握手协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP-三次握手"><span class="nav-number">4.</span> <span class="nav-text">TCP 三次握手</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP-数据包构成"><span class="nav-number">1.</span> <span class="nav-text">TCP 数据包构成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTP-协议"><span class="nav-number">2.</span> <span class="nav-text">HTTP 协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Websocket-握手协议"><span class="nav-number">3.</span> <span class="nav-text">Websocket 握手协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TCP-三次握手"><span class="nav-number">4.</span> <span class="nav-text">TCP 三次握手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么-time-wait-需要等待-2MSL"><span class="nav-number">5.</span> <span class="nav-text">为什么 time_wait 需要等待 2MSL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么会出现大量-close-wait"><span class="nav-number">6.</span> <span class="nav-text">为什么会出现大量 close_wait</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么TCP需要流量控制"><span class="nav-number">7.</span> <span class="nav-text">为什么TCP需要流量控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么TCP需要拥塞控制-如何调整网络负载"><span class="nav-number">8.</span> <span class="nav-text">为什么TCP需要拥塞控制(如何调整网络负载)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#TCP-拥塞控制"><span class="nav-number">8.0.1.</span> <span class="nav-text">TCP 拥塞控制</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="John Doe"
+    <img class="site-author-image" itemprop="image" alt="Finnley"
       src="https://images.notes.xuepincat.com/avatar.jpg">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">Finnley</p>
   <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -429,7 +498,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">169</span>
+          <span class="site-state-item-count">168</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -481,7 +550,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
 </div>
 
         

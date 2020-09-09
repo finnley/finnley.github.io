@@ -21,26 +21,24 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Docker Platform  * Docker 提供了一个开发，打包，运行app的平台          * 把app和底层infrastructure隔离开来            图中我们可以看到Docker Engine将底层物理设备或者虚拟设备和上层的Application隔离开，然后我们可以在Docker Engine上做事情  Docker Engine Docker Engine">
+  <meta name="description" content="什么是Image  * Image 是 文件 和 meta data 的集合 (root filesystem)         这里的文件其实就是 root filesystem          * 分层的，并且每一层都可以添加改变删除文件，称为一个新的image         对于Linux系统可以分为内核空间和用户空间，内核空间就是Linux Kernel,称之为 bootfs ,用户空">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker架构与底层技术">
-<meta property="og:url" content="https://notes.xuepincat.com/2019/05/19/4-Docker%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%BA%95%E5%B1%82%E6%8A%80%E6%9C%AF/index.html">
+<meta property="og:title" content="Docker Image概述">
+<meta property="og:url" content="https://notes.xuepincat.com/2019/05/19/Docker-Image%E6%A6%82%E8%BF%B0/index.html">
 <meta property="og:site_name" content="Notes">
-<meta property="og:description" content="Docker Platform  * Docker 提供了一个开发，打包，运行app的平台          * 把app和底层infrastructure隔离开来            图中我们可以看到Docker Engine将底层物理设备或者虚拟设备和上层的Application隔离开，然后我们可以在Docker Engine上做事情  Docker Engine Docker Engine">
+<meta property="og:description" content="什么是Image  * Image 是 文件 和 meta data 的集合 (root filesystem)         这里的文件其实就是 root filesystem          * 分层的，并且每一层都可以添加改变删除文件，称为一个新的image         对于Linux系统可以分为内核空间和用户空间，内核空间就是Linux Kernel,称之为 bootfs ,用户空">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/119.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/120.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/121.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/122.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/123.png">
-<meta property="article:published_time" content="2019-05-18T16:18:45.000Z">
-<meta property="article:modified_time" content="2020-05-23T23:14:19.281Z">
-<meta property="article:author" content="John Doe">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/124.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/125.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/126.png">
+<meta property="article:published_time" content="2019-05-19T01:46:13.000Z">
+<meta property="article:modified_time" content="2020-09-08T16:03:04.483Z">
+<meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://notes.xuepincat.com/images/docker/119.png">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/docker/124.png">
 
-<link rel="canonical" href="https://notes.xuepincat.com/2019/05/19/4-Docker%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%BA%95%E5%B1%82%E6%8A%80%E6%9C%AF/">
+<link rel="canonical" href="https://notes.xuepincat.com/2019/05/19/Docker-Image%E6%A6%82%E8%BF%B0/">
 
 
 <script id="page-configurations">
@@ -53,7 +51,7 @@
   };
 </script>
 
-  <title>Docker架构与底层技术 | Notes</title>
+  <title>Docker Image概述 | Notes</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
     <script>
@@ -221,11 +219,11 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/19/4-Docker%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%BA%95%E5%B1%82%E6%8A%80%E6%9C%AF/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/19/Docker-Image%E6%A6%82%E8%BF%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -234,7 +232,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Docker架构与底层技术
+          Docker Image概述
         </h1>
 
         <div class="post-meta">
@@ -244,14 +242,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-05-19 00:18:45" itemprop="dateCreated datePublished" datetime="2019-05-19T00:18:45+08:00">2019-05-19</time>
+              <time title="Created: 2019-05-19 09:46:13" itemprop="dateCreated datePublished" datetime="2019-05-19T09:46:13+08:00">2019-05-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2020-09-09 00:03:04" itemprop="dateModified" datetime="2020-09-09T00:03:04+08:00">2020-09-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -274,47 +272,45 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="Docker-Platform"><a href="#Docker-Platform" class="headerlink" title="Docker Platform"></a>Docker Platform</h2><ul>
-<li><p>Docker 提供了一个开发，打包，运行app的平台</p>
+        <h2 id="什么是Image"><a href="#什么是Image" class="headerlink" title="什么是Image"></a>什么是Image</h2><ul>
+<li><p>Image 是 <code>文件</code> 和 <code>meta data</code> 的集合 (root filesystem)</p>
+<p>  这里的文件其实就是 root filesystem</p>
 </li>
-<li><p>把app和底层infrastructure隔离开来</p>
+<li><p>分层的，并且每一层都可以添加改变删除文件，称为一个新的image</p>
+<p>  对于Linux系统可以分为内核空间和用户空间，内核空间就是Linux Kernel,称之为 <code>bootfs</code> ,用户空间就是在 bootfs 上面去做的各种Linux发行版，如Ubuntu，CentOS，Debain</p>
+<p>  Docker里面Image也是分层的，并且每一层都可以添修改或者删除文件，使之称为一个新的image</p>
 </li>
 </ul>
-<p><img src="/images/docker/119.png" alt=""></p>
-<p>图中我们可以看到Docker Engine将底层物理设备或者虚拟设备和上层的Application隔离开，然后我们可以在Docker Engine上做事情</p>
+<p><img src="/images/docker/124.png" alt=""></p>
 <a id="more"></a>
 
-<h2 id="Docker-Engine"><a href="#Docker-Engine" class="headerlink" title="Docker Engine"></a>Docker Engine</h2><p>Docker Engine 是Docker中一个非常重要的概念，是一个核心的组件 </p>
-<p><img src="/images/docker/120.png" alt=""></p>
+<p>图中可以看到在在 bootfs 之上建立了一些Linux发行版，称之为 Base Image ,这些Base Image 只包含 bootfs ,不包含 Linux Kernel , 它是可以共享主机中的 Linux Kernal ，我们可以在 Base Image 之上去添加或者删除文件， 比如在 Base Image 之上安装一些软件，如MySQL，Apache等，这样就会产生新的一层，这一层就会变成新的Image</p>
 <ul>
-<li><p>Docker Engine 里面有一个后台进程，叫 <code>dockerd</code></p>
+<li><p>不同的Image可以共享相同的layer(分层)</p>
+<p>  比如途中的Image #4和Image #2，比如Image #2里面在CentOS上安装了Apache, Image#4又在Image #2之上安装了MySQL， Image #4和Image #2共享了底层的Base Image</p>
 </li>
-<li><p>dockerd 进程提供了一个 <code>REST API Server</code></p>
-</li>
-<li><p>dockerd 进程还有一个 <code>CLI接口</code> (docker)</p>
-</li>
-</ul>
-<p><img src="/images/docker/121.png" alt=""></p>
-<p>在查看docker版本的时候会看到一个client版本和server版本，docker其实就是一种C/S架构， 后台进程(dockerd)就是Docker Server,CLI接口(docker)就是Client，它们之间就是通过Rest Api Server去通信的</p>
-<h3 id="后台进程-dockerd"><a href="#后台进程-dockerd" class="headerlink" title="后台进程(dockerd)"></a>后台进程(dockerd)</h3><p>后台进程其实就是维护我们在docker中一些常见的概念或者操作，如image镜像，container容器的管理，network网络或者data volumes存储管理</p>
-<p>命令行中可以通过 <code>sudo docker version</code> 可以查看docker版本</p>
-<p>也可以通过 <code>ps -ef | grep docker</code> 查看docker进程</p>
-<p><img src="/images/docker/122.png" alt=""></p>
-<h2 id="Docker-Architecture"><a href="#Docker-Architecture" class="headerlink" title="Docker Architecture"></a>Docker Architecture</h2><p>下图是总体上的 docker 架构</p>
-<p><img src="/images/docker/123.png" alt=""></p>
-<p>左边: 我们常用的就是在命令行中常用的就是一些client的各种命令</p>
-<p>中间: DOCKER_HOST 就是我们安装了 docker 或者 启动了 dockerd 这个docker daemon的机器，Client是可以和Docker_Host在同一台机器上，或者Client是在另外一台机器上，通过网络去连接Docker_Host,因为Docker_Host提供了Rest Api 可以供Client去使用</p>
-<pre><code>Docker_Host里面有两个重要的概念，一个是镜像 Images，一个是容器 Container</code></pre><p>右边: Registry 是一个存储镜像的公共的服务器，类似于GitHub，我们可以将Image镜像存储到Registry中，或者我们可以从Registry中去获取镜像Image</p>
-<h2 id="底层技术支持"><a href="#底层技术支持" class="headerlink" title="底层技术支持"></a>底层技术支持</h2><ul>
-<li><p>Namespaces: 做隔离pid, net, ipc, mnt, uts</p>
-<p>  Docker 不是一个完全创新的技术，因为它底层全部依赖于Linux已经存在了好多年的技术，如Namespaces, 通过 Namespaces可以做隔离，比如我们可以启动多个容器，它们之间是相互隔离的，它们有独立的用户空间，网络空间以及一些进程等</p>
-</li>
-<li><p>Control groups: 做资源限制</p>
-<p>  使用 Control groups 做资源限制，比如让这个容器使用200M内存，那个容器使用300M内存，Control groups 也是 Linux 中自带的技术</p>
-</li>
-<li><p>Union file systems: Container和Image的分层</p>
+<li><p>Image本身是只读的(read-only)</p>
 </li>
 </ul>
+<p>可以通过下面指令查看本地有哪些image</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker image list</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker image ls</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/125.png" alt=""></p>
+<h2 id="Image的获取"><a href="#Image的获取" class="headerlink" title="Image的获取"></a>Image的获取</h2><ul>
+<li>Build from Dockerfile</li>
+</ul>
+<p>Docker 提供了一种叫Dockerfile的文件，通过这个文件可以去定义一个image,通过dockerfile又可以去构建image</p>
+<ul>
+<li>Pull from Registry</li>
+</ul>
+<p>我们可以从Registry中pull image,也可以将我们自己的image镜像push到Registry上</p>
+<p>如从Docker Registry中获取ubunt16.04</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull ubuntu:16.04</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/126.png" alt=""></p>
 
     </div>
 
@@ -362,12 +358,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/05/18/3-CentOS7%E5%AE%89%E8%A3%85Docker/" rel="prev" title="CentOS7安装Docker">
-      <i class="fa fa-chevron-left"></i> CentOS7安装Docker
+    <a href="/2019/05/19/Docker-Docker%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%BA%95%E5%B1%82%E6%8A%80%E6%9C%AF/" rel="prev" title="Docker架构与底层技术">
+      <i class="fa fa-chevron-left"></i> Docker架构与底层技术
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/05/19/5-Docker-Image%E6%A6%82%E8%BF%B0/" rel="next" title="Docker Image概述">
-      Docker Image概述 <i class="fa fa-chevron-right"></i>
+    <a href="/2019/05/19/Docker-DIY%E8%87%AA%E5%B7%B1%E7%9A%84Base-Image/" rel="next" title="DIY自己的Base Image">
+      DIY自己的Base Image <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -427,15 +423,15 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Platform"><span class="nav-number">1.</span> <span class="nav-text">Docker Platform</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Engine"><span class="nav-number">2.</span> <span class="nav-text">Docker Engine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#后台进程-dockerd"><span class="nav-number">2.1.</span> <span class="nav-text">后台进程(dockerd)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Architecture"><span class="nav-number">3.</span> <span class="nav-text">Docker Architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#底层技术支持"><span class="nav-number">4.</span> <span class="nav-text">底层技术支持</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Image"><span class="nav-number">1.</span> <span class="nav-text">什么是Image</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Image的获取"><span class="nav-number">2.</span> <span class="nav-text">Image的获取</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="John Doe"
+    <img class="site-author-image" itemprop="image" alt="Finnley"
       src="https://images.notes.xuepincat.com/avatar.jpg">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">Finnley</p>
   <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -443,7 +439,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">169</span>
+          <span class="site-state-item-count">168</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -495,7 +491,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
 </div>
 
         

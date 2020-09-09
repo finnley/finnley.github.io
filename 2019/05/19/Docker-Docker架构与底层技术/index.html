@@ -21,24 +21,26 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="参考官方文档【Install Docker Engine on CentOS】.   Uninstall old versions 1 2 3 4 5 6 7 8   $ sudo yum remove docker \                   docker-client \                   docker-client-latest \">
+  <meta name="description" content="Docker Platform  * Docker 提供了一个开发，打包，运行app的平台          * 把app和底层infrastructure隔离开来            图中我们可以看到Docker Engine将底层物理设备或者虚拟设备和上层的Application隔离开，然后我们可以在Docker Engine上做事情  Docker Engine Docker Engine">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CentOS7安装Docker">
-<meta property="og:url" content="https://notes.xuepincat.com/2019/05/18/3-CentOS7%E5%AE%89%E8%A3%85Docker/index.html">
+<meta property="og:title" content="Docker架构与底层技术">
+<meta property="og:url" content="https://notes.xuepincat.com/2019/05/19/Docker-Docker%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%BA%95%E5%B1%82%E6%8A%80%E6%9C%AF/index.html">
 <meta property="og:site_name" content="Notes">
-<meta property="og:description" content="参考官方文档【Install Docker Engine on CentOS】.   Uninstall old versions 1 2 3 4 5 6 7 8   $ sudo yum remove docker \                   docker-client \                   docker-client-latest \">
+<meta property="og:description" content="Docker Platform  * Docker 提供了一个开发，打包，运行app的平台          * 把app和底层infrastructure隔离开来            图中我们可以看到Docker Engine将底层物理设备或者虚拟设备和上层的Application隔离开，然后我们可以在Docker Engine上做事情  Docker Engine Docker Engine">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/116.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/117.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/118.png">
-<meta property="article:published_time" content="2019-05-18T15:37:05.000Z">
-<meta property="article:modified_time" content="2020-05-23T23:14:19.328Z">
-<meta property="article:author" content="John Doe">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/119.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/120.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/121.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/122.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/123.png">
+<meta property="article:published_time" content="2019-05-18T16:18:45.000Z">
+<meta property="article:modified_time" content="2020-09-08T16:01:51.728Z">
+<meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://notes.xuepincat.com/images/docker/116.png">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/docker/119.png">
 
-<link rel="canonical" href="https://notes.xuepincat.com/2019/05/18/3-CentOS7%E5%AE%89%E8%A3%85Docker/">
+<link rel="canonical" href="https://notes.xuepincat.com/2019/05/19/Docker-Docker%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%BA%95%E5%B1%82%E6%8A%80%E6%9C%AF/">
 
 
 <script id="page-configurations">
@@ -51,7 +53,7 @@
   };
 </script>
 
-  <title>CentOS7安装Docker | Notes</title>
+  <title>Docker架构与底层技术 | Notes</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
     <script>
@@ -219,11 +221,11 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/18/3-CentOS7%E5%AE%89%E8%A3%85Docker/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/19/Docker-Docker%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%BA%95%E5%B1%82%E6%8A%80%E6%9C%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -232,7 +234,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CentOS7安装Docker
+          Docker架构与底层技术
         </h1>
 
         <div class="post-meta">
@@ -242,14 +244,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-05-18 23:37:05" itemprop="dateCreated datePublished" datetime="2019-05-18T23:37:05+08:00">2019-05-18</time>
+              <time title="Created: 2019-05-19 00:18:45" itemprop="dateCreated datePublished" datetime="2019-05-19T00:18:45+08:00">2019-05-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2020-09-09 00:01:51" itemprop="dateModified" datetime="2020-09-09T00:01:51+08:00">2020-09-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -272,24 +274,47 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p><a href="https://docs.docker.com/install/linux/docker-ce/centos/" target="_blank" rel="noopener" title="https://docs.docker.com/install/linux/docker-ce/centos/">参考官方文档【Install Docker Engine on CentOS】</a>. </p>
-<h2 id="Uninstall-old-versions"><a href="#Uninstall-old-versions" class="headerlink" title="Uninstall old versions"></a>Uninstall old versions</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum remove docker \</span><br><span class="line">                  docker-client \</span><br><span class="line">                  docker-client-latest \</span><br><span class="line">                  docker-common \</span><br><span class="line">                  docker-latest \</span><br><span class="line">                  docker-latest-logrotate \</span><br><span class="line">                  docker-logrotate \</span><br><span class="line">                  docker-engine</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/116.png" alt=""></p>
+        <h2 id="Docker-Platform"><a href="#Docker-Platform" class="headerlink" title="Docker Platform"></a>Docker Platform</h2><ul>
+<li><p>Docker 提供了一个开发，打包，运行app的平台</p>
+</li>
+<li><p>把app和底层infrastructure隔离开来</p>
+</li>
+</ul>
+<p><img src="/images/docker/119.png" alt=""></p>
+<p>图中我们可以看到Docker Engine将底层物理设备或者虚拟设备和上层的Application隔离开，然后我们可以在Docker Engine上做事情</p>
 <a id="more"></a>
 
-<h2 id="Install-required-packages"><a href="#Install-required-packages" class="headerlink" title="Install required packages"></a>Install required packages</h2><h3 id="SET-UP-THE-REPOSITORY"><a href="#SET-UP-THE-REPOSITORY" class="headerlink" title="SET UP THE REPOSITORY"></a>SET UP THE REPOSITORY</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install -y yum-utils</span><br><span class="line"></span><br><span class="line">$ sudo yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
-
-<h3 id="INSTALL-DOCKER-ENGINE"><a href="#INSTALL-DOCKER-ENGINE" class="headerlink" title="INSTALL DOCKER ENGINE"></a>INSTALL DOCKER ENGINE</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo yum install docker-ce docker-ce-cli containerd.io</span><br></pre></td></tr></table></figure>
-
-<h3 id="Start-Docker"><a href="#Start-Docker" class="headerlink" title="Start Docker"></a>Start Docker</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo systemctl start docker</span><br></pre></td></tr></table></figure>
-
-<h3 id="Show-version"><a href="#Show-version" class="headerlink" title="Show version"></a>Show version</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker version</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/117.png" alt=""></p>
-<h3 id="Verify-that-Docker-Engine-is-installed-correctly-by-running-the-hello-world-image"><a href="#Verify-that-Docker-Engine-is-installed-correctly-by-running-the-hello-world-image" class="headerlink" title="Verify that Docker Engine is installed correctly by running the hello-world image."></a>Verify that Docker Engine is installed correctly by running the hello-world image.</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker run hello-world</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/118.png" alt=""></p>
+<h2 id="Docker-Engine"><a href="#Docker-Engine" class="headerlink" title="Docker Engine"></a>Docker Engine</h2><p>Docker Engine 是Docker中一个非常重要的概念，是一个核心的组件 </p>
+<p><img src="/images/docker/120.png" alt=""></p>
+<ul>
+<li><p>Docker Engine 里面有一个后台进程，叫 <code>dockerd</code></p>
+</li>
+<li><p>dockerd 进程提供了一个 <code>REST API Server</code></p>
+</li>
+<li><p>dockerd 进程还有一个 <code>CLI接口</code> (docker)</p>
+</li>
+</ul>
+<p><img src="/images/docker/121.png" alt=""></p>
+<p>在查看docker版本的时候会看到一个client版本和server版本，docker其实就是一种C/S架构， 后台进程(dockerd)就是Docker Server,CLI接口(docker)就是Client，它们之间就是通过Rest Api Server去通信的</p>
+<h3 id="后台进程-dockerd"><a href="#后台进程-dockerd" class="headerlink" title="后台进程(dockerd)"></a>后台进程(dockerd)</h3><p>后台进程其实就是维护我们在docker中一些常见的概念或者操作，如image镜像，container容器的管理，network网络或者data volumes存储管理</p>
+<p>命令行中可以通过 <code>sudo docker version</code> 可以查看docker版本</p>
+<p>也可以通过 <code>ps -ef | grep docker</code> 查看docker进程</p>
+<p><img src="/images/docker/122.png" alt=""></p>
+<h2 id="Docker-Architecture"><a href="#Docker-Architecture" class="headerlink" title="Docker Architecture"></a>Docker Architecture</h2><p>下图是总体上的 docker 架构</p>
+<p><img src="/images/docker/123.png" alt=""></p>
+<p>左边: 我们常用的就是在命令行中常用的就是一些client的各种命令</p>
+<p>中间: DOCKER_HOST 就是我们安装了 docker 或者 启动了 dockerd 这个docker daemon的机器，Client是可以和Docker_Host在同一台机器上，或者Client是在另外一台机器上，通过网络去连接Docker_Host,因为Docker_Host提供了Rest Api 可以供Client去使用</p>
+<pre><code>Docker_Host里面有两个重要的概念，一个是镜像 Images，一个是容器 Container</code></pre><p>右边: Registry 是一个存储镜像的公共的服务器，类似于GitHub，我们可以将Image镜像存储到Registry中，或者我们可以从Registry中去获取镜像Image</p>
+<h2 id="底层技术支持"><a href="#底层技术支持" class="headerlink" title="底层技术支持"></a>底层技术支持</h2><ul>
+<li><p>Namespaces: 做隔离pid, net, ipc, mnt, uts</p>
+<p>  Docker 不是一个完全创新的技术，因为它底层全部依赖于Linux已经存在了好多年的技术，如Namespaces, 通过 Namespaces可以做隔离，比如我们可以启动多个容器，它们之间是相互隔离的，它们有独立的用户空间，网络空间以及一些进程等</p>
+</li>
+<li><p>Control groups: 做资源限制</p>
+<p>  使用 Control groups 做资源限制，比如让这个容器使用200M内存，那个容器使用300M内存，Control groups 也是 Linux 中自带的技术</p>
+</li>
+<li><p>Union file systems: Container和Image的分层</p>
+</li>
+</ul>
 
     </div>
 
@@ -337,12 +362,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/05/15/2-%E4%BD%BF%E7%94%A8vagrant%E5%AE%89%E8%A3%85CentOS7/" rel="prev" title="使用vagrant安装CentOS7">
-      <i class="fa fa-chevron-left"></i> 使用vagrant安装CentOS7
+    <a href="/2019/05/18/Docker-CentOS7%E5%AE%89%E8%A3%85Docker/" rel="prev" title="CentOS7安装Docker">
+      <i class="fa fa-chevron-left"></i> CentOS7安装Docker
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/05/19/4-Docker%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%BA%95%E5%B1%82%E6%8A%80%E6%9C%AF/" rel="next" title="Docker架构与底层技术">
-      Docker架构与底层技术 <i class="fa fa-chevron-right"></i>
+    <a href="/2019/05/19/Docker-Image%E6%A6%82%E8%BF%B0/" rel="next" title="Docker Image概述">
+      Docker Image概述 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -402,15 +427,15 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Uninstall-old-versions"><span class="nav-number">1.</span> <span class="nav-text">Uninstall old versions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-required-packages"><span class="nav-number">2.</span> <span class="nav-text">Install required packages</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SET-UP-THE-REPOSITORY"><span class="nav-number">2.1.</span> <span class="nav-text">SET UP THE REPOSITORY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#INSTALL-DOCKER-ENGINE"><span class="nav-number">2.2.</span> <span class="nav-text">INSTALL DOCKER ENGINE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Start-Docker"><span class="nav-number">2.3.</span> <span class="nav-text">Start Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Show-version"><span class="nav-number">2.4.</span> <span class="nav-text">Show version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Verify-that-Docker-Engine-is-installed-correctly-by-running-the-hello-world-image"><span class="nav-number">2.5.</span> <span class="nav-text">Verify that Docker Engine is installed correctly by running the hello-world image.</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Platform"><span class="nav-number">1.</span> <span class="nav-text">Docker Platform</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Engine"><span class="nav-number">2.</span> <span class="nav-text">Docker Engine</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#后台进程-dockerd"><span class="nav-number">2.1.</span> <span class="nav-text">后台进程(dockerd)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Architecture"><span class="nav-number">3.</span> <span class="nav-text">Docker Architecture</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#底层技术支持"><span class="nav-number">4.</span> <span class="nav-text">底层技术支持</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="John Doe"
+    <img class="site-author-image" itemprop="image" alt="Finnley"
       src="https://images.notes.xuepincat.com/avatar.jpg">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">Finnley</p>
   <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -418,7 +443,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">169</span>
+          <span class="site-state-item-count">168</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -470,7 +495,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
 </div>
 
         

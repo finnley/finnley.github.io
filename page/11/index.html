@@ -28,7 +28,7 @@
 <meta property="og:site_name" content="Notes">
 <meta property="og:description" content="虽千万里，吾往矣">
 <meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="Finnley">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://notes.xuepincat.com/page/11/">
@@ -215,7 +215,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -317,7 +317,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -405,7 +405,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -483,7 +483,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -580,7 +580,7 @@ docker pull percona/pe
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -672,7 +672,7 @@ docker pull percona/pe
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -777,99 +777,11 @@ service docker restart
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/22/Docker-Docker%E8%99%9A%E6%8B%9F%E6%9C%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/09/22/Docker-Docker%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-title-link" itemprop="url">Docker虚拟机</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-09-22 18:49:53" itemprop="dateCreated datePublished" datetime="2018-09-22T18:49:53+08:00">2018-09-22</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-01 00:48:50" itemprop="dateModified" datetime="2020-09-01T00:48:50+08:00">2020-09-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          为什么使用Docker虚拟机
-我们可以在Linux系统上直接安装程序，然后部署项目，那为什么还要安装docker虚拟机，然后在docker虚拟机内部去安装程序部署项目呢？
-
-主要是为了解决隔离性的问题， 有些程序运行会占用大量的硬件资源，比如芒果数据库，运行的时候会占用大量的内存和创建缓存，这点势必会影响到其他程序的运行；
-
-再有使用虚拟机去部署程序会非常的方便，比如我需要部署程序，只需要开启一个虚拟的空间，然后我不需要部署程序了，我只要把虚拟空间删除掉就行了，这些虚拟空间是完全隔离的。
-
-如果不使用虚拟机，当在Linux系统内安装程序，我要把A程序卸载掉，这个程序关联了一些软件包，当我把A程
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/09/22/Docker-Docker%E8%99%9A%E6%8B%9F%E6%9C%BA/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/22/CentOS-7-%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -991,7 +903,7 @@ enabled=1
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -1088,7 +1000,7 @@ enabled=1
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="Finnley">
       <meta itemprop="description" content="虽千万里，吾往矣">
     </span>
 
@@ -1201,6 +1113,132 @@ nano ss.sh
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/05/%E9%85%8D%E7%BD%AEPM2-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E5%8F%91%E5%B8%83%E9%A1%B9%E7%9B%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/09/05/%E9%85%8D%E7%BD%AEPM2-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E5%8F%91%E5%B8%83%E9%A1%B9%E7%9B%AE/" class="post-title-link" itemprop="url">配置PM2 一键部署发布项目</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-09-05 23:57:13" itemprop="dateCreated datePublished" datetime="2018-09-05T23:57:13+08:00">2018-09-05</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          在本地项目中文件夹中添加名为 ecosystem.json 的文件
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+
+
+{
+	"apps": [{
+		"name": "Ice",
+		"script": "server.js",
+		//"instances": 2,
+		"env": {
+			"COMMON_VARIABLE": "true"
+		},
+		"env_production": {
+			"NODE_ENV": "production"
+		}
+	}],
+	"dep
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/09/05/%E9%85%8D%E7%BD%AEPM2-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E5%8F%91%E5%B8%83%E9%A1%B9%E7%9B%AE/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1262,9 +1300,9 @@ nano ss.sh
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="John Doe"
+    <img class="site-author-image" itemprop="image" alt="Finnley"
       src="https://images.notes.xuepincat.com/avatar.jpg">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">Finnley</p>
   <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -1272,7 +1310,7 @@ nano ss.sh
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">169</span>
+          <span class="site-state-item-count">168</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1324,7 +1362,7 @@ nano ss.sh
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
 </div>
 
         
