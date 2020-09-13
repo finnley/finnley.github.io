@@ -2,23 +2,19 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://notes.xuepincat.com/2019/05/19/Docker-Container/</loc>
-    <lastmod>2020-09-09</lastmod>
+    <lastmod>2020-09-13</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2019/05/19/Docker-DIY%E8%87%AA%E5%B7%B1%E7%9A%84Base-Image/</loc>
-    <lastmod>2020-09-08</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2019/05/19/Docker-Image%E6%A6%82%E8%BF%B0/</loc>
-    <lastmod>2020-09-08</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2019/05/19/Docker-Docker%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%BA%95%E5%B1%82%E6%8A%80%E6%9C%AF/</loc>
-    <lastmod>2020-09-08</lastmod>
+    <loc>https://notes.xuepincat.com/2019/05/19/Docker-Image/</loc>
+    <lastmod>2020-09-13</lastmod>
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2019/05/18/Docker-CentOS7%E5%AE%89%E8%A3%85Docker/</loc>
-    <lastmod>2020-09-08</lastmod>
+    <lastmod>2020-09-13</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2019/05/19/Docker-Docker%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%BA%95%E5%B1%82%E6%8A%80%E6%9C%AF/</loc>
+    <lastmod>2020-09-13</lastmod>
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2020/08/30/ComputerNetwork-Classic-Protocal-and-Data-Package/</loc>
@@ -365,11 +361,11 @@
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/</loc>
+    <loc>https://notes.xuepincat.com/2019/03/24/CDN%E5%8A%A0%E9%80%9F/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2019/03/24/CDN%E5%8A%A0%E9%80%9F/</loc>
+    <loc>https://notes.xuepincat.com/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
@@ -573,11 +569,11 @@
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2017/07/12/20-%E7%89%88%E6%9C%AC%E5%BA%93%E8%BF%81%E7%A7%BB%E4%B8%8Eswitch%E9%87%8D%E5%AE%9A%E5%90%91/</loc>
+    <loc>https://notes.xuepincat.com/2018/07/20/3-MySQL%E5%8F%8C%E4%B8%BB%E7%83%AD%E5%A4%87/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2018/07/20/3-MySQL%E5%8F%8C%E4%B8%BB%E7%83%AD%E5%A4%87/</loc>
+    <loc>https://notes.xuepincat.com/2017/07/12/20-%E7%89%88%E6%9C%AC%E5%BA%93%E8%BF%81%E7%A7%BB%E4%B8%8Eswitch%E9%87%8D%E5%AE%9A%E5%90%91/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>

@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="Docker Platform  * Docker 提供了一个开发，打包，运行app的平台          * 把app和底层infrastructure隔离开来            图中我们可以看到Docker Engine将底层物理设备或者虚拟设备和上层的Application隔离开，然后我们可以在Docker Engine上做事情  Docker Engine Docker Engine">
+  <meta name="description" content="Docker Platform  * Docker 提供了一个开发，打包，运行app的平台  * 把app和底层infrastructure隔离开来    图中我们可以看到Docker Engine将底层物理设备或者虚拟设备和上层的Application隔离开，然后我们可以在Docker Engine上做事情  Docker Engine Docker Engine 是Docker中一个非常重要的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker架构与底层技术">
 <meta property="og:url" content="https://notes.xuepincat.com/2019/05/19/Docker-Docker%E6%9E%B6%E6%9E%84%E4%B8%8E%E5%BA%95%E5%B1%82%E6%8A%80%E6%9C%AF/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="Docker Platform  * Docker 提供了一个开发，打包，运行app的平台          * 把app和底层infrastructure隔离开来            图中我们可以看到Docker Engine将底层物理设备或者虚拟设备和上层的Application隔离开，然后我们可以在Docker Engine上做事情  Docker Engine Docker Engine">
+<meta property="og:description" content="Docker Platform  * Docker 提供了一个开发，打包，运行app的平台  * 把app和底层infrastructure隔离开来    图中我们可以看到Docker Engine将底层物理设备或者虚拟设备和上层的Application隔离开，然后我们可以在Docker Engine上做事情  Docker Engine Docker Engine 是Docker中一个非常重要的">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/119.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/120.png">
@@ -34,7 +34,7 @@
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/122.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/123.png">
 <meta property="article:published_time" content="2019-05-18T16:18:45.000Z">
-<meta property="article:modified_time" content="2020-09-08T16:01:51.728Z">
+<meta property="article:modified_time" content="2020-09-13T08:06:51.570Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
@@ -251,7 +251,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-09 00:01:51" itemprop="dateModified" datetime="2020-09-09T00:01:51+08:00">2020-09-09</time>
+                <time title="Modified: 2020-09-13 16:06:51" itemprop="dateModified" datetime="2020-09-13T16:06:51+08:00">2020-09-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -275,15 +275,11 @@
 
       
         <h2 id="Docker-Platform"><a href="#Docker-Platform" class="headerlink" title="Docker Platform"></a>Docker Platform</h2><ul>
-<li><p>Docker 提供了一个开发，打包，运行app的平台</p>
-</li>
-<li><p>把app和底层infrastructure隔离开来</p>
-</li>
+<li>Docker 提供了一个开发，打包，运行app的平台</li>
+<li>把app和底层infrastructure隔离开来</li>
 </ul>
 <p><img src="/images/docker/119.png" alt=""></p>
 <p>图中我们可以看到Docker Engine将底层物理设备或者虚拟设备和上层的Application隔离开，然后我们可以在Docker Engine上做事情</p>
-<a id="more"></a>
-
 <h2 id="Docker-Engine"><a href="#Docker-Engine" class="headerlink" title="Docker Engine"></a>Docker Engine</h2><p>Docker Engine 是Docker中一个非常重要的概念，是一个核心的组件 </p>
 <p><img src="/images/docker/120.png" alt=""></p>
 <ul>
@@ -302,8 +298,8 @@
 <p><img src="/images/docker/122.png" alt=""></p>
 <h2 id="Docker-Architecture"><a href="#Docker-Architecture" class="headerlink" title="Docker Architecture"></a>Docker Architecture</h2><p>下图是总体上的 docker 架构</p>
 <p><img src="/images/docker/123.png" alt=""></p>
-<p>左边: 我们常用的就是在命令行中常用的就是一些client的各种命令</p>
-<p>中间: DOCKER_HOST 就是我们安装了 docker 或者 启动了 dockerd 这个docker daemon的机器，Client是可以和Docker_Host在同一台机器上，或者Client是在另外一台机器上，通过网络去连接Docker_Host,因为Docker_Host提供了Rest Api 可以供Client去使用</p>
+<p>左边: 我们常用的在命令行中的一些client的各种命令</p>
+<p>中间: DOCKER_HOST 就是我们安装了 docker 或者 启动了 dockerd 这个docker daemon的机器，Client是可以和Docker_Host在同一台机器上，或者Client是在另外一台机器上，然后通过网络去连接Docker_Host,因为Docker_Host提供了Rest Api 可以供Client去使用</p>
 <pre><code>Docker_Host里面有两个重要的概念，一个是镜像 Images，一个是容器 Container</code></pre><p>右边: Registry 是一个存储镜像的公共的服务器，类似于GitHub，我们可以将Image镜像存储到Registry中，或者我们可以从Registry中去获取镜像Image</p>
 <h2 id="底层技术支持"><a href="#底层技术支持" class="headerlink" title="底层技术支持"></a>底层技术支持</h2><ul>
 <li><p>Namespaces: 做隔离pid, net, ipc, mnt, uts</p>
@@ -366,8 +362,8 @@
       <i class="fa fa-chevron-left"></i> CentOS7安装Docker
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/05/19/Docker-Image%E6%A6%82%E8%BF%B0/" rel="next" title="Docker Image概述">
-      Docker Image概述 <i class="fa fa-chevron-right"></i>
+    <a href="/2019/05/19/Docker-Image/" rel="next" title="Docker Image">
+      Docker Image <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -443,7 +439,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">168</span>
+          <span class="site-state-item-count">167</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

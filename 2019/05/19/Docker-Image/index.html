@@ -23,22 +23,30 @@
 
   <meta name="description" content="什么是Image  * Image 是 文件 和 meta data 的集合 (root filesystem)         这里的文件其实就是 root filesystem          * 分层的，并且每一层都可以添加改变删除文件，称为一个新的image         对于Linux系统可以分为内核空间和用户空间，内核空间就是Linux Kernel,称之为 bootfs ,用户空">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker Image概述">
-<meta property="og:url" content="https://notes.xuepincat.com/2019/05/19/Docker-Image%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:title" content="Docker Image">
+<meta property="og:url" content="https://notes.xuepincat.com/2019/05/19/Docker-Image/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
 <meta property="og:description" content="什么是Image  * Image 是 文件 和 meta data 的集合 (root filesystem)         这里的文件其实就是 root filesystem          * 分层的，并且每一层都可以添加改变删除文件，称为一个新的image         对于Linux系统可以分为内核空间和用户空间，内核空间就是Linux Kernel,称之为 bootfs ,用户空">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/124.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/125.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/126.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/219.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/131.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/132.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/133.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/134.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/135.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/220.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/136.png">
 <meta property="article:published_time" content="2019-05-19T01:46:13.000Z">
-<meta property="article:modified_time" content="2020-09-08T16:03:04.483Z">
+<meta property="article:modified_time" content="2020-09-13T15:51:28.469Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://notes.xuepincat.com/images/docker/124.png">
 
-<link rel="canonical" href="https://notes.xuepincat.com/2019/05/19/Docker-Image%E6%A6%82%E8%BF%B0/">
+<link rel="canonical" href="https://notes.xuepincat.com/2019/05/19/Docker-Image/">
 
 
 <script id="page-configurations">
@@ -51,7 +59,7 @@
   };
 </script>
 
-  <title>Docker Image概述 | Finnley's Notes</title>
+  <title>Docker Image | Finnley's Notes</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
     <script>
@@ -219,7 +227,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/19/Docker-Image%E6%A6%82%E8%BF%B0/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/19/Docker-Image/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -232,7 +240,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Docker Image概述
+          Docker Image
         </h1>
 
         <div class="post-meta">
@@ -249,7 +257,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-09 00:03:04" itemprop="dateModified" datetime="2020-09-09T00:03:04+08:00">2020-09-09</time>
+                <time title="Modified: 2020-09-13 23:51:28" itemprop="dateModified" datetime="2020-09-13T23:51:28+08:00">2020-09-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -308,9 +316,97 @@
 </ul>
 <p>我们可以从Registry中pull image,也可以将我们自己的image镜像push到Registry上</p>
 <p>如从Docker Registry中获取ubunt16.04</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull ubuntu:16.04</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull ubuntu:18.04</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/docker/126.png" alt=""></p>
+<h2 id="DIY-自己的-Base-Image"><a href="#DIY-自己的-Base-Image" class="headerlink" title="DIY 自己的 Base Image"></a>DIY 自己的 Base Image</h2><h3 id="构建-Base-Image"><a href="#构建-Base-Image" class="headerlink" title="构建 Base Image"></a>构建 Base Image</h3><p>在构建之前，我们先拉取官方提供的一个叫 <code>hello-world</code> 的 image</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull hello-world</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/219.png" alt=""></p>
+<p>这个 <code>hello-world</code> 其实就是一个 Base Image,这个 Base Image 里面包含了一个可执行文件，我们去执行这个image就是去创建一个容器 container,创建容器后就可以启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<p>这样就会去执行 <code>hello-world</code> container，屏幕中就会打印出一段话</p>
+<p><img src="/images/docker/131.png" alt=""></p>
+<p>现在自己去创建一个 <code>hello-docker</code> 的image</p>
+<ol>
+<li>创建 <code>hello-docker</code> 目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir hello-docker</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>进入目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd hello-docker</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>创建一个名为 <code>hello.c</code> 的文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim hello.c</span><br></pre></td></tr></table></figure>
+
+<p>如果没有安装vim，需要使用下面指令进行安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y vim</span><br></pre></td></tr></table></figure>
+
+<p>内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;stdio.h&gt;</span><br><span class="line"></span><br><span class="line">int main()</span><br><span class="line">&#123;</span><br><span class="line">    printf(&quot;hello docker\n&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>保存退出</p>
+<ol start="4">
+<li>将 <code>hello.c</code> 编译成二进制可执行文件</li>
+</ol>
+<p>如果没有安装 <code>gcc</code> ，可以使用下面命令进行安装 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y gcc</span><br><span class="line">sudo yum install -y glibc-static</span><br></pre></td></tr></table></figure>
+
+<p>开始编译，输出 <code>hello</code> 的可执行文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc -static hello.c -o hello</span><br></pre></td></tr></table></figure>
+
+<p>然后就会在当前目录下生成一个 <code>hello</code> 的可执行文件</p>
+<p><img src="/images/docker/132.png" alt=""></p>
+<p>我们可以执行下面指令直接执行这个文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;hello</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/133.png" alt=""></p>
+<ol start="5">
+<li>通过Dockerfile将可执行文件构建打包成Image,首先需要创建 Dockerfile</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim Dockerfile</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>键入内容</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM scratch</span><br><span class="line">ADD hello &#x2F;</span><br><span class="line">CMD [&quot;&#x2F;hello&quot;]</span><br></pre></td></tr></table></figure>
+
+<p>第一行我们可以通过Base Image,在Base Image之上去安装一些软件形成一个新的Image,但是现在就是在写一个Base Image,所以不能从一个Base Image去安装，所以需要从 <code>scratch</code> 安装</p>
+<p>第二行将hello添加到 image 的根目录中</p>
+<p>第三行运行 command,就是运行的根目录下面的 hello , 这个 hello 就是通过第二步添加进来的</p>
+<p>保存退出</p>
+<ol start="6">
+<li>构建</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t finnley&#x2F;hello-docker .</span><br></pre></td></tr></table></figure>
+<p><code>-t</code> 指定Tag</p>
+<p><code>finnley</code> 是我自己取的用户名</p>
+<p><code>hello-docker</code> image的名称</p>
+<p><code>.</code> 表示在当前目录中找 <code>Dockerfile</code></p>
+<p><img src="/images/docker/134.png" alt=""></p>
+<p>Step共分3步，所以这个Image有3层</p>
+<ol start="7">
+<li>查看</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/135.png" alt=""></p>
+<p>可以通过下面命令查看image分层</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker history [docker image id]</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/220.png" alt=""></p>
+<p>可以看到这个image只要两层，第一层是添加了文件，第二层是运行执行命令，在Dockerfile中第一行是 <code>FROM scratch</code> ,表示这里不是基于任何 Base Image 的，所以它不算是一层，所以这里的 Docker Image 只有两层</p>
+<ol start="8">
+<li>运行</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run finnley&#x2F;hello-docker</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/136.png" alt=""></p>
 
     </div>
 
@@ -362,8 +458,8 @@
       <i class="fa fa-chevron-left"></i> Docker架构与底层技术
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/05/19/Docker-DIY%E8%87%AA%E5%B7%B1%E7%9A%84Base-Image/" rel="next" title="DIY自己的Base Image">
-      DIY自己的Base Image <i class="fa fa-chevron-right"></i>
+    <a href="/2019/05/19/Docker-Container/" rel="next" title="Docker Container">
+      Docker Container <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -423,7 +519,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Image"><span class="nav-number">1.</span> <span class="nav-text">什么是Image</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Image的获取"><span class="nav-number">2.</span> <span class="nav-text">Image的获取</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Image"><span class="nav-number">1.</span> <span class="nav-text">什么是Image</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Image的获取"><span class="nav-number">2.</span> <span class="nav-text">Image的获取</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DIY-自己的-Base-Image"><span class="nav-number">3.</span> <span class="nav-text">DIY 自己的 Base Image</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#构建-Base-Image"><span class="nav-number">3.1.</span> <span class="nav-text">构建 Base Image</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -439,7 +535,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">168</span>
+          <span class="site-state-item-count">167</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

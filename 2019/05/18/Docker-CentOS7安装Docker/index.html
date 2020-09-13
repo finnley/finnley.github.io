@@ -31,8 +31,12 @@
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/116.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/117.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/118.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/127.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/128.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/129.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/130.png">
 <meta property="article:published_time" content="2019-05-18T15:37:05.000Z">
-<meta property="article:modified_time" content="2020-09-08T16:00:09.240Z">
+<meta property="article:modified_time" content="2020-09-13T08:43:10.022Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
@@ -249,7 +253,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-09 00:00:09" itemprop="dateModified" datetime="2020-09-09T00:00:09+08:00">2020-09-09</time>
+                <time title="Modified: 2020-09-13 16:43:10" itemprop="dateModified" datetime="2020-09-13T16:43:10+08:00">2020-09-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -290,6 +294,34 @@
 <h3 id="Verify-that-Docker-Engine-is-installed-correctly-by-running-the-hello-world-image"><a href="#Verify-that-Docker-Engine-is-installed-correctly-by-running-the-hello-world-image" class="headerlink" title="Verify that Docker Engine is installed correctly by running the hello-world image."></a>Verify that Docker Engine is installed correctly by running the hello-world image.</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo docker run hello-world</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/docker/118.png" alt=""></p>
+<h2 id="Remove-sudo"><a href="#Remove-sudo" class="headerlink" title="Remove sudo"></a>Remove sudo</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker image ls</span><br></pre></td></tr></table></figure>
+
+<p>每次使用docker命令的时候都要使用 <code>sudo</code> ,现在将 <code>sudo</code> 去掉，直接使用 <code>docker image ls</code> 指令,这其实就是让当前用户拥有执行docker指令的权限</p>
+<ol>
+<li>创建 docker 用户组，其实这个用户组在安装的时候就已经存在了</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo groupadd docker</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/127.png" alt=""></p>
+<ol start="2">
+<li>将当前用户添加到docker 的 group 中，vagrant 表示当前用户，docker 表示 docker的group</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo gpasswd -a vagrant docker</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/128.png" alt=""></p>
+<ol start="3">
+<li>这个时候去使用docker命令会发现还是会提示权限问题</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/docker/129.png" alt=""></p>
+<ol start="4">
+<li>重启 Docker 进程</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service docker restart</span><br></pre></td></tr></table></figure>
+
+<p>到这里再去执行docker命令还是会提示权限问题，我们需要退出，重新使用 <code>ssh</code> 连接</p>
+<p><img src="/images/docker/130.png" alt=""></p>
 
     </div>
 
@@ -402,7 +434,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Uninstall-old-versions"><span class="nav-number">1.</span> <span class="nav-text">Uninstall old versions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-required-packages"><span class="nav-number">2.</span> <span class="nav-text">Install required packages</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SET-UP-THE-REPOSITORY"><span class="nav-number">2.1.</span> <span class="nav-text">SET UP THE REPOSITORY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#INSTALL-DOCKER-ENGINE"><span class="nav-number">2.2.</span> <span class="nav-text">INSTALL DOCKER ENGINE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Start-Docker"><span class="nav-number">2.3.</span> <span class="nav-text">Start Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Show-version"><span class="nav-number">2.4.</span> <span class="nav-text">Show version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Verify-that-Docker-Engine-is-installed-correctly-by-running-the-hello-world-image"><span class="nav-number">2.5.</span> <span class="nav-text">Verify that Docker Engine is installed correctly by running the hello-world image.</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Uninstall-old-versions"><span class="nav-number">1.</span> <span class="nav-text">Uninstall old versions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-required-packages"><span class="nav-number">2.</span> <span class="nav-text">Install required packages</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SET-UP-THE-REPOSITORY"><span class="nav-number">2.1.</span> <span class="nav-text">SET UP THE REPOSITORY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#INSTALL-DOCKER-ENGINE"><span class="nav-number">2.2.</span> <span class="nav-text">INSTALL DOCKER ENGINE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Start-Docker"><span class="nav-number">2.3.</span> <span class="nav-text">Start Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Show-version"><span class="nav-number">2.4.</span> <span class="nav-text">Show version</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Verify-that-Docker-Engine-is-installed-correctly-by-running-the-hello-world-image"><span class="nav-number">2.5.</span> <span class="nav-text">Verify that Docker Engine is installed correctly by running the hello-world image.</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Remove-sudo"><span class="nav-number">3.</span> <span class="nav-text">Remove sudo</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -418,7 +450,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">168</span>
+          <span class="site-state-item-count">167</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
