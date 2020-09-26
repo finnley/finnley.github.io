@@ -21,32 +21,20 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="commit 命令 1   docker container commit   或者   1   docker commit   这条命令表示基于某个 Image 创建 Container ,然后在 Container 里面做一些变化，如安装软件等，这样就可以将已经改变的 Container 进行 commit 成一个新的 Image  操作  1. 查看 Image 列表  1   docker">
+  <meta name="description" content="安装 略  配置环境变量  * GOROOT 就是go的安装路径  * GOPATH 就是工作目录，包含src,pkg,bin文件夹  * 注意：不要把GOPATH设置成安装目录  安装路径： &#x2F;usr&#x2F;local&#x2F;go  1   vim ~&#x2F;.bash_profile   1 2 3   export GOROOT&#x3D;&#x2F;usr&#x2F;local&#x2F;go export GOPATH&#x3D;&#x2F;Users&#x2F;finnl">
 <meta property="og:type" content="article">
-<meta property="og:title" content="构建自己的 Docker 镜像">
-<meta property="og:url" content="https://notes.xuepincat.com/2019/05/25/8-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84-Docker-%E9%95%9C%E5%83%8F/index.html">
+<meta property="og:title" content="Go-GO开发环境搭建">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/09/19/Go-GO%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="commit 命令 1   docker container commit   或者   1   docker commit   这条命令表示基于某个 Image 创建 Container ,然后在 Container 里面做一些变化，如安装软件等，这样就可以将已经改变的 Container 进行 commit 成一个新的 Image  操作  1. 查看 Image 列表  1   docker">
+<meta property="og:description" content="安装 略  配置环境变量  * GOROOT 就是go的安装路径  * GOPATH 就是工作目录，包含src,pkg,bin文件夹  * 注意：不要把GOPATH设置成安装目录  安装路径： &#x2F;usr&#x2F;local&#x2F;go  1   vim ~&#x2F;.bash_profile   1 2 3   export GOROOT&#x3D;&#x2F;usr&#x2F;local&#x2F;go export GOPATH&#x3D;&#x2F;Users&#x2F;finnl">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/150.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/151.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/152.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/153.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/154.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/155.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/156.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/157.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/158.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/159.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/160.png">
-<meta property="article:published_time" content="2019-05-25T05:07:00.000Z">
-<meta property="article:modified_time" content="2020-05-23T23:14:19.282Z">
+<meta property="article:published_time" content="2020-09-19T02:07:39.000Z">
+<meta property="article:modified_time" content="2020-09-19T18:02:02.005Z">
 <meta property="article:author" content="Finnley">
-<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Go">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://notes.xuepincat.com/images/docker/150.png">
 
-<link rel="canonical" href="https://notes.xuepincat.com/2019/05/25/8-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84-Docker-%E9%95%9C%E5%83%8F/">
+<link rel="canonical" href="https://notes.xuepincat.com/2020/09/19/Go-GO%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
 
 
 <script id="page-configurations">
@@ -59,7 +47,7 @@
   };
 </script>
 
-  <title>构建自己的 Docker 镜像 | Finnley's Notes</title>
+  <title>Go-GO开发环境搭建 | Finnley's Notes</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
     <script>
@@ -227,7 +215,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/25/8-%E6%9E%84%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84-Docker-%E9%95%9C%E5%83%8F/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/09/19/Go-GO%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -240,7 +228,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          构建自己的 Docker 镜像
+          Go-GO开发环境搭建
         </h1>
 
         <div class="post-meta">
@@ -250,14 +238,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2019-05-25 13:07:00" itemprop="dateCreated datePublished" datetime="2019-05-25T13:07:00+08:00">2019-05-25</time>
+              <time title="Created: 2020-09-19 10:07:39" itemprop="dateCreated datePublished" datetime="2020-09-19T10:07:39+08:00">2020-09-19</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2020-09-20 02:02:02" itemprop="dateModified" datetime="2020-09-20T02:02:02+08:00">2020-09-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -265,7 +253,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                  <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
                 </span>
             </span>
 
@@ -280,94 +268,44 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="commit-命令"><a href="#commit-命令" class="headerlink" title="commit 命令"></a>commit 命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container commit</span><br></pre></td></tr></table></figure>
+        <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>略</p>
+<h2 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h2><ul>
+<li>GOROOT 就是go的安装路径</li>
+<li>GOPATH 就是工作目录，包含src,pkg,bin文件夹</li>
+<li>注意：不要把GOPATH设置成安装目录</li>
+</ul>
+<p>安装路径： <code>/usr/local/go</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim ~&#x2F;.bash_profile</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">export GOROOT&#x3D;&#x2F;usr&#x2F;local&#x2F;go</span><br><span class="line">export GOPATH&#x3D;&#x2F;Users&#x2F;finnley&#x2F;go</span><br><span class="line">export PATH&#x3D;&#x2F;usr&#x2F;local&#x2F;go&#x2F;bin:$GOPATH&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ go version</span><br><span class="line">go version go1.15.2 darwin&#x2F;amd64</span><br><span class="line">➜  ~</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">➜  ~ go env</span><br><span class="line">GO111MODULE&#x3D;&quot;on&quot;</span><br><span class="line">GOARCH&#x3D;&quot;amd64&quot;</span><br><span class="line">GOBIN&#x3D;&quot;&quot;</span><br><span class="line">GOCACHE&#x3D;&quot;&#x2F;Users&#x2F;finnley&#x2F;Library&#x2F;Caches&#x2F;go-build&quot;</span><br><span class="line">GOENV&#x3D;&quot;&#x2F;Users&#x2F;finnley&#x2F;Library&#x2F;Application Support&#x2F;go&#x2F;env&quot;</span><br><span class="line">GOEXE&#x3D;&quot;&quot;</span><br><span class="line">GOFLAGS&#x3D;&quot;&quot;</span><br><span class="line">GOHOSTARCH&#x3D;&quot;amd64&quot;</span><br><span class="line">GOHOSTOS&#x3D;&quot;darwin&quot;</span><br><span class="line">GOINSECURE&#x3D;&quot;&quot;</span><br><span class="line">GOMODCACHE&#x3D;&quot;&#x2F;Users&#x2F;finnley&#x2F;go&#x2F;pkg&#x2F;mod&quot;</span><br><span class="line">GONOPROXY&#x3D;&quot;&quot;</span><br><span class="line">GONOSUMDB&#x3D;&quot;&quot;</span><br><span class="line">GOOS&#x3D;&quot;darwin&quot;</span><br><span class="line">GOPATH&#x3D;&quot;&#x2F;Users&#x2F;finnley&#x2F;go&quot;</span><br><span class="line">GOPRIVATE&#x3D;&quot;&quot;</span><br><span class="line">GOPROXY&#x3D;&quot;https:&#x2F;&#x2F;goproxy.cn,direct&quot;</span><br><span class="line">GOROOT&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;go&quot;</span><br><span class="line">GOSUMDB&#x3D;&quot;sum.golang.org&quot;</span><br><span class="line">GOTMPDIR&#x3D;&quot;&quot;</span><br><span class="line">GOTOOLDIR&#x3D;&quot;&#x2F;usr&#x2F;local&#x2F;go&#x2F;pkg&#x2F;tool&#x2F;darwin_amd64&quot;</span><br><span class="line">GCCGO&#x3D;&quot;gccgo&quot;</span><br><span class="line">AR&#x3D;&quot;ar&quot;</span><br><span class="line">CC&#x3D;&quot;clang&quot;</span><br><span class="line">CXX&#x3D;&quot;clang++&quot;</span><br><span class="line">CGO_ENABLED&#x3D;&quot;1&quot;</span><br><span class="line">GOMOD&#x3D;&quot;&#x2F;dev&#x2F;null&quot;</span><br><span class="line">CGO_CFLAGS&#x3D;&quot;-g -O2&quot;</span><br><span class="line">CGO_CPPFLAGS&#x3D;&quot;&quot;</span><br><span class="line">CGO_CXXFLAGS&#x3D;&quot;-g -O2&quot;</span><br><span class="line">CGO_FFLAGS&#x3D;&quot;-g -O2&quot;</span><br><span class="line">CGO_LDFLAGS&#x3D;&quot;-g -O2&quot;</span><br><span class="line">PKG_CONFIG&#x3D;&quot;pkg-config&quot;</span><br><span class="line">GOGCCFLAGS&#x3D;&quot;-fPIC -m64 -pthread -fno-caret-diagnostics -Qunused-arguments -fmessage-length&#x3D;0 -fdebug-prefix-map&#x3D;&#x2F;var&#x2F;folders&#x2F;1c&#x2F;tfxvqn6d5zqdyn0ghyrv8vq40000gn&#x2F;T&#x2F;go-build370804410&#x3D;&#x2F;tmp&#x2F;go-build -gno-record-gcc-switches -fno-common&quot;</span><br><span class="line">➜  ~</span><br></pre></td></tr></table></figure>
+
+<h2 id="设置代理"><a href="#设置代理" class="headerlink" title="设置代理"></a>设置代理</h2><p>打开你的终端并执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go env -w GO111MODULE&#x3D;on</span><br><span class="line">go env -w GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.cn,direct</span><br></pre></td></tr></table></figure>
+
+<p>完成</p>
+<h2 id="卸载"><a href="#卸载" class="headerlink" title="卸载"></a>卸载</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf &#x2F;usr&#x2F;local&#x2F;go</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf &#x2F;etc&#x2F;paths.d&#x2F;go</span><br></pre></td></tr></table></figure>
+
+<p>注册和登录</p>
+<h2 id="安装-beego"><a href="#安装-beego" class="headerlink" title="安装 beego"></a>安装 beego</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go get github.com&#x2F;astaxie&#x2F;beego</span><br><span class="line">go get github.com&#x2F;beego&#x2F;bee</span><br></pre></td></tr></table></figure>
+
+<p>升级</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com&#x2F;astaxie&#x2F;beego</span><br><span class="line">go get -u github.com&#x2F;beego&#x2F;bee</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bee api go-video-api</span><br></pre></td></tr></table></figure>
+
+<p>使用环境变量的方式设置 GO111MODULE=off</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export GO111MODULE&#x3D;off</span><br><span class="line">echo $GO111MODULE</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go build .&#x2F;...</span><br></pre></td></tr></table></figure>
 
 <p>或者 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit</span><br></pre></td></tr></table></figure>
-
-<p>这条命令表示基于某个 Image 创建 Container ,然后在 Container 里面做一些变化，如安装软件等，这样就可以将已经改变的 Container 进行 commit 成一个新的 <code>Image</code></p>
-<a id="more"></a>
-
-<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><ol>
-<li>查看 Image 列表</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/150.png" alt=""></p>
-<ol start="2">
-<li>启动交互式界面运行 centos</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it centos</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/151.png" alt=""></p>
-<ol start="3">
-<li>接着在容器中安装软件，如 vim</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y vim</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/152.png" alt=""></p>
-<ol start="4">
-<li>退出,并查看容器列表</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br><span class="line">docker container ls -a</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/153.png" alt=""></p>
-<p>图中可以看到有一个退出状态的容器，现在目的是想将这个 Container commit 成一个 Image , 很显然，这个 Image 是基础 CentOS 的，它里面安装了 vim </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker commit brave_germain finnley&#x2F;centos-vim</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/154.png" alt=""></p>
-<p>此时就在 Image 列表中看到一个 centos-vim 的 Image ，并且 centos-vim 的大小也比 centos 大一点，还有 centos-vim 和 centos 会共享很多的 layer</p>
-<p><img src="/images/docker/155.png" alt=""></p>
-<p>图中可以看到上面 centos 和 下面 centos-vim 都具有相同的层 <code>9f38484d220f</code> ， centos-vim 只是在 <code>9f38484d220f</code> 的基础上加了一层 <code>69caca098a6f</code> ，这一层的大小是 <code>150M</code> , 这一层主要是安装了 <code>vim</code></p>
-<p>上面就是通过 <code>docker commit</code> 基于一个已经存在的 <code>Container</code> 去创建 <code>Image</code> , 但是这种方式去创建 <code>Image</code> 并不是很提倡，因为如果将 <code>Image</code> 发布出去，别人其实是不知道这个 <code>Image</code> 是怎么产生的，因为有可能将一些不安全的的东西放在 <code>Image</code> 里面发布出去，这样的 <code>Image</code> 就是一个不安全的 <code>Image</code> ，而是提倡使用 <code>Dockerfile</code> 创建 <code>Image</code></p>
-<h2 id="build-命令"><a href="#build-命令" class="headerlink" title="build 命令"></a>build 命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image build</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build</span><br></pre></td></tr></table></figure>
-
-<p>作用是 <code>Build an image from a Dockerfile</code>, 通过 <code>Dockerfile</code> 去 <code>build</code> 一个 <code>Image</code></p>
-<h3 id="操作-1"><a href="#操作-1" class="headerlink" title="操作"></a>操作</h3><ol>
-<li>首先将之前的 <code>Image</code> 删掉</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker rm 69caca098a6f</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/156.png" alt=""></p>
-<ol start="2">
-<li>创建 <code>docker-centos-vim</code> 目录，并进入该目录</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir docker-centos-vim</span><br><span class="line">cd docker-centos-vim</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/157.png" alt=""></p>
-<ol start="3">
-<li>在 <code>docker-centos-vim</code> 目录中创建 <code>Dockerfile</code></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim Dockerfile</span><br></pre></td></tr></table></figure>
-
-<p>键入内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FROM centos</span><br><span class="line">RUN yum install -y vim</span><br></pre></td></tr></table></figure>
-
-<p><code>FROM centos</code> : 因为这次要在 <code>centos</code> 的基础上安装 <code>vim</code> ,所以需要 <code>FROM centos</code>, 这里的 <code>centos</code> 也就是 <code>BaseImage</code></p>
-<p><code>RUN yum install -y vim</code> : 有了 <code>centos</code> 的 <code>Image</code> 之后，需要在 <code>Image</code> 里面运行 <code>yum install -y vim</code> 进行安装 <code>vim</code> ,都知道 <code>Image</code> 是只读的，在一个只读的 <code>Image</code> 里面， 是如何通过 <code>yum install -y vim</code> 去安装 <code>vim</code> 的呢? 安装 <code>vim</code> 是往里面写东西，但是 <code>Image</code> 是只读的</p>
-<p><code>:wq</code> 保存退出</p>
-<ol start="4">
-<li>使用 <code>build</code> 命令基于 <code>Dockerfile</code> 去 <code>build</code> 一个新的 <code>Image</code></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t finnley&#x2F;centos-vim-new .</span><br></pre></td></tr></table></figure>
-
-<p><code>.</code> 表示基于当前目录下的 <code>Dockerfile</code> 进行 <code>build</code></p>
-<p><img src="/images/docker/158.png" alt=""></p>
-<p>图中第一步首先 <code>FROM centos</code> , 直接就会引用 <code>centos</code> 的 <code>9f38484d220f</code> 这一层，它不会去产生新的 <code>layer</code> , 第二步运行 <code>yum install -y vim</code> , 它会 <code>Running in 3511ee78d9c3</code> ，这表示它在 <code>build</code> 过程中生成新的临时的 <code>Container</code> ， <code>3511ee78d9c3</code> 就是新的临时 <code>Container ID</code> ,它会在新的临时的 <code>Container</code> 里面通过 <code>yum install -y vim</code> 去安装 <code>vim</code> </p>
-<p><img src="/images/docker/159.png" alt=""></p>
-<p>最后安装完成后回去移除临时的 <code>Container</code> ,并且它会基于临时的 <code>Container</code> 去 <code>commit</code> 成一个新的 <code>Image</code></p>
-<ol start="5">
-<li>查看新生成的 <code>Image</code></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image ls</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/docker/160.png" alt=""></p>
-<p>虽然这种生成的 <code>Image</code> 和通过 <code>commit</code> 生成的 <code>Image</code> 差不多，实际上还是有些区别的</p>
-<p>我们生成 <code>Image</code> 提倡通过 <code>Dockerfile</code> 一步一步去完成，这样我们只需要分享 <code>Dockerfile</code> 给别人就可以了，别人通过 <code>Dockerfile</code> 就可以 <code>build</code> 出跟我一样的 <code>Image</code></p>
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go mod init [name]</span><br><span class="line">go build .&#x2F;...</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -405,7 +343,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Docker/" rel="tag"># Docker</a>
+              <a href="/tags/Go/" rel="tag"># Go</a>
           </div>
 
         
@@ -414,13 +352,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2019/05/19/Docker-Container/" rel="prev" title="Docker Container">
-      <i class="fa fa-chevron-left"></i> Docker Container
+    <a href="/2020/08/30/ComputerNetwork-Classic-Protocal-and-Data-Package/" rel="prev" title="ComputerNetwork-Classic Protocal and Data Package">
+      <i class="fa fa-chevron-left"></i> ComputerNetwork-Classic Protocal and Data Package
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/" rel="next" title="Dockerfile语法">
-      Dockerfile语法 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -479,7 +414,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#commit-命令"><span class="nav-number">1.</span> <span class="nav-text">commit 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#操作"><span class="nav-number">1.1.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#build-命令"><span class="nav-number">2.</span> <span class="nav-text">build 命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#操作-1"><span class="nav-number">2.1.</span> <span class="nav-text">操作</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置环境变量"><span class="nav-number">2.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置代理"><span class="nav-number">3.</span> <span class="nav-text">设置代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卸载"><span class="nav-number">4.</span> <span class="nav-text">卸载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-beego"><span class="nav-number">5.</span> <span class="nav-text">安装 beego</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -502,13 +437,13 @@
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-count">49</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
