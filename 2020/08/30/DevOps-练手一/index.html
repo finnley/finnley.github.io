@@ -21,18 +21,25 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="搭建 GitLab Server">
+  <meta name="description" content="搭建 GitLab Server 准备 环境： CentOS  安装 Omnibus GitLab 文档地址: https:&#x2F;&#x2F;docs.gitlab.com&#x2F;   1. 安装依赖软件  1 2 3 4 5 6 7   sudo yum install -y curl policycoreutils-python openssh-server sudo systemctl enable sshd">
 <meta property="og:type" content="article">
 <meta property="og:title" content="DevOps-练手一">
 <meta property="og:url" content="https://notes.xuepincat.com/2020/08/30/DevOps-%E7%BB%83%E6%89%8B%E4%B8%80/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="搭建 GitLab Server">
+<meta property="og:description" content="搭建 GitLab Server 准备 环境： CentOS  安装 Omnibus GitLab 文档地址: https:&#x2F;&#x2F;docs.gitlab.com&#x2F;   1. 安装依赖软件  1 2 3 4 5 6 7   sudo yum install -y curl policycoreutils-python openssh-server sudo systemctl enable sshd">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/gitlab/1.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/gitlab/2.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/gitlab/3.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/gitlab/4.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/gitlab/5.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/gitlab/6.png">
 <meta property="article:published_time" content="2020-08-30T04:29:22.000Z">
-<meta property="article:modified_time" content="2020-08-30T06:09:31.052Z">
+<meta property="article:modified_time" content="2020-10-08T16:35:57.058Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="DevOps">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/gitlab/1.png">
 
 <link rel="canonical" href="https://notes.xuepincat.com/2020/08/30/DevOps-%E7%BB%83%E6%89%8B%E4%B8%80/">
 
@@ -237,10 +244,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2020-08-30 12:29:22 / Modified: 14:09:31" itemprop="dateCreated datePublished" datetime="2020-08-30T12:29:22+08:00">2020-08-30</time>
+              <time title="Created: 2020-08-30 12:29:22" itemprop="dateCreated datePublished" datetime="2020-08-30T12:29:22+08:00">2020-08-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-09 00:35:57" itemprop="dateModified" datetime="2020-10-09T00:35:57+08:00">2020-10-09</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -262,7 +275,273 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="搭建-GitLab-Server"><a href="#搭建-GitLab-Server" class="headerlink" title="搭建 GitLab Server"></a>搭建 GitLab Server</h1>
+        <h1 id="搭建-GitLab-Server"><a href="#搭建-GitLab-Server" class="headerlink" title="搭建 GitLab Server"></a>搭建 GitLab Server</h1><h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>环境： CentOS</p>
+<h2 id="安装-Omnibus-GitLab"><a href="#安装-Omnibus-GitLab" class="headerlink" title="安装 Omnibus GitLab"></a>安装 Omnibus GitLab</h2><p>文档地址: <a href="https://docs.gitlab.com/" target="_blank" rel="noopener">https://docs.gitlab.com/</a></p>
+<ol>
+<li>安装依赖软件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y curl policycoreutils-python openssh-server</span><br><span class="line">sudo systemctl enable sshd</span><br><span class="line">sudo systemctl start sshd</span><br><span class="line"></span><br><span class="line">sudo yum install postfix</span><br><span class="line">sudo systemctl enable postfix</span><br><span class="line">sudo systemctl start postfix</span><br></pre></td></tr></table></figure>
+
+
+<ol start="2">
+<li>设置gitlab安装源</li>
+</ol>
+<p>如果在国内的话，可以尝试使用清华大学的源。</p>
+<p>新建 <code>/etc/yum.repos.d/gitlab-ce.repo</code>，内容为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[gitlab-ce]</span><br><span class="line">name&#x3D;Gitlab CE Repository</span><br><span class="line">baseurl&#x3D;https:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;gitlab-ce&#x2F;yum&#x2F;el$releasever&#x2F;</span><br><span class="line">gpgcheck&#x3D;0</span><br><span class="line">enabled&#x3D;1</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>安装GitLab</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo yum makecache</span><br><span class="line">sudo yum install gitlab-ce</span><br></pre></td></tr></table></figure>
+
+<p>如果在国外的话，可以使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https:&#x2F;&#x2F;packages.gitlab.com&#x2F;install&#x2F;repositories&#x2F;gitlab&#x2F;gitlab-ee&#x2F;script.rpm.sh | sudo bash</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用openssl创建本地证书并配置config加载证书"><a href="#使用openssl创建本地证书并配置config加载证书" class="headerlink" title="使用openssl创建本地证书并配置config加载证书"></a>使用openssl创建本地证书并配置config加载证书</h2><ol>
+<li>创建ssl目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;etc&#x2F;gitlab&#x2F;ssl</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建本地私有秘钥</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo su</span><br><span class="line">openssl genrsa -out &quot;&#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;gitlab.example.com.key&quot; 2048</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>使用私有秘钥创建csr证书</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;etc&#x2F;gitlab&#x2F;ssl</span><br><span class="line"></span><br><span class="line">openssl req -new -key &quot;&#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;gitlab.example.com.key&quot; -out &quot;&#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;gitlab.example.com.csr&quot;</span><br><span class="line"></span><br><span class="line">ll</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[root@devops-gitlab vagrant]# cd &#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;</span><br><span class="line">[root@devops-gitlab ssl]# openssl req -new -key &quot;&#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;gitlab.example.com.key&quot; -out &quot;&#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;gitlab.example.com.csr&quot;</span><br><span class="line">You are about to be asked to enter information that will be incorporated</span><br><span class="line">into your certificate request.</span><br><span class="line">What you are about to enter is what is called a Distinguished Name or a DN.</span><br><span class="line">There are quite a few fields but you can leave some blank</span><br><span class="line">For some fields there will be a default value,</span><br><span class="line">If you enter &#39;.&#39;, the field will be left blank.</span><br><span class="line">-----</span><br><span class="line">Country Name (2 letter code) [XX]:cn</span><br><span class="line">State or Province Name (full name) []:shh</span><br><span class="line">Locality Name (eg, city) [Default City]:shh</span><br><span class="line">Organization Name (eg, company) [Default Company Ltd]:</span><br><span class="line">Organizational Unit Name (eg, section) []:</span><br><span class="line">Common Name (eg, your name or your server&#39;s hostname) []:gitlab.example.com</span><br><span class="line">Email Address []:admin@example.com</span><br><span class="line"></span><br><span class="line">Please enter the following &#39;extra&#39; attributes</span><br><span class="line">to be sent with your certificate request</span><br><span class="line">A challenge password []:123456</span><br><span class="line">An optional company name []:</span><br><span class="line">[root@devops-gitlab ssl]# ll</span><br><span class="line">total 8</span><br><span class="line">-rw-r--r--. 1 root root 1078 Oct  7 11:19 gitlab.example.com.csr</span><br><span class="line">-rw-r--r--. 1 root root 1675 Oct  7 11:14 gitlab.example.com.key</span><br><span class="line">[root@devops-gitlab ssl]#</span><br></pre></td></tr></table></figure>
+
+<p>可以看到私有秘钥和csr证书已经成功创建到本地目录</p>
+<ol start="4">
+<li>使用csr证书和私有秘钥创建crt天使证书</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl x509 -req -days 365 -in &quot;&#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;gitlab.example.com.csr&quot; -signkey &quot;&#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;gitlab.example.com.key&quot; -out &quot;&#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;gitlab.example.com.crt&quot;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@devops-gitlab ssl]# openssl x509 -req -days 365 -in &quot;&#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;gitlab.example.com.csr&quot; -signkey &quot;&#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;gitlab.example.com.key&quot; -out &quot;&#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;gitlab.example.com.crt&quot;</span><br><span class="line">Signature ok</span><br><span class="line">subject&#x3D;&#x2F;C&#x3D;cn&#x2F;ST&#x3D;shh&#x2F;L&#x3D;shh&#x2F;O&#x3D;Default Company Ltd&#x2F;CN&#x3D;gitlab.example.com&#x2F;emailAddress&#x3D;admin@example.com</span><br><span class="line">Getting Private key</span><br><span class="line">[root@devops-gitlab ssl]# ll</span><br><span class="line">total 12</span><br><span class="line">-rw-r--r--. 1 root root 1289 Oct  7 11:23 gitlab.example.com.crt</span><br><span class="line">-rw-r--r--. 1 root root 1078 Oct  7 11:19 gitlab.example.com.csr</span><br><span class="line">-rw-r--r--. 1 root root 1675 Oct  7 11:14 gitlab.example.com.key</span><br><span class="line">[root@devops-gitlab ssl]#</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>创建pem证书</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openssl dhparam -out &#x2F;etc&#x2F;gitlab&#x2F;ssl&#x2F;dhparams.pem 2048</span><br></pre></td></tr></table></figure>
+
+<p>这个需要些时间，到此所有证书已经全部创建完成</p>
+<ol start="6">
+<li>更改当前目录 (/etc/gitlab/ssl) 的所有证书权限</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 600 *</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@devops-gitlab ssl]# ll</span><br><span class="line">total 16</span><br><span class="line">-rw-r--r--. 1 root root  424 Oct  7 11:27 dhparams.pem</span><br><span class="line">-rw-r--r--. 1 root root 1289 Oct  7 11:23 gitlab.example.com.crt</span><br><span class="line">-rw-r--r--. 1 root root 1078 Oct  7 11:19 gitlab.example.com.csr</span><br><span class="line">-rw-r--r--. 1 root root 1675 Oct  7 11:14 gitlab.example.com.key</span><br><span class="line">[root@devops-gitlab ssl]#</span><br><span class="line">[root@devops-gitlab ssl]# chmod 600 *</span><br><span class="line">[root@devops-gitlab ssl]# ll</span><br><span class="line">total 16</span><br><span class="line">-rw-------. 1 root root  424 Oct  7 11:27 dhparams.pem</span><br><span class="line">-rw-------. 1 root root 1289 Oct  7 11:23 gitlab.example.com.crt</span><br><span class="line">-rw-------. 1 root root 1078 Oct  7 11:19 gitlab.example.com.csr</span><br><span class="line">-rw-------. 1 root root 1675 Oct  7 11:14 gitlab.example.com.key</span><br><span class="line">[root@devops-gitlab ssl]#</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>修改gitlab配置文件，将证书配置到gitlab配置文件中</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;gitlab&#x2F;gitlab.rb</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>找到 <code>external_url &#39;http://gitlab.example.com&#39;</code> 这一行，将 <code>http</code> 改为 <code>https</code></p>
+</li>
+<li><p>vim 搜索 <code>/redirect_http_to_https</code>,将注释去掉，并将值设置为 <code>true</code>, <code>nginx[&#39;redirect_http_to_https&#39;] = true</code></p>
+</li>
+<li><p>找到这一行 <code># nginx[&#39;ssl_certificate&#39;] = &quot;/etc/gitlab/ssl/#{node[&#39;fqdn&#39;]}.crt&quot;</code> 修改为 <code># nginx[&#39;ssl_certificate&#39;] = &quot;/etc/gitlab/ssl/gitlab.example.com.crt&quot;</code></p>
+</li>
+<li><p>找到这一行 <code># nginx[&#39;ssl_certificate_key&#39;] = &quot;/etc/gitlab/ssl/#{node[&#39;fqdn&#39;]}.key&quot;</code> 修改为 <code># nginx[&#39;ssl_certificate_key&#39;] = &quot;/etc/gitlab/ssl/gitlab.example.com.key&quot;</code></p>
+</li>
+<li><p>找到这一样 <code># nginx[&#39;ssl_dhparam&#39;] = nil # Path to dhparams.pem, eg. /etc/gitlab/ssl/dhparams.pem</code> 修改为 <code># nginx[&#39;ssl_dhparam&#39;] = /etc/gitlab/ssl/dhparams.pem # Path to dhparams.pem, eg. /etc/gitlab/ssl/dhparams.pem</code></p>
+</li>
+</ul>
+<p>然后保存 <code>:wq</code> 保存退出</p>
+<ol start="8">
+<li>初始化gitlab所有服务配置</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl reconfigure</span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>找到gitlab下的nginx代理工具更改gitlab的http配置文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;var&#x2F;opt&#x2F;gitlab&#x2F;nginx&#x2F;conf&#x2F;gitlab-http.conf</span><br></pre></td></tr></table></figure>
+
+<p>搜索并找到 <code>/server_name</code> 这一行，在这一行的下面添加下面一句话</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rewrite ^(.*)$ https:&#x2F;&#x2F;$host$1 permanent;</span><br></pre></td></tr></table></figure>
+
+<p>保存 <code>:wq</code> 退出</p>
+<ol start="10">
+<li>重启gitlab使配置生效</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gitlab-ctl restart</span><br></pre></td></tr></table></figure>
+
+<ol start="11">
+<li>修改本地 host 文件，添加一条host记录</li>
+</ol>
+<p>将 gitlab.example.com 重定向到 192.168.205.10 gitlab 主机，这样本机就可以直接使用这个域名去访问gitlab</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.205.10  gitlab.example.com</span><br></pre></td></tr></table></figure>
+
+<p>到这里就成功在本地安装了gitlab分布式代码仓库</p>
+<p><img src="https://images.notes.xuepincat.com/gitlab/1.png" alt=""></p>
+<h2 id="GitLab-使用"><a href="#GitLab-使用" class="headerlink" title="GitLab 使用"></a>GitLab 使用</h2><ol>
+<li>修改管理员密码</li>
+</ol>
+<p>第一次启动需要修改管理员密码,我本地修改成了 <code>123123123</code>，然后点击 <code>Change your password</code> 进入登录页面</p>
+<p><img src="https://images.notes.xuepincat.com/gitlab/2.png" alt=""></p>
+<ol start="2">
+<li>登录，用户默认是 <code>root</code>,密码修改后的密码 <code>123123123</code>,然后点击 <code>Sign in</code> 进入到首页</li>
+</ol>
+<p><img src="https://images.notes.xuepincat.com/gitlab/3.png" alt=""></p>
+<ol start="3">
+<li>点击 <code>New project</code> 创建一个新的代码仓库</li>
+</ol>
+<p><img src="https://images.notes.xuepincat.com/gitlab/4.png" alt=""></p>
+<p>点击 <code>Create project</code> 创建</p>
+<p><img src="https://images.notes.xuepincat.com/gitlab/5.png" alt=""></p>
+<ol start="4">
+<li>复制仓库地址 <code>https://gitlab.example.com/root/test-repo.git</code> 并克隆到本地</li>
+</ol>
+<p>为了避免本地证书无法克隆操作，需要使用 <code>-c http.sslVerify=false</code> 参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git -c http.sslVerify&#x3D;false clone https:&#x2F;&#x2F;gitlab.example.com&#x2F;root&#x2F;test-repo.git</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">➜  repo pwd</span><br><span class="line">&#x2F;Users&#x2F;finnley&#x2F;GitLab&#x2F;repo</span><br><span class="line">➜  repo git -c http.sslVerify&#x3D;false clone https:&#x2F;&#x2F;gitlab.example.com&#x2F;root&#x2F;test-repo.git</span><br><span class="line">Cloning into &#39;test-repo&#39;...</span><br><span class="line">Username for &#39;https:&#x2F;&#x2F;gitlab.example.com&#39;: root</span><br><span class="line">Password for &#39;https:&#x2F;&#x2F;root@gitlab.example.com&#39;:</span><br><span class="line">warning: You appear to have cloned an empty repository.</span><br><span class="line">➜  repo</span><br></pre></td></tr></table></figure>
+
+<p>如果无法clone,可以尝试使用上传本地ssh公钥的方式，再git clone</p>
+<ol start="5">
+<li>进入仓库，创建测试代码</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">➜  repo ls</span><br><span class="line">test-repo</span><br><span class="line">➜  repo cd test-repo</span><br><span class="line">➜  test-repo git:(master) vim test.py</span><br><span class="line">➜  test-repo git:(master) ✗ cat test.py</span><br><span class="line">print &quot;This is a test code&quot;</span><br><span class="line">➜  test-repo git:(master) ✗</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>提交文件到gitlab仓库</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">➜  test-repo git:(master) ✗ git add .</span><br><span class="line">➜  test-repo git:(master) ✗ git commit -m &quot;first commit&quot;</span><br><span class="line">[master (root-commit) 43d3085] first commit</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br><span class="line"> create mode 100644 test.py</span><br><span class="line">➜  test-repo git:(master) git -c http.sslVerify&#x3D;false push origin master</span><br><span class="line">Enumerating objects: 3, done.</span><br><span class="line">Counting objects: 100% (3&#x2F;3), done.</span><br><span class="line">Writing objects: 100% (3&#x2F;3), 239 bytes | 239.00 KiB&#x2F;s, done.</span><br><span class="line">Total 3 (delta 0), reused 0 (delta 0)</span><br><span class="line">To https:&#x2F;&#x2F;gitlab.example.com&#x2F;root&#x2F;test-repo.git</span><br><span class="line"> * [new branch]      master -&gt; master</span><br><span class="line">➜  test-repo git:(master)</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://images.notes.xuepincat.com/gitlab/6.png" alt=""></p>
+<h2 id="安装-Python3"><a href="#安装-Python3" class="headerlink" title="安装 Python3"></a>安装 Python3</h2><ol>
+<li>下载 python3</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;www.python.org&#x2F;ftp&#x2F;python&#x2F;3.7.9&#x2F;Python-3.7.9.tar.xz</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>解压</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar xf Python-3.7.9.tar.xz</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>安装</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd Python-3.7.9&#x2F;</span><br><span class="line"></span><br><span class="line">yum install -y glibc glibc-devel glibc-headers glibc-common gcc</span><br><span class="line"></span><br><span class="line">.&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local --with-ensurepip&#x3D;install --enable-shared LDFLAGS&#x3D;&quot;-Wl,-rpath &#x2F;usr&#x2F;local&#x2F;lib&quot;</span><br><span class="line"></span><br><span class="line">make &amp;&amp; make altinstall</span><br></pre></td></tr></table></figure>
+
+<p>如果安装完提示下面信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">WARNING: The script easy_install-3.7 is installed in &#39;&#x2F;usr&#x2F;local&#x2F;bin&#39; which is not on PATH.</span><br><span class="line">  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.</span><br><span class="line">  WARNING: The script pip3.7 is installed in &#39;&#x2F;usr&#x2F;local&#x2F;bin&#39; which is not on PATH.</span><br><span class="line">  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@devops-ansible Python-3.7.9]# which pip3.7</span><br><span class="line">&#x2F;usr&#x2F;bin&#x2F;which: no pip3.7 in (&#x2F;sbin:&#x2F;bin:&#x2F;usr&#x2F;sbin:&#x2F;usr&#x2F;bin)</span><br></pre></td></tr></table></figure>
+
+<p>解决方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@devops-ansible Python-3.7.9]# export PATH&#x3D;&#x2F;usr&#x2F;local&#x2F;bin:$PATH</span><br><span class="line">[root@devops-ansible Python-3.7.9]# which pip3.7</span><br><span class="line">&#x2F;usr&#x2F;local&#x2F;bin&#x2F;pip3.7</span><br><span class="line">[root@devops-ansible Python-3.7.9]#</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>创建软链接</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s &#x2F;usr&#x2F;local&#x2F;bin&#x2F;pip3.7 &#x2F;usr&#x2F;local&#x2F;bin&#x2F;pip</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>安装 virtualenv</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -i http:&#x2F;&#x2F;pypi.douban.com&#x2F;simple&#x2F; --trusted-host pypi.douban.com virtualenv</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建-Ansible-系统账户"><a href="#创建-Ansible-系统账户" class="headerlink" title="创建 Ansible 系统账户"></a>创建 Ansible 系统账户</h2><ol>
+<li>创建 deploy 用户</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd deploy</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>登录到 deploy 的命令行界面</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su - deploy</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在deploy用户下创建env实例</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">virtualenv -p &#x2F;usr&#x2F;local&#x2F;bin&#x2F;python3.7 .py3-a2.10-env</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[deploy@devops-ansible ~]$ virtualenv -p &#x2F;usr&#x2F;local&#x2F;bin&#x2F;python3.7 .py3-a2.10-env</span><br><span class="line">created virtual environment CPython3.7.9.final.0-64 in 896ms</span><br><span class="line">  creator CPython3Posix(dest&#x3D;&#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env, clear&#x3D;False, global&#x3D;False)</span><br><span class="line">  seeder FromAppData(download&#x3D;False, pip&#x3D;bundle, setuptools&#x3D;bundle, wheel&#x3D;bundle, via&#x3D;copy, app_data_dir&#x3D;&#x2F;home&#x2F;deploy&#x2F;.local&#x2F;share&#x2F;virtualenv)</span><br><span class="line">    added seed packages: pip&#x3D;&#x3D;20.2.3, setuptools&#x3D;&#x3D;50.3.0, wheel&#x3D;&#x3D;0.35.1</span><br><span class="line">  activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator</span><br><span class="line">[deploy@devops-ansible ~]$</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>安装 ansiable</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env&#x2F;</span><br><span class="line"></span><br><span class="line">which git</span><br><span class="line"></span><br><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;ansible&#x2F;ansible.git</span><br><span class="line"></span><br><span class="line">source &#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env&#x2F;bin&#x2F;activate</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[deploy@devops-ansible ~]$ cd &#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env&#x2F;</span><br><span class="line">[deploy@devops-ansible .py3-a2.10-env]$ which git</span><br><span class="line">&#x2F;bin&#x2F;git</span><br><span class="line">[deploy@devops-ansible .py3-a2.10-env]$ git clone https:&#x2F;&#x2F;github.com&#x2F;ansible&#x2F;ansible.git</span><br><span class="line">Cloning into &#39;ansible&#39;...</span><br><span class="line">remote: Enumerating objects: 539719, done.</span><br><span class="line">remote: Counting objects: 100% (539719&#x2F;539719), done.</span><br><span class="line">remote: Compressing objects: 100% (128106&#x2F;128106), done.</span><br><span class="line">remote: Total 539719 (delta 361943), reused 539719 (delta 361943), pack-reused 0</span><br><span class="line">Receiving objects: 100% (539719&#x2F;539719), 179.14 MiB | 8.72 MiB&#x2F;s, done.</span><br><span class="line">Resolving deltas: 100% (361943&#x2F;361943), done.</span><br><span class="line">[deploy@devops-ansible .py3-a2.10-env]$</span><br><span class="line">[deploy@devops-ansible .py3-a2.10-env]$ source &#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env&#x2F;bin&#x2F;activate</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible .py3-a2.10-env]$</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>安装依赖包</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -i http:&#x2F;&#x2F;pypi.douban.com&#x2F;simple&#x2F; --trusted-host pypi.douban.com paramiko PyYAML jinja2</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>移动 ansible 到虚拟环境，并进入到该目录</li>
+</ol>
+<p>我好想就是在在 /home/deploy/.py3-a2.10-env/ 目录中clone的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd ansible</span><br><span class="line">git checkout stable-2.10</span><br><span class="line">source &#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env&#x2F;ansible&#x2F;hacking&#x2F;env-setup -q</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>验证 ansible 2.10 是否加载完成</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ansible --version</span><br><span class="line"></span><br><span class="line">ansible-playbook --version</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ansible]$ git checkout stable-2.10</span><br><span class="line">Branch stable-2.10 set up to track remote branch stable-2.10 from origin.</span><br><span class="line">Switched to a new branch &#39;stable-2.10&#39;</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ansible]$ source &#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env&#x2F;ansible&#x2F;hacking&#x2F;env-setup -q</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ansible]$ ansible --version</span><br><span class="line">ansible 2.10.2.post0</span><br><span class="line">  config file &#x3D; None</span><br><span class="line">  configured module search path &#x3D; [&#39;&#x2F;home&#x2F;deploy&#x2F;.ansible&#x2F;plugins&#x2F;modules&#39;, &#39;&#x2F;usr&#x2F;share&#x2F;ansible&#x2F;plugins&#x2F;modules&#39;]</span><br><span class="line">  ansible python module location &#x3D; &#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env&#x2F;ansible&#x2F;lib&#x2F;ansible</span><br><span class="line">  executable location &#x3D; &#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env&#x2F;ansible&#x2F;bin&#x2F;ansible</span><br><span class="line">  python version &#x3D; 3.7.9 (default, Oct  8 2020, 08:05:12) [GCC 4.8.5 20150623 (Red Hat 4.8.5-39)]</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ansible]$ ansible-playbook --version</span><br><span class="line">ansible-playbook 2.10.2.post0</span><br><span class="line">  config file &#x3D; None</span><br><span class="line">  configured module search path &#x3D; [&#39;&#x2F;home&#x2F;deploy&#x2F;.ansible&#x2F;plugins&#x2F;modules&#39;, &#39;&#x2F;usr&#x2F;share&#x2F;ansible&#x2F;plugins&#x2F;modules&#39;]</span><br><span class="line">  ansible python module location &#x3D; &#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env&#x2F;ansible&#x2F;lib&#x2F;ansible</span><br><span class="line">  executable location &#x3D; &#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env&#x2F;ansible&#x2F;bin&#x2F;ansible-playbook</span><br><span class="line">  python version &#x3D; 3.7.9 (default, Oct  8 2020, 08:05:12) [GCC 4.8.5 20150623 (Red Hat 4.8.5-39)]</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ansible]$</span><br></pre></td></tr></table></figure>
+
+<p>到这里已经成功在 ansible 主机下完成了在py3.7虚拟环境下安装ansible2.10版本，确保ansible在一个独立环境下正常稳定运转</p>
+<h2 id="ansible-playbookds-入门"><a href="#ansible-playbookds-入门" class="headerlink" title="ansible playbookds 入门"></a>ansible playbookds 入门</h2><ol>
+<li>创建 test_playbooks 目录,配置testservers主列表</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ~]$ mkdir test_playbooks</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ~]$ cd test_playbooks&#x2F;</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible test_playbooks]$ mkdir inventory</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible test_playbooks]$ mkdir roles</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible test_playbooks]$ cd inventory&#x2F;</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible inventory]$ vim testenv</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible inventory]$ cat testenv</span><br><span class="line">[testservers]</span><br><span class="line">test.example.com</span><br><span class="line"></span><br><span class="line">[testservers:vars]</span><br><span class="line">server_name&#x3D;test.example.com</span><br><span class="line">user&#x3D;root</span><br><span class="line">output&#x3D;&#x2F;root&#x2F;test&#x2F;txt</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible inventory]$</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>添加tasks测试任务，在目标主机下输出带有参数的语句到目标主机的某个路径下</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(.py3-a2.10-env) [deploy@devops-ansible inventory]$ cd ..&#x2F;roles&#x2F;</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible roles]$ mkdir testbox</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible roles]$ cd testbox&#x2F;</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible testbox]$ mkdir tasks</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible testbox]$ cd tasks&#x2F;</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible tasks]$ vim main.yml</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible tasks]$ cat main.yml</span><br><span class="line">- name: print server name and user to remove testbox</span><br><span class="line">  shell: &quot;echo &#39;Currently &#123;&#123; user &#125;&#125; is logining &#123;&#123; server_name &#125;&#125;&#39; &gt; &#123;&#123; output &#125;&#125;&quot;</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible tasks]$</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>创建任务入口文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">(.py3-a2.10-env) [deploy@devops-ansible tasks]$ cd ..&#x2F;..&#x2F;..</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible test_playbooks]$ pwd</span><br><span class="line">&#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env&#x2F;ansible&#x2F;test_playbooks</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible test_playbooks]$ vim deploy.yml</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible test_playbooks]$ cat deploy.yml</span><br><span class="line">- hosts: &quot;testservers&quot;</span><br><span class="line">  gather_facts: true</span><br><span class="line">  remote_user: root</span><br><span class="line">  roles:</span><br><span class="line">    - testbox</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible test_playbooks]$</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible test_playbooks]$ tree .</span><br><span class="line">.</span><br><span class="line">├── deploy.yml</span><br><span class="line">├── inventory</span><br><span class="line">│   └── testenv</span><br><span class="line">└── roles</span><br><span class="line">    └── testbox</span><br><span class="line">        └── tasks</span><br><span class="line">            └── main.yml</span><br><span class="line"></span><br><span class="line">4 directories, 3 files</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible test_playbooks]$</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置-Ansible-playbooks-SSH-免密码秘钥认证"><a href="#配置-Ansible-playbooks-SSH-免密码秘钥认证" class="headerlink" title="配置 Ansible playbooks SSH 免密码秘钥认证"></a>配置 Ansible playbooks SSH 免密码秘钥认证</h2><ol>
+<li>使用 root 身份修改 hosts 添加一条记录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">su - root</span><br><span class="line">[root@devops-ansible ~]# vim &#x2F;etc&#x2F;hosts</span><br><span class="line">[root@devops-ansible ~]# cat &#x2F;etc&#x2F;hosts</span><br><span class="line">127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4</span><br><span class="line">::1         localhost localhost.localdomain localhost6 localhost6.localdomain6</span><br><span class="line">127.0.1.1 devops-ansible devops-ansible</span><br><span class="line"></span><br><span class="line">192.168.205.121 test.example.com</span><br><span class="line">[root@devops-ansible ~]#</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">192.168.205.120 test.example.com</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>返回 deploy 目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">su - deploy</span><br><span class="line">[deploy@devops-ansible ~]$ source &#x2F;home&#x2F;deploy&#x2F;.py3-a2.10-env&#x2F;bin&#x2F;activate</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ~]$</span><br></pre></td></tr></table></figure>
+
+<p>在使用 ansible 执行 playbooks 之前，因为 ansible 是以 ssh 作为通讯协议，为了保证正常的通信连接，需要配置ansible主机与目标主机的秘钥认证，保证ansible无需密码就可以访问目标主机</p>
+<ol start="3">
+<li>ansible 服务器端创建爱你ssh本地秘钥</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ~]$ ssh-keygen -t rsa</span><br><span class="line">Generating public&#x2F;private rsa key pair.</span><br><span class="line">Enter file in which to save the key (&#x2F;home&#x2F;deploy&#x2F;.ssh&#x2F;id_rsa):</span><br><span class="line">Created directory &#39;&#x2F;home&#x2F;deploy&#x2F;.ssh&#39;.</span><br><span class="line">Enter passphrase (empty for no passphrase):</span><br><span class="line">Enter same passphrase again:</span><br><span class="line">Your identification has been saved in &#x2F;home&#x2F;deploy&#x2F;.ssh&#x2F;id_rsa.</span><br><span class="line">Your public key has been saved in &#x2F;home&#x2F;deploy&#x2F;.ssh&#x2F;id_rsa.pub.</span><br><span class="line">The key fingerprint is:</span><br><span class="line">SHA256:96nWzhxy44CQCHyr6Ak3MxBZwxBC4P9muWWImpHUsQQ deploy@devops-ansible</span><br><span class="line">The key&#39;s randomart image is:</span><br><span class="line">+---[RSA 2048]----+</span><br><span class="line">|BEo              |</span><br><span class="line">|o+o.             |</span><br><span class="line">|o.oo.            |</span><br><span class="line">| .+ooo .         |</span><br><span class="line">|.. +o o S .      |</span><br><span class="line">|.o..o o. o . .   |</span><br><span class="line">|oo*. * o. o.*    |</span><br><span class="line">|o.&#x3D;+o +   .O.o   |</span><br><span class="line">| &#x3D;   .   ...&#x3D;    |</span><br><span class="line">+----[SHA256]-----+</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ~]$</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>ansible 服务器端建立与目标部署及其的秘钥认证</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -i &#x2F;home&#x2F;deploy&#x2F;.ssh&#x2F;id_rsa.pub root@test.example.com</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ~]$ ssh-copy-id -i &#x2F;home&#x2F;deploy&#x2F;.ssh&#x2F;id_rsa.pub root@test.example.com</span><br><span class="line">&#x2F;bin&#x2F;ssh-copy-id: INFO: Source of key(s) to be installed: &quot;&#x2F;home&#x2F;deploy&#x2F;.ssh&#x2F;id_rsa.pub&quot;</span><br><span class="line">&#x2F;bin&#x2F;ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed</span><br><span class="line">&#x2F;bin&#x2F;ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys</span><br><span class="line">root@test.example.com&#39;s password:</span><br><span class="line"></span><br><span class="line">Number of key(s) added: 1</span><br><span class="line"></span><br><span class="line">Now try logging into the machine, with:   &quot;ssh &#39;root@test.example.com&#39;&quot;</span><br><span class="line">and check to make sure that only the key(s) you wanted were added.</span><br><span class="line"></span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ~]$ ssh root@test.example.com</span><br><span class="line">Last login: Thu Oct  8 16:21:59 2020</span><br><span class="line">[root@devops-gitlab ~]#</span><br></pre></td></tr></table></figure>
+
+<p>上面方法可能连接不上，需要登录另外一个服务器进行设置</p>
+<p><a href="https://www.appblog.cn/2019/12/04/%E8%A7%A3%E5%86%B3Vagrant%E4%B8%AD%E7%9A%84CentOS%E4%B8%BB%E6%9C%BA%E6%97%A0%E6%B3%95ssh%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%97%AE%E9%A2%98/" target="_blank" rel="noopener">https://www.appblog.cn/2019/12/04/%E8%A7%A3%E5%86%B3Vagrant%E4%B8%AD%E7%9A%84CentOS%E4%B8%BB%E6%9C%BA%E6%97%A0%E6%B3%95ssh%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E7%9A%84%E9%97%AE%E9%A2%98/</a></p>
+<p>此时不需要密码就可以在 anbible 机器上登录另外一台机器</p>
+<ol start="3">
+<li>执行 playbookds，部署到 testenv 环境</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ~]$ pwd</span><br><span class="line">&#x2F;home&#x2F;deploy</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ~]$ ls</span><br><span class="line">test_playbooks</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible ~]$ cd test_playbooks&#x2F;</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible test_playbooks]$ ls</span><br><span class="line">deploy.yml  inventory  roles</span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible test_playbooks]$ ansible-playbook -i inventory&#x2F;testenv .&#x2F;deploy.yml</span><br><span class="line"></span><br><span class="line">PLAY [testservers] ************************************************************************************************</span><br><span class="line"></span><br><span class="line">TASK [Gathering Facts] ********************************************************************************************</span><br><span class="line">ok: [test.example.com]</span><br><span class="line"></span><br><span class="line">TASK [print server name and user to remove testbox] ***************************************************************</span><br><span class="line">changed: [test.example.com]</span><br><span class="line"></span><br><span class="line">PLAY RECAP ********************************************************************************************************</span><br><span class="line">test.example.com           : ok&#x3D;2    changed&#x3D;1    unreachable&#x3D;0    failed&#x3D;0    skipped&#x3D;0    rescued&#x3D;0    ignored&#x3D;0</span><br><span class="line"></span><br><span class="line">(.py3-a2.10-env) [deploy@devops-ansible test_playbooks]$</span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -374,7 +653,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#搭建-GitLab-Server"><span class="nav-number">1.</span> <span class="nav-text">搭建 GitLab Server</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#搭建-GitLab-Server"><span class="nav-number">1.</span> <span class="nav-text">搭建 GitLab Server</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-Omnibus-GitLab"><span class="nav-number">1.2.</span> <span class="nav-text">安装 Omnibus GitLab</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用openssl创建本地证书并配置config加载证书"><span class="nav-number">1.3.</span> <span class="nav-text">使用openssl创建本地证书并配置config加载证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GitLab-使用"><span class="nav-number">1.4.</span> <span class="nav-text">GitLab 使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-Python3"><span class="nav-number">1.5.</span> <span class="nav-text">安装 Python3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建-Ansible-系统账户"><span class="nav-number">1.6.</span> <span class="nav-text">创建 Ansible 系统账户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ansible-playbookds-入门"><span class="nav-number">1.7.</span> <span class="nav-text">ansible playbookds 入门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置-Ansible-playbooks-SSH-免密码秘钥认证"><span class="nav-number">1.8.</span> <span class="nav-text">配置 Ansible playbooks SSH 免密码秘钥认证</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
