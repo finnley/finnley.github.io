@@ -1,3 +1,4 @@
+https://notes.xuepincat.com/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/
 https://notes.xuepincat.com/2020/09/19/Go-GO%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/
 https://notes.xuepincat.com/2020/08/30/ComputerNetwork-Classic-Protocal-and-Data-Package/
 https://notes.xuepincat.com/2020/08/30/DevOps-%E7%BB%83%E6%89%8B%E4%B8%80/
@@ -7,4 +8,3 @@ https://notes.xuepincat.com/2020/08/02/DevOps-%E4%BD%BF%E7%94%A8Kubeadm%E6%90%AD
 https://notes.xuepincat.com/2020/07/26/Docker-Kubernetes%E5%85%A5%E9%97%A8/
 https://notes.xuepincat.com/2020/07/25/Docker-%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1-Routing-Mesh/
 https://notes.xuepincat.com/2020/07/25/Docker-swarm%E9%9B%86%E7%BE%A4%E9%80%9A%E8%BF%87service%E9%83%A8%E7%BD%B2wordpress/
-https://notes.xuepincat.com/2020/07/24/Docker-%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92-Swarm/

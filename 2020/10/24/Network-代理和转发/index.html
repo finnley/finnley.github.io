@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="什么是网络代理  * 用户通过代理请求信息  * 请求通过网络代理完成转发到达目标服务器  * 目标服务器响应后再通过网络代理回传给用户  网络代理与网络转发区别 网络转发    1. 首先是客户端先发起请求，它的IP是rs_ip,就是实际的服务器IP；            2. 然后请求会到达rt_ip,路由器会修改报文，把来源的IP改成自己本身的IP，            3. 然后经过互">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Network-代理和转发">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/index.html">
+<meta property="og:site_name" content="Finnley&#39;s Notes">
+<meta property="og:description" content="什么是网络代理  * 用户通过代理请求信息  * 请求通过网络代理完成转发到达目标服务器  * 目标服务器响应后再通过网络代理回传给用户  网络代理与网络转发区别 网络转发    1. 首先是客户端先发起请求，它的IP是rs_ip,就是实际的服务器IP；            2. 然后请求会到达rt_ip,路由器会修改报文，把来源的IP改成自己本身的IP，            3. 然后经过互">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/network/11.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/network/12.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/network/13.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/network/14.png">
+<meta property="article:published_time" content="2020-10-24T04:16:23.000Z">
+<meta property="article:modified_time" content="2020-10-24T06:50:06.527Z">
+<meta property="article:author" content="Finnley">
+<meta property="article:tag" content="Network">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/network/11.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Network-代理和转发 | Finnley's Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Finnley's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Finnley's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Network-代理和转发
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-10-24 12:16:23 / Modified: 14:50:06" itemprop="dateCreated datePublished" datetime="2020-10-24T12:16:23+08:00">2020-10-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="什么是网络代理"><a href="#什么是网络代理" class="headerlink" title="什么是网络代理"></a>什么是网络代理</h2><ul>
+<li>用户通过代理请求信息</li>
+<li>请求通过网络代理完成转发到达目标服务器</li>
+<li>目标服务器响应后再通过网络代理回传给用户</li>
+</ul>
+<h2 id="网络代理与网络转发区别"><a href="#网络代理与网络转发区别" class="headerlink" title="网络代理与网络转发区别"></a>网络代理与网络转发区别</h2><h4 id="网络转发"><a href="#网络转发" class="headerlink" title="网络转发"></a>网络转发</h4><p><img src="https://images.notes.xuepincat.com/network/11.png" alt=""></p>
+<ol>
+<li><p>首先是客户端先发起请求，它的IP是rs_ip,就是实际的服务器IP；</p>
+</li>
+<li><p>然后请求会到达rt_ip,路由器会修改报文，把来源的IP改成自己本身的IP，</p>
+</li>
+<li><p>然后经过互联网多级路由，直达实际服务器</p>
+</li>
+<li><p>返回时直接逆向转发请求，最后直达客户端IP</p>
+</li>
+</ol>
+<h3 id="网络代理"><a href="#网络代理" class="headerlink" title="网络代理"></a>网络代理</h3><p><img src="https://images.notes.xuepincat.com/network/12.png" alt=""></p>
+<p>可以将客户端看做是实际的外网机器，客户端机器的目标IP是代理的IP而不是实际服务器的IP，正向，反向代理的机器会创建socket recv去接收来自客户端的数据,在接收创建socket的时候也会同时创建一个与实际服务器连接的socket send，会将接收的socket数据经过中间数据处理，把数据转发出去，把数据发给实际的服务器IP；</p>
+<p>实际服务器IP在响应完数据之后再回传给代理服务器IP，代理服务器IP通过socket接收完数据之后再经过处理将把数据发送给客户端IP；</p>
+<p>客户端自始至终都不知道有实际服务器IP的存在</p>
+<p>客户端IP是直连代理IP的，代理IP会接收客户端数据这一步骤的，但是没有转发这一步骤的</p>
+<h3 id="区别"><a href="#区别" class="headerlink" title="区别"></a>区别</h3><ul>
+<li><p>网络代理，用户不直接连接服务器，网络代理去连接，获取数据后返回给用户</p>
+</li>
+<li><p>网络转发，是路由器对报文的转发操作，中间可能对数据包修改</p>
+</li>
+</ul>
+<h3 id="网络代理类型"><a href="#网络代理类型" class="headerlink" title="网络代理类型"></a>网络代理类型</h3><ul>
+<li>正向代理</li>
+</ul>
+<p>是一种客户端的代理技术，帮助客户端访问无法访问的服务资源，可以隐藏用户真实IP。比如浏览器web代理，VPN等</p>
+<p><img src="https://images.notes.xuepincat.com/network/13.png" alt=""></p>
+<p>比如中国用户访问 Google,会因为防火墙原因，就没法访问，此时就需要通过代理服务器去代理请求谷歌的资源，比如使用VPN代理或者浏览器代理</p>
+<ul>
+<li>实现一个web浏览器代理</li>
+</ul>
+<ol>
+<li><p>代理接收客户端请求，复制原请求对象，并根据数据配置新请求各种参数；</p>
+</li>
+<li><p>把新请求发送到真实服务器，并接收服务器端返回；</p>
+</li>
+<li><p>代理服务器对相应数据做一些处理，然后返回给客户端，中间代理服务器一边接收，一遍发送，从目标服务器拿到数据之后再做处理再发送</p>
+</li>
+</ol>
+<ul>
+<li>代码实现web浏览器代理</li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/network/14.png" alt=""></p>
+<p>用户发送请求，将请求发送给代理服务器，代理服务器会创建一个上游的TCP连接，然后通过服务器设置的回调方法将请求的数据保存下来，然后拿到请求数据去请求下游服务，也就是http客户端请求核心方法TransportRoundTrip,之后就拿到通过下游服务获取到的数据了，然后再将数据回传给上游连接，这就是web浏览器代理的实现</p>
+<p><a href="https://github.com/e421083458/gateway_demo" target="_blank" rel="noopener">https://github.com/e421083458/gateway_demo</a></p>
+<ul>
+<li>反向代理</li>
+</ul>
+<p>是一中服务端的代理技术，帮助服务器做负载均衡、缓存、提供安全校验等，可以隐藏服务器真实IP。比如LVS技术、nginx proxy_pass等</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Network/" rel="tag"># Network</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/19/Go-GO%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="prev" title="Go-GO开发环境搭建">
+      <i class="fa fa-chevron-left"></i> Go-GO开发环境搭建
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是网络代理"><span class="nav-number">1.</span> <span class="nav-text">什么是网络代理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网络代理与网络转发区别"><span class="nav-number">2.</span> <span class="nav-text">网络代理与网络转发区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#网络转发"><span class="nav-number">2.0.1.</span> <span class="nav-text">网络转发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络代理"><span class="nav-number">2.1.</span> <span class="nav-text">网络代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#区别"><span class="nav-number">2.2.</span> <span class="nav-text">区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络代理类型"><span class="nav-number">2.3.</span> <span class="nav-text">网络代理类型</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Finnley"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Finnley</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">168</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

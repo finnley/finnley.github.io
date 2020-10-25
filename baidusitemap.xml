@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://notes.xuepincat.com/2019/05/19/Docker-Container/</loc>
+    <lastmod>2020-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/</loc>
+    <lastmod>2020-10-24</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2019/05/08/Docker-introduction-to-docker/</loc>
+    <lastmod>2020-10-21</lastmod>
+  </url>
+  <url>
     <loc>https://notes.xuepincat.com/2020/08/30/DevOps-%E7%BB%83%E6%89%8B%E4%B8%80/</loc>
     <lastmod>2020-10-08</lastmod>
   </url>
@@ -11,10 +23,6 @@
   <url>
     <loc>https://notes.xuepincat.com/2019/05/19/Docker-Image/</loc>
     <lastmod>2020-09-19</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2019/05/19/Docker-Container/</loc>
-    <lastmod>2020-09-14</lastmod>
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2019/05/18/Docker-CentOS7%E5%AE%89%E8%A3%85Docker/</loc>
@@ -30,10 +38,6 @@
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2019/05/15/vagrant-install-centos7-using-vagrant/</loc>
-    <lastmod>2020-09-05</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2019/05/08/Docker-introduction-to-docker/</loc>
     <lastmod>2020-09-05</lastmod>
   </url>
   <url>

@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-09-19T18:02:02.005Z</updated>
+  <updated>2020-10-24T06:50:06.527Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,52 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Network-代理和转发</title>
+    <link href="https://notes.xuepincat.com/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/"/>
+    <id>https://notes.xuepincat.com/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/</id>
+    <published>2020-10-24T04:16:23.000Z</published>
+    <updated>2020-10-24T06:50:06.527Z</updated>
+    
+    <summary type="html">
+    
+      什么是网络代理
+ * 用户通过代理请求信息
+ * 请求通过网络代理完成转发到达目标服务器
+ * 目标服务器响应后再通过网络代理回传给用户
+
+网络代理与网络转发区别
+网络转发
+
+
+ 1. 首先是客户端先发起请求，它的IP是rs_ip,就是实际的服务器IP；
+    
+    
+ 2. 然后请求会到达rt_ip,路由器会修改报文，把来源的IP改成自己本身的IP，
+    
+    
+ 3. 然后经过互联网多级路由，直达实际服务器
+    
+    
+ 4. 返回时直接逆向转发请求，最后直达客户端IP
+    
+    
+
+网络代理
+
+
+可以将客户端看做是实际的外网机器，客户端机器的目标IP是代理的
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
+    
+    
+      <category term="Network" scheme="https://notes.xuepincat.com/tags/Network/"/>
+    
+  </entry>
   
   <entry>
     <title>Go-GO开发环境搭建</title>
@@ -849,49 +895,6 @@ input {
 
 数据建模过程
  * 
-    
-    </summary>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/categories/Elasticsearch/"/>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/tags/Elasticsearch/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>聚合分析</title>
-    <link href="https://notes.xuepincat.com/2020/06/25/8-%E8%81%9A%E5%90%88%E5%88%86%E6%9E%90/"/>
-    <id>https://notes.xuepincat.com/2020/06/25/8-%E8%81%9A%E5%90%88%E5%88%86%E6%9E%90/</id>
-    <published>2020-06-25T12:43:49.000Z</published>
-    <updated>2020-07-12T03:33:47.510Z</updated>
-    
-    <summary type="html">
-    
-      什么是聚合分析
- * 搜索引擎用来做什么？
-
-搜索引擎是用来过滤和搜索的问题的，比如
-
-- 请告诉我地址为上海的所有订单
-
-- 请告诉我最近1天内创建但没有付款的所有订单
-
- * 聚合分析用来做什么?
-   
-    * 请告诉我最近1周每天的订单成交量有多少？（最终期待的不是订单，而是订单的数量）
-      
-      
-    * 请告诉我最近1一个月每天的平均订单金额是多少？（关注的不是订单列表，而是订单的金额）
-      
-      
-    * 请告诉我最近半年卖的最火的前5个商品有哪些？（关注的不是订单列表，而是商品）
-      
-      
-   
-   
- * 聚合
     
     </summary>
     

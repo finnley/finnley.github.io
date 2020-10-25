@@ -211,6 +211,119 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/11/19/Docker-9-%E9%85%8D%E7%BD%AERedisCluster%E9%9B%86%E7%BE%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/11/19/Docker-9-%E9%85%8D%E7%BD%AERedisCluster%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">Docker-9-配置RedisCluster集群</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-11-19 19:32:08" itemprop="dateCreated datePublished" datetime="2018-11-19T19:32:08+08:00">2018-11-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          安装Redis镜像
+ 1. 创建net2网络并改名
+
+1
+2
+
+
+docker pull yyyyttttwwww/redis
+docker tag docker.io/yyyyttttwwww/redis redis
+
+
+ 2. 创建net2网络
+
+1
+
+
+docker network create --subnet=172.19.0.0/16 net2
+
+
+ 3. 创建Redis容器
+
+1
+
+
+docker run -it -d --name r1 -p 5001:6379 --net=net2 --ip 172.19.0.2 redis bash
+
+
+ 4. 进入容器
+
+1
+
+
+dock
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/11/19/Docker-9-%E9%85%8D%E7%BD%AERedisCluster%E9%9B%86%E7%BE%A4/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/11/18/Docker-8-Redis%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98%E4%BB%8B%E7%BB%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1096,108 +1209,6 @@ tar -zxvf v
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/27/%E8%85%BE%E8%AE%AF%E4%BA%91%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/09/27/%E8%85%BE%E8%AE%AF%E4%BA%91%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/" class="post-title-link" itemprop="url">腾讯云项目环境部署脚本</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-09-27 21:59:09" itemprop="dateCreated datePublished" datetime="2018-09-27T21:59:09+08:00">2018-09-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          [TOC]
-
-一、Docker虚拟机常用命令
- 1.  先更新软件包
-     
-     1
-     
-     
-     yum update -y
-     
-     
-     
- 2.  安装Docker虚拟机
-     
-     1
-     
-     
-     yum install -y docker
-     
-     
-     
- 3.  运行、重启、关闭Docker虚拟机
-     
-     1
-     2
-     3
-     
-     
-     service docker start
-     service docker start
-  
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/09/27/%E8%85%BE%E8%AE%AF%E4%BA%91%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1269,7 +1280,7 @@ tar -zxvf v
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">167</span>
+          <span class="site-state-item-count">168</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1282,7 +1293,7 @@ tar -zxvf v
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-count">50</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
