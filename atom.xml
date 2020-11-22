@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-10-24T06:50:06.527Z</updated>
+  <updated>2020-11-09T15:28:09.620Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,37 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>RabbitMQ入门</title>
+    <link href="https://notes.xuepincat.com/2020/11/09/MQ-RabbitMQ%E5%85%A5%E9%97%A8/"/>
+    <id>https://notes.xuepincat.com/2020/11/09/MQ-RabbitMQ%E5%85%A5%E9%97%A8/</id>
+    <published>2020-11-09T14:29:26.000Z</published>
+    <updated>2020-11-09T15:28:09.620Z</updated>
+    
+    <summary type="html">
+    
+      消息队列
+是消息传输过程中存放消息的容器
+
+RabbitMQ
+用Erlang编写，实现了高级消息队列协议(AMQP)的消息中间件
+
+好处
+ 1. 跨语言，调用端语言无关，支持 PHP,GO, JAVA, C#, Python等
+ 2. 解耦
+ 3. 异步，非必要的或者不要求实时性的逻辑可以放到队列中异步执行，加快响应速度，提高用户体验，比如发布评论后需要更新剧集的评论数，视频的评论数等，更新频道的排行榜或者类型的排行榜等，因为排行榜的信息无需实时体现出来，用户等待时间也会相应减少；
+ 4. 削峰，从性能上考虑，当访问量很大时，如果全部打到数据库上，数据库会存在压力，扛不住，此时可以使用MQ限流
+    
+    </summary>
+    
+    
+      <category term="MQ" scheme="https://notes.xuepincat.com/categories/MQ/"/>
+    
+    
+      <category term="RabbitMQ" scheme="https://notes.xuepincat.com/tags/RabbitMQ/"/>
+    
+  </entry>
   
   <entry>
     <title>Network-代理和转发</title>
@@ -63,11 +94,11 @@
   </entry>
   
   <entry>
-    <title>Go-GO开发环境搭建</title>
+    <title>GO开发环境搭建</title>
     <link href="https://notes.xuepincat.com/2020/09/19/Go-GO%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     <id>https://notes.xuepincat.com/2020/09/19/Go-GO%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
     <published>2020-09-19T02:07:39.000Z</published>
-    <updated>2020-09-19T18:02:02.005Z</updated>
+    <updated>2020-11-07T08:22:58.231Z</updated>
     
     <summary type="html">
     
@@ -93,7 +124,7 @@ vim ~/.bash_profile
 
 
 export GOROOT=/usr/local/go
-export GOPATH=/Users/finnley/go
+export GOPATH=/Users/{your user name}/go
 export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
 
 
@@ -103,7 +134,7 @@ export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
 
 
 ➜  ~ go version
-go version go1.15.2 
+go version 
     
     </summary>
     
@@ -505,7 +536,7 @@ Swarm 是内置于 Docker 的编排工具，容器编排工具并不只有 Swarm
     <link href="https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/"/>
     <id>https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/</id>
     <published>2020-07-21T17:26:28.000Z</published>
-    <updated>2020-07-23T15:46:49.938Z</updated>
+    <updated>2020-11-07T04:51:16.586Z</updated>
     
     <summary type="html">
     
@@ -583,12 +614,12 @@ COPY . /skeleton: 将当前目
     <link href="https://notes.xuepincat.com/2020/07/19/Docker-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/"/>
     <id>https://notes.xuepincat.com/2020/07/19/Docker-%E6%95%B0%E6%8D%AE%E6%8C%81%E4%B9%85%E5%8C%96/</id>
     <published>2020-07-19T08:01:02.000Z</published>
-    <updated>2020-07-19T15:00:23.480Z</updated>
+    <updated>2020-11-07T04:24:19.599Z</updated>
     
     <summary type="html">
     
       Data Volume
-有些容器本身会产生一些数据，如果我们不想这些数据随着 Container 的小时而丢失，想保证数据的安全，比如我们使用的数据库，启动一个数据库容器，数据据会有一些数据表等数据，如果把这个 Container 删除了，那么表数据也会随之被删除，这种是不安全的，所以想保留这些数据，此时就会使用到 Data Volume
+有些容器本身会产生一些数据，如果我们不想这些数据随着 Container 的消失而丢失，想保证数据的安全，比如我们使用的数据库，启动一个数据库容器，数据据会有一些数据表等数据，如果把这个 Container 删除了，那么表数据也会随之被删除，这种是不安全的，所以想保留这些数据，此时就会使用到 Data Volume
 
 在 Dockerfile 中有个关键字 volume,可以通过这个关键字指定该容器中某个目录中产生的数据挂载到 Linux 主机的某个目录中，并且会创建一个叫 Docker Volume 的对象
 
@@ -868,41 +899,6 @@ input {
     
     
       <category term="Logstash" scheme="https://notes.xuepincat.com/tags/Logstash/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>数据建模</title>
-    <link href="https://notes.xuepincat.com/2020/06/26/9-%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1/"/>
-    <id>https://notes.xuepincat.com/2020/06/26/9-%E6%95%B0%E6%8D%AE%E5%BB%BA%E6%A8%A1/</id>
-    <published>2020-06-26T09:20:41.000Z</published>
-    <updated>2020-07-12T03:33:47.508Z</updated>
-    
-    <summary type="html">
-    
-      数据建模
-英文是 Data Modeling, 为创建数据模型的过程
-
-数据模型 (Data Model)
-
-- 对显示世界进行抽象描述的一种工具和方法
-
-- 通过抽象的实体及实体之间的联系的形式去描述业务规则，从而实现对现实世界的映射
-
-比如现在有学校，学校有老师，有学生，老师讲课，学生上课，现在开发一个课表系统，老师根据课表系统可以知道什么时候快速上课，上什么课，在哪里上课，学生通过课表系统可以知道每天的课程安排
-
-在做课表系统的时候都会去做一些表结构设计，比如产生老师表，学生表，课程表，产生的表以及表的详细设计就是数据模型，通过表对现实世界的问题进行了抽象化的描述
-
-数据建模过程
- * 
-    
-    </summary>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/categories/Elasticsearch/"/>
-    
-    
-      <category term="Elasticsearch" scheme="https://notes.xuepincat.com/tags/Elasticsearch/"/>
     
   </entry>
   
