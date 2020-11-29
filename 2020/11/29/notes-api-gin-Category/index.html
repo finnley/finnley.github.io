@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Category 接口定义  * 获取标签列表：GET(“&#x2F;note&#x2F;categories”)  * 新建标签：POST(“&#x2F;note&#x2F;categories”)  * 更新指定标签：PUT(“&#x2F;note&#x2F;categories&#x2F;:id”)  * 删除指定标签：DELETE(“&#x2F;note&#x2F;categories&#x2F;:id”)  初始项目数据库 新建 notes 数据库，编码为 utf8_general_c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="notes-api-gin-Category">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/11/29/notes-api-gin-Category/index.html">
+<meta property="og:site_name" content="Finnley&#39;s Notes">
+<meta property="og:description" content="Category 接口定义  * 获取标签列表：GET(“&#x2F;note&#x2F;categories”)  * 新建标签：POST(“&#x2F;note&#x2F;categories”)  * 更新指定标签：PUT(“&#x2F;note&#x2F;categories&#x2F;:id”)  * 删除指定标签：DELETE(“&#x2F;note&#x2F;categories&#x2F;:id”)  初始项目数据库 新建 notes 数据库，编码为 utf8_general_c">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-29T13:20:22.000Z">
+<meta property="article:modified_time" content="2020-11-29T13:21:08.408Z">
+<meta property="article:author" content="Finnley">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Gin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/11/29/notes-api-gin-Category/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>notes-api-gin-Category | Finnley's Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Finnley's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Finnley's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/11/29/notes-api-gin-Category/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          notes-api-gin-Category
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-11-29 21:20:22 / Modified: 21:21:08" itemprop="dateCreated datePublished" datetime="2020-11-29T21:20:22+08:00">2020-11-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Category"><a href="#Category" class="headerlink" title="Category"></a>Category</h1><h2 id="接口定义"><a href="#接口定义" class="headerlink" title="接口定义"></a>接口定义</h2><ul>
+<li>获取标签列表：GET(“/note/categories”)</li>
+<li>新建标签：POST(“/note/categories”)</li>
+<li>更新指定标签：PUT(“/note/categories/:id”)</li>
+<li>删除指定标签：DELETE(“/note/categories/:id”)</li>
+</ul>
+<h2 id="初始项目数据库"><a href="#初始项目数据库" class="headerlink" title="初始项目数据库"></a>初始项目数据库</h2><p>新建 <code>notes</code> 数据库，编码为 <code>utf8_general_ci</code>，在 <code>notes</code> 数据库下，新建以下表</p>
+<p>1、分类表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">DROP TABLE IF EXISTS &#96;category&#96;;</span><br><span class="line">CREATE TABLE &#96;category&#96; (</span><br><span class="line">  &#96;uuid&#96; char(36) NOT NULL COMMENT &#39;主键ID&#39;,</span><br><span class="line">  &#96;module_uuid&#96; char(36) NOT NULL COMMENT &#39;模块ID&#39;,</span><br><span class="line">  &#96;category_name&#96; varchar(255) NOT NULL DEFAULT &#39;&#39; COMMENT &#39;分类名称&#39;,</span><br><span class="line">  &#96;number&#96; int(11) unsigned NOT NULL DEFAULT &#39;0&#39; COMMENT &#39;数量&#39;,</span><br><span class="line">  &#96;sort&#96; tinyint(4) unsigned NOT NULL DEFAULT &#39;0&#39; COMMENT &#39;排序&#39;,</span><br><span class="line">  &#96;state&#96; tinyint(4) unsigned NOT NULL DEFAULT &#39;1&#39; COMMENT &#39;状态，0-关闭 1-启用&#39;,</span><br><span class="line">  &#96;gmt_create&#96; datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT &#39;创建时间&#39;,</span><br><span class="line">  &#96;gmt_modified&#96; datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT &#39;更新时间&#39;,</span><br><span class="line">  &#96;deleted_at&#96; datetime DEFAULT NULL COMMENT &#39;软删除时间&#39;,</span><br><span class="line">  PRIMARY KEY (&#96;uuid&#96;),</span><br><span class="line">  KEY &#96;idx_module_uuid&#96; (&#96;module_uuid&#96;),</span><br><span class="line">  KEY &#96;idx_category_name&#96; (&#96;category_name&#96;),</span><br><span class="line">  KEY &#96;idx_sort&#96; (&#96;sort&#96;),</span><br><span class="line">  KEY &#96;idx_state&#96; (&#96;state&#96;),</span><br><span class="line">  KEY &#96;idx_deleted_at&#96; (&#96;deleted_at&#96;)</span><br><span class="line">) ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8mb4 COMMENT&#x3D;&#39;分类&#39;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="编写空壳路由"><a href="#编写空壳路由" class="headerlink" title="编写空壳路由"></a>编写空壳路由</h2><p>开始编写路由文件逻辑，在 <code>routers</code> 下新建 <code>api</code> 目录，我们当前是第一个 <code>API</code> 大版本，因此在 <code>api</code> 下新建 <code>v1</code> 目录，再新建 <code>category.go</code> 文件，写入内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">package v1</span><br><span class="line"></span><br><span class="line">import &quot;github.com&#x2F;gin-gonic&#x2F;gin&quot;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;获取笔记分类</span><br><span class="line">func GetNoteCategories(c *gin.Context) &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;新增笔记分类</span><br><span class="line">func AddNoteCategory(c *gin.Context)  &#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;修改笔记分类</span><br><span class="line">func EditNoteCategory(c *gin.Context)  &#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;删除笔记分类</span><br><span class="line">func DeleteNoteCategory(c *gin.Context)  &#123;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="注册路由"><a href="#注册路由" class="headerlink" title="注册路由"></a>注册路由</h2><p>打开 <code>routers</code> 下的 <code>router.go</code> 文件，修改文件内容为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">apiv1 :&#x3D; r.Group(&quot;&#x2F;api&#x2F;v1&quot;)</span><br><span class="line">	&#123;</span><br><span class="line">		...</span><br><span class="line"></span><br><span class="line">		&#x2F;&#x2F;嵌套路由</span><br><span class="line">		note :&#x3D; apiv1.Group(&quot;&#x2F;note&quot;)</span><br><span class="line">		&#123;</span><br><span class="line">			&#x2F;&#x2F;获取多个笔记分类</span><br><span class="line">			note.GET(&quot;&#x2F;categories&quot;, v1.GetNoteCategories)</span><br><span class="line">			&#x2F;&#x2F;新增笔记分类</span><br><span class="line">			note.POST(&quot;&#x2F;categories&quot;, v1.AddNoteCategory)</span><br><span class="line">			&#x2F;&#x2F;修改笔记分类</span><br><span class="line">			note.PUT(&quot;&#x2F;categories&#x2F;:id&quot;, v1.EditNoteCategory)</span><br><span class="line">			&#x2F;&#x2F;删除笔记分类</span><br><span class="line">			note.DELETE(&quot;&#x2F;categories&#x2F;:id&quot;, v1.DeleteNoteCategory)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当前目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">├── README.md</span><br><span class="line">├── conf</span><br><span class="line">│   └── app.ini</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">├── middleware</span><br><span class="line">├── models</span><br><span class="line">│   ├── models.go</span><br><span class="line">│   ├── module.go</span><br><span class="line">├── pkg</span><br><span class="line">│   ├── e</span><br><span class="line">│   │   ├── code.go</span><br><span class="line">│   │   └── msg.go</span><br><span class="line">│   ├── setting</span><br><span class="line">│   │   └── setting.go</span><br><span class="line">│   └── util</span><br><span class="line">│       └── pagination.go</span><br><span class="line">├── routers</span><br><span class="line">│   ├── api</span><br><span class="line">│   │   └── v1</span><br><span class="line">│   │       ├── category.go</span><br><span class="line">│   │       ├── module.go</span><br><span class="line">│   └── router.go</span><br><span class="line">├── runtime</span><br><span class="line">└── test.go</span><br></pre></td></tr></table></figure>
+
+<h2 id="检验路由是否注册成功"><a href="#检验路由是否注册成功" class="headerlink" title="检验路由是否注册成功"></a>检验路由是否注册成功</h2><p>执行 <code>go run main.go</code>，检查路由规则是否注册成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">go run main.go</span><br><span class="line">[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.</span><br><span class="line"> - using env:	export GIN_MODE&#x3D;release</span><br><span class="line"> - using code:	gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">[GIN-debug] GET    &#x2F;ping                     --&gt; github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;routers.InitRouter.func1 (3 handlers)</span><br><span class="line">[GIN-debug] GET    &#x2F;api&#x2F;v1&#x2F;modules           --&gt; github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;routers&#x2F;api&#x2F;v1.GetModules (3 handlers)</span><br><span class="line">[GIN-debug] POST   &#x2F;api&#x2F;v1&#x2F;modules           --&gt; github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;routers&#x2F;api&#x2F;v1.AddModule (3 handlers)</span><br><span class="line">[GIN-debug] PUT    &#x2F;api&#x2F;v1&#x2F;modules&#x2F;:id       --&gt; github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;routers&#x2F;api&#x2F;v1.EditModule (3 handlers)</span><br><span class="line">[GIN-debug] DELETE &#x2F;api&#x2F;v1&#x2F;modules&#x2F;:id       --&gt; github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;routers&#x2F;api&#x2F;v1.DeleteModule (3 handlers)</span><br><span class="line">[GIN-debug] GET    &#x2F;api&#x2F;v1&#x2F;note&#x2F;categories   --&gt; github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;routers&#x2F;api&#x2F;v1.GetNoteCategories (3 handlers)</span><br><span class="line">[GIN-debug] POST   &#x2F;api&#x2F;v1&#x2F;note&#x2F;categories   --&gt; github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;routers&#x2F;api&#x2F;v1.AddNoteCategory (3 handlers)</span><br><span class="line">[GIN-debug] PUT    &#x2F;api&#x2F;v1&#x2F;note&#x2F;categories&#x2F;:id --&gt; github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;routers&#x2F;api&#x2F;v1.EditNoteCategory (3 handlers)</span><br><span class="line">[GIN-debug] DELETE &#x2F;api&#x2F;v1&#x2F;note&#x2F;categories&#x2F;:id --&gt; github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;routers&#x2F;api&#x2F;v1.DeleteNoteCategory (3 handlers)</span><br></pre></td></tr></table></figure>
+
+<p>之前已经下载过表单验证的依赖包，这里不再下载</p>
+<h2 id="功能实现"><a href="#功能实现" class="headerlink" title="功能实现"></a>功能实现</h2><p>添加需要使用的硬编码和提示消息</p>
+<p>1、 code.go</p>
+<p>在 <code>code.go</code> 文件中后面追加下面两句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">package e</span><br><span class="line"></span><br><span class="line">const (</span><br><span class="line">	...</span><br><span class="line">	ERROR_EXIST_NOTE_CATEGORY &#x3D; 40001</span><br><span class="line">    ERROR_NOT_EXIST_NOTE_CATEGORY &#x3D; 40002</span><br><span class="line">)</span><br><span class="line">&#96;&#96;&#96; </span><br><span class="line"></span><br><span class="line">2、msg.go</span><br><span class="line"></span><br><span class="line">在 &#96;msg.go&#96; 文件中后面追加下面两句</span><br></pre></td></tr></table></figure>
+<p>package e</p>
+<p>var MsgFlags = map[int]string {<br>    …<br>    ERROR_EXIST_NOTE_CATEGORY: “已存在该笔记分类”,<br>    ERROR_NOT_EXIST_NOTE_CATEGORY: “该笔记分类不存在”,<br>}<br>…</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 获取多个笔记分类</span><br><span class="line"></span><br><span class="line">1、models</span><br><span class="line"></span><br><span class="line">在 &#96;models&#96; 目录下的 &#96;category.go&#96;，写入文件内容：</span><br></pre></td></tr></table></figure>
+<p>package models</p>
+<p>import (<br>    “database/sql”<br>    “github.com/jinzhu/gorm”<br>    “github.com/satori/go.uuid”<br>    “time”<br>)</p>
+<p>type Category struct {<br>    Model</p>
+<pre><code>ModuleUuid   string `json:&quot;module_uuid&quot;`
+CategoryName string `json:&quot;category_name&quot;`
+Number       int    `json:&quot;number&quot;`
+Sort         int    `json:&quot;sort&quot;`
+State        int    `json:&quot;state&quot;`</code></pre><p>}</p>
+<p>//获取分页数据<br>func GetNoteCategories(pageNum int, pageSize int, maps interface{}) (categories []Category) {<br>    db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&amp;categories)<br>    return<br>}</p>
+<p>//获取笔记分类总数<br>func GetNoteCategoryTotal(maps interface{}) (count int) {<br>    db.Model(&amp;Category{}).Where(maps).Count(&amp;count)<br>    return<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. 我们创建了一个 &#96;Category struct&#123;&#125;&#96;，用于 &#96;Gorm&#96; 的使用。并给予了附属属性 &#96;json&#96;，这样子在&#96;c.JSON&#96; 的时候就会自动转换格式，非常的便利</span><br><span class="line"></span><br><span class="line">2. 看到 &#96;return&#96;，而后面没有跟着变量，可以看到在函数末端，我们已经显示声明了返回值，这个变量在函数体内也可以直接使用，因为他在一开始就被声明了</span><br><span class="line"></span><br><span class="line">3. db是哪里来的? 因为在同个 &#96;models&#96; 包下，因此 &#96;db *gorm.DB&#96; 是可以直接使用的</span><br><span class="line"></span><br><span class="line">2、router</span><br><span class="line"></span><br><span class="line">打开 &#96;routers&#96; 目录下 &#96;v1&#96; 版本的 &#96;category.go&#96;，第一我们先编写获取笔记分类列表的接口</span><br></pre></td></tr></table></figure>
+<p>package v1</p>
+<p>import (<br>    “fmt”<br>    “github.com/astaxie/beego/validation”<br>    “github.com/finnley/notes-api-gin/models”<br>    “github.com/finnley/notes-api-gin/pkg/e”<br>    “github.com/finnley/notes-api-gin/pkg/setting”<br>    “github.com/finnley/notes-api-gin/pkg/util”<br>    “github.com/gin-gonic/gin”<br>    “github.com/unknwon/com”<br>    “net/http”<br>)</p>
+<p>//获取笔记分类<br>func GetNoteCategories(c *gin.Context) {<br>    name := c.Query(“name”)</p>
+<pre><code>maps := make(map[string]interface{})
+data := make(map[string]interface{})
+
+if name != &quot;&quot; {
+    maps[&quot;name&quot;] = name
+}
+
+var state int = -1
+if arg := c.Query(&quot;state&quot;); arg != &quot;&quot; {
+    state = com.StrTo(arg).MustInt()
+    maps[&quot;state&quot;] = state
+}
+
+code := e.SUCCESS
+
+data[&quot;lists&quot;] = models.GetNoteCategories(util.GetPage(c), setting.PageSize, maps)
+data[&quot;total&quot;] = models.GetNoteCategoryTotal(maps)
+
+c.JSON(http.StatusOK, gin.H{
+    &quot;code&quot;: code,
+    &quot;msg&quot;: e.GetMsg(code),
+    &quot;data&quot;: data,
+})</code></pre><p>}</p>
+<p>//新增笔记分类<br>func AddNoteCategory(c *gin.Context)  {</p>
+<p>}</p>
+<p>//修改笔记分类<br>func EditNoteCategory(c *gin.Context)  {</p>
+<p>}</p>
+<p>//删除笔记分类<br>func DeleteNoteCategory(c *gin.Context)  {</p>
+<p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">1. &#96;c.Query&#96; 可用于获取 &#96;?name&#x3D;test&amp;state&#x3D;1&#96; 这类 URL 参数，而 &#96;c.DefaultQuery&#96; 则支持设置一个默认值</span><br><span class="line">2. &#96;code&#96; 变量使用了 &#96;e&#96; 模块的错误编码，这正是先前规划好的错误码，方便排错和识别记录</span><br><span class="line">3. &#96;util.GetPage&#96; 保证了各接口的 page 处理是一致的</span><br><span class="line">4. &#96;c *gin.Context&#96; 是 &#96;Gin&#96; 很重要的组成部分，可以理解为上下文，它允许我们在中间件之间传递变量、管理流、验证请求的 JSON 和呈现 JSON 响应</span><br><span class="line"></span><br><span class="line">在本机执行 &#96;curl 127.0.0.1:8000&#x2F;api&#x2F;v1&#x2F;note&#x2F;categories&#96;，正确的返回值为 &#96;&#123;&quot;code&quot;:200,&quot;data&quot;:&#123;&quot;lists&quot;:[],&quot;total&quot;:0&#125;,&quot;msg&quot;:&quot;ok&quot;&#125;&#96;。</span><br><span class="line"></span><br><span class="line">在获取标签列表接口中，我们可以根据 &#96;name&#96;、&#96;state&#96;、&#96;page&#96; 来筛选查询条件，分页的步长可通过 &#96;app.ini&#96; 进行配置，以 &#96;lists&#96;、&#96;total&#96; 的组合返回达到分页效果。</span><br><span class="line"></span><br><span class="line">#### 新增笔记分类</span><br><span class="line"></span><br><span class="line">1、models</span><br><span class="line"></span><br><span class="line">打开 &#96;models&#96; 目录下的 &#96;category.go&#96;，修改文件（增加 2 个方法）：</span><br></pre></td></tr></table></figure>
+<p>…<br>//根据名称判断笔记分类是否存在<br>func ExistNoteCategoryByName(name string) bool {<br>    var category Category<br>    db.Select(“uuid”).Where(“category_name = ?”, name).First(&amp;category)</p>
+<pre><code>if category.Model.Uuid != &quot;&quot; {
+    return true
+}
+
+return false</code></pre><p>}</p>
+<p>//新增笔记分类<br>func AddNoteCategory(moduleUuid, categoryName string, state int) bool {<br>    db.Create(&amp;Category{<br>        ModuleUuid:   moduleUuid,<br>        CategoryName: categoryName,<br>        State:        state,<br>    })<br>    return true<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2、routers</span><br><span class="line"></span><br><span class="line">打开 &#96;routers&#96; 目录下的 &#96;category.go&#96;，修改文件（变动 AddNoteCategory 方法）：</span><br></pre></td></tr></table></figure>
+<p>package v1</p>
+<p>import (<br>    “github.com/astaxie/beego/validation”<br>    “github.com/finnley/notes-api-gin/models”<br>    “github.com/finnley/notes-api-gin/pkg/e”<br>    “github.com/finnley/notes-api-gin/pkg/setting”<br>    “github.com/finnley/notes-api-gin/pkg/util”<br>    “github.com/gin-gonic/gin”<br>    “github.com/unknwon/com”<br>    “net/http”<br>)</p>
+<p>//获取笔记分类<br>func GetNoteCategories(c *gin.Context) {<br>    name := c.Query(“name”)</p>
+<pre><code>maps := make(map[string]interface{})
+data := make(map[string]interface{})
+
+if name != &quot;&quot; {
+    maps[&quot;name&quot;] = name
+}
+
+var state int = -1
+if arg := c.Query(&quot;state&quot;); arg != &quot;&quot; {
+    state = com.StrTo(arg).MustInt()
+    maps[&quot;state&quot;] = state
+}
+
+code := e.SUCCESS
+
+data[&quot;lists&quot;] = models.GetNoteCategories(util.GetPage(c), setting.PageSize, maps)
+data[&quot;total&quot;] = models.GetNoteCategoryTotal(maps)
+
+c.JSON(http.StatusOK, gin.H{
+    &quot;code&quot;: code,
+    &quot;msg&quot;: e.GetMsg(code),
+    &quot;data&quot;: data,
+})</code></pre><p>}</p>
+<p>//新增笔记分类<br>func AddNoteCategory(c *gin.Context)  {<br>    var category models.Category<br>    err := c.ShouldBind(&amp;category)<br>    fmt.Printf(“%#v\n”, category)</p>
+<pre><code>if err != nil {
+    fmt.Printf(&quot;%#v\n&quot;, err)
+}
+
+valid := validation.Validation{}
+valid.Required(category.ModuleUuid, &quot;module_uuid&quot;).Message(&quot;模块ID不能为空&quot;)
+valid.Required(category.CategoryName, &quot;category_name&quot;).Message(&quot;名称不能为空&quot;)
+valid.MaxSize(category.CategoryName, 100, &quot;category_name&quot;).Message(&quot;名称最长为100字符&quot;)
+valid.Range(category.State, 0, 1, &quot;state&quot;).Message(&quot;状态只允许0或1&quot;)
+
+code := e.INVALID_PARAMS
+if ! valid.HasErrors() {
+    if ! models.ExistNoteCategoryByName(category.CategoryName) {
+        code = e.SUCCESS
+        models.AddNoteCategory(category.ModuleUuid, category.CategoryName, category.State)
+    } else {
+        code = e.ERROR_EXIST_NOTE_CATEGORY
+    }
+}
+
+c.JSON(http.StatusOK, gin.H{
+    &quot;code&quot;: code,
+    &quot;msg&quot;: e.GetMsg(code),
+    &quot;data&quot;: make(map[string]string),
+})</code></pre><p>}</p>
+<p>//修改笔记分类<br>func EditNoteCategory(c *gin.Context)  {</p>
+<p>}</p>
+<p>//删除笔记分类<br>func DeleteNoteCategory(c *gin.Context)  {</p>
+<p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">用 &#96;Postman&#96; 用 &#96;POST&#96; 访问 &#96;http:&#x2F;&#x2F;127.0.0.1:8000&#x2F;api&#x2F;v1&#x2F;note&#x2F;categories?name&#x3D;后端开发&amp;state&#x3D;1&#96;，查看 &#96;code&#96; 是否返回 &#96;200&#96; 及 &#96;category&#96; 表中是否有值</span><br><span class="line"></span><br><span class="line">请求后发现表中并没有添加数据，这是因为 &#96;gmt_create&#96;,&#96;gmt_modified&#96; 两个字段是非空字段，而执行的 &#96;SQL&#96; 如下：</span><br></pre></td></tr></table></figure>
+<p>INSERT INTO <code>category</code> ( <code>gmt_create</code>, <code>gmt_modified</code>, <code>deleted_at</code>, <code>uuid</code>, <code>category_name</code>, <code>note_count</code>, <code>sort</code>, <code>state</code> )<br>VALUES<br>    (<br>        ‘’,<br>        ‘’,<br>        ‘’,<br>        ‘76670fb0-a6d2-415c-af6a-2420410c2d33’,<br>        ‘后端开发’,<br>        0,<br>    0,<br>    1)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">此时显然是没有插入成功的</span><br><span class="line"></span><br><span class="line">#### models callbacks</span><br><span class="line"></span><br><span class="line">首先找到 &#96;models&#96; 目录下的 &#96;models.go&#96; 文件，找到下面一段</span><br></pre></td></tr></table></figure>
+<p>type Model struct {<br>    Uuid        string <code>gorm:&quot;primary_key&quot; json:&quot;uuid&quot;</code><br>    GmtCreate   string <code>json:&quot;gmt_create&quot;</code><br>    GmtModified string <code>json:&quot;gmt_modified&quot;</code><br>    DeletedAt   string <code>json:&quot;deleted_at&quot;</code><br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">将 &#96;DeletedAt   string &#96;json:&quot;deleted_at&quot;&#96;&#96; 修改为 &#96;DeletedAt   sql.NullString&#96;</span><br></pre></td></tr></table></figure>
+<p>type Model struct {<br>    Uuid        string <code>gorm:&quot;primary_key&quot; json:&quot;uuid&quot;</code><br>    GmtCreate   string <code>json:&quot;gmt_create&quot;</code><br>    GmtModified string <code>json:&quot;gmt_modified&quot;</code><br>    DeletedAt   sql.NullString<br>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">要打开 &#96;models&#96; 目录下的 &#96;category.go&#96; 文件，修改文件内容（修改包引用和增加 2 个方法）：</span><br></pre></td></tr></table></figure>
+<p>package models</p>
+<p>import (<br>    “database/sql”<br>    “github.com/jinzhu/gorm”<br>    uuid “github.com/satori/go.uuid”<br>    “time”<br>)</p>
+<p>type NoteCategory struct {<br>    Model</p>
+<pre><code>CategoryName string `json:&quot;category_name&quot;`
+NoteCount    int    `json:&quot;note_count&quot;`
+Sort         int    `json:&quot;sort&quot;`
+State        int    `json:&quot;status&quot;`</code></pre><p>}</p>
+<p>//获取分页数据<br>func GetNoteCategories(pageNum int, pageSize int, maps interface{}) (categories []NoteCategory) {<br>    db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&amp;categories)<br>    return<br>}</p>
+<p>//获取笔记分类总数<br>func GetNoteCategoryTotal(maps interface{}) (count int) {<br>    db.Model(&amp;NoteCategory{}).Where(maps).Count(&amp;count)<br>    return<br>}</p>
+<p>//根据名称判断笔记分类是否存在<br>func ExistNoteCategoryByName(name string) bool {<br>    var category NoteCategory<br>    db.Select(“uuid”).Where(“category_name = ?”, name).First(&amp;category)</p>
+<pre><code>if category.Model.Uuid != &quot;&quot; {
+    return true
+}
+
+return false</code></pre><p>}</p>
+<p>//新增笔记分类<br>func AddNoteCategory(name string, state int) bool {<br>    db.Create(&amp;NoteCategory{<br>        CategoryName: name,<br>        State:        state,<br>    })<br>    return true<br>}</p>
+<p>func (category *NoteCategory) BeforeCreate(scope *gorm.Scope) error {<br>    // Creating UUID Version 4<br>    uuid := uuid.NewV4().String()<br>    scope.SetColumn(“Uuid”, uuid)<br>    scope.SetColumn(“GmtCreate”, time.Now().Format(“2006-01-02 15:04:05”))<br>    scope.SetColumn(“GmtModified”, time.Now().Format(“2006-01-02 15:04:05”))<br>    scope.SetColumn(“DeletedAt”, sql.NullString{String: “”, Valid: false})</p>
+<pre><code>return nil</code></pre><p>}</p>
+<p>func (category *NoteCategory) BeforeUpdate(scope *gorm.Scope) error {<br>    scope.SetColumn(“GmtModified”, time.Now().Format(“2006-01-02 15:04:05”))</p>
+<pre><code>return nil</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">重启服务，再在用 &#96;Postman&#96; 用 &#96;POST&#96; 访问 &#96;http:&#x2F;&#x2F;127.0.0.1:8000&#x2F;api&#x2F;v1&#x2F;note&#x2F;categories?name&#x3D;后端开发&amp;state&#x3D;1&#96; ，观察是否添加成功</span><br></pre></td></tr></table></figure>
+<p>mysql&gt; select * from note_category;<br>+————————————–+—————+————+——+——-+———————+———————+————+<br>| uuid                                 | category_name | note_count | sort | state | gmt_create          | gmt_modified        | deleted_at |<br>+————————————–+—————+————+——+——-+———————+———————+————+<br>| fa4a89b6-83e6-452d-b1d5-eb9ccea71bb0 | 后端开发      |          0 |    0 |     1 | 2020-11-25 01:05:23 | 2020-11-25 01:05:23 | NULL       |<br>+————————————–+—————+————+——+——-+———————+———————+————+<br>1 row in set (0.00 sec)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">此时添加操作完成，但是这边的操作因为初学 &#96;GO&#96; 感觉并不是很好，后面考虑是否优化</span><br><span class="line"></span><br><span class="line">重启服务，再在用Postman用 &#96;POST&#96; 访问 &#96;http:&#x2F;&#x2F;127.0.0.1:8000&#x2F;api&#x2F;v1&#x2F;note&#x2F;categories?name&#x3D;UI设计&amp;state&#x3D;1&#96; ，发现 &#96;gmt_create&#96; 已经有值了！</span><br><span class="line"></span><br><span class="line">这属于gorm的Callbacks，可以将回调方法定义为模型结构的指针，在创建、更新、查询、删除时将被调用，如果任何回调返回错误，gorm 将停止未来操作并回滚所有更改。</span><br><span class="line"></span><br><span class="line">gorm 所支持的回调方法：</span><br><span class="line"></span><br><span class="line">* 创建：BeforeSave、BeforeCreate、AfterCreate、AfterSave</span><br><span class="line">* 更新：BeforeSave、BeforeUpdate、AfterUpdate、AfterSave</span><br><span class="line">* 删除：BeforeDelete、AfterDelete</span><br><span class="line">* 查询：AfterFind</span><br><span class="line"></span><br><span class="line">#### 编辑笔记分类</span><br><span class="line"></span><br><span class="line">1、打开 &#96;routers&#96; 目录下 &#96;v1&#96; 版本的 &#96;category.go&#96;文件，修改内容：</span><br></pre></td></tr></table></figure>
+<p>…<br>//修改笔记分类<br>func EditNoteCategory(c *gin.Context)  {<br>    id := c.Query(“id”)<br>    name := c.Query(“name”)</p>
+<pre><code>valid := validation.Validation{}
+
+var state int = -1
+if arg := c.Query(&quot;state&quot;); arg != &quot;&quot; {
+    state = com.StrTo(arg).MustInt()
+    valid.Range(state, 0, 1, &quot;state&quot;).Message(&quot;状态只允许0或1&quot;)
+}
+
+valid.Required(id, &quot;id&quot;).Message(&quot;ID不能为空&quot;)
+valid.MaxSize(&quot;name&quot;, 100, &quot;name&quot;).Message(&quot;名称最长为100字符&quot;)
+
+code := e.INVALID_PARAMS
+if ! valid.HasErrors() {
+    code = e.SUCCESS
+    if models.ExistNoteCategoryById(id) {
+        data := make(map[string]interface{})
+        if name != &quot;&quot; {
+            data[&quot;category_name&quot;] = name
+        }
+        if state != -1 {
+            data[&quot;state&quot;] = state
+        }
+
+        models.EditNoteCategory(id, data)
+    } else {
+        code = e.ERROR_NOT_EXIST_NOTE_CATEGORY
+    }
+}
+
+c.JSON(http.StatusOK, gin.H{
+    &quot;code&quot; : code,
+    &quot;msg&quot; : e.GetMsg(code),
+    &quot;data&quot; : make(map[string]string),
+})</code></pre><p>}<br>…</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2、打开 &#96;models&#96; 下的 &#96;note_category.go&#96;, 修改文件内容：</span><br></pre></td></tr></table></figure>
+<p>…<br>func ExistNoteCategoryById(uuid string) bool {<br>    var category NoteCategory<br>    db.Select(“uuid”).Where(“uuid = ?”, uuid).First(&amp;category)<br>    if category.Uuid != “” {<br>        return true<br>    }<br>    return false<br>}</p>
+<p>func EditNoteCategory(uuid string, data interface{}) bool {<br>    db.Model(&amp;NoteCategory{}).Where(“uuid = ?”, uuid).Updates(data)<br>    return true<br>}<br>…</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#### 删除笔记分类</span><br><span class="line"></span><br><span class="line">1、routers</span><br><span class="line"></span><br><span class="line">打开 &#96;routers&#96; 目录下 &#96;v1&#96; 版本的 &#96;note_category.go&#96;文件，修改内容：</span><br></pre></td></tr></table></figure>
+<p>…<br>//删除笔记分类<br>func DeleteNoteCategory(c *gin.Context)  {<br>    id := c.Query(“id”)</p>
+<pre><code>valid := validation.Validation{}
+valid.Min(id, 1, &quot;id&quot;).Message(&quot;ID必须大于0&quot;)
+
+code := e.INVALID_PARAMS
+if ! valid.HasErrors() {
+    code = e.SUCCESS
+    if models.ExistNoteCategoryByID(id) {
+        models.DeleteNoteCategory(id)
+    } else {
+        code = e.ERROR_NOT_EXIST_TAG
+    }
+}
+
+c.JSON(http.StatusOK, gin.H{
+    &quot;code&quot; : code,
+    &quot;msg&quot; : e.GetMsg(code),
+    &quot;data&quot; : make(map[string]string),
+})</code></pre><p>}</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">2、打开 &#96;models&#96; 下的 &#96;note_category.go&#96;, 修改文件内容：</span><br></pre></td></tr></table></figure>
+<p>…<br>func DeleteNoteCategory(uuid string) bool {<br>    db.Where(“uuid = ?”, uuid).Delete(&amp;NoteCategory{})<br>    return true<br>}</p>
+<pre><code>
+#### 验证功能
+
+重启服务，用 `Postman`
+
+* `PUT` 访问 `http://127.0.0.1:8000/api/v1/note/categories/fa4a89b6-83e6-452d-b1d5-eb9ccea71bb0?name=前端&amp;state=1` ，查看 code 是否返回 200
+* `DELETE` 访问 `http://127.0.0.1:8000/api/v1/note/categories/fa4a89b6-83e6-452d-b1d5-eb9ccea71bb0` ，查看 code 是否返回 200
+
+## 优化
+
+后续 `POST` , `PUT` 等参数可以设置为 `body` 参数, 而不是作为 url 参数</code></pre>
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+              <a href="/tags/Gin/" rel="tag"># Gin</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/29/notes-api-gin-Module/" rel="prev" title="notes-api-gin-Module">
+      <i class="fa fa-chevron-left"></i> notes-api-gin-Module
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/29/notes-api-gin-Deploy/" rel="next" title="notes-api-gin-Deploy">
+      notes-api-gin-Deploy <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Category"><span class="nav-number">1.</span> <span class="nav-text">Category</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#接口定义"><span class="nav-number">1.1.</span> <span class="nav-text">接口定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始项目数据库"><span class="nav-number">1.2.</span> <span class="nav-text">初始项目数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写空壳路由"><span class="nav-number">1.3.</span> <span class="nav-text">编写空壳路由</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注册路由"><span class="nav-number">1.4.</span> <span class="nav-text">注册路由</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检验路由是否注册成功"><span class="nav-number">1.5.</span> <span class="nav-text">检验路由是否注册成功</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#功能实现"><span class="nav-number">1.6.</span> <span class="nav-text">功能实现</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Finnley"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Finnley</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

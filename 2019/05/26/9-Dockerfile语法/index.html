@@ -21,23 +21,23 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="FROM 尽量使用官方的image作为base image!   * FROM scratch #制作base image  * FROM centos #使用base image  * FROM ubuntu:16.04  LABEL Metadata不可少，有点像代码中的注释   * LABEL maintainer&#x3D;”email@example.com“  * LABEL version&#x3D;”">
+  <meta name="description" content="FROM 尽量使用官方的 image 作为base image !   * FROM scratch # 制作base image  * FROM centos # 使用base image  * FROM ubuntu:16.04  LABEL Metadata 不可少，有点像代码中的注释   * LABEL maintainer&#x3D;”email@example.com“  * LABEL ver">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dockerfile语法">
 <meta property="og:url" content="https://notes.xuepincat.com/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="FROM 尽量使用官方的image作为base image!   * FROM scratch #制作base image  * FROM centos #使用base image  * FROM ubuntu:16.04  LABEL Metadata不可少，有点像代码中的注释   * LABEL maintainer&#x3D;”email@example.com“  * LABEL version&#x3D;”">
+<meta property="og:description" content="FROM 尽量使用官方的 image 作为base image !   * FROM scratch # 制作base image  * FROM centos # 使用base image  * FROM ubuntu:16.04  LABEL Metadata 不可少，有点像代码中的注释   * LABEL maintainer&#x3D;”email@example.com“  * LABEL ver">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/161.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/162.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/163.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/164.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/164.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/161.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/162.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/163.png">
 <meta property="article:published_time" content="2019-05-26T05:29:37.000Z">
-<meta property="article:modified_time" content="2020-05-23T23:14:19.316Z">
+<meta property="article:modified_time" content="2020-11-29T13:05:03.089Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://notes.xuepincat.com/images/docker/161.png">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/docker/164.png">
 
 <link rel="canonical" href="https://notes.xuepincat.com/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/">
 
@@ -250,7 +250,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2020-11-29 21:05:03" itemprop="dateModified" datetime="2020-11-29T21:05:03+08:00">2020-11-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,50 +273,78 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="FROM"><a href="#FROM" class="headerlink" title="FROM"></a>FROM</h2><pre><code>尽量使用官方的image作为base image!</code></pre><ul>
-<li>FROM scratch #制作base image</li>
-<li>FROM centos #使用base image</li>
+        <h2 id="FROM"><a href="#FROM" class="headerlink" title="FROM"></a>FROM</h2><p>尽量使用官方的 image 作为base image !</p>
+<ul>
+<li>FROM scratch # 制作base image</li>
+<li>FROM centos # 使用base image</li>
 <li>FROM ubuntu:16.04</li>
 </ul>
 <a id="more"></a>
 
-<h2 id="LABEL"><a href="#LABEL" class="headerlink" title="LABEL"></a>LABEL</h2><pre><code>Metadata不可少，有点像代码中的注释</code></pre><ul>
+<h2 id="LABEL"><a href="#LABEL" class="headerlink" title="LABEL"></a>LABEL</h2><p>Metadata 不可少，有点像代码中的注释</p>
+<ul>
 <li>LABEL maintainer=”<a href="mailto:email@example.com">email@example.com</a>“</li>
 <li>LABEL version=”1.0”</li>
 <li>LABEL description=”This is description”</li>
 </ul>
-<h2 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h2><pre><code>每运行一次run,对于image都会生成新的一层，所以对于run,为了美观,复杂的RUN请用反斜线换行！避免无用分层，合并多条命令成一行！</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RUN yum update &amp;&amp; yum install -y vim \</span><br><span class="line">python-dev #反斜线表示换行</span><br></pre></td></tr></table></figure>
+<h2 id="RUN"><a href="#RUN" class="headerlink" title="RUN"></a>RUN</h2><p>每运行一次 run ,对于 image 都会生成新的一层，所以对于 run ,为了美观,复杂的 RUN 请用反斜线换行！避免无用分层，合并多条命令成一行！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">RUN yum update &amp;&amp; yum install -y vim \</span><br><span class="line">python-dev #反斜线表示换行</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RUN apt-get update &amp;&amp; apt-get install -y perl \</span><br><span class="line">pwgen --no-install-recommends &amp;&amp; rm -rf \</span><br><span class="line">&#x2F;var&#x2F;lib&#x2F;apt&#x2F;lists&#x2F;* #注意清理cache</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN &#x2F;bin&#x2F;bash -c &#39;source $HOME&#x2F;.bashrc;echo $HOME&#39;</span><br></pre></td></tr></table></figure>
 
-<h2 id="WORKDIR"><a href="#WORKDIR" class="headerlink" title="WORKDIR"></a>WORKDIR</h2><pre><code>设定当前工作目录，像Linux中的 `cd` 命令改变目录，然后在当前目录中做一些事情，如运行一些程序，或者创建一些文件或者目录
-使用 `WORKDIR`，不要用 `RUN cd` ! 
-尽量使用绝对目录，</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR &#x2F;root</span><br></pre></td></tr></table></figure>
+<h2 id="WORKDIR"><a href="#WORKDIR" class="headerlink" title="WORKDIR"></a>WORKDIR</h2><ul>
+<li>设定当前工作目录，像 Linux 中的 <code>cd</code> 命令改变目录，然后在当前目录中做一些事情，如运行一些程序，或者创建一些文件或者目录</li>
+<li>使用 <code>WORKDIR</code>，不要用 <code>RUN cd</code> ! </li>
+<li>尽量使用绝对目录，</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR &#x2F;root</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR &#x2F;test #如果没有会自动创建test目录</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR &#x2F;test # 如果没有会自动创建test目录</span><br><span class="line">WORKDIR demo</span><br><span class="line">RUN pwd # 输出结果应该是 &#x2F;test&#x2F;demo</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR demo</span><br></pre></td></tr></table></figure>
+<h2 id="ADD-and-COPY"><a href="#ADD-and-COPY" class="headerlink" title="ADD and COPY"></a>ADD and COPY</h2><ul>
+<li>大部分情况下，<code>COPY</code> 优于 <code>ADD</code> ！</li>
+<li><code>ADD</code> 除了 <code>COPY</code> 还有额外功能 （解压）！</li>
+<li>添加远程文件或者目录使用 <code>curl</code> 或者 <code>wget</code> !</li>
+<li><code>ADD</code> 和 <code>COPY</code> 非常像，都是将本地文件添加到image里面</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ADD hello &#x2F; # 将当前目录中的 hello 可执行文件 ADD 到 image 根目录中</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RUN pwd #输出结果应该是 &#x2F;test&#x2F;demo</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ADD test.tar.gz &#x2F; # 添加到根目录并解压</span><br></pre></td></tr></table></figure>
 
-<h2 id="ADD-and-COPY"><a href="#ADD-and-COPY" class="headerlink" title="ADD and COPY"></a>ADD and COPY</h2><pre><code>大部分情况下，`COPY` 优于 `ADD` ！
-`ADD` 除了 `COPY` 还有额外功能 （解压）！
-添加远程文件或者目录使用 `curl` 或者 `wget` !</code></pre><p><code>ADD</code> 和 <code>COPY</code> 非常像，都是将本地文件添加到image里面，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ADD hello &#x2F; #将hello可执行文件ADD到image根目录中</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ADD test.tar.gz &#x2F; #添加到根目录并解压</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR &#x2F;root</span><br><span class="line">WORKDIR hello test&#x2F; #&#x2F;root&#x2F;test&#x2F;hello</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR &#x2F;root</span><br><span class="line">ADD hello test&#x2F; # &#x2F;root&#x2F;test&#x2F;hello</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">WORKDIR &#x2F;root</span><br><span class="line">COPY hello test&#x2F;</span><br></pre></td></tr></table></figure>
 
-<h2 id="ENV"><a href="#ENV" class="headerlink" title="ENV"></a>ENV</h2><pre><code>尽量使用 `ENV` 增加可维护性！</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ENV MYSQL_VERSION 5.6 #设置常量</span><br><span class="line">RUN apt-get install -y mysql-server&#x3D;&quot;$&#123;MYSQL_VERSION&#125;&quot; \</span><br><span class="line">&amp;&amp; rm -rf &#x2F;var&#x2F;lib&#x2F;apt&#x2F;lists&#x2F;* #引用常量</span><br></pre></td></tr></table></figure>
+<h2 id="ENV"><a href="#ENV" class="headerlink" title="ENV"></a>ENV</h2><p>尽量使用 <code>ENV</code> 增加 Dockerfile 可维护性！</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ENV MYSQL_VERSION 5.6 # 设置常量</span><br><span class="line">RUN apt-get install -y mysql-server&#x3D;&quot;$&#123;MYSQL_VERSION&#125;&quot; \</span><br><span class="line">&amp;&amp; rm -rf &#x2F;var&#x2F;lib&#x2F;apt&#x2F;lists&#x2F;* # 引用常量</span><br></pre></td></tr></table></figure>
+
+<h2 id="RUN-1"><a href="#RUN-1" class="headerlink" title="RUN"></a>RUN</h2><p>执行命令并创建新的 <code>Image Layer</code></p>
+<h2 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h2><p>设置容器启动后默认执行的命令和参数</p>
+<ul>
+<li>容器启动时默认执行命令</li>
+<li>如果 <code>docker run</code> 指定了其他命令，CMD命令被忽略</li>
+<li>如果定义了多个 CMD，只有最后一个会执行</li>
+</ul>
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM centos</span><br><span class="line">ENV name Docker</span><br><span class="line">CMD echo &quot;hello $name&quot;</span><br></pre></td></tr></table></figure>
+
+<p>当执行 <code>docker run [image]</code> 的时候会输出 <code>hello Docker</code>,满足第一个条件;<br>当执行 <code>docker run -it [image] /bin/bash</code> 的时候，满足第二个条件，此时 CMD 命令被忽略，将不会输出 <code>hello Docker</code>;<br>当定义了很多个 CMD，只有最后一个会执行；</p>
+<h2 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a>ENTRYPOINT</h2><p>设置容器启动时运行的命令</p>
+<ul>
+<li>让容器以应用程序或者服务的形式运行,一般作为后台的进程，如启动数据库的服务</li>
+<li>不会被忽略，一定会执行</li>
+<li>最佳实践：写一个 shell 脚本作为entrypoint</li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/docker/164.png" alt=""></p>
+<p>如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">COPY docker-entrypoint.sh &#x2F;usr&#x2F;local&#x2F;bin</span><br><span class="line">ENTRYPOINT [&quot;docker-entrypoint.sh&quot;]</span><br><span class="line"></span><br><span class="line">EXPOSE 27017</span><br><span class="line">CMD [&quot;mongod&quot;]</span><br></pre></td></tr></table></figure>
 
 <h2 id="Shell-和-Exec-格式"><a href="#Shell-和-Exec-格式" class="headerlink" title="Shell 和 Exec 格式"></a>Shell 和 Exec 格式</h2><ol>
 <li>Shell 格式</li>
 </ol>
+<p>把要运行的命令当做 shell 命令去执行</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RUN apt-get install -y vim</span><br><span class="line">CMD echo &quot;hello docker&quot;</span><br><span class="line">ENTRYPOINT echo &quot;hello docker&quot;</span><br></pre></td></tr></table></figure>
 
 <ol start="2">
@@ -324,41 +352,20 @@
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">RUN [&quot;apt-get&quot;, &quot;install&quot;, &quot;-y&quot;, &quot;vim&quot;]</span><br><span class="line">CMD [&quot;&#x2F;bin&#x2F;echo&quot;, &quot;hello docker&quot;]</span><br><span class="line">ENTRYPOINT [&quot;&#x2F;bin&#x2F;echo&quot;, &quot;hello docker&quot;]</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>Dockerfile1</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM centos</span><br><span class="line">ENV name Docker</span><br><span class="line">ENTRYPOINT echo &quot;hello $name&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="Dockerfile1"><a href="#Dockerfile1" class="headerlink" title="Dockerfile1"></a>Dockerfile1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM centos</span><br><span class="line">ENV name Docker</span><br><span class="line">ENTRYPOINT echo &quot;hello $name&quot;</span><br></pre></td></tr></table></figure>
 
 <p>结果：</p>
-<p><img src="/images/docker/161.png" alt=""></p>
-<ul>
-<li>Dockerfile2</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM centos</span><br><span class="line">ENV name Docker</span><br><span class="line">ENTRYPOINT [&quot;&#x2F;bin&#x2F;echo&quot;, &quot;hello $name&quot;]</span><br></pre></td></tr></table></figure>
+<p><img src="https://images.notes.xuepincat.com/docker/161.png" alt=""></p>
+<h4 id="Dockerfile2"><a href="#Dockerfile2" class="headerlink" title="Dockerfile2"></a>Dockerfile2</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM centos</span><br><span class="line">ENV name Docker</span><br><span class="line">ENTRYPOINT [&quot;&#x2F;bin&#x2F;echo&quot;, &quot;hello $name&quot;]</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/docker/162.png" alt=""></p>
+<p><img src="https://images.notes.xuepincat.com/docker/162.png" alt=""></p>
 <p>使用 <code>exec</code> 格式并没有将 <code>$name</code> 替换成 <code>ENV</code> 中的定义的常量，这是为什么呢？</p>
 <p>通过 <code>shell</code> 格式运行命令的时候，默认会通过shell,如所在的Linux,在bash里面，通过shell去执行命令，所以它会识别 <code>$name</code> 是一个变量，把变量替换成对应的值，所以就会打印 <code>hello Docker</code>;</p>
 <p>通过 <code>exec</code> 格式 <code>echo</code> 打印字符串的时候只是通过 <code>echo</code> 执行后面的命令，并不是 <code>shell</code> ,也就是并不是在 <code>shell</code> 里面执行 <code>echo</code> ,而是单纯的执行 <code>echo</code> ,并没有将 <code>$name</code> 替换掉</p>
 <p>修改 <code>Dockerfile</code> ,让 <code>exec</code> 格式的命令被 <code>shell</code> 执行,需要在Dockerfile里面指明要运行的命令是通过shell去运行的</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM centos</span><br><span class="line">ENV name Docker</span><br><span class="line">ENTRYPOINT [&quot;&#x2F;bin&#x2F;bash&quot;, &quot;-c&quot;, &quot;echo hello $name&quot;]</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/docker/163.png" alt=""></p>
-<h2 id="RUN-1"><a href="#RUN-1" class="headerlink" title="RUN"></a>RUN</h2><pre><code>执行命令并创建新的 `Image Layer`</code></pre><h2 id="CMD"><a href="#CMD" class="headerlink" title="CMD"></a>CMD</h2><pre><code>设置容器启动后默认执行的命令和参数</code></pre><ul>
-<li>容器启动时默认执行命令</li>
-<li>如果docker run 指定了其他命令，CMD命令被忽略</li>
-<li>如果定义了多个CMD，只有最后一个会执行</li>
-</ul>
-<p>如：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">FROM centos</span><br><span class="line">ENV name Docker</span><br><span class="line">CMD echo &quot;hello $name&quot;</span><br></pre></td></tr></table></figure>
-
-<p>当执行 <code>docker run [image]</code> 的时候会输出 <code>hello Docker</code>,满足第一个条件;<br>当执行 <code>docker run -it [image] /bin/bash</code> 的时候，满足第二个条件，此时CMD命令被忽略，将不会输出 <code>hello Docker</code>;<br>当定义了很多个CMD，只有最后一个会执行；</p>
-<h2 id="ENTRYPOINT"><a href="#ENTRYPOINT" class="headerlink" title="ENTRYPOINT"></a>ENTRYPOINT</h2><pre><code>设置容器启动时运行的命令</code></pre><ul>
-<li>让容器以应用程序或者服务的形式运行,一般作为后台的进程，如启动数据库的服务</li>
-<li>不会被忽略，一定会执行</li>
-<li>最佳实践：写一个shell脚本作为entrypoint</li>
-</ul>
-<p><img src="/images/docker/164.png" alt=""></p>
+<p><img src="https://images.notes.xuepincat.com/docker/163.png" alt=""></p>
 
     </div>
 
@@ -410,7 +417,7 @@
       <i class="fa fa-chevron-left"></i> Docker Container
     </a></div>
       <div class="post-nav-item">
-    <a href="/2019/05/28/10-%E9%95%9C%E5%83%8F%E5%8F%91%E5%B8%83/" rel="next" title="镜像发布">
+    <a href="/2019/05/28/11-%E9%95%9C%E5%83%8F%E5%8F%91%E5%B8%83/" rel="next" title="镜像发布">
       镜像发布 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
@@ -471,7 +478,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#FROM"><span class="nav-number">1.</span> <span class="nav-text">FROM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LABEL"><span class="nav-number">2.</span> <span class="nav-text">LABEL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RUN"><span class="nav-number">3.</span> <span class="nav-text">RUN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WORKDIR"><span class="nav-number">4.</span> <span class="nav-text">WORKDIR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ADD-and-COPY"><span class="nav-number">5.</span> <span class="nav-text">ADD and COPY</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENV"><span class="nav-number">6.</span> <span class="nav-text">ENV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shell-和-Exec-格式"><span class="nav-number">7.</span> <span class="nav-text">Shell 和 Exec 格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RUN-1"><span class="nav-number">8.</span> <span class="nav-text">RUN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMD"><span class="nav-number">9.</span> <span class="nav-text">CMD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENTRYPOINT"><span class="nav-number">10.</span> <span class="nav-text">ENTRYPOINT</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#FROM"><span class="nav-number">1.</span> <span class="nav-text">FROM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LABEL"><span class="nav-number">2.</span> <span class="nav-text">LABEL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RUN"><span class="nav-number">3.</span> <span class="nav-text">RUN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WORKDIR"><span class="nav-number">4.</span> <span class="nav-text">WORKDIR</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ADD-and-COPY"><span class="nav-number">5.</span> <span class="nav-text">ADD and COPY</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENV"><span class="nav-number">6.</span> <span class="nav-text">ENV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RUN-1"><span class="nav-number">7.</span> <span class="nav-text">RUN</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CMD"><span class="nav-number">8.</span> <span class="nav-text">CMD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENTRYPOINT"><span class="nav-number">9.</span> <span class="nav-text">ENTRYPOINT</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Shell-和-Exec-格式"><span class="nav-number">10.</span> <span class="nav-text">Shell 和 Exec 格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Dockerfile1"><span class="nav-number">10.0.1.</span> <span class="nav-text">Dockerfile1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Dockerfile2"><span class="nav-number">10.0.2.</span> <span class="nav-text">Dockerfile2</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -487,20 +494,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">169</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

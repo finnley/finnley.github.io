@@ -211,6 +211,676 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/26/4-%E7%89%88%E6%9C%AC%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E6%9D%83%E9%99%90%E5%88%86%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/26/4-%E7%89%88%E6%9C%AC%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E6%9D%83%E9%99%90%E5%88%86%E7%BB%84/" class="post-title-link" itemprop="url">4-版本库配置以及权限分组</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-26 07:57:42" itemprop="dateCreated datePublished" datetime="2017-06-26T07:57:42+08:00">2017-06-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          版本库的配置文件位于版本库下的conf文件夹 /path.repos/conf/，下面到创建的版本库下查看一下配置文件
+
+
+
+里面有4个文件，分别是authz、hooks-env.tmpl、passwd、svnserve.conf。但是这里用到的只有3个文件，他们分别是authz、passwd、svnserve.conf。
+
+作用
+authz:配置用户组以及用户权限，权限就是提交代码和更新代码的权限。
+passwd:配置用户名和密码，允许访问当前版本库的用户名和密码
+svnserve.conf:配置当前版本库端的默认权限以及指定权限分组配置文件以及密码配置文件以及密码配置文件
+
+SVN版本库权
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/26/4-%E7%89%88%E6%9C%AC%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E6%9D%83%E9%99%90%E5%88%86%E7%BB%84/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/25/3-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E5%88%A0%E9%99%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/25/3-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E5%88%A0%E9%99%A4/" class="post-title-link" itemprop="url">3-版本库的创建与删除</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-25 23:45:49" itemprop="dateCreated datePublished" datetime="2017-06-25T23:45:49+08:00">2017-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          创建版本库
+1
+
+
+# svnadmin create /path/repos
+
+
+svn create 路径
+路径可以是相对路径也可以是绝对路径
+
+下面我要在根目录下创建一个名为svnroot的目录用于存放SVN版本库
+
+1
+
+
+# mkdir /svnroot
+
+
+然后在该目录下创建一个repos的版本库
+
+1
+
+
+# svnadmin create /svnroot/repos
+
+
+上面使用的是绝对路径下创建版本库，下面使用相对路径创建一个名为repos2的版本库
+切换到/svnroot目录下
+
+1
+
+
+# cd svnroot/
+
+
+创建名为repos2的版本库
+
+1
+
+
+# svna
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/25/3-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E5%88%A0%E9%99%A4/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/25/2-SVN%E7%9A%84%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/25/2-SVN%E7%9A%84%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">2-SVN的安装</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-25 23:25:10" itemprop="dateCreated datePublished" datetime="2017-06-25T23:25:10+08:00">2017-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          环境：腾讯云Ubuntu16.04.1 64位
+本机环境：Ubuntu16.04.2 64位
+
+1
+
+
+$ sudo apt-get install subversion
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/25/2-SVN%E7%9A%84%E5%AE%89%E8%A3%85/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/24/Ubuntu-16-04-%E6%90%AD%E5%BB%BANodeJs%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/24/Ubuntu-16-04-%E6%90%AD%E5%BB%BANodeJs%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">Ubuntu 16.04 搭建NodeJs环境</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-24 17:40:07" itemprop="dateCreated datePublished" datetime="2017-06-24T17:40:07+08:00">2017-06-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Ubuntu/" itemprop="url" rel="index"><span itemprop="name">Ubuntu</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          1.下载文件
+到官网上看了一下，最新版本的node是v6.11.0的。
+
+
+
+安装包，我放在/opt目录下
+
+
+
+2.解压文件
+1
+
+
+$ sudo tar xvf node-v6.11.0-linux-x64.tar.xz
+
+
+
+
+解压完之后得到了这样的文件夹。
+
+
+
+3.对文件夹重命名
+1
+
+
+$ sudo mv node-v6.11.0-linux-x64 node
+
+
+
+
+给该文件夹赋予相应的权限
+
+1
+
+
+$ sudo chmod 777 /opt/node -R
+
+
+
+
+4.安装nodejs和npm
+安装nodejs：
+
+1
+
+
+$ sudo ln -s /opt/node/bin
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/24/Ubuntu-16-04-%E6%90%AD%E5%BB%BANodeJs%E7%8E%AF%E5%A2%83/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/14/Ubuntu16.04%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/14/Ubuntu16.04%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">Ubuntu16.04搭建LNMP开发环境</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-14 11:10:36" itemprop="dateCreated datePublished" datetime="2017-06-14T11:10:36+08:00">2017-06-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Ubuntu/" itemprop="url" rel="index"><span itemprop="name">Ubuntu</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          安装Nginx
+我在官网上看了一下，现在最新版的nginx稳定版是nginx-1.12.0的
+
+
+
+加入 Nginx 的 PPA：
+1
+
+
+$ sudo add-apt-repository ppa:nginx/stable
+
+
+
+
+更新系统
+1
+
+
+$ sudo apt-get update
+
+
+
+
+安装
+1
+
+
+$ sudo apt-get install nginx
+
+
+
+
+查看版本
+1
+
+
+$ nginx -v
+
+
+测试
+在输入完上面的命令加载完之后测试一下nginx是否安装成功，打开浏览器，在网址栏中输入localhost或者127.0.0.1，回车之后看下是否会出现下面页面。
+
+
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/14/Ubuntu16.04%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/08/1-SVN%E6%95%99%E7%A8%8B%E2%80%94%E2%80%94SSH%E8%BF%9E%E6%8E%A5%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/08/1-SVN%E6%95%99%E7%A8%8B%E2%80%94%E2%80%94SSH%E8%BF%9E%E6%8E%A5%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">1-SVN教程——SSH连接远程服务器问题解决</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-08 17:59:30" itemprop="dateCreated datePublished" datetime="2017-06-08T17:59:30+08:00">2017-06-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-15 00:40:30" itemprop="dateModified" datetime="2020-07-15T00:40:30+08:00">2020-07-15</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          SSH连接远程服务器问题解决
+一、打开终端，连接云主机
+本机终端打开命令
+
+CTRL+ALT+T
+
+
+
+输入下面命令进行远程连接
+
+ssh ubuntu@118.89.47.207
+
+
+
+但是我回车后出现了下面的问题
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+
+
+mingo@mingo-Alienware-15-R3:~$ ssh ubuntu@118.89.47.207
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDEN
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/08/1-SVN%E6%95%99%E7%A8%8B%E2%80%94%E2%80%94SSH%E8%BF%9E%E6%8E%A5%E8%BF%9C%E7%A8%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/07/Ubuntu16.04%E5%AE%89%E8%A3%85Navicat/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -622,537 +1292,10 @@ NexT 使用的是 Font Awesome 提供的图标， Font Awesome 提供了 600+ �
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/03/31/5-Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E7%BB%88%E7%BB%93%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/03/31/5-Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E7%BB%88%E7%BB%93%E7%AF%87/" class="post-title-link" itemprop="url">5-Next主题配置——终结篇</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-03-31 20:38:36" itemprop="dateCreated datePublished" datetime="2017-03-31T20:38:36+08:00">2017-03-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-17 00:32:10" itemprop="dateModified" datetime="2020-07-17T00:32:10+08:00">2020-07-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo-Next/" itemprop="url" rel="index"><span itemprop="name">Hexo+Next</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          安装NexT
-下载主题
-Next官方文档（老版）
-
-定位到 Hexo 站点目录下，右键选择 Git Bash Here
-
-
-
-使用 Git checkout 代码
-
-1
-
-
-$ git clone https://github.com/iissnan/hexo-theme-next themes/next
-
-
-
-
-回车，等待下载，下载完成后是这样的
-
-
-
-这时候进入 themes 目录，里面多了一个带绿色钩钩的文件夹，这就是下载好的NexT主题。另外一个 landscape 是Hexo默认的主题。
-
-
-
-在 Hexo 中有两份主要的配置文件，其名称都是 _config.yml 。 其中，一份位
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/03/31/5-Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E7%BB%88%E7%BB%93%E7%AF%87/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/03/30/4-Hexo%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%B8%BB%E8%A7%92%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/03/30/4-Hexo%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%B8%BB%E8%A7%92%E7%AF%87/" class="post-title-link" itemprop="url">4-Hexo的安装与配置——主角篇</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-03-30 21:33:05" itemprop="dateCreated datePublished" datetime="2017-03-30T21:33:05+08:00">2017-03-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-17 00:31:59" itemprop="dateModified" datetime="2020-07-17T00:31:59+08:00">2020-07-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo-Next/" itemprop="url" rel="index"><span itemprop="name">Hexo+Next</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          什么是Hexo?
-简单的概括，Hexo是一个快速、简洁且高效的基于Node.js的静态博客框架。
-
-安装Hexo
-Hexo官方文档
-
-1
-2
-3
-4
-5
-
-
-$ npm install hexo-cli -g
-$ hexo init blog
-$ cd blog
-$ npm install
-$ hexo server
-
-
-Hexo的安装是基于 NodeJS 和 Git 的，所以在安装之前需要安装 NodeJS 和 Git ,它们的安装在前面已经介绍了。
-
-开始安装
-输入以下命令
-
-1
-
-
-npm install -g hexo-cli
-
-
-
-
-
-
-在结尾出现这样的信息，属于正常现象，不必担心。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/03/30/4-Hexo%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%B8%BB%E8%A7%92%E7%AF%87/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/03/29/3-GitHub%E7%9A%84%E6%B3%A8%E5%86%8C%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%B8%BB%E8%A7%92%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/03/29/3-GitHub%E7%9A%84%E6%B3%A8%E5%86%8C%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%B8%BB%E8%A7%92%E7%AF%87/" class="post-title-link" itemprop="url">3-GitHub的注册与配置——主角篇</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-03-29 21:17:39" itemprop="dateCreated datePublished" datetime="2017-03-29T21:17:39+08:00">2017-03-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-17 00:31:51" itemprop="dateModified" datetime="2020-07-17T00:31:51+08:00">2020-07-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo-Next/" itemprop="url" rel="index"><span itemprop="name">Hexo+Next</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          前言
-说到GitHub,作为一个互联网工作者，无人不知无人不晓。简单的说，GitHub就是为开发者提供Git仓库的托管服务，这是一个让开发者与朋友、同事、同学以及陌生人共享代码的完美场所。GitHub也被我们亲切的称为“全球最大的同性交友网站”。
-
-注册账号
-前往 GitHub 官网， 填写相关信息，注册一个账号，加入GitHub的大家庭。
-
-
-
-输入 用户名 ，电子邮箱，登录密码 之后，点击 Sign up for GitHub 进行注册，点击后将跳转到下面页面，并且这时候你刚才所填写的邮箱会收到GitHub的验证邮件。
-
-
-
-点击 Continue 继续，页面将跳转到下面的页面
-
-
-
-当然
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/03/29/3-GitHub%E7%9A%84%E6%B3%A8%E5%86%8C%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%B8%BB%E8%A7%92%E7%AF%87/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/03/28/2-NodeJS%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/03/28/2-NodeJS%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/" class="post-title-link" itemprop="url">2-NodeJS的安装与配置——废话篇</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-03-28 23:52:52" itemprop="dateCreated datePublished" datetime="2017-03-28T23:52:52+08:00">2017-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-17 00:31:41" itemprop="dateModified" datetime="2020-07-17T00:31:41+08:00">2020-07-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo-Next/" itemprop="url" rel="index"><span itemprop="name">Hexo+Next</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          准备
-本机系统：Windows10 家庭版 64位
-NodeJS：v6.10.0LTS 64位
-
-安装
-双击安装包，点击 Next
-
-勾选同意,点击 Next
-
-选择安装盘符，我这边选择安装在 E 盘，然后点击 Next
-
-Next
-
-Install
-
-Finish
-
-检验是否安装成功
-快捷键 CTRL + R 输入 cmd 打开CMD窗口
-
-输入 node -v , 查看nodejs版本
-
-输入 npm -v , 查看npm版本
-
-1
-2
-
-
-node -v
-npm -v
-
-
-安装完成后的目录如下显示
-
-环境配置
-创建 node_global 和 node_cache 文件夹
-环境配置主要配
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/03/28/2-NodeJS%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/03/27/1-Git%E7%9A%84%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/03/27/1-Git%E7%9A%84%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/" class="post-title-link" itemprop="url">1-Git的下载与安装——废话篇</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-03-27 23:52:15" itemprop="dateCreated datePublished" datetime="2017-03-27T23:52:15+08:00">2017-03-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-17 00:31:26" itemprop="dateModified" datetime="2020-07-17T00:31:26+08:00">2020-07-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo-Next/" itemprop="url" rel="index"><span itemprop="name">Hexo+Next</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          前言
-以前看到别人有自己的博客很是羡慕，也想有一个属于自己的博客，但是肚子里又没有墨水，生怕没东西写，就算能扯点，也担心不能坚持下去。后来还是忍不住手痒，开始挠了。
-
-我们浏览招聘网站的时候，往往会看到有些公司招聘时会要求附上自己的作品，或者是有自己的Github，或者是自己的技术博客等。作为刚毕业的萌新来说，希望在投递简历的时候，能够给面试增加一些成功的砝码。
-
-下面将介绍我是如何使用 GitHub 配合 Hexo 和 Next 搭建自己博客的。在使用GitHub搭建博客的时候还需要做一些准备，比如需要安装Git, NodeJS等。
-
-下载 Git
-进入 Git官网 ，下载适合自己的版本。
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/03/27/1-Git%E7%9A%84%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span>
+    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1220,20 +1363,20 @@ npm -v
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">169</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

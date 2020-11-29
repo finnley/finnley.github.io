@@ -211,6 +211,609 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/07/19/2-%E9%85%8D%E7%BD%AEMySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/19/2-%E9%85%8D%E7%BD%AEMySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/" class="post-title-link" itemprop="url">2-配置MySQL主从复制</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-19 23:54:14" itemprop="dateCreated datePublished" datetime="2018-07-19T23:54:14+08:00">2018-07-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          配置MySQL主从复制
+准备
+Master: 192.168.1.151
+Slave: 192.168.1.152
+
+![Book Shop](/images/mysql/20180719/1.png)步骤
+配置主机
+ 1. 主机开启 binary log , 从机通过 relay log 监听 binary log
+
+打开MySQL的配置文件：/etc/my.cnf
+
+1
+
+
+vi /etc/my.cnf
+
+
+在配置文件中添加下面代码： 
+
+1
+2
+3
+
+
+log-bin=mysql-bin
+binlog_format=mixed
+server-id = 151
+
+
+ * mysql-bin
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/07/19/2-%E9%85%8D%E7%BD%AEMySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/07/19/1-MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/07/19/1-MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">1-MySQL主从复制工作原理</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-07-19 18:44:52" itemprop="dateCreated datePublished" datetime="2018-07-19T18:44:52+08:00">2018-07-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          MySQL主从复制的工作原理
+解决问题
+ 1. 数据分布
+
+MySQL主从复制可以从一台MySQL服务器扩展到N台，假设我们现在扩展到了150台，我们就可以将50台机器放在电信的网络中，50台机器放在联通的网络当中，还有50台机器可以放在移动的网络当中，这样就可以无论我们无论在哪个网络中访问都比较快，可以做到避免跨网络的访问。
+
+另外我们还可以将我们的服务器按地域进行分，比如我们可以在国外放一部分，在北方放一部分，在南方放一部分，这样就可以做到没有地域性访问的差异了。
+
+ 2. 负载均衡
+
+我们还可以将MySQL做成读写分离，我们将一部分服务器做成写操作，另一部分服务器做读的操作，并且读和写的
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/07/19/1-MySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/06/29/01-%E6%A0%91%E8%8E%93%E6%B4%BE%E5%BC%80%E5%90%AFSSH/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/06/29/01-%E6%A0%91%E8%8E%93%E6%B4%BE%E5%BC%80%E5%90%AFSSH/" class="post-title-link" itemprop="url">01-树莓派开启SSH</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-06-29 00:23:29" itemprop="dateCreated datePublished" datetime="2018-06-29T00:23:29+08:00">2018-06-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">树莓派入门</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          开启SSH方法
+使用SD卡烧录完系统后在在SD卡根目录(boot目录中)新建 ssh 文件，该文件没有任何后缀。
+
+SSH远程链接树莓派
+通电之后打开路由器管理，查看内部网络IP地址
+
+![composer](/images/raspberrypi/20180629/1.png)我这里内部网络IP为 192.168.1.118
+
+打开 PyTTY 工具后,输入IP
+
+![composer](/images/raspberrypi/20180629/2.png)![composer](/images/raspberrypi/20180629/3.png)选择 Yes
+
+然后输入用户名和密码，树莓
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/06/29/01-%E6%A0%91%E8%8E%93%E6%B4%BE%E5%BC%80%E5%90%AFSSH/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/03/24/CentOS-7%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81IP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/03/24/CentOS-7%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81IP/" class="post-title-link" itemprop="url">CentOS 7设置静态IP</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-03-24 12:38:04" itemprop="dateCreated datePublished" datetime="2018-03-24T12:38:04+08:00">2018-03-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          查看 NAT 模式
+菜单栏的 “编辑” —-> “虚拟网络编辑器”； 选中VMnet8，选择“NAT 模式(与虚拟机共享主机的IP地址)”，并将 “将主机虚拟适配器连接到此网络” 和 “使用本地DHCP服务将IP地址分配给虚拟机” 
+
+
+
+
+
+
+
+
+
+Linux网络配置
+安装CentOS7后使用setup命令，是没有网络配置选项的。要想进行网络配置，需要使用nmtui命令。进入如下界面。
+
+
+
+1
+
+
+nmtui
+
+
+
+
+使用键盘方向键选中第一项Edit a connection，回车进入编辑界面。选中Edit，回车。
+
+
+
+
+
+然后将获取到的IPv4和默认网关信息添加到相应的位置。其中IPv
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/03/24/CentOS-7%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81IP/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/02/11/%E4%BD%BF%E7%94%A8Composer%E5%AE%89%E8%A3%85Yii%E6%A1%86%E6%9E%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/02/11/%E4%BD%BF%E7%94%A8Composer%E5%AE%89%E8%A3%85Yii%E6%A1%86%E6%9E%B6/" class="post-title-link" itemprop="url">使用Composer安装Yii框架</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-02-11 16:08:59" itemprop="dateCreated datePublished" datetime="2018-02-11T16:08:59+08:00">2018-02-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          1
+2
+3
+4
+5
+6
+7
+8
+
+
+## 安装Composer
+# curl -sS http://install.phpcomposer.com/installer | php
+
+## 安装插件 按爪滚全局插件
+# php composer.phar global require "fxp/composer-asset-plugin:~1.1.1"
+
+## 安装框架
+# php composer.phar create-project --prefer yiisoft/yii2-app-basic basic 2.0.7
+
+
+有时候会输入下面语句会出现下面的错误
+
+1
+
+
+php compo
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/02/11/%E4%BD%BF%E7%94%A8Composer%E5%AE%89%E8%A3%85Yii%E6%A1%86%E6%9E%B6/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/01/22/Composer%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/01/22/Composer%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/" class="post-title-link" itemprop="url">Composer安装教程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-01-22 15:00:52" itemprop="dateCreated datePublished" datetime="2018-01-22T15:00:52+08:00">2018-01-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          下载 ** Composer **
+![composer](/images/blog/php/composer/1.png)双击开始安装
+
+![composer](/images/blog/php/composer/2.png)Next
+
+![composer](/images/blog/php/composer/3.png)Next
+
+![composer](/images/blog/php/composer/4.png)Next
+
+![composer](/images/blog/php/composer/5.png)Next
+
+![composer](/images/blog/php/c
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/01/22/Composer%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/01/22/WAMP%E4%B8%8BApache%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -624,605 +1227,10 @@ $ git –-version
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/12/21/CentOS-7-%E6%90%AD%E5%BB%BALAMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/12/21/CentOS-7-%E6%90%AD%E5%BB%BALAMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">CentOS搭建LAMP开发环境</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-12-21 23:28:01" itemprop="dateCreated datePublished" datetime="2017-12-21T23:28:01+08:00">2017-12-21</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CentOS/" itemprop="url" rel="index"><span itemprop="name">CentOS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          前提准备
- * 系统： 腾讯云CentOS7。
-
-安装Apache Web服务器
-1.首先将系统软件包更新到最新版本。
-
-1
-
-
-# yum -y update
-
-
-安装Apache HTTP server
-1
-
-
-# yum -y install httpd
-
-
-开启httpd服务，设置开机自启动，查看httpd服务状态
-1
-2
-3
-
-
-＃ systemctl start httpd
-＃ systemctl enable httpd
-＃ systemctl status httpd
-
-
-
-
-测试
-我的演示系统需要通过外网ip去访问，如果您是在本地安装只需要在url地址栏中输入127.0.0.
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/12/21/CentOS-7-%E6%90%AD%E5%BB%BALAMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/16/php%E4%B8%AD%E7%9A%84%E7%A9%BA%E5%80%BC/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/16/php%E4%B8%AD%E7%9A%84%E7%A9%BA%E5%80%BC/" class="post-title-link" itemprop="url">php中的空值</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-16 08:58:08" itemprop="dateCreated datePublished" datetime="2017-07-16T08:58:08+08:00">2017-07-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          在学PHP的时候经常会遇到这些类似的题目，比较false,null,0,’’这四个值是否相等，当时总是一头雾水，很懵。现在我做了这样的一个测试：
-
-代码吐下 ：
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-
-
-<?php
-	  $a = NULL; $b = ''; $c = 0; $d = false;
-
-	  echo ($a == $b) ? 1 : 0; // 1
-	  echo ($a === $b) ? 1 : 0; // 0
-
-	  echo ($a == $c) ? 1 : 0; // 1
-	  echo ($a ==
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/16/php%E4%B8%AD%E7%9A%84%E7%A9%BA%E5%80%BC/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/15/MySQL5-7%E8%AE%BE%E7%BD%AE%E6%97%A5%E6%9C%9F%E9%BB%98%E8%AE%A4%E6%A0%BC%E5%BC%8F0000-00-00%E6%8A%A5%E9%94%99/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/15/MySQL5-7%E8%AE%BE%E7%BD%AE%E6%97%A5%E6%9C%9F%E9%BB%98%E8%AE%A4%E6%A0%BC%E5%BC%8F0000-00-00%E6%8A%A5%E9%94%99/" class="post-title-link" itemprop="url">MySQL5.7设置日期默认格式0000-00-00报错</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-15 19:07:43" itemprop="dateCreated datePublished" datetime="2017-07-15T19:07:43+08:00">2017-07-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MySQL/" itemprop="url" rel="index"><span itemprop="name">MySQL</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          有时候在进行数据库设计或者导入sql文件的时候遇到无法将时间或者日期的字段的默认值设置为“0000-00-00 00:00:00”。会提示类似如下错误信息：
-
-
-
-
-
-其实，MySQL 5.7 以上版本默认禁止 0000-00-00 的日期。
-
-解决办法
-在 MySQL 的配置文件 [mysqld] 区域添加
-
-1
-
-
-sql_mode="ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION"
-
-
-然后重启mysql服务
-
-1
-
-
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/15/MySQL5-7%E8%AE%BE%E7%BD%AE%E6%97%A5%E6%9C%9F%E9%BB%98%E8%AE%A4%E6%A0%BC%E5%BC%8F0000-00-00%E6%8A%A5%E9%94%99/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/12/20-%E7%89%88%E6%9C%AC%E5%BA%93%E8%BF%81%E7%A7%BB%E4%B8%8Eswitch%E9%87%8D%E5%AE%9A%E5%90%91/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/12/20-%E7%89%88%E6%9C%AC%E5%BA%93%E8%BF%81%E7%A7%BB%E4%B8%8Eswitch%E9%87%8D%E5%AE%9A%E5%90%91/" class="post-title-link" itemprop="url">20-版本库迁移与switch重定向</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-12 13:45:06" itemprop="dateCreated datePublished" datetime="2017-07-12T13:45:06+08:00">2017-07-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          一、版本库的迁移
-版本库迁移通常发生在更换服务器的情况下。服务器换了，我们就要把原来服务器上的SVN数据迁移到一台新的服务器上。
-
-版本库的迁移有两种方法。
-
-方法一
-svn dump来备份版本库数据的时候如果版本号的范围定义成从1到最新的版本号，那就相当于把整个版本库完整的备份出来了。然后我们把生成的备份文件复制到新的服务器上在使用svn load命令把它加载到新的版本库里，这就是一个版本库的迁移操作。
-
-迁移和精简原理都是一样的，只不过备份时它的版本号设定不同。
-
-方法二
-1-killall svnserve
-先停止svn服务
-
-2-把/svnroot/repo/压缩成repo.zip
-把
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/12/20-%E7%89%88%E6%9C%AC%E5%BA%93%E8%BF%81%E7%A7%BB%E4%B8%8Eswitch%E9%87%8D%E5%AE%9A%E5%90%91/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/12/WebStorm-2017-%E6%9C%80%E6%96%B0%E7%89%88%E6%BF%80%E6%B4%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/12/WebStorm-2017-%E6%9C%80%E6%96%B0%E7%89%88%E6%BF%80%E6%B4%BB/" class="post-title-link" itemprop="url">WebStorm 2017 最新版激活</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-12 11:58:25" itemprop="dateCreated datePublished" datetime="2017-07-12T11:58:25+08:00">2017-07-12</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          注册时，在打开的License Activation窗口中选择“License server”，在输入框输入下面的网址：
-
-1
-
-
-http://idea.iteblog.com/key.php
-
-
-点击：Activate即可。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/12/WebStorm-2017-%E6%9C%80%E6%96%B0%E7%89%88%E6%BF%80%E6%B4%BB/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/11/19-%E7%89%88%E6%9C%AC%E5%BA%93%E7%B2%BE%E7%AE%80%E4%B8%8E%E4%B8%A2%E5%BC%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/11/19-%E7%89%88%E6%9C%AC%E5%BA%93%E7%B2%BE%E7%AE%80%E4%B8%8E%E4%B8%A2%E5%BC%83/" class="post-title-link" itemprop="url">19-版本库精简与丢弃</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-11 13:44:45" itemprop="dateCreated datePublished" datetime="2017-07-11T13:44:45+08:00">2017-07-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          版本库使用时间长了版本号会越来越大，版本库占用的空间也会越来越多，到了一定的时候我们可能需要对版本库进行一些精简的操作，把版本库最前面的那些版本丢弃，来达到版本库瘦身的目的。
-
-假设我们现在有一个版本库，从运行至今已经提交了100个版本，由于版本库越来越臃肿，想把前面20个版本丢掉，只保留第21到第100个版本。以此来达到版本库瘦身的目的。
-
-具体操作以repos版本库为例
-
-首先看一下repos的最大版本号是多少
-
-1
-
-
-# svn info
-
-
-
-
-现在这个版本库的最大版本好是11，现在我要把这个1到版本5丢弃，只保留版本6到版本11。在操作之前需要停止SVN服务，防止在操作的过程中有人
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/11/19-%E7%89%88%E6%9C%AC%E5%BA%93%E7%B2%BE%E7%AE%80%E4%B8%8E%E4%B8%A2%E5%BC%83/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1290,20 +1298,20 @@ http://idea.iteblog.com/key.php
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">169</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

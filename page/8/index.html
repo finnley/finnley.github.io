@@ -211,6 +211,573 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/04/01/3-%E9%80%9A%E8%BF%87-analyze%E5%88%86%E6%9E%90%E5%88%86%E8%AF%8D%E5%99%A8standard%E5%92%8Cik%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/01/3-%E9%80%9A%E8%BF%87-analyze%E5%88%86%E6%9E%90%E5%88%86%E8%AF%8D%E5%99%A8standard%E5%92%8Cik%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">3-通过_analyze分析分词器standard和ik的区别</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-01 05:35:15" itemprop="dateCreated datePublished" datetime="2019-04-01T05:35:15+08:00">2019-04-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index"><span itemprop="name">ElasticSearch</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          Windows 10安装 Curl
+ 1. 工具下载
+
+在官网处下载工具包： http://curl.haxx.se/download.html
+
+![](/images/elasticsearch/10.png) 2. 我将压缩包解压到了 D:\Program Files 这个目录下
+
+![](/images/elasticsearch/11.png) 3. 环境变量的配置，创建 CURL_HOME 的变量，将解压后的目录作为变量的值，然后保存
+
+![](/images/elasticsearch/12.png) 4. 找到 PATH 变量，追加下面内容
+
+1
+
+
+%CURL_HOME%\I
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/01/3-%E9%80%9A%E8%BF%87-analyze%E5%88%86%E6%9E%90%E5%88%86%E8%AF%8D%E5%99%A8standard%E5%92%8Cik%E7%9A%84%E5%8C%BA%E5%88%AB/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/04/01/2-ElasticSearch%E7%9A%84%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8A%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8DIK%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/01/2-ElasticSearch%E7%9A%84%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8A%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8DIK%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">2-ElasticSearch的安装以及中文分词IK的安装和配置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-01 04:21:26" itemprop="dateCreated datePublished" datetime="2019-04-01T04:21:26+08:00">2019-04-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-16 22:20:33" itemprop="dateModified" datetime="2020-07-16T22:20:33+08:00">2020-07-16</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index"><span itemprop="name">ElasticSearch</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          Windows 10
+安装并简单配置
+ 1. 进入官网进行下载 https://www.elastic.co/cn/downloads/elasticsearch
+
+![](/images/elasticsearch/1.png) 2. 解压到 D:\Apache\ElasticSearch 目录中
+
+![](/images/elasticsearch/2.png)![](/images/elasticsearch/3.png) 3. 进入到 D:\Apache\ElasticSearch\elasticsearch-6.7.0\config 目录中，打开 elasticsearch.yml 
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/01/2-ElasticSearch%E7%9A%84%E5%AE%89%E8%A3%85%E4%BB%A5%E5%8F%8A%E4%B8%AD%E6%96%87%E5%88%86%E8%AF%8DIK%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E9%85%8D%E7%BD%AE/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/04/01/JDK%E9%85%8D%E7%BD%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/01/JDK%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">JDK配置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-01 03:29:41" itemprop="dateCreated datePublished" datetime="2019-04-01T03:29:41+08:00">2019-04-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          Windows 10
+JDK环境变量的配置
+ 1. 首先要打开系统环境变量配置的页面。具体操作是：右击桌面“此电脑”，然后点击→“属性”。
+
+![](/images/java/1.png) 2. 选择“高级系统设置”。
+
+![](/images/java/2.png) 3. 在弹出的页面，选择“环境变量（N）…”。
+
+![](/images/java/3.png) 4. 在弹出的页面，系统变量区域，选择“新建”。
+
+![](/images/java/4.png) 5. 在新建页面，输入变量名“JAVA_HOME”；变量值“你的jdk的路径（请参照下图，找到你的安装路径）”，然后点击“确定”。
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/01/JDK%E9%85%8D%E7%BD%AE/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/04/01/1-%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2%E4%BB%8B%E7%BB%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/04/01/1-%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">1--全文检索介绍</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-04-01 02:08:51" itemprop="dateCreated datePublished" datetime="2019-04-01T02:08:51+08:00">2019-04-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index"><span itemprop="name">ElasticSearch</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          数据分类
+ * 结构化数据
+
+行数据，存储在数据库中，可以用二维表结构来逻辑表达实现的数据（能够用数据或者同意的结构加以表示， 比如数字、符号等， 商品库存使用数字来表示，商品价格使用浮点数据来表示）
+
+ * 非结构化数据
+
+无法用数字或者同意的结构来表示的数据（比如文本，图像，声音，网页等），结构化数据属于非结构化数据，比如商品的标题，商品的描述等都属于文本。
+
+非结构化数据就是全文数据，对全文数据的检索就是全文检索
+
+概念
+一种将文件中或者数据库中所有文本与检索项匹配的文字资料检索方法。
+对全文数据的检索
+
+全文检索
+ * 顺序扫描法
+
+会将数据表中的所有记录挨个进行扫描，然后在对每一条记
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/04/01/1-%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2%E4%BB%8B%E7%BB%8D/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/03/24/%E5%BB%BA%E7%AB%8B%E7%8B%AC%E7%AB%8B%E5%9B%BE%E7%89%87%E6%9C%8D%E5%8A%A1%E5%99%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/24/%E5%BB%BA%E7%AB%8B%E7%8B%AC%E7%AB%8B%E5%9B%BE%E7%89%87%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="post-title-link" itemprop="url">建立独立图片服务器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-24 14:28:31" itemprop="dateCreated datePublished" datetime="2019-03-24T14:28:31+08:00">2019-03-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          独立图片服务器的必要性
+可以分担WEB服务器的I/O负载，将耗费资源的图片服务分离出来，提高服务器的性能和稳定性
+
+能够专门对图片服务器进行优化，为图片服务设置有针对性的缓存方案，减少带宽成本，提高访问速度 
+
+可以提高网站的可扩展性，通过增加图片服务器，提高图片吞吐能力
+
+采用独立域名
+原因： 
+
+同一域名下浏览器的并发连接数有限制，为了突破浏览器连接数的限制
+
+由于cookie的原因，对缓存不利，大部分Web cache都只缓存不带cookie的请求，导致每次的图片请求都不能命中cache
+
+独立后的问题
+如何进行图片上传和图片同步？
+
+可以通过NFS共享方式
+可以使用FTP同步
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/24/%E5%BB%BA%E7%AB%8B%E7%8B%AC%E7%AB%8B%E5%9B%BE%E7%89%87%E6%9C%8D%E5%8A%A1%E5%99%A8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/03/24/CDN%E5%8A%A0%E9%80%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/24/CDN%E5%8A%A0%E9%80%9F/" class="post-title-link" itemprop="url">CDN加速</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-24 13:25:08" itemprop="dateCreated datePublished" datetime="2019-03-24T13:25:08+08:00">2019-03-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          什么是CDN
+CDN的全程Content Delivery Network, 即内容分发网络
+
+尽可能避开互联网上有可能影响数据传输速度和稳定性的瓶颈和环节，使内容传输的更快、更稳定
+
+它是在网络各处放置节点服务器所构成的在现有的互联网基础之上的一层智能虚拟网络
+
+CDN系统能够实时地根据网络流量和各节点的连接、负载状况以及到用户的距离和响应时间等综合信息将用户的请求重新导向离用户最近的服务节点上
+
+使用CDN的优势
+可以本地Cache加速，提高企业站点（尤其含有大量图片和静态页面站点）的访问速度
+
+可以跨运营商的网络加速，保证不同网络的用户都得到良好的访问质量
+
+可以远程访问用户根据DNS负
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/24/CDN%E5%8A%A0%E9%80%9F/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/03/23/%E5%87%8F%E5%B0%91HTTP%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -566,607 +1133,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/03/18/%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/18/%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" class="post-title-link" itemprop="url">什么是人工智能</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-03-18 23:09:25" itemprop="dateCreated datePublished" datetime="2019-03-18T23:09:25+08:00">2019-03-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/TensorFlow/" itemprop="url" rel="index"><span itemprop="name">TensorFlow</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          定义
-人工智能之父麦卡锡给出的定义
-
-* 人工智能是 `构建智能机器,特别是智能计算机程序的科学和工程`
-* 人工智能是一种让计算机程序能够 `"智能地"` 思考的方式
-* 人工智能思考的模式 ‵类似` 于人类
-
-什么是智能?
-* 智能的英语是 `Intelligence` ,通常指智能,智力,智慧的意思
-* 智能可以包括具有 推理,知识,规划,学习,交流,感知,移动和操作物体等能力
-* `智能` 不等于 `智力` (IQ:智商,比较类似计算机的计算能力)
-
-如何算有智能?
-* 可以根据环境变化而作出相应变化的能力
-* 具有 "存活" 这最基本的动因
-* 有自主能力,自我意识等
-
-智能分类
-*
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/18/%E4%BB%80%E4%B9%88%E6%98%AF%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/03/14/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%90%AD%E5%BB%BALNMP%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/14/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%90%AD%E5%BB%BALNMP%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">树莓派搭建LNMP环境</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-03-14 21:53:29" itemprop="dateCreated datePublished" datetime="2019-03-14T21:53:29+08:00">2019-03-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">树莓派入门</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          Raspbian Updates
-1
-2
-3
-
-
-$ sudo apt-get update
-$ sudo apt-get dist-upgrade
-$ sudo apt-get upgrade
-
-
-添加源
-1
-
-
-sudo vi /etc/apt/sources.list.d/10-buster.list
-
-
-Add this line:
-
-1
-
-
-deb http://mirrordirector.raspbian.org/raspbian/ buster main contrib non-free rpi
-
-
-1
-
-
-$ sudo vi /etc/apt/preferences.d/10
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/14/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%90%AD%E5%BB%BALNMP%E7%8E%AF%E5%A2%83/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/03/14/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%9B%B4%E6%8D%A2%E8%BD%AF%E4%BB%B6%E6%BA%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/14/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%9B%B4%E6%8D%A2%E8%BD%AF%E4%BB%B6%E6%BA%90/" class="post-title-link" itemprop="url">树莓派更换软件源</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-03-14 21:37:40" itemprop="dateCreated datePublished" datetime="2019-03-14T21:37:40+08:00">2019-03-14</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%85%A5%E9%97%A8/" itemprop="url" rel="index"><span itemprop="name">树莓派入门</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          基本与 Debian 一致。使用管理员权限（经由sudo），编辑 /etc/apt/sources.list 文件。参考命令行为：
-
-1
-
-
-pi@raspberrypi ~ $ sudo nano /etc/apt/sources.list
-
-
-删除原文件所有内容，用以下内容取代：
-
-Debian 9 (Stretch)
-
-1
-2
-
-
-deb http://mirrors.tuna.tsinghua.edu.cn/raspbian/raspbian/ stretch main non-free contrib
-deb-src http://mirrors.tuna.tsinghua.edu.
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/14/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%9B%B4%E6%8D%A2%E8%BD%AF%E4%BB%B6%E6%BA%90/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/03/10/CentOS%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85PHP/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/10/CentOS%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85PHP/" class="post-title-link" itemprop="url">CentOS编译安装PHP</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-03-10 18:52:16" itemprop="dateCreated datePublished" datetime="2019-03-10T18:52:16+08:00">2019-03-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          下载 PHP 源码
-这里我使用的阿里云CentOS7.6 64位版本的系统。
-
-首先使用远程连接工具进行进行连接，我本地物理机使用的 Ubuntu 18.04 自带的 Terminal 进行连接，如果是 Windows 系统可以使用 XShell 或者 PuTTY 等工具进行远程连接。
-
-
-
-打开 PHP官网
-
-
-
-找到右上角的 Download 区域，选择当前最新版本 7.3.3
-
-
-
-这里选择第一个 php-7.3.3.tar.bz2 格式的安装包，进入下面页面，随便找一个站点并复制下载链接进行下载
-
-
-
-1
-
-
-wget -O php-7.3.3.tar.bz2 http://php.n
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/10/CentOS%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85PHP/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/03/10/CentOS%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85Nginx/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/03/10/CentOS%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85Nginx/" class="post-title-link" itemprop="url">CentOS编译安装Nginx</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-03-10 12:47:26" itemprop="dateCreated datePublished" datetime="2019-03-10T12:47:26+08:00">2019-03-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          编译环境准备
-编译环境是指能够将源码编译成可安装的文件，这里需要系统内安装好 gcc 和 gcc-c++
-
- * gcc
- * gcc-c++
-
-这里我使用的阿里云CentOS7.6 64位版本的系统。
-
-首先使用远程连接工具进行进行连接，我本地物理机使用的 Ubuntu 18.04 自带的 Terminal 进行连接，如果是 Windows 系统可以使用 XShell 或者 PuTTY 等工具进行远程连接。
-
-
-
-连接上服务器后先使用 yum update -y 命令更新下系统。
-
-1
-
-
-yum update -y
-
-
-
-
-
-
-然后使用下面命令搜索机器内是否已经安装了 gcc 和 gcc-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/03/10/CentOS%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85Nginx/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/02/27/7-%E4%BC%9A%E8%AF%9D%E6%8E%A7%E5%88%B6/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/02/27/7-%E4%BC%9A%E8%AF%9D%E6%8E%A7%E5%88%B6/" class="post-title-link" itemprop="url">7-会话控制</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-02-27 22:36:10" itemprop="dateCreated datePublished" datetime="2019-02-27T22:36:10+08:00">2019-02-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          为什么要使用会话控制技术
-本身WEB是通过HTTP协议来实现的，而HTTP协议又是无状态的协议,也就是说HTTP协议是没有一个机制来维护了两个事务之间的状态，所以同一个用户在请求相同的页面两次的时候，HTTP协议不会认为这两次请求都来自同一个用户，会把他们当做两次独立的请求。比如用户执行了登录操作后再次请求页面，HTTP协议不会认为用户之前做了登录操作，因为它无法保持用户之前的登录状态，所以没有办法在不同页面进行用户的跟踪和状态的保持。而会话控制就是就是为了解决这一问题。其思想就是允许服务器跟踪同一个客户端做出的连续请求，比如之前已经做过登录操作了，下一次再进行请求的时候就知道已经登录过了，这
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/02/27/7-%E4%BC%9A%E8%AF%9D%E6%8E%A7%E5%88%B6/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/7/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/9/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1234,20 +1204,20 @@ yum update -y
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">169</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://notes.xuepincat.com/2020/11/29/notes-api-gin-Deploy/</loc>
+    <lastmod>2020-11-29</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2020/11/29/notes-api-gin-Category/</loc>
+    <lastmod>2020-11-29</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2020/11/29/notes-api-gin-Module/</loc>
+    <lastmod>2020-11-29</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/</loc>
+    <lastmod>2020-11-29</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%88%9D%E5%A7%8B%E5%8C%96/</loc>
+    <lastmod>2020-11-29</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2019/05/28/11-%E9%95%9C%E5%83%8F%E5%8F%91%E5%B8%83/</loc>
+    <lastmod>2020-11-29</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2019/05/29/10-Dockerfile%E5%AE%9E%E6%88%98/</loc>
+    <lastmod>2020-11-29</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/</loc>
+    <lastmod>2020-11-29</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2020/11/29/%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E6%A1%88%E4%BE%8B/</loc>
+    <lastmod>2020-11-29</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2019/05/08/Docker-introduction-to-docker/</loc>
+    <lastmod>2020-11-29</lastmod>
+  </url>
+  <url>
     <loc>https://notes.xuepincat.com/2020/11/09/MQ-RabbitMQ%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2020-11-09</lastmod>
   </url>
@@ -23,10 +63,6 @@
   <url>
     <loc>https://notes.xuepincat.com/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/</loc>
     <lastmod>2020-10-24</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2019/05/08/Docker-introduction-to-docker/</loc>
-    <lastmod>2020-10-21</lastmod>
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2020/08/30/DevOps-%E7%BB%83%E6%89%8B%E4%B8%80/</loc>
@@ -373,10 +409,6 @@
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/</loc>
-    <lastmod>2020-05-23</lastmod>
-  </url>
-  <url>
     <loc>https://notes.xuepincat.com/2019/03/24/CDN%E5%8A%A0%E9%80%9F/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
@@ -501,15 +533,7 @@
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2019/05/28/10-%E9%95%9C%E5%83%8F%E5%8F%91%E5%B8%83/</loc>
-    <lastmod>2020-05-23</lastmod>
-  </url>
-  <url>
     <loc>https://notes.xuepincat.com/2019/03/14/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%90%AD%E5%BB%BALNMP%E7%8E%AF%E5%A2%83/</loc>
-    <lastmod>2020-05-23</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2019/05/29/11-Dockerfile%E5%AE%9E%E6%88%98/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>

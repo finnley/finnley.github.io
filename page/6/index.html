@@ -211,6 +211,623 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/09/21/input-%E6%8F%92%E4%BB%B6%E8%AF%A6%E8%A7%A3%E5%8F%8Aglob%E8%AE%B2%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/21/input-%E6%8F%92%E4%BB%B6%E8%AF%A6%E8%A7%A3%E5%8F%8Aglob%E8%AE%B2%E8%A7%A3/" class="post-title-link" itemprop="url">input 插件详解及glob讲解</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-21 15:53:53" itemprop="dateCreated datePublished" datetime="2019-09-21T15:53:53+08:00">2019-09-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-06-27 22:09:34" itemprop="dateModified" datetime="2020-06-27T22:09:34+08:00">2020-06-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Logstash/" itemprop="url" rel="index"><span itemprop="name">Logstash</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          Input Plugin
+ * input 插件指定数据源，一个 pipeline 可以有多个 input 插件，常用有下面几个插件
+
+ 1. stdin
+    
+    
+ 2. file
+    
+    
+ 3. kafka
+    
+    stdin
+    最简单的输入，从标准输入读取数据，通用配置为：
+    
+    
+
+ * codec 类型为 codec
+
+logstash 会去检查我们输入的字符串是否存在 codec ,如果不存在就会认为配置是有问题的
+
+ * type 类型为 string , 自定义该事件的类型，可用于后续判断
+
+比如 web 日志的可以打上 web
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/09/21/input-%E6%8F%92%E4%BB%B6%E8%AF%A6%E8%A7%A3%E5%8F%8Aglob%E8%AE%B2%E8%A7%A3/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/09/18/Logstash%E5%85%A5%E9%97%A8%E5%8F%8A%E6%9E%B6%E6%9E%84%E7%AE%80%E4%BB%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/09/18/Logstash%E5%85%A5%E9%97%A8%E5%8F%8A%E6%9E%B6%E6%9E%84%E7%AE%80%E4%BB%8B/" class="post-title-link" itemprop="url">Logstash入门及架构简介</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-09-18 23:08:03" itemprop="dateCreated datePublished" datetime="2019-09-18T23:08:03+08:00">2019-09-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-06-27 17:04:01" itemprop="dateModified" datetime="2020-06-27T17:04:01+08:00">2020-06-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Logstash/" itemprop="url" rel="index"><span itemprop="name">Logstash</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          Logstash 介绍
+ * 数据收集处理引擎
+   
+   
+ * ETL 工具
+   
+   
+
+架构简介
+
+
+ * Logstash 在数据收集中的位置
+
+Logstash 处于中间，左边是各种各样的数据源，如普通的 LOG 日志文件， EXCEL, HTTP Service， Database，还包括自定义的数据源等等，右边是 Logstash 支持的功能，如 Logstash 本身支持的一些指标分析，还支持将数据进行归档，输出到 Elasticsearch, 监控，告警等等。
+
+ * Logstash 的三个阶段
+
+
+
+Logstash 分三个阶段，Input, Filter, Ou
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/09/18/Logstash%E5%85%A5%E9%97%A8%E5%8F%8A%E6%9E%B6%E6%9E%84%E7%AE%80%E4%BB%8B/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/06/18/13-%E5%AE%B9%E5%99%A8%E7%9A%84%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/06/18/13-%E5%AE%B9%E5%99%A8%E7%9A%84%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6/" class="post-title-link" itemprop="url">容器的资源限制</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-06-18 23:40:41" itemprop="dateCreated datePublished" datetime="2019-06-18T23:40:41+08:00">2019-06-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          通过虚拟化技术，可以在物理机上面创建很多虚拟机，对于一台物理设备来说它的内存，CPU一些物理资源的配置是有限的，假如在上面创建虚拟机，每一个虚拟机的资源其实也是可以配置限定的
+
+同样的对于容器， Container 是运行在 Linux 机器上的， Linux 本身资源是有限的，如果在上面运行非常多的容器，每个容器都需要占一些 CPU 和内存，如果我们不给它们做一些限制，我们默认去创建容器，这些容器会尽最大可能去占有资源，比如这个物理机它有多少内存，如果 Container 里面运行程序的话，这个程序会不停的吃内存，直到占满整个机器的内存，这样的话容器就会退出，因为内存不够了
+
+指定 CPU 
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/06/18/13-%E5%AE%B9%E5%99%A8%E7%9A%84%E8%B5%84%E6%BA%90%E9%99%90%E5%88%B6/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/06/17/12-%E5%AE%B9%E5%99%A8%E6%93%8D%E4%BD%9C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/06/17/12-%E5%AE%B9%E5%99%A8%E6%93%8D%E4%BD%9C/" class="post-title-link" itemprop="url">容器操作</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-06-17 23:44:23" itemprop="dateCreated datePublished" datetime="2019-06-17T23:44:23+08:00">2019-06-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          docker exec
+比如现在已经有了个运行中的容器，有没有办法可以进入容器中呢？
+
+ 1. 进入到运行中的容器中的 shell, 命令如下
+
+1
+
+
+docker exec -it <Container ID> /bin/bash
+
+
+如：
+
+1
+
+
+docker exec -it 662188a370d0 /bin/bash
+
+
+-it : 进入交互式界面，并不会执行完程序后就退出
+
+
+
+ 2. 还是使用上面的容器，因为上面的容器中已经安装了 Python, 可以进入容器并运行 Python
+
+1
+
+
+docker exec -it 662188a370d0 python
+
+
+
+
+ 3.
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/06/17/12-%E5%AE%B9%E5%99%A8%E6%93%8D%E4%BD%9C/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/29/10-Dockerfile%E5%AE%9E%E6%88%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/29/10-Dockerfile%E5%AE%9E%E6%88%98/" class="post-title-link" itemprop="url">Dockerfile实战</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-29 21:52:51" itemprop="dateCreated datePublished" datetime="2019-05-29T21:52:51+08:00">2019-05-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-11-29 21:06:59" itemprop="dateModified" datetime="2020-11-29T21:06:59+08:00">2020-11-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          Dockerfile打包Python程序
+ 1. 创建 flask-helo-docker 的目录
+
+1
+
+
+mkdir flask-hello-docker
+
+
+ 2. 创建 Dockerfile
+
+1
+2
+
+
+cd flask-hello-docker
+vim Dockerfile
+
+
+ 3. 编辑 Dockerfile
+
+1
+2
+3
+
+
+FROM python:2.7
+LABEL maintainer="Finnley<mingmin.yuen@gmail.com>"
+RUN pip install flask
+
+
+ 4. ：wq 暂时先保存退出， 并在目录下创建 app.py 文件, 
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/29/10-Dockerfile%E5%AE%9E%E6%88%98/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/28/11-%E9%95%9C%E5%83%8F%E5%8F%91%E5%B8%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/28/11-%E9%95%9C%E5%83%8F%E5%8F%91%E5%B8%83/" class="post-title-link" itemprop="url">镜像发布</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-28 22:17:49" itemprop="dateCreated datePublished" datetime="2019-05-28T22:17:49+08:00">2019-05-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-11-29 21:07:08" itemprop="dateModified" datetime="2020-11-29T21:07:08+08:00">2020-11-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          准备
+到 docker hub 官网注册一个账号
+
+发布镜像
+ 1. Login
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+
+[vagrant@localhost ~]$ docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: Your Name
+Password: Your Password
+WARNIN
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/28/11-%E9%95%9C%E5%83%8F%E5%8F%91%E5%B8%83/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -242,7 +859,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2020-11-29 21:05:03" itemprop="dateModified" datetime="2020-11-29T21:05:03+08:00">2020-11-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -266,21 +883,21 @@
 
       
           FROM
-尽量使用官方的image作为base image!
+尽量使用官方的 image 作为base image !
 
- * FROM scratch #制作base image
- * FROM centos #使用base image
+ * FROM scratch # 制作base image
+ * FROM centos # 使用base image
  * FROM ubuntu:16.04
 
 LABEL
-Metadata不可少，有点像代码中的注释
+Metadata 不可少，有点像代码中的注释
 
  * LABEL maintainer=”email@example.com“
  * LABEL version=”1.0”
  * LABEL description=”This is description”
 
 RUN
-每运行一次run,对于image都会生成新的一层，所以对于run,为了美观,复杂的RUN请用反
+每运行一次 run ,对于 image 都会生成新的一层，所以对于 run ,为了
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/#more" rel="contents">
@@ -583,666 +1200,10 @@ Docker Engine 是Docker中一个非常重要的概念，是一个核心的组件
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/18/Docker-CentOS7%E5%AE%89%E8%A3%85Docker/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/18/Docker-CentOS7%E5%AE%89%E8%A3%85Docker/" class="post-title-link" itemprop="url">CentOS7安装Docker</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-05-18 23:37:05" itemprop="dateCreated datePublished" datetime="2019-05-18T23:37:05+08:00">2019-05-18</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-13 16:43:10" itemprop="dateModified" datetime="2020-09-13T16:43:10+08:00">2020-09-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          参考官方文档【Install Docker Engine on CentOS】. 
-
-Uninstall old versions
-1
-2
-3
-4
-5
-6
-7
-8
-
-
-$ sudo yum remove docker \
-                  docker-client \
-                  docker-client-latest \
-                  docker-common \
-                  docker-latest \
-                  docker-latest-logrotate \
-  
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/05/18/Docker-CentOS7%E5%AE%89%E8%A3%85Docker/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/15/vagrant-install-centos7-using-vagrant/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/15/vagrant-install-centos7-using-vagrant/" class="post-title-link" itemprop="url">使用vagrant安装CentOS7</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-05-15 23:01:27" itemprop="dateCreated datePublished" datetime="2019-05-15T23:01:27+08:00">2019-05-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-05 11:48:16" itemprop="dateModified" datetime="2020-09-05T11:48:16+08:00">2020-09-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vagrant/" itemprop="url" rel="index"><span itemprop="name">Vagrant</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          方法一
-1
-2
-3
-4
-5
-6
-
-
-cd vagrant
-sudo mkdir centos7
-sudo chmod 777 centos7/
-cd centos7
-vagrant init centos/7
-vagrant up
-
-
-方法二
-提前下载好centos/7的镜像，所以这里先进行添加镜像
-
- 1. 添加镜像
-
-1
-
-
-vagrant box add centos/7 CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.box
-
-
-
-
- 2. 查看是否已经成功添加
-
-1
-
-
-vagrant box list
-
-
-
-
- 3. 在指定目录中创建目录
-
-1
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/05/15/vagrant-install-centos7-using-vagrant/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/08/Docker-introduction-to-docker/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/08/Docker-introduction-to-docker/" class="post-title-link" itemprop="url">Docker介绍</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-05-08 00:06:00" itemprop="dateCreated datePublished" datetime="2019-05-08T00:06:00+08:00">2019-05-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-10-22 00:37:31" itemprop="dateModified" datetime="2020-10-22T00:37:31+08:00">2020-10-22</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          Docker能做什么？
- * 简化配置
-
-可以实现将源代码， 运行环境以及配置都打包到一个容器里面，并且这个容器可以运行在不同的环境中，因为简化所以自然而然的就提高了开发效率。
-
- * 整合服务器
- * 代码流水线管理
- * 调试能力
- * 提高开发效率
-
-可以实现本地开发环境，测试环境和生产环境非常接近， 可以极大的减少在开发和测试以及部署过程中因为环境的不同而产生的错误。
-
- * 多租户
- * 隔离应用
- * 快速部署
-
-容器技术概述
-传统部署应用流程：
-如果要部署一个APP，需要准备一台物理服务器，然后在这个物理服务器上安装系统，这个操作系统可能是Windows,也可能是Linux，然后
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/05/08/Docker-introduction-to-docker/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/03/Linux%E4%B8%8B%E5%AE%89%E8%A3%85PHP%E6%89%A9%E5%B1%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/03/Linux%E4%B8%8B%E5%AE%89%E8%A3%85PHP%E6%89%A9%E5%B1%95/" class="post-title-link" itemprop="url">Linux下安装PHP扩展</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-05-03 23:08:31" itemprop="dateCreated datePublished" datetime="2019-05-03T23:08:31+08:00">2019-05-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          安装php-redis扩展
- 1. 下载
-
-在github上搜索 phpredis , 我选择下载地址为 https://github.com/phpredis/phpredis
-
-克隆下载
-
-1
-
-
-git clone https://github.com/phpredis/phpredis.git
-
-
-![php](http://images.ornnth.com/hexo/php/31.png) 2. 解压，如果下载的 .zip 压缩包可以通过 unzip <压缩包名> 命令解压
-    
-    
- 3. 进入目录
-    
-    
-
-1
-2
-
-
-cd phpredis/
-ls
-
-
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/05/03/Linux%E4%B8%8B%E5%AE%89%E8%A3%85PHP%E6%89%A9%E5%B1%95/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/02/Vagrant%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/05/02/Vagrant%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">Vagrant搭建开发环境</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-05-02 11:01:55" itemprop="dateCreated datePublished" datetime="2019-05-02T11:01:55+08:00">2019-05-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-15 01:46:35" itemprop="dateModified" datetime="2020-07-15T01:46:35+08:00">2020-07-15</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Vagrant/" itemprop="url" rel="index"><span itemprop="name">Vagrant</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          准备
- * 本地环境 Ubuntu18.04 LTS
- * 镜像 Ubuntu18.04.box
-
-步骤
-下载镜像
- 1. 比如我需要下载 ubuntu/bionic64 ，可以打开官网 https://app.vagrantup.com/ubuntu/boxes/bionic64 进行下载
-
-![vagrant](http://images.ornnth.com/hexo/vagrant/48.png)图中的 v20190501.0.0 就是可以下载的版本号
-
- 2. 点击上图进入版本详情页 https://app.vagrantup.com/ubuntu/boxes/bionic64/ve
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/05/02/Vagrant%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/04/11/6-ElasticSearch%E7%B4%A2%E5%BC%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/11/6-ElasticSearch%E7%B4%A2%E5%BC%95/" class="post-title-link" itemprop="url">6-ElasticSearch索引</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-04-11 16:22:55" itemprop="dateCreated datePublished" datetime="2019-04-11T16:22:55+08:00">2019-04-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index"><span itemprop="name">ElasticSearch</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          创建
-http://localhost:9200/es_video/1/
-put
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-
-
-{
-    "mappings": {
-        "video": {
-            "properties": { 
-                "name": {
-                    "type": "text"
-             
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/04/11/6-ElasticSearch%E7%B4%A2%E5%BC%95/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1310,20 +1271,20 @@ put
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">169</span>
+          <span class="site-state-item-count">175</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-count">29</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">51</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

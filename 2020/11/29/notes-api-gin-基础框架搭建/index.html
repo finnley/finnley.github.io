@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="基础框架搭建 基本每个项目都有自己的一套框架，如果没有框架，可能会出现下面的一些问题：   * 将所有的程序的文本配置写在代码中；  * API的错误码硬编码在程序中；  * DB句柄谁去 OPEN,没有统一管理；  * 获取分页等公共参数，每个模块写一套相同的逻辑；    …  显然在较正规的项目中，这些问题的答案都是不允许的，为了解决这些问题，挑选一款读写配置文件的库，目前比较火的有 vipe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="notes-api-gin-基础框架搭建">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Finnley&#39;s Notes">
+<meta property="og:description" content="基础框架搭建 基本每个项目都有自己的一套框架，如果没有框架，可能会出现下面的一些问题：   * 将所有的程序的文本配置写在代码中；  * API的错误码硬编码在程序中；  * DB句柄谁去 OPEN,没有统一管理；  * 获取分页等公共参数，每个模块写一套相同的逻辑；    …  显然在较正规的项目中，这些问题的答案都是不允许的，为了解决这些问题，挑选一款读写配置文件的库，目前比较火的有 vipe">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-29T13:18:26.000Z">
+<meta property="article:modified_time" content="2020-11-29T13:19:09.666Z">
+<meta property="article:author" content="Finnley">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Gin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>notes-api-gin-基础框架搭建 | Finnley's Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Finnley's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Finnley's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          notes-api-gin-基础框架搭建
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-11-29 21:18:26 / Modified: 21:19:09" itemprop="dateCreated datePublished" datetime="2020-11-29T21:18:26+08:00">2020-11-29</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="基础框架搭建"><a href="#基础框架搭建" class="headerlink" title="基础框架搭建"></a>基础框架搭建</h1><p>基本每个项目都有自己的一套框架，如果没有框架，可能会出现下面的一些问题：</p>
+<ul>
+<li>将所有的程序的文本配置写在代码中；</li>
+<li>API的错误码硬编码在程序中；</li>
+<li>DB句柄谁去 OPEN,没有统一管理；</li>
+<li>获取分页等公共参数，每个模块写一套相同的逻辑；<br>…</li>
+</ul>
+<p>显然在较正规的项目中，这些问题的答案都是不允许的，为了解决这些问题，挑选一款读写配置文件的库，目前比较火的有 <a href="https://github.com/spf13/viper" target="_blank" rel="noopener">viper</a></p>
+<h2 id="初始化项目目录"><a href="#初始化项目目录" class="headerlink" title="初始化项目目录"></a>初始化项目目录</h2><p>初始化了一个 <code>notes-api-gin</code> 项目，接下来需要继续新增如下目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── conf</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── middleware</span><br><span class="line">├── models</span><br><span class="line">├── pkg</span><br><span class="line">├── routers</span><br><span class="line">├── runtime</span><br><span class="line">└── test.go</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>conf：用于存储配置文件</li>
+<li>middleware：应用中间件</li>
+<li>models：应用数据库模型</li>
+<li>pkg：第三方包</li>
+<li>routers 路由逻辑处理 (类似controller的作用)</li>
+<li>runtime：应用运行时数据</li>
+</ul>
+<h2 id="编写配置包"><a href="#编写配置包" class="headerlink" title="编写配置包"></a>编写配置包</h2><p>在 <code>notes-api-gin</code> 应用目录下，拉取 <code>go-ini/ini</code> 的依赖包，如下：</p>
+<p><a href="https://github.com/go-ini/ini" target="_blank" rel="noopener">go-ini/ini</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com&#x2F;go-ini&#x2F;ini</span><br></pre></td></tr></table></figure>
+
+<p>接下来编写基础的应用配置文件，在 <code>notes-api-gin</code> 的 <code>conf</code> 目录下新建 <code>app.ini</code> 文件，写入内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#debug or release</span><br><span class="line">RUN_MODE &#x3D; debug</span><br><span class="line"></span><br><span class="line">[app]</span><br><span class="line">PAGE_SIZE &#x3D; 10</span><br><span class="line">JWT_SECRET &#x3D; 23347$040412</span><br><span class="line"></span><br><span class="line">[server]</span><br><span class="line">HTTP_PORT &#x3D; 8000</span><br><span class="line">READ_TIMEOUT &#x3D; 60</span><br><span class="line">WRITE_TIMEOUT &#x3D; 60</span><br><span class="line"></span><br><span class="line">[database]</span><br><span class="line">TYPE &#x3D; mysql</span><br><span class="line">USER &#x3D; 数据库账号</span><br><span class="line">PASSWORD &#x3D; 数据库密码</span><br><span class="line">#127.0.0.1:3306</span><br><span class="line">HOST &#x3D; 数据库IP:数据库端口号</span><br><span class="line">NAME &#x3D; notes</span><br><span class="line">TABLE_PREFIX &#x3D; notes_</span><br></pre></td></tr></table></figure>
+
+<p>建立调用配置的 <code>setting</code> 模块，在 <code>notes-api-gin</code> 的 <code>pkg</code> 目录下新建 <code>setting</code> 目录，新建 <code>setting.go</code> 文件，写入内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">package setting</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;github.com&#x2F;go-ini&#x2F;ini&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var (</span><br><span class="line">	Cfg *ini.File</span><br><span class="line"></span><br><span class="line">	RunMode string</span><br><span class="line"></span><br><span class="line">	HTTPPort int</span><br><span class="line">	ReadTimeout time.Duration</span><br><span class="line">	WriteTimeout time.Duration</span><br><span class="line"></span><br><span class="line">	PageSize int</span><br><span class="line">	JwtSecret string</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func init() &#123;</span><br><span class="line">	var err error</span><br><span class="line">	Cfg, err &#x3D; ini.Load(&quot;conf&#x2F;app.ini&quot;)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		log.Fatalf(&quot;Fail to parse &#39;conf&#x2F;app.ini&#39;: %v&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	LoadBase()</span><br><span class="line">	LoadServer()</span><br><span class="line">	LoadApp()</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func LoadBase() &#123;</span><br><span class="line">	RunMode &#x3D; Cfg.Section(&quot;&quot;).Key(&quot;RUN_MODE&quot;).MustString(&quot;debug&quot;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func LoadServer() &#123;</span><br><span class="line">	sec, err :&#x3D; Cfg.GetSection(&quot;server&quot;)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		log.Fatalf(&quot;Fail to get section &#39;server&#39;: %v&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	HTTPPort &#x3D; sec.Key(&quot;HTTP_PORT&quot;).MustInt(8000)</span><br><span class="line">	ReadTimeout &#x3D; time.Duration(sec.Key(&quot;READ_TIMEOUT&quot;).MustInt(60)) * time.Second</span><br><span class="line">	WriteTimeout &#x3D;  time.Duration(sec.Key(&quot;WRITE_TIMEOUT&quot;).MustInt(60)) * time.Second</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func LoadApp() &#123;</span><br><span class="line">	sec, err :&#x3D; Cfg.GetSection(&quot;app&quot;)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		log.Fatalf(&quot;Fail to get section &#39;app&#39;: %v&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	JwtSecret &#x3D; sec.Key(&quot;JWT_SECRET&quot;).MustString(&quot;!@)*#)!@U#@*!@!)&quot;)</span><br><span class="line">	PageSize &#x3D; sec.Key(&quot;PAGE_SIZE&quot;).MustInt(10)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当前目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── conf</span><br><span class="line">│   └── app.ini</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── middleware</span><br><span class="line">├── models</span><br><span class="line">├── pkg</span><br><span class="line">│   └── setting</span><br><span class="line">│       └── setting.go</span><br><span class="line">├── routers</span><br><span class="line">├── runtime</span><br><span class="line">└── test.go</span><br></pre></td></tr></table></figure>
+
+<h2 id="编写-API-错误码包"><a href="#编写-API-错误码包" class="headerlink" title="编写 API 错误码包"></a>编写 API 错误码包</h2><p>建立错误码的 <code>e</code> 模块，在 <code>notes-api-gin</code> 的 <code>pkg</code> 目录下新建 <code>e</code> 目录，新建 <code>code.go</code> 和 <code>msg.go</code> 文件，写入内容：</p>
+<p>1、code.go</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">package e</span><br><span class="line"></span><br><span class="line">const (</span><br><span class="line">	SUCCESS &#x3D; 200</span><br><span class="line">	ERROR &#x3D; 500</span><br><span class="line">	INVALID_PARAMS &#x3D; 400</span><br><span class="line"></span><br><span class="line">	ERROR_EXIST_TAG &#x3D; 10001</span><br><span class="line">	ERROR_NOT_EXIST_TAG &#x3D; 10002</span><br><span class="line">	ERROR_NOT_EXIST_ARTICLE &#x3D; 10003</span><br><span class="line"></span><br><span class="line">	ERROR_AUTH_CHECK_TOKEN_FAIL &#x3D; 20001</span><br><span class="line">	ERROR_AUTH_CHECK_TOKEN_TIMEOUT &#x3D; 20002</span><br><span class="line">	ERROR_AUTH_TOKEN &#x3D; 20003</span><br><span class="line">	ERROR_AUTH &#x3D; 20004</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>2、 msg.go</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">package e</span><br><span class="line"></span><br><span class="line">var MsgFlags &#x3D; map[int]string &#123;</span><br><span class="line">	SUCCESS : &quot;ok&quot;,</span><br><span class="line">	ERROR : &quot;fail&quot;,</span><br><span class="line">	INVALID_PARAMS : &quot;请求参数错误&quot;,</span><br><span class="line">	ERROR_EXIST_TAG : &quot;已存在该标签名称&quot;,</span><br><span class="line">	ERROR_NOT_EXIST_TAG : &quot;该标签不存在&quot;,</span><br><span class="line">	ERROR_NOT_EXIST_ARTICLE : &quot;该文章不存在&quot;,</span><br><span class="line">	ERROR_AUTH_CHECK_TOKEN_FAIL : &quot;Token鉴权失败&quot;,</span><br><span class="line">	ERROR_AUTH_CHECK_TOKEN_TIMEOUT : &quot;Token已超时&quot;,</span><br><span class="line">	ERROR_AUTH_TOKEN : &quot;Token生成失败&quot;,</span><br><span class="line">	ERROR_AUTH : &quot;Token错误&quot;,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func GetMsg(code int) string &#123;</span><br><span class="line">	msg, ok :&#x3D; MsgFlags[code]</span><br><span class="line">	if ok &#123;</span><br><span class="line">		return msg</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return MsgFlags[ERROR]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="编写工具包"><a href="#编写工具包" class="headerlink" title="编写工具包"></a>编写工具包</h2><p>在 <code>notes-api-gin</code> 的 <code>pkg</code> 目录下新建 <code>util</code> 目录，并拉取 <code>com</code> 的依赖包，如下：</p>
+<p><a href="https://github.com/unknwon/com" target="_blank" rel="noopener">unknwon/com</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com&#x2F;unknwon&#x2F;com</span><br></pre></td></tr></table></figure>
+
+<h4 id="分页页码获取"><a href="#分页页码获取" class="headerlink" title="分页页码获取"></a>分页页码获取</h4><p>在 <code>util</code> 目录下新建 <code>pagination.go</code>，写入内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package util</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;pkg&#x2F;setting&quot;</span><br><span class="line">	&quot;github.com&#x2F;gin-gonic&#x2F;gin&quot;</span><br><span class="line">	&quot;github.com&#x2F;unknwon&#x2F;com&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func GetPage(c *gin.Context) int &#123;</span><br><span class="line">	result :&#x3D; 0</span><br><span class="line">	page, _ :&#x3D; com.StrTo(c.Query(&quot;page&quot;)).Int()</span><br><span class="line">	if page &gt; 0 &#123;</span><br><span class="line">		result &#x3D; (page - 1) * setting.PageSize</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="编写-models-init"><a href="#编写-models-init" class="headerlink" title="编写 models init"></a>编写 models init</h2><p>拉取 <code>gorm</code> 的依赖包，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com&#x2F;jinzhu&#x2F;gorm</span><br></pre></td></tr></table></figure>
+
+<p>拉取 <code>MySQL</code> 驱动的依赖包，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get -u github.com&#x2F;go-sql-driver&#x2F;mysql</span><br></pre></td></tr></table></figure>
+
+<p>完成后，在 <code>notes-api-gin</code> 的 <code>models</code> 目录下新建 <code>models.go</code>，用于 <code>models</code> 的初始化使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">package models</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;pkg&#x2F;setting&quot;</span><br><span class="line">	&quot;github.com&#x2F;jinzhu&#x2F;gorm&quot;</span><br><span class="line">	_ &quot;github.com&#x2F;jinzhu&#x2F;gorm&#x2F;dialects&#x2F;mysql&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var db *gorm.DB</span><br><span class="line"></span><br><span class="line">type Model struct &#123;</span><br><span class="line">	Uuid        string &#96;gorm:&quot;primary_key&quot; json:&quot;uuid&quot;&#96;</span><br><span class="line">	GmtCreate   string &#96;json:&quot;gmt_create&quot;&#96;</span><br><span class="line">	GmtModified string &#96;json:&quot;gmt_modified&quot;&#96;</span><br><span class="line">	DeletedAt   string &#96;json:&quot;deleted_at&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func init()  &#123;</span><br><span class="line">	var (</span><br><span class="line">		err error</span><br><span class="line">		dbType, dbName, user, password, host, tablePrefix string</span><br><span class="line">	)</span><br><span class="line"></span><br><span class="line">	sec, err :&#x3D; setting.Cfg.GetSection(&quot;database&quot;)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		log.Fatal(2, &quot;Fail to get section &#39;database&#39;: %v&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	dbType &#x3D; sec.Key(&quot;TYPE&quot;).String()</span><br><span class="line">	dbName &#x3D; sec.Key(&quot;NAME&quot;).String()</span><br><span class="line">	user &#x3D; sec.Key(&quot;USER&quot;).String()</span><br><span class="line">	password &#x3D; sec.Key(&quot;PASSWORD&quot;).String()</span><br><span class="line">	host &#x3D; sec.Key(&quot;HOST&quot;).String()</span><br><span class="line">	tablePrefix &#x3D; sec.Key(&quot;TABLE_PREFIX&quot;).String()</span><br><span class="line"></span><br><span class="line">	db, err &#x3D; gorm.Open(dbType, fmt.Sprintf(&quot;%s:%s@tcp(%s)&#x2F;%s?charset&#x3D;utf8&amp;parseTime&#x3D;True&amp;loc&#x3D;Local&quot;,</span><br><span class="line">		user,</span><br><span class="line">		password,</span><br><span class="line">		host,</span><br><span class="line">		dbName))</span><br><span class="line"></span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		log.Println(err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	gorm.DefaultTableNameHandler &#x3D; func (db *gorm.DB, defaultTableName string) string  &#123;</span><br><span class="line">		return tablePrefix + defaultTableName;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	db.SingularTable(true)</span><br><span class="line">	db.LogMode(true)</span><br><span class="line">	db.DB().SetMaxIdleConns(10)</span><br><span class="line">	db.DB().SetMaxOpenConns(100)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func CloseDB() &#123;</span><br><span class="line">	defer db.Close()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="编写项目启动、路由文件"><a href="#编写项目启动、路由文件" class="headerlink" title="编写项目启动、路由文件"></a>编写项目启动、路由文件</h2><p>在 <code>notes-api-gin</code> 下建立 <code>main.go</code>作为启动文件（也就是 <code>main</code> 包），写入文件内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;pkg&#x2F;setting&quot;</span><br><span class="line">	&quot;github.com&#x2F;gin-gonic&#x2F;gin&quot;</span><br><span class="line">	&quot;net&#x2F;http&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	router :&#x3D; gin.Default()</span><br><span class="line">	router.GET(&quot;&#x2F;test&quot;, func(c *gin.Context) &#123;</span><br><span class="line">		c.JSON(200, gin.H&#123;</span><br><span class="line">			&quot;message&quot;: &quot;test&quot;,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	s :&#x3D; &amp;http.Server&#123;</span><br><span class="line">		Addr:           fmt.Sprintf(&quot;:%d&quot;, setting.HTTPPort),</span><br><span class="line">		Handler:        router,</span><br><span class="line">		ReadTimeout:    setting.ReadTimeout,</span><br><span class="line">		WriteTimeout:   setting.WriteTimeout,</span><br><span class="line">		MaxHeaderBytes: 1 &lt;&lt; 20,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	s.ListenAndServe()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行 <code>go run main.go</code>，查看命令行是否显示</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">✗ go run main.go </span><br><span class="line">[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.</span><br><span class="line"></span><br><span class="line">[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.</span><br><span class="line"> - using env:   export GIN_MODE&#x3D;release</span><br><span class="line"> - using code:  gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">[GIN-debug] GET    &#x2F;test                     --&gt; main.main.func1 (3 handlers)</span><br></pre></td></tr></table></figure>
+
+<p>在本机执行 <code>curl 127.0.0.1:8000/test</code>，检查是否返回 <code>{&quot;message&quot;:&quot;test&quot;}</code>。</p>
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><h4 id="标准库"><a href="#标准库" class="headerlink" title="标准库"></a>标准库</h4><ul>
+<li>fmt：实现了类似 C 语言 printf 和 scanf 的格式化 I/O。格式化动作（‘verb’）源自 C 语言但更简单</li>
+<li>net/http：提供了 HTTP 客户端和服务端的实现</li>
+</ul>
+<h4 id="Gin"><a href="#Gin" class="headerlink" title="Gin"></a>Gin</h4><ul>
+<li>gin.Default()：返回 Gin 的 <code>type Engine struct{...}</code>，里面包含 <code>RouterGroup</code>，相当于创建一个路由 <code>Handlers</code>，可以后期绑定各类的路由规则和函数、中间件等</li>
+<li>router.GET(…){…}：创建不同的 HTTP 方法绑定到 <code>Handlers</code> 中，也支持 <code>POST</code>、<code>PUT</code>、<code>DELETE</code>、<code>PATCH</code>、<code>OPTIONS</code>、<code>HEAD</code> 等常用的 <code>Restful</code> 方法</li>
+<li>gin.H{…}：就是一个 <code>map[string]interface{}</code></li>
+<li>gin.Context：<code>Context</code> 是 <code>gin</code> 中的上下文，它允许我们在中间件之间传递变量、管理流、验证 JSON 请求、响应 JSON 请求等，在gin中包含大量 <code>Context</code> 的方法，例如我们常用的 <code>DefaultQuery</code>、<code>Query</code>、<code>DefaultPostForm</code>、<code>PostForm</code> 等等</li>
+</ul>
+<h4 id="amp-http-Server-和-ListenAndServe？"><a href="#amp-http-Server-和-ListenAndServe？" class="headerlink" title="&amp;http.Server 和 ListenAndServe？"></a>&amp;http.Server 和 ListenAndServe？</h4><p>1、http.Server</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">type Server struct &#123;</span><br><span class="line">	Addr string</span><br><span class="line">	Handler Handler &#x2F;&#x2F; handler to invoke, http.DefaultServeMux if nil</span><br><span class="line">	TLSConfig *tls.Config</span><br><span class="line">	ReadTimeout time.Duration</span><br><span class="line">	ReadHeaderTimeout time.Duration</span><br><span class="line">	WriteTimeout time.Duration</span><br><span class="line">	IdleTimeout time.Duration</span><br><span class="line">	MaxHeaderBytes int</span><br><span class="line">	TLSNextProto map[string]func(*Server, *tls.Conn, Handler)</span><br><span class="line">	ConnState func(net.Conn, ConnState)</span><br><span class="line">	ErrorLog *log.Logger</span><br><span class="line">	BaseContext func(net.Listener) context.Context</span><br><span class="line">	ConnContext func(ctx context.Context, c net.Conn) context.Context</span><br><span class="line">	inShutdown atomicBool &#x2F;&#x2F; true when when server is in shutdown</span><br><span class="line">	disableKeepAlives int32     &#x2F;&#x2F; accessed atomically.</span><br><span class="line">	nextProtoOnce     sync.Once &#x2F;&#x2F; guards setupHTTP2_* init</span><br><span class="line">	nextProtoErr      error     &#x2F;&#x2F; result of http2.ConfigureServer if used</span><br><span class="line">	mu         sync.Mutex</span><br><span class="line">	listeners  map[*net.Listener]struct&#123;&#125;</span><br><span class="line">	activeConn map[*conn]struct&#123;&#125;</span><br><span class="line">	doneChan   chan struct&#123;&#125;</span><br><span class="line">	onShutdown []func()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Addr：监听的 TCP 地址，格式为:8000</li>
+<li>Handler：http 句柄，实质为ServeHTTP，用于处理程序响应 HTTP 请求</li>
+<li>TLSConfig：安全传输层协议（TLS）的配置</li>
+<li>ReadTimeout：允许读取的最大时间</li>
+<li>ReadHeaderTimeout：允许读取请求头的最大时间</li>
+<li>WriteTimeout：允许写入的最大时间</li>
+<li>IdleTimeout：等待的最大时间</li>
+<li>MaxHeaderBytes：请求头的最大字节数</li>
+<li>ConnState：指定一个可选的回调函数，当客户端连接发生变化时调用</li>
+<li>ErrorLog：指定一个可选的日志记录器，用于接收程序的意外行为和底层系统错误；如果未设置或为nil则默认以日志包的标准日志记录器完成（也就是在控制台输出）</li>
+</ul>
+<p>2、ListenAndServe</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">func (srv *Server) ListenAndServe() error &#123;</span><br><span class="line">	if srv.shuttingDown() &#123;</span><br><span class="line">		return ErrServerClosed</span><br><span class="line">	&#125;</span><br><span class="line">	addr :&#x3D; srv.Addr</span><br><span class="line">	if addr &#x3D;&#x3D; &quot;&quot; &#123;</span><br><span class="line">		addr &#x3D; &quot;:http&quot;</span><br><span class="line">	&#125;</span><br><span class="line">	ln, err :&#x3D; net.Listen(&quot;tcp&quot;, addr)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return err</span><br><span class="line">	&#125;</span><br><span class="line">	return srv.Serve(ln)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>开始监听服务，监听 <code>TCP</code> 网络地址，<code>Addr</code> 和调用应用程序处理连接上的请求。</p>
+<p>我们在源码中看到 <code>Addr</code> 是调用我们在 <code>&amp;http.Server</code> 中设置的参数，因此我们在设置时要用&amp;，我们要改变参数的值，因为我们 <code>ListenAndServe</code> 和其他一些方法需要用到 <code>&amp;http.Server</code> 中的参数，他们是相互影响的。</p>
+<p>3、http.ListenAndServe和 连载一 的r.Run()区别</p>
+<p><code>r.Run</code> 的实现:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func (engine *Engine) Run(addr ...string) (err error) &#123;</span><br><span class="line">	defer func() &#123; debugPrintError(err) &#125;()</span><br><span class="line"></span><br><span class="line">	address :&#x3D; resolveAddress(addr)</span><br><span class="line">	debugPrint(&quot;Listening and serving HTTP on %s\n&quot;, address)</span><br><span class="line">	err &#x3D; http.ListenAndServe(address, engine)</span><br><span class="line">	return</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过分析源码，发现本质上没有区别，同时也得知了启动 <code>gin</code> 时的监听 <code>debug</code> 信息在这里输出。</p>
+<p>4、Demo 里会有 <code>WARNING</code></p>
+<p>看下 <code>Default()</code> 的实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Default returns an Engine instance with the Logger and Recovery middleware already attached.</span><br><span class="line">func Default() *Engine &#123;</span><br><span class="line">	debugPrintWARNINGDefault()</span><br><span class="line">	engine :&#x3D; New()</span><br><span class="line">	engine.Use(Logger(), Recovery())</span><br><span class="line">	return engine</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到默认情况下，已经附加了日志、恢复中间件的引擎实例。并且在开头调用了 <code>debugPrintWARNINGDefault()</code>，而它的实现就是输出该行日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">func debugPrintWARNINGDefault() &#123;</span><br><span class="line">	if v, e :&#x3D; getMinVer(runtime.Version()); e &#x3D;&#x3D; nil &amp;&amp; v &lt;&#x3D; ginSupportMinGoVer &#123;</span><br><span class="line">		debugPrint(&#96;[WARNING] Now Gin requires Go 1.11 or later and Go 1.12 will be required soon.</span><br><span class="line"></span><br><span class="line">&#96;)</span><br><span class="line">	&#125;</span><br><span class="line">	debugPrint(&#96;[WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.</span><br><span class="line"></span><br><span class="line">&#96;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>而另外一个 <code>Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.</code>，是运行模式原因，并不难理解，已在配置文件的管控下 :-)，运维人员随时就可以修改它的配置。</p>
+<p>5、Demo 的 <code>router.GET</code> 等路由规则可以不写在main包中吗？</p>
+<p>发现 <code>router.GET</code> 等路由规则，在 Demo 中被编写在了 <code>main</code> 包中，感觉很奇怪，可以去抽离这部分逻辑！</p>
+<p>在 <code>notes-api-gin</code> 下 <code>routers</code> 目录新建 <code>router.go</code> 文件，写入内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">package routers</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;pkg&#x2F;setting&quot;</span><br><span class="line">	&quot;github.com&#x2F;gin-gonic&#x2F;gin&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func InitRouter() *gin.Engine &#123;</span><br><span class="line">	r :&#x3D; gin.New()</span><br><span class="line"></span><br><span class="line">	r.Use(gin.Logger())</span><br><span class="line"></span><br><span class="line">	r.Use(gin.Recovery())</span><br><span class="line"></span><br><span class="line">	gin.SetMode(setting.RunMode)</span><br><span class="line"></span><br><span class="line">	r.GET(&quot;&#x2F;ping&quot;, func(c *gin.Context) &#123;</span><br><span class="line">		c.JSON(200, gin.H&#123;</span><br><span class="line">			&quot;message&quot;: &quot;pong&quot;,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">	return r</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改main.go的文件内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;net&#x2F;http&quot;</span><br><span class="line">	&quot;notes-api&#x2F;pkg&#x2F;setting&quot;</span><br><span class="line">	&quot;notes-api&#x2F;routers&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"></span><br><span class="line">	router :&#x3D; routers.InitRouter()</span><br><span class="line"></span><br><span class="line">	s :&#x3D; &amp;http.Server&#123;</span><br><span class="line">		Addr:           fmt.Sprintf(&quot;:%d&quot;, setting.HTTPPort),</span><br><span class="line">		Handler:        router,</span><br><span class="line">		ReadTimeout:    setting.ReadTimeout,</span><br><span class="line">		WriteTimeout:   setting.WriteTimeout,</span><br><span class="line">		MaxHeaderBytes: 1 &lt;&lt; 20,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	s.ListenAndServe()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当前目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">├── conf</span><br><span class="line">│   └── app.ini</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">├── middleware</span><br><span class="line">├── models</span><br><span class="line">│   └── models.go</span><br><span class="line">├── pkg</span><br><span class="line">│   ├── e</span><br><span class="line">│   │   ├── code.go</span><br><span class="line">│   │   └── msg.go</span><br><span class="line">│   ├── setting</span><br><span class="line">│   │   └── setting.go</span><br><span class="line">│   └── util</span><br><span class="line">│       └── pagination.go</span><br><span class="line">├── routers</span><br><span class="line">│   └── router.go</span><br><span class="line">├── runtime</span><br><span class="line">└── test.go</span><br></pre></td></tr></table></figure>
+
+<p>重启服务，执行 <code>curl 127.0.0.1:8000/ping</code> 查看是否正确返回。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl 127.0.0.1:8000&#x2F;ping</span><br><span class="line">&#123;&quot;message&quot;:&quot;pong&quot;&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+              <a href="/tags/Gin/" rel="tag"># Gin</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/29/notes-api-gin-%E5%88%9D%E5%A7%8B%E5%8C%96/" rel="prev" title="notes-api-gin-初始化">
+      <i class="fa fa-chevron-left"></i> notes-api-gin-初始化
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/29/notes-api-gin-Module/" rel="next" title="notes-api-gin-Module">
+      notes-api-gin-Module <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础框架搭建"><span class="nav-number">1.</span> <span class="nav-text">基础框架搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化项目目录"><span class="nav-number">1.1.</span> <span class="nav-text">初始化项目目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写配置包"><span class="nav-number">1.2.</span> <span class="nav-text">编写配置包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写-API-错误码包"><span class="nav-number">1.3.</span> <span class="nav-text">编写 API 错误码包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写工具包"><span class="nav-number">1.4.</span> <span class="nav-text">编写工具包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#分页页码获取"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">分页页码获取</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写-models-init"><span class="nav-number">1.5.</span> <span class="nav-text">编写 models init</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写项目启动、路由文件"><span class="nav-number">1.6.</span> <span class="nav-text">编写项目启动、路由文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.7.</span> <span class="nav-text">扩展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#标准库"><span class="nav-number">1.7.0.1.</span> <span class="nav-text">标准库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gin"><span class="nav-number">1.7.0.2.</span> <span class="nav-text">Gin</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#amp-http-Server-和-ListenAndServe？"><span class="nav-number">1.7.0.3.</span> <span class="nav-text">&amp;http.Server 和 ListenAndServe？</span></a></li></ol></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Finnley"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Finnley</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">175</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
