@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-11-29T13:21:46.234Z</updated>
+  <updated>2020-12-04T16:54:32.345Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,64 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MP-新建小程序项目</title>
+    <link href="https://notes.xuepincat.com/2020/12/01/MP-%E6%96%B0%E5%BB%BA%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A1%B9%E7%9B%AE/"/>
+    <id>https://notes.xuepincat.com/2020/12/01/MP-%E6%96%B0%E5%BB%BA%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A1%B9%E7%9B%AE/</id>
+    <published>2020-12-01T14:45:04.000Z</published>
+    <updated>2020-12-04T16:54:32.345Z</updated>
+    
+    <summary type="html">
+    
+      新建项目
+使用 微信开发者工具 创建一个新的小程序项目,目录结构：
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+
+
+.
+├── app.js
+├── app.json
+├── app.wxss
+├── pages
+│   ├── index
+│   │   ├── index.js
+│   │   ├── index.json
+│   │   ├── index.wxml
+│   │   └── index.wxss
+│   └── logs
+│       ├── logs.js
+│       ├── logs.json
+│      
+    
+    </summary>
+    
+    
+      <category term="Wechat" scheme="https://notes.xuepincat.com/categories/Wechat/"/>
+    
+    
+      <category term="MiniProgram" scheme="https://notes.xuepincat.com/tags/MiniProgram/"/>
+    
+  </entry>
   
   <entry>
     <title>notes-api-gin-Deploy</title>
@@ -823,52 +881,6 @@ Swarm 是内置于 Docker 的编排工具，容器编排工具并不只有 Swarm
 比如可以定义一个文件，在文件中定义 Application 需要的一些 Container,这些定好后使用一条命令就可以完成这些个容器的启动停止删除等操作
 
 D
-    
-    </summary>
-    
-    
-      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
-    
-    
-      <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>项目部署</title>
-    <link href="https://notes.xuepincat.com/2020/07/20/Docker-%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/"/>
-    <id>https://notes.xuepincat.com/2020/07/20/Docker-%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2/</id>
-    <published>2020-07-20T13:51:11.000Z</published>
-    <updated>2020-07-23T15:45:32.708Z</updated>
-    
-    <summary type="html">
-    
-      Bind Mount 实时更新
-通过Dockerfile将一个flask的application构建成docker image
-
-Dockerfile
-
-1
-2
-3
-4
-5
-6
-7
-8
-
-
-FROM python:2.7
-LABEL maintainer=&quot;Finnley&lt;mingmin.yuen@gmail.com&gt;&quot;
-
-COPY . /skeleton
-WORKDIR /skeleton
-RUN pip install -r requirements.txt
-EXPOSE 5000
-ENTRYPOINT [&quot;scripts/dev.sh&quot;]
-
-
-COPY . /skeleton: 将当前目
     
     </summary>
     
