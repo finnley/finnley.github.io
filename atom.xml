@@ -861,25 +861,25 @@ Swarm 是内置于 Docker 的编排工具，容器编排工具并不只有 Swarm
   </entry>
   
   <entry>
-    <title>Docker Compose介绍</title>
-    <link href="https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/"/>
-    <id>https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/</id>
-    <published>2020-07-21T17:26:28.000Z</published>
-    <updated>2020-12-15T00:14:04.435Z</updated>
+    <title>docker-compose安装与使用</title>
+    <link href="https://notes.xuepincat.com/2020/07/23/Docker-docker-compose%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/"/>
+    <id>https://notes.xuepincat.com/2020/07/23/Docker-docker-compose%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/</id>
+    <published>2020-07-22T21:26:28.000Z</published>
+    <updated>2020-12-15T15:26:23.752Z</updated>
     
     <summary type="html">
     
-      多容器部署缺点
-如果一个 APP 有多个容器组成，去部署的时候会非常繁琐，需要维护多个 Docker Image,也就会遇到下面的一些问题
+      安装
+Mac 和 Window 系统在安装 Docker 的时候 Compose 就已经一起安装了，只有 Linux 系统需要另外安装
 
- * 要从 Dockerfile build image 或者 Dockerhub 拉取 image
- * 需要创建多个 Container，而且每个 Container 的配置还不一样
- * 需要管理这些 Container,比如它们的启动停止删除等
-   …
+Install Docker Compose
 
-所以就想有没有可以批处理的工具，比如可以定义一个文件，在文件中定义 Application 需要的一些 Container，这些定好后使用一条命令就可以完成这些个容器的启动停止删除等操作
+ * Run this command to download the current stable release of Docker Compose:
 
-D
+1
+
+
+sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/loc
     
     </summary>
     
