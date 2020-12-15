@@ -865,7 +865,7 @@ Swarm 是内置于 Docker 的编排工具，容器编排工具并不只有 Swarm
     <link href="https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/"/>
     <id>https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/</id>
     <published>2020-07-21T17:26:28.000Z</published>
-    <updated>2020-12-15T00:12:48.667Z</updated>
+    <updated>2020-12-15T00:14:04.435Z</updated>
     
     <summary type="html">
     
@@ -888,8 +888,6 @@ D
     
     
       <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
-    
-      <category term="Compose" scheme="https://notes.xuepincat.com/tags/Compose/"/>
     
   </entry>
   
