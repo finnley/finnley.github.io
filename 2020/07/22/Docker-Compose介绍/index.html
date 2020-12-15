@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="背景 如果一个 APP 有多个容器组成，去部署的时候会非常繁琐，需要去维护多个 Docker Image,要从 Dockerfile build image 或者 Dockerhub 拉取 image  另外需要创建多个 Container,而且每个 Container 的配置还不一样  还要去管理这些 Container,比如它们的启动停止删除等  所以就想有没有可以批处理的工具，这种情况就需要">
+  <meta name="description" content="多容器部署缺点 如果一个 APP 有多个容器组成，去部署的时候会非常繁琐，需要维护多个 Docker Image,也就会遇到下面的一些问题   * 要从 Dockerfile build image 或者 Dockerhub 拉取 image  * 需要创建多个 Container，而且每个 Container 的配置还不一样  * 需要管理这些 Container,比如它们的启动停止删除等">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Compose介绍">
+<meta property="og:title" content="Docker Compose介绍">
 <meta property="og:url" content="https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="背景 如果一个 APP 有多个容器组成，去部署的时候会非常繁琐，需要去维护多个 Docker Image,要从 Dockerfile build image 或者 Dockerhub 拉取 image  另外需要创建多个 Container,而且每个 Container 的配置还不一样  还要去管理这些 Container,比如它们的启动停止删除等  所以就想有没有可以批处理的工具，这种情况就需要">
+<meta property="og:description" content="多容器部署缺点 如果一个 APP 有多个容器组成，去部署的时候会非常繁琐，需要维护多个 Docker Image,也就会遇到下面的一些问题   * 要从 Dockerfile build image 或者 Dockerhub 拉取 image  * 需要创建多个 Container，而且每个 Container 的配置还不一样  * 需要管理这些 Container,比如它们的启动停止删除等">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/compose/1.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/compose/2.png">
@@ -41,9 +41,10 @@
 <meta property="og:image" content="http://images.notes.xuepincat.com/docker/compose/11.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/compose/12.png">
 <meta property="article:published_time" content="2020-07-21T17:26:28.000Z">
-<meta property="article:modified_time" content="2020-11-07T04:51:16.586Z">
+<meta property="article:modified_time" content="2020-12-15T00:12:48.667Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
+<meta property="article:tag" content="Compose">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://images.notes.xuepincat.com/docker/compose/1.png">
 
@@ -60,7 +61,7 @@
   };
 </script>
 
-  <title>Compose介绍 | Finnley's Notes</title>
+  <title>Docker Compose介绍 | Finnley's Notes</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
     <script>
@@ -241,7 +242,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Compose介绍
+          Docker Compose介绍
         </h1>
 
         <div class="post-meta">
@@ -258,7 +259,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-07 12:51:16" itemprop="dateModified" datetime="2020-11-07T12:51:16+08:00">2020-11-07</time>
+                <time title="Modified: 2020-12-15 08:12:48" itemprop="dateModified" datetime="2020-12-15T08:12:48+08:00">2020-12-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,32 +282,49 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>如果一个 APP 有多个容器组成，去部署的时候会非常繁琐，需要去维护多个 Docker Image,要从 Dockerfile build image 或者 Dockerhub 拉取 image</p>
-<p>另外需要创建多个 Container,而且每个 Container 的配置还不一样</p>
-<p>还要去管理这些 Container,比如它们的启动停止删除等</p>
-<p>所以就想有没有可以批处理的工具，这种情况就需要使用个 <code>Docker Compose</code></p>
-<p>比如可以定义一个文件，在文件中定义 Application 需要的一些 Container,这些定好后使用一条命令就可以完成这些个容器的启动停止删除等操作</p>
+        <h2 id="多容器部署缺点"><a href="#多容器部署缺点" class="headerlink" title="多容器部署缺点"></a>多容器部署缺点</h2><p>如果一个 APP 有多个容器组成，去部署的时候会非常繁琐，需要维护多个 Docker Image,也就会遇到下面的一些问题</p>
+<ul>
+<li>要从 Dockerfile build image 或者 Dockerhub 拉取 image</li>
+<li>需要创建多个 Container，而且每个 Container 的配置还不一样</li>
+<li>需要管理这些 Container,比如它们的启动停止删除等<br>…</li>
+</ul>
+<p>所以就想有没有可以批处理的工具，比如可以定义一个文件，在文件中定义 Application 需要的一些 Container，这些定好后使用一条命令就可以完成这些个容器的启动停止删除等操作</p>
 <h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><ul>
 <li>Docker Compose 是一个基于 Docker 的命令行工具</li>
 <li>Docker Compose 可以通过一个 <code>yml</code> 文件定义多容器的 docker 应用</li>
-<li>通过一条命令就可以根据 <code>yml</code> 文件的定义去创建或管理这些个容器</li>
+<li>通过一条命令就可以根据 <code>yml</code> 文件的定义去创建或管理这些个容器，比如启动，停止，删除等操作</li>
 </ul>
-<h4 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h4><p>yml 文件有个默认的名字叫 <code>docker-compose.yml</code>,当然也可以自定义</p>
-<ul>
-<li>Services</li>
-</ul>
-<ul>
-<li><p>一个 service 代表一个 container, 这个 container 可以从 dockerhub 的 image 来创建，或者从本地的 Dockerfile build 出来的 image 来创建</p>
+<h4 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h4><p><code>yml</code> 文件有个默认的名字叫 <code>docker-compose.yml</code>，当然也可以自定义，该文件中有三个比较重要的概念 <code>Services</code>, <code>Networks</code> 和 <code>Volumes</code></p>
+<h6 id="Services"><a href="#Services" class="headerlink" title="Services"></a>Services</h6><ul>
+<li><p>一个 <code>service</code> 代表一个 <code>container</code>, 这个 <code>container</code> 可以从 <code>dockerhub</code> 的 <code>image</code> 来创建，或者从本地的 <code>Dockerfile</code> <code>build</code> 出来的 <code>image</code> 来创建</p>
 </li>
-<li><p>Service 的启动类似 docker run,我们可以给其指定 network 和 volume, 所以可以给 service 指定 network 和 volume 的引用</p>
+<li><p><code>Service</code> 的启动类似 <code>docker run</code> ,一旦创建了 <code>service</code> 就表示通过 <code>docker run</code> 创建了一个 <code>container</code> , 创建 <code>container</code> 的时候可以给其指定 <code>network</code> 和 <code>volume</code>, 所以可以给 <code>service</code> 指定 <code>network</code> 和 v<code>olume</code> 的引用,也就是可以定义 <code>network</code> 和 <code>volume</code>,然后在 <code>sercice</code> 中引用 <code>network</code> 和 <code>volume</code></p>
 </li>
 </ul>
-<ul>
-<li><p>Networks</p>
-</li>
-<li><p>Volumes</p>
-</li>
-</ul>
+<p>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">services:</span><br><span class="line">  db:</span><br><span class="line">    image: postgres:9.4</span><br><span class="line">    volumes:</span><br><span class="line">      - &quot;db-data:&#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data&quot;</span><br><span class="line">    networks:</span><br><span class="line">      - back-tier</span><br></pre></td></tr></table></figure>
+
+<p>上面定义了一个 <code>service</code>, 它的名字叫 <code>db</code>, <code>db</code> 这个 container 的 image 是通过 dockerhub 拉取下来的， <code>volumes</code> 映射了一个 <code>data-data</code> 的目录在本地，<code>db-data</code> 是通过 <code>volumes</code> 来定义的；同理 <code>networks</code> 也是一样，定义了一个 <code>back-tier</code> 的 networks</p>
+<p>上面定义类似下面的语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --network back-tier -v db-data:&#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data postgres:9.4</span><br></pre></td></tr></table></figure>
+
+<p>再比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">services:</span><br><span class="line">  worker:</span><br><span class="line">    build: .&#x2F;worker</span><br><span class="line">    links:</span><br><span class="line">      - db</span><br><span class="line">      - redis</span><br><span class="line">    networks:</span><br><span class="line">      - back-tier</span><br></pre></td></tr></table></figure>
+
+<p>上面通过 <code>services</code> 定义了一个 <code>container</code>,这个 <code>container</code> 不是从 <code>dockerhub</code> 上拉取下来的，而是从本地 <code>build</code> 得到的，<code>./worker</code> 指定了 <code>build</code> <code>worker</code> 的 <code>image</code> 的 <code>Dockerfile</code> 的 <code>location</code> 地址；</p>
+<p>还定了一个一些 <code>links</code>,表示这个 <code>worker</code> 容器会和哪几个容器做 <code>links</code> ,其实 <code>links</code> 没有多大作用，因为都是通过 <code>docker compose</code> 创建新的 <code>docker bridge</code>,如果所有的 <code>container</code> 都是连接在这个 <code>bridge</code> 上面的，根本就不需要 <code>links</code>,只有连接默认的 <code>docker bridge</code> 的时候才会使用 <code>links</code> 去做 DNS 的翻译</p>
+<h6 id="Volumes"><a href="#Volumes" class="headerlink" title="Volumes"></a>Volumes</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">services:</span><br><span class="line">  db:</span><br><span class="line">    image: postgres:9.4</span><br><span class="line">    volumes:</span><br><span class="line">      - &quot;db-data:&#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data&quot;</span><br><span class="line">    networks:</span><br><span class="line">      - back-tier</span><br><span class="line"></span><br><span class="line">volumes:</span><br><span class="line">  db-data</span><br></pre></td></tr></table></figure>
+
+<p>仍然使用上面的例子，使用到了 <code>db-data</code> 的 <code>volume</code>,另外会在和 <code>services</code> 的同一级定义一个 <code>volumes</code>, <code>volumes</code> 的下级定义 <code>db-data</code></p>
+<p>类似如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume create db-data</span><br></pre></td></tr></table></figure>
+
+<h4 id="Networks"><a href="#Networks" class="headerlink" title="Networks"></a>Networks</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">services:</span><br><span class="line">  worker:</span><br><span class="line">    build: .&#x2F;worker</span><br><span class="line">    links:</span><br><span class="line">      - db</span><br><span class="line">      - redis</span><br><span class="line">    networks:</span><br><span class="line">      - back-tier</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  front-tier:</span><br><span class="line">    driver: bridge</span><br><span class="line">  back-tier:</span><br><span class="line">    driver: bridge</span><br></pre></td></tr></table></figure>
+
+<p>同理 <code>networks</code> 也是一样，比如有个 <code>networks</code> 叫做 <code>back-tier</code>,这个 <code>back-tier</code> 就是在与 <code>services</code> 同级的 <code>networks</code> 里面定义的，<code>back-tier</code> 的 <code>driver</code> 是 <code>bridge</code>,也就是会通过 <code>docker networks</code> 去创建一个 <code>driver</code> 是 <code>bridge</code> 并且名字是 <code>back-tier</code> 的 <code>network</code></p>
+<p>类似下面语句：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create -d bridge back-tier</span><br></pre></td></tr></table></figure>
+
 <h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>Mac 和 Window 系统在安装 Docker 的时候 Compose 就已经一起安装了，只有 Linux 系统需要另外安装</p>
 <p><a href="https://docs.docker.com/compose/install/" target="_blank" rel="noopener">Install Docker Compose</a></p>
 <ol>
@@ -333,18 +351,31 @@
 <h2 id="案例"><a href="#案例" class="headerlink" title="案例-"></a>案例-</h2><h4 id="dockerhub拉取镜像"><a href="#dockerhub拉取镜像" class="headerlink" title="dockerhub拉取镜像"></a>dockerhub拉取镜像</h4><p>docker-compose.yml</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">version: &#39;3&#39;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  wordpress:</span><br><span class="line">    image: wordpress</span><br><span class="line">    ports:</span><br><span class="line">      - 8080:80</span><br><span class="line">    depends_on:</span><br><span class="line">      - mysql</span><br><span class="line">    environment:</span><br><span class="line">      WORDPRESS_DB_HOST: mysql</span><br><span class="line">      WORDPRESS_DB_PASSWORD: root</span><br><span class="line">    networks:</span><br><span class="line">      - my-bridge</span><br><span class="line"></span><br><span class="line">  mysql:</span><br><span class="line">    image: mysql:5.7</span><br><span class="line">    ports:</span><br><span class="line">      - 33060:3306</span><br><span class="line">    environment:</span><br><span class="line">      MYSQL_ROOT_PASSWORD: root</span><br><span class="line">      MYSQL_DATABASE: wordpress</span><br><span class="line">    volumes:</span><br><span class="line">      - mysql-data:&#x2F;var&#x2F;lib&#x2F;mysql</span><br><span class="line">    networks:</span><br><span class="line">      - my-bridge</span><br><span class="line"></span><br><span class="line">volumes:</span><br><span class="line">  mysql-data:</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  my-bridge:</span><br><span class="line">    driver: bridge</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>第一行 <code>version: &#39;3&#39;</code> 表示使用的 <code>Docker compose version 3</code>;</li>
+<li>下面有三大部分 <code>services</code>, <code>volumes</code>, <code>networks</code>;</li>
+<li><code>servies</code> 中定义了两个 <code>sevice</code>, <code>wordpress</code> 和 <code>mysql</code>；</li>
+<li><code>wordpress</code> 使用的 <code>image</code> 是 <code>wordpress</code>,然后做了端口映射，将 <code>wordpress</code> 的 80 端口映射到本地 <code>8080</code>;</li>
+<li>然后设置 <code>environment</code> ，相当于通过 <code>-E</code> 参数来传递环境变量，一个是 mysql 的 host ,一个是 mysql 的密码;</li>
+<li><code>networks</code> 指定了容器的连接的网络是 <code>my-bridge</code>,也就是最下面的 <code>bridge network</code>;</li>
+<li><code>mysql</code> 同样定义了 <code>image</code>, <code>environment</code>,并且将 <code>mysql</code> 的 <code>volume</code> 映射成 <code>mysql-data</code>,这个 <code>volumes</code> 也就是在下面 <code>volumes</code> 创建的，同理还有 <code>networks</code></li>
+</ul>
 <p>这里是在本地环境使用 wordpress 和 mysql 搭建项目</p>
 <ol>
 <li>启动</li>
 </ol>
-<p>启动 yml 文件中定义的 service 的 container </p>
+<p>启动 <code>yml</code> 文件中定义的 <code>service</code> 的 <code>container</code> </p>
 <ul>
-<li>如果不输入任何参数，默认的启动文件就是 <code>docker-compose.tml</code></li>
+<li>如果不输入任何参数，默认的启动文件就是 <code>docker-compose.yml</code></li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
 
+<p>如果使用 <code>docker-compose up</code> 启动的时候界面会一直停留，需要使用 <code>CTRL + C</code> 取消，这种方式一般作为 DEBUG 执行</p>
+<p>其实可以使用 <code>-d</code> 参数在后台执行，但是启动的container log 不会输出出来</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+
 <ul>
-<li>指定参数</li>
+<li>指定参数,指定启动哪个 docker compose up,因为默认的启动文件就是 <code>docker-compose.yml</code>，所以可以直接使用 <code>docker-compose up</code></li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose -f docker-compose.yml up</span><br></pre></td></tr></table></figure>
 
@@ -357,7 +388,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose stop</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>停止并删除</li>
+<li>停止并删除，但是并不会删除本地的 docker image</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose down</span><br></pre></td></tr></table></figure>
 
@@ -385,15 +416,19 @@
 <ul>
 <li>查看网络</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose net</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network ls</span><br></pre></td></tr></table></figure>
 
-<p>如果使用 <code>docker-compose up</code> 启动的时候界面会一直停留，需要使用 <code>CTRL + C</code> 取消，这种方式一般作为 DEBUG 执行</p>
-<p>其实可以使用 <code>-d</code> 参数在后台执行，但是启动的 log 不会输出出来</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+<h4 id="使用-Dockerfile-构建镜像"><a href="#使用-Dockerfile-构建镜像" class="headerlink" title="使用 Dockerfile 构建镜像"></a>使用 Dockerfile 构建镜像</h4><ul>
+<li>Dockerfile</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FROM python:2.7</span><br><span class="line">LABEL maintaner&#x3D;&quot;mingmin.yuen@gmail.com&quot;</span><br><span class="line">COPY . &#x2F;app</span><br><span class="line">WORKDIR &#x2F;app</span><br><span class="line">RUN pip install flask redis</span><br><span class="line">EXPOSE 5000</span><br><span class="line">CMD [ &quot;python&quot;, &quot;app.py&quot; ]</span><br></pre></td></tr></table></figure>
 
-<h4 id="使用-Dockerfile-构建镜像"><a href="#使用-Dockerfile-构建镜像" class="headerlink" title="使用 Dockerfile 构建镜像"></a>使用 Dockerfile 构建镜像</h4><p>Dockerfile</p>
+<p>有一个 python 的应用，有个 Dockerfile 去 build flask 称为 docker image</p>
+<p>接着定义一个 <code>docker-compose.yml</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  redis:</span><br><span class="line">    image: redis</span><br><span class="line"></span><br><span class="line">  web:</span><br><span class="line">    build:</span><br><span class="line">      context: .</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    ports:</span><br><span class="line">      - 8080:5000</span><br><span class="line">    environment:</span><br><span class="line">      REDIS_HOST: redis</span><br></pre></td></tr></table></figure>
 
+<p>redis 从 dockerhub 上拉取就可以创建一个 redis 的容器，web的servies 不是从 dockerhub 上拉取的，而是去构建的，也就是传入的是 Dockerfile 的位置和名字，通过 Dockerfile build image 出来，然后通过 build 的 image 去创建 Container</p>
+<p>进入到 <code>flask-redis</code> 目录</p>
 <ol>
 <li>启动</li>
 </ol>
@@ -431,7 +466,7 @@
 
 <p>上面的 Dockerfile 中web容器的5000端口绑定了本地的8080,如果再去 scale web 容器的时候启动三个web,每个 web 的端口都绑定到8080是不可能，因为本地只有一个8080,所以是这一块导致失败的原因</p>
 <p>可以将 ports 删除</p>
-<p>修改后的 Dockerfile</p>
+<p>修改后的 docker-compose.yml</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">version: &quot;3&quot;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line"></span><br><span class="line">  redis:</span><br><span class="line">    image: redis</span><br><span class="line"></span><br><span class="line">  web:</span><br><span class="line">    build:</span><br><span class="line">      context: .</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    environment:</span><br><span class="line">      REDIS_HOST: redis</span><br></pre></td></tr></table></figure>
 
 <p>然后重新执行上面的步骤</p>
@@ -444,7 +479,7 @@
 <p><img src="https://images.notes.xuepincat.com/docker/compose/5.png" alt=""></p>
 <p>图中可以看到有三个 web 的 container,它们三个都是监听了5000端口，这里的5000都是容器的namespace的5000端口，并没有映射到主机的5000，现在就有了三个web服务，并且都去访问redis</p>
 <p><img src="https://images.notes.xuepincat.com/docker/compose/6.png" alt=""></p>
-<p>比如现在有n个服务，它们都监听本地8000, 8001, …等一些端口，并且他们同时去访问一个redis,如果前面再加个HAProxy负载均衡器，能够将外界进来的访问量平均的负载到各个web上，这样就可以减少单个服务器的访问压力，这样就可以实现一种好的部署访问模式，并且使用这种方式去部署访问的话，未来的扩展性是非常强的</p>
+<p>比如现在有n个服务，它们都监听本地8000, 8001, …等一些端口，并且他们同时去访问一个redis,如果前面再加个HAProxy负载均衡器，能够将外界进来的访问量平均的负载到各个web上，这样就可以减少单个服务器的访问压力，这样就可以实现一种好的部署访问模式，并且使用这种方式去部署访问的话，未来的扩展性是非常强的,比如现在有三台负载均衡器去做负载均衡，如果有一天发现冲突了，比如访问量太大，现在打算添加机器，如果使用 docker compose 可以很方便的进行 scale,就可以很快将 web服务扩展到10个或者其他数量</p>
 <ol start="4">
 <li>再扩展</li>
 </ol>
@@ -466,7 +501,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose down</span><br></pre></td></tr></table></figure>
 
 <ol start="2">
-<li>启动</li>
+<li>进入 <code>lb-scale</code> 目录， 启动</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
 
@@ -552,6 +587,7 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Docker/" rel="tag"># Docker</a>
+              <a href="/tags/Compose/" rel="tag"># Compose</a>
           </div>
 
         
@@ -625,7 +661,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Compose"><span class="nav-number">2.</span> <span class="nav-text">Docker Compose</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-compose-yml"><span class="nav-number">2.0.1.</span> <span class="nav-text">docker-compose.yml</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">3.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">4.</span> <span class="nav-text">案例-</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dockerhub拉取镜像"><span class="nav-number">4.0.1.</span> <span class="nav-text">dockerhub拉取镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-Dockerfile-构建镜像"><span class="nav-number">4.0.2.</span> <span class="nav-text">使用 Dockerfile 构建镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scale"><span class="nav-number">4.0.3.</span> <span class="nav-text">scale</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HAProxy"><span class="nav-number">4.0.4.</span> <span class="nav-text">HAProxy</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#多容器部署缺点"><span class="nav-number">1.</span> <span class="nav-text">多容器部署缺点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-Compose"><span class="nav-number">2.</span> <span class="nav-text">Docker Compose</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#docker-compose-yml"><span class="nav-number">2.0.1.</span> <span class="nav-text">docker-compose.yml</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Services"><span class="nav-number">2.0.1.0.1.</span> <span class="nav-text">Services</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Volumes"><span class="nav-number">2.0.1.0.2.</span> <span class="nav-text">Volumes</span></a></li></ol></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Networks"><span class="nav-number">2.0.2.</span> <span class="nav-text">Networks</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">3.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#案例"><span class="nav-number">4.</span> <span class="nav-text">案例-</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#dockerhub拉取镜像"><span class="nav-number">4.0.1.</span> <span class="nav-text">dockerhub拉取镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-Dockerfile-构建镜像"><span class="nav-number">4.0.2.</span> <span class="nav-text">使用 Dockerfile 构建镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#scale"><span class="nav-number">4.0.3.</span> <span class="nav-text">scale</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HAProxy"><span class="nav-number">4.0.4.</span> <span class="nav-text">HAProxy</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -654,7 +690,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

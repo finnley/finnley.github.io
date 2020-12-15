@@ -49,7 +49,7 @@
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/data-persistence/19.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/data-persistence/20.png">
 <meta property="article:published_time" content="2020-07-19T08:01:02.000Z">
-<meta property="article:modified_time" content="2020-11-07T04:24:19.599Z">
+<meta property="article:modified_time" content="2020-12-15T00:07:18.261Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
@@ -266,7 +266,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-07 12:24:19" itemprop="dateModified" datetime="2020-11-07T12:24:19+08:00">2020-11-07</time>
+                <time title="Modified: 2020-12-15 08:07:18" itemprop="dateModified" datetime="2020-12-15T08:07:18+08:00">2020-12-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -306,7 +306,7 @@
 <ul>
 <li>查看 volume 具体信息</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker volume inspect 6b66c844fb16ad289090c4f54b0bd93034b200159da192f1cb14c07108e223f2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker volume inspect 6b66c844f...f2</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://images.notes.xuepincat.com/docker/data-persistence/2.png" alt=""></p>
 <p>会看到 <code>volume</code> 是 <code>mount</code> 到本地的 <code>/var/lib/docker/volumes/6b66c844fb16ad289090c4f54b0bd93034b200159da192f1cb14c07108e223f2/_data</code> 目录下的</p>
@@ -315,7 +315,7 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -d --name mysql2 -e MYSQL_ALLOW_EMPTY_PASSWORD&#x3D;true mysql</span><br></pre></td></tr></table></figure>
 
-<p>然后再看下 volume</p>
+<p>然后再看下 <code>volume</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker volume ls</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-host ~]$ sudo docker run -d --name mysql2 -e MYSQL_ALLOW_EMPTY_PASSWORD&#x3D;true mysql</span><br><span class="line">0aea00c175b10847c34adab0472e09d3d9073422284610b4a5de8381708a1f77</span><br><span class="line">[vagrant@docker-host ~]$ sudo docker volume ls</span><br><span class="line">DRIVER              VOLUME NAME</span><br><span class="line">local               6b66c844fb16ad289090c4f54b0bd93034b200159da192f1cb14c07108e223f2</span><br><span class="line">local               479711379e0d2007efdcddeac25544be6d835d2629f3f4e9bad74425d4efd2b7</span><br><span class="line">[vagrant@docker-host ~]$</span><br></pre></td></tr></table></figure>
@@ -616,7 +616,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

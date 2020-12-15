@@ -1138,7 +1138,7 @@ Swarm 是内置于 Docker 的编排工具，容器编排工具并不只有 Swarm
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">Compose介绍</a>
+            <a href="/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">Docker Compose介绍</a>
         </h2>
 
         <div class="post-meta">
@@ -1155,7 +1155,7 @@ Swarm 是内置于 Docker 的编排工具，容器编排工具并不只有 Swarm
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-07 12:51:16" itemprop="dateModified" datetime="2020-11-07T12:51:16+08:00">2020-11-07</time>
+                <time title="Modified: 2020-12-15 08:12:48" itemprop="dateModified" datetime="2020-12-15T08:12:48+08:00">2020-12-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1178,16 +1178,15 @@ Swarm 是内置于 Docker 的编排工具，容器编排工具并不只有 Swarm
     <div class="post-body" itemprop="articleBody">
 
       
-          背景
-如果一个 APP 有多个容器组成，去部署的时候会非常繁琐，需要去维护多个 Docker Image,要从 Dockerfile build image 或者 Dockerhub 拉取 image
+          多容器部署缺点
+如果一个 APP 有多个容器组成，去部署的时候会非常繁琐，需要维护多个 Docker Image,也就会遇到下面的一些问题
 
-另外需要创建多个 Container,而且每个 Container 的配置还不一样
+ * 要从 Dockerfile build image 或者 Dockerhub 拉取 image
+ * 需要创建多个 Container，而且每个 Container 的配置还不一样
+ * 需要管理这些 Container,比如它们的启动停止删除等
+   …
 
-还要去管理这些 Container,比如它们的启动停止删除等
-
-所以就想有没有可以批处理的工具，这种情况就需要使用个 Docker Compose
-
-比如可以定义一个文件，在文件中定义 Application 需要的一些 Container,这些定好后使用一条命令就可以完成这些个容器的启动停止删除等操作
+所以就想有没有可以批处理的工具，比如可以定义一个文件，在文件中定义 Application 需要的一些 Container，这些定好后使用一条命令就可以完成这些个容器的启动停止删除等操作
 
 D
           <!--noindex-->
@@ -1296,7 +1295,7 @@ D
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

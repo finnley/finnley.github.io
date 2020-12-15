@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-12-04T16:54:32.345Z</updated>
+  <updated>2020-12-05T06:58:13.798Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://notes.xuepincat.com/2020/12/01/MP-%E6%96%B0%E5%BB%BA%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A1%B9%E7%9B%AE/"/>
     <id>https://notes.xuepincat.com/2020/12/01/MP-%E6%96%B0%E5%BB%BA%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A1%B9%E7%9B%AE/</id>
     <published>2020-12-01T14:45:04.000Z</published>
-    <updated>2020-12-04T16:54:32.345Z</updated>
+    <updated>2020-12-05T06:58:13.798Z</updated>
     
     <summary type="html">
     
@@ -861,24 +861,23 @@ Swarm 是内置于 Docker 的编排工具，容器编排工具并不只有 Swarm
   </entry>
   
   <entry>
-    <title>Compose介绍</title>
+    <title>Docker Compose介绍</title>
     <link href="https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/"/>
     <id>https://notes.xuepincat.com/2020/07/22/Docker-Compose%E4%BB%8B%E7%BB%8D/</id>
     <published>2020-07-21T17:26:28.000Z</published>
-    <updated>2020-11-07T04:51:16.586Z</updated>
+    <updated>2020-12-15T00:12:48.667Z</updated>
     
     <summary type="html">
     
-      背景
-如果一个 APP 有多个容器组成，去部署的时候会非常繁琐，需要去维护多个 Docker Image,要从 Dockerfile build image 或者 Dockerhub 拉取 image
+      多容器部署缺点
+如果一个 APP 有多个容器组成，去部署的时候会非常繁琐，需要维护多个 Docker Image,也就会遇到下面的一些问题
 
-另外需要创建多个 Container,而且每个 Container 的配置还不一样
+ * 要从 Dockerfile build image 或者 Dockerhub 拉取 image
+ * 需要创建多个 Container，而且每个 Container 的配置还不一样
+ * 需要管理这些 Container,比如它们的启动停止删除等
+   …
 
-还要去管理这些 Container,比如它们的启动停止删除等
-
-所以就想有没有可以批处理的工具，这种情况就需要使用个 Docker Compose
-
-比如可以定义一个文件，在文件中定义 Application 需要的一些 Container,这些定好后使用一条命令就可以完成这些个容器的启动停止删除等操作
+所以就想有没有可以批处理的工具，比如可以定义一个文件，在文件中定义 Application 需要的一些 Container，这些定好后使用一条命令就可以完成这些个容器的启动停止删除等操作
 
 D
     
@@ -889,6 +888,8 @@ D
     
     
       <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
+    
+      <category term="Compose" scheme="https://notes.xuepincat.com/tags/Compose/"/>
     
   </entry>
   
