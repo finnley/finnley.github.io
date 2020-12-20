@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://notes.xuepincat.com/2020/12/20/CentOS-7-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
+    <lastmod>2020-12-20</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2019/05/15/vagrant-install-centos7-using-vagrant/</loc>
+    <lastmod>2020-12-20</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2020/06/13/Mac%E5%AE%89%E8%A3%85Homebrew%E5%B9%B6%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/</loc>
+    <lastmod>2020-12-20</lastmod>
+  </url>
+  <url>
     <loc>https://notes.xuepincat.com/2020/07/23/Docker-docker-compose%E5%AE%89%E8%A3%85%E4%B8%8E%E4%BD%BF%E7%94%A8/</loc>
     <lastmod>2020-12-15</lastmod>
   </url>
@@ -91,10 +103,6 @@
   <url>
     <loc>https://notes.xuepincat.com/2020/08/30/ComputerNetwork-Classic-Protocal-and-Data-Package/</loc>
     <lastmod>2020-09-08</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2019/05/15/vagrant-install-centos7-using-vagrant/</loc>
-    <lastmod>2020-09-05</lastmod>
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2018/09/23/Docker-Docker%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/</loc>
@@ -234,10 +242,6 @@
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2020/06/17/7-Search%E8%BF%90%E8%A1%8C%E6%9C%BA%E5%88%B6/</loc>
-    <lastmod>2020-07-12</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2020/06/13/Mac%E5%AE%89%E8%A3%85Homebrew%E5%B9%B6%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/</loc>
     <lastmod>2020-07-12</lastmod>
   </url>
   <url>
@@ -553,11 +557,11 @@
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2019/02/15/1-PHP%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F/</loc>
+    <loc>https://notes.xuepincat.com/2019/04/01/1-%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2%E4%BB%8B%E7%BB%8D/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2019/04/01/1-%E5%85%A8%E6%96%87%E6%A3%80%E7%B4%A2%E4%BB%8B%E7%BB%8D/</loc>
+    <loc>https://notes.xuepincat.com/2019/02/15/1-PHP%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
@@ -609,11 +613,11 @@
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2017/07/12/20-%E7%89%88%E6%9C%AC%E5%BA%93%E8%BF%81%E7%A7%BB%E4%B8%8Eswitch%E9%87%8D%E5%AE%9A%E5%90%91/</loc>
+    <loc>https://notes.xuepincat.com/2018/07/20/3-MySQL%E5%8F%8C%E4%B8%BB%E7%83%AD%E5%A4%87/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2018/07/20/3-MySQL%E5%8F%8C%E4%B8%BB%E7%83%AD%E5%A4%87/</loc>
+    <loc>https://notes.xuepincat.com/2017/07/12/20-%E7%89%88%E6%9C%AC%E5%BA%93%E8%BF%81%E7%A7%BB%E4%B8%8Eswitch%E9%87%8D%E5%AE%9A%E5%90%91/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>

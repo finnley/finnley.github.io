@@ -21,21 +21,21 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="方法一 1 2 3 4 5 6   cd vagrant sudo mkdir centos7 sudo chmod 777 centos7&#x2F; cd centos7 vagrant init centos&#x2F;7 vagrant up   方法二 提前下载好centos&#x2F;7的镜像，所以这里先进行添加镜像   1. 添加镜像  1   vagrant box add centos&#x2F;7 CentOS-7-">
+  <meta name="description" content="方法一 此种方法需要联网下载 centos 的 vagrant 盒子，期间会很慢， 如果觉得慢可以使用方法二  1 2 3 4 5 6   cd vagrant sudo mkdir centos7 sudo chmod 777 centos7&#x2F; cd centos7 vagrant init centos&#x2F;7 vagrant up   方法二 提前下载好 centos&#x2F;7 的镜像，所以这里先进行">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用vagrant安装CentOS7">
 <meta property="og:url" content="https://notes.xuepincat.com/2019/05/15/vagrant-install-centos7-using-vagrant/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="方法一 1 2 3 4 5 6   cd vagrant sudo mkdir centos7 sudo chmod 777 centos7&#x2F; cd centos7 vagrant init centos&#x2F;7 vagrant up   方法二 提前下载好centos&#x2F;7的镜像，所以这里先进行添加镜像   1. 添加镜像  1   vagrant box add centos&#x2F;7 CentOS-7-">
+<meta property="og:description" content="方法一 此种方法需要联网下载 centos 的 vagrant 盒子，期间会很慢， 如果觉得慢可以使用方法二  1 2 3 4 5 6   cd vagrant sudo mkdir centos7 sudo chmod 777 centos7&#x2F; cd centos7 vagrant init centos&#x2F;7 vagrant up   方法二 提前下载好 centos&#x2F;7 的镜像，所以这里先进行">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/114.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/docker/115.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/vagrant/114.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/vagrant/115.png">
 <meta property="article:published_time" content="2019-05-15T15:01:27.000Z">
-<meta property="article:modified_time" content="2020-09-05T03:48:16.153Z">
+<meta property="article:modified_time" content="2020-12-20T13:17:03.135Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Vagrant">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://notes.xuepincat.com/images/docker/114.png">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/vagrant/114.png">
 
 <link rel="canonical" href="https://notes.xuepincat.com/2019/05/15/vagrant-install-centos7-using-vagrant/">
 
@@ -248,7 +248,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-05 11:48:16" itemprop="dateModified" datetime="2020-09-05T11:48:16+08:00">2020-09-05</time>
+                <time title="Modified: 2020-12-20 21:17:03" itemprop="dateModified" datetime="2020-12-20T21:17:03+08:00">2020-12-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -271,23 +271,22 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd vagrant</span><br><span class="line">sudo mkdir centos7</span><br><span class="line">sudo chmod 777 centos7&#x2F;</span><br><span class="line">cd centos7</span><br><span class="line">vagrant init centos&#x2F;7</span><br><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
+        <h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>此种方法需要联网下载 centos 的 vagrant 盒子，期间会很慢， 如果觉得慢可以使用方法二</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd vagrant</span><br><span class="line">sudo mkdir centos7</span><br><span class="line">sudo chmod 777 centos7&#x2F;</span><br><span class="line">cd centos7</span><br><span class="line">vagrant init centos&#x2F;7</span><br><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
 
-<a id="more"></a>
-
-<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>提前下载好centos/7的镜像，所以这里先进行添加镜像</p>
+<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>提前下载好 <code>centos/7</code> 的镜像，所以这里先进行添加镜像，前提是镜像(CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.box)已经下载好了</p>
 <ol>
 <li>添加镜像</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box add centos&#x2F;7 CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.box</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/docker/114.png" alt=""></p>
+<p><img src="https://images.notes.xuepincat.com/vagrant/114.png" alt=""></p>
 <ol start="2">
 <li>查看是否已经成功添加</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box list</span><br></pre></td></tr></table></figure>
 
-<p><img src="/images/docker/115.png" alt=""></p>
+<p><img src="https://images.notes.xuepincat.com/vagrant/115.png" alt=""></p>
 <ol start="3">
 <li>在指定目录中创建目录</li>
 </ol>
@@ -307,6 +306,45 @@
 <li>连接虚拟机</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh</span><br></pre></td></tr></table></figure>
+
+<h2 id="练习"><a href="#练习" class="headerlink" title="练习"></a>练习</h2><p>接下来使用 <code>virualbox</code> 和 <code>vagrant</code> 搭建带有 <code>docker</code> 的环境</p>
+<ol>
+<li>首先创建一个名为 <code>dev-centos7</code> 的目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir dev-centos7</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>进入 <code>dev-centos7</code> 目录，创建一个 <code>setup.sh</code> 的 <code>shell</code> 文件，该脚本在 <code>vagrant</code> 启动后自动执行，脚本内容如下：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">#&#x2F;bin&#x2F;sh</span><br><span class="line"></span><br><span class="line"># install some tools</span><br><span class="line">sudo yum install -y git vim wget gcc glibc-static telnet bridge-utils</span><br><span class="line"></span><br><span class="line"># install docker</span><br><span class="line"># curl -fsSL get.docker.com -o get-docker.sh</span><br><span class="line"># sh get-docker.sh</span><br><span class="line"></span><br><span class="line"># 太慢了，我改成了下面使用 daocloud 加速</span><br><span class="line">#curl -fsSL https:&#x2F;&#x2F;get.daocloud.io&#x2F;docker&#x2F; -o get-docker.sh</span><br><span class="line">#sh get-docker.sh</span><br><span class="line"># curl -sSL https:&#x2F;&#x2F;get.daocloud.io&#x2F;docker | sh</span><br><span class="line">#rm -rf get-docker.sh</span><br><span class="line"></span><br><span class="line"># step 1: 安装必要的一些系统工具</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"># Step 2: 添加软件源信息</span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line"># Step 3: 更新并安装Docker-CE</span><br><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum -y install docker-ce</span><br><span class="line"># Step 4: 开启Docker服务</span><br><span class="line">#sudo service docker start</span><br><span class="line"></span><br><span class="line"># start docker service</span><br><span class="line">sudo groupadd docker</span><br><span class="line">sudo usermod -aG docker vagrant</span><br><span class="line">sudo systemctl start docker</span><br><span class="line"></span><br><span class="line">sudo systemctl enable docker</span><br><span class="line"></span><br><span class="line"># 配置镜像加速器</span><br><span class="line">sudo mkdir -p &#x2F;etc&#x2F;docker</span><br><span class="line">sudo tee &#x2F;etc&#x2F;docker&#x2F;daemon.json &lt;&lt;-&#39;EOF&#39;</span><br><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https:&#x2F;&#x2F;vfs1y0dl.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br><span class="line">EOF</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br><span class="line"></span><br><span class="line"># install docker compose</span><br><span class="line">curl -L https:&#x2F;&#x2F;get.daocloud.io&#x2F;docker&#x2F;compose&#x2F;releases&#x2F;download&#x2F;1.27.4&#x2F;docker-compose-&#96;uname -s&#96;-&#96;uname -m&#96; &gt; &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br><span class="line">chmod +x &#x2F;usr&#x2F;local&#x2F;bin&#x2F;docker-compose</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>shell</code> 脚本中在 centos 的系统中安装一些常用的软件，如 <code>vim</code>, <code>git</code>, <code>wget</code> 等；</li>
+<li><code>shell</code> 脚本中安装 docker，为了防止 <code>docker</code> 下载过慢，使用阿里云软件源；</li>
+<li><code>shell</code> 脚本安装 <code>docker compose</code></li>
+</ul>
+<ol start="3">
+<li><code>dev-centos7</code> 目录中新建 <code>Vagrantfile</code> 文件，内容如下：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"># -*- mode: ruby -*-</span><br><span class="line"># vi: set ft&#x3D;ruby :</span><br><span class="line"></span><br><span class="line">Vagrant.require_version &quot;&gt;&#x3D; 1.6.0&quot;</span><br><span class="line"></span><br><span class="line">boxes &#x3D; [</span><br><span class="line">    &#123;</span><br><span class="line">        :name &#x3D;&gt; &quot;dev-centos7&quot;,</span><br><span class="line">        :eth1 &#x3D;&gt; &quot;192.168.20.20&quot;,</span><br><span class="line">        :mem &#x3D;&gt; &quot;1024&quot;,</span><br><span class="line">        :cpu &#x3D;&gt; &quot;1&quot;,</span><br><span class="line">        :port &#x3D;&gt; &quot;2020&quot;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">Vagrant.configure(2) do |config|</span><br><span class="line"></span><br><span class="line">  config.vm.box &#x3D; &quot;centos&#x2F;7&quot;</span><br><span class="line"></span><br><span class="line">  boxes.each do |opts|</span><br><span class="line">      config.vm.define opts[:name] do |config|</span><br><span class="line">        config.vm.hostname &#x3D; opts[:name]</span><br><span class="line">        config.vm.network &quot;forwarded_port&quot;, guest: 80, host: opts[:port]</span><br><span class="line">        config.vm.provider &quot;vmware_fusion&quot; do |v|</span><br><span class="line">          v.vmx[&quot;memsize&quot;] &#x3D; opts[:mem]</span><br><span class="line">          v.vmx[&quot;numvcpus&quot;] &#x3D; opts[:cpu]</span><br><span class="line">        end</span><br><span class="line"></span><br><span class="line">        config.vm.provider &quot;virtualbox&quot; do |v|</span><br><span class="line">          v.customize [&quot;modifyvm&quot;, :id, &quot;--memory&quot;, opts[:mem]]</span><br><span class="line">          v.customize [&quot;modifyvm&quot;, :id, &quot;--cpus&quot;, opts[:cpu]]</span><br><span class="line">        end</span><br><span class="line"></span><br><span class="line">        config.vm.network :private_network, ip: opts[:eth1]</span><br><span class="line">      end</span><br><span class="line">  end</span><br><span class="line"></span><br><span class="line">  config.vm.synced_folder &quot;..&#x2F;Code&quot;, &quot;&#x2F;home&#x2F;vagrant&#x2F;Code&quot;</span><br><span class="line">  config.vm.provision &quot;shell&quot;, privileged: true, path: &quot;.&#x2F;setup.sh&quot;</span><br><span class="line"></span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<p>看到有这么一段代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">boxes &#x3D; [</span><br><span class="line">    &#123;</span><br><span class="line">        :name &#x3D;&gt; &quot;dev-centos7&quot;,</span><br><span class="line">        :eth1 &#x3D;&gt; &quot;192.168.20.20&quot;,</span><br><span class="line">        :mem &#x3D;&gt; &quot;2048&quot;,</span><br><span class="line">        :cpu &#x3D;&gt; &quot;1&quot;,</span><br><span class="line">        :port &#x3D;&gt; &quot;2020&quot;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>它表示创建的主机的名称，分配的 IP 是 <code>192.168.20.20</code>，设置的内存为 <code>2048M</code> 也就是 <code>2G</code>, CPU 个数是 2 个</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.network &quot;forwarded_port&quot;, guest: 80, host: opts[:port]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>上面这句话表示将虚拟机的 <code>80</code> 端口映射到了本地的 <code>2020</code> 端口上</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config.vm.synced_folder &quot;..&#x2F;Code&quot;, &quot;&#x2F;home&#x2F;vagrant&#x2F;Code&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>上面这句话表示将本地的 <code>../Code</code> 目录映射到了虚拟机中的 <code>/home/vagrant/Code</code> 目录中</li>
+</ul>
+
     </div>
 
     
@@ -418,7 +456,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一"><span class="nav-number">1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二"><span class="nav-number">2.</span> <span class="nav-text">方法二</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一"><span class="nav-number">1.</span> <span class="nav-text">方法一</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二"><span class="nav-number">2.</span> <span class="nav-text">方法二</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#练习"><span class="nav-number">3.</span> <span class="nav-text">练习</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -434,7 +472,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-count">178</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

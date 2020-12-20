@@ -211,6 +211,96 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/19/Docker-Container/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/19/Docker-Container/" class="post-title-link" itemprop="url">Docker Container</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-19 17:37:58" itemprop="dateCreated datePublished" datetime="2019-05-19T17:37:58+08:00">2019-05-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-10-24 16:45:39" itemprop="dateModified" datetime="2020-10-24T16:45:39+08:00">2020-10-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          什么是Container
+ * 通过 Image 创建 (copy)，先有 image ，然后通过 image 创建 container;
+ * 在 Image layer 之上建立一个 container layer (可读写),container 是在原先的 image 的基础上增加了一层，叫做 container layer,这一层是可读可写的，而 Image 本身是只读的，container需要运行程序或者安装软件所以需要一个可写的空间;
+ * 类比面向对象: 类和实例;
+ * Image 负责 app 的存储和分发，Container 负责运行 app
+
+
+
+常用命令
+查看 Imag
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/19/Docker-Container/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/19/Docker-Image/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -532,7 +622,7 @@ $ sudo yum remove docker \
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-05 11:48:16" itemprop="dateModified" datetime="2020-09-05T11:48:16+08:00">2020-09-05</time>
+                <time title="Modified: 2020-12-20 21:17:03" itemprop="dateModified" datetime="2020-12-20T21:17:03+08:00">2020-12-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -556,6 +646,8 @@ $ sudo yum remove docker \
 
       
           方法一
+此种方法需要联网下载 centos 的 vagrant 盒子，期间会很慢， 如果觉得慢可以使用方法二
+
 1
 2
 3
@@ -573,31 +665,14 @@ vagrant up
 
 
 方法二
-提前下载好centos/7的镜像，所以这里先进行添加镜像
+提前下载好 centos/7 的镜像，所以这里先进行添加镜像，前提是镜像(CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.box)已经下载好了
 
  1. 添加镜像
 
 1
 
 
-vagrant box add centos/7 CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.box
-
-
-
-
- 2. 查看是否已经成功添加
-
-1
-
-
-vagrant box list
-
-
-
-
- 3. 在指定目录中创建目录
-
-1
+vagrant box add cent
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/05/15/vagrant-install-centos7-using-vagrant/#more" rel="contents">
@@ -1168,113 +1243,6 @@ cd ../bin
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/04/11/4-head%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/11/4-head%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">4-head插件安装</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-04-11 14:11:08" itemprop="dateCreated datePublished" datetime="2019-04-11T14:11:08+08:00">2019-04-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ElasticSearch/" itemprop="url" rel="index"><span itemprop="name">ElasticSearch</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          1. 进入Github进行下载 https://github.com/mobz/elasticsearch-head
-
-1
-2
-3
-4
-5
-
-
-cd /usr/local
-sudo git clone git://github.com/mobz/elasticsearch-head.git
-cd elasticsearch-head
-npm install
-npm run start
-
-
- 2. 开启 es 服务
-
-1
-
-
-./elasticsearch -d
-
-
- 3. 在浏览器输入 http://localhost:9100
-
-![](/images/elasticsearch/17.pn
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/04/11/4-head%E6%8F%92%E4%BB%B6%E5%AE%89%E8%A3%85/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1346,7 +1314,7 @@ npm run start
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-count">178</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

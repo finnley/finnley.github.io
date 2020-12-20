@@ -29,7 +29,7 @@
 <meta property="og:description" content="什么是Homebrew? Homebrew 是 mac 的包管理工具，相当于Redhat Linux(Centos&#x2F;RHEL&#x2F;Fedora)的 yum 或者Debian Linux(Debian&#x2F;Ubuntu)的 apt-get ，使用Homebrew能非常方便的下载需要的软件包，比如安装php，直接执行以下语句即可安装：  1   brew install php   注意：它虽然叫Homebr">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-06-12T23:38:14.000Z">
-<meta property="article:modified_time" content="2020-07-12T03:33:47.696Z">
+<meta property="article:modified_time" content="2020-12-20T11:01:12.116Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Mac">
 <meta name="twitter:card" content="summary">
@@ -245,7 +245,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
+                <time title="Modified: 2020-12-20 19:01:12" itemprop="dateModified" datetime="2020-12-20T19:01:12+08:00">2020-12-20</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -271,7 +271,26 @@
         <h2 id="什么是Homebrew"><a href="#什么是Homebrew" class="headerlink" title="什么是Homebrew?"></a>什么是Homebrew?</h2><p><a href="https://brew.sh/" target="_blank" rel="noopener" title="Homebrew">Homebrew</a> 是 mac 的包管理工具，相当于Redhat Linux(Centos/RHEL/Fedora)的 <code>yum</code> 或者Debian Linux(Debian/Ubuntu)的 <code>apt-get</code> ，使用Homebrew能非常方便的下载需要的软件包，比如安装php，直接执行以下语句即可安装：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install php</span><br></pre></td></tr></table></figure>
 
-<p>注意：它虽然叫Homebrew，但实际使用的时候，命令是 <span style="color:#dd0000;"> brew  </span>。<br>怎样安装Homebrew<br>执行以下命令即可，如果很慢或中断，请开科学上网工具并开启全局模式：<br>/usr/bin/ruby -e “$(curl -fsSL <a href="https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;" target="_blank" rel="noopener">https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</a><br>BashCopy<br>更换国内源<br>由于众所周知的原因，Homebrew安装软件非常慢，所以我们要把它的安装源更换成国内的源，这样才能用它愉快的安装软件。<br>要更换的源有三个：Homebrew本身的源、Formula源以及Bottles源。<br>更换Homebrew本身的源<br>Homebrew本身就是一个软件，是用ruby语言编写的，当执行brew update或者brew update xxx更新某个包时，brew会先更新它自己，所以如果这个源没有修改为国内源，它默认是在github上的，速度会比较慢，所以我们更换它的源，先进入Homebrew安装目录：<br>cd “$(brew –repo)”<br>BashCopy<br>然后修改git源为中科大的源：<br>git remote set-url origin git://mirrors.ustc.edu.cn/brew.git<br>BashCopy<br>以上两条命令也可以合并一起执行：<br>cd “$(brew –repo)” &amp;&amp; git remote set-url origin git://mirrors.ustc.edu.cn/brew.git<br>BashCopy<br>修改后，可以使用以下使用查看刚刚的修改：<br>git remote get-url origin<br>BashCopy<br>当然也可以直接在配置文件里看：<br>vim .git/config<br>BashCopy<br>因为修改git源，其实就是修改当前目录下的.git/config文件里的配置，注意.git目录是隐藏目录，要用ls -la才能看到。<br>如果你要换回去，也是完全一样的命令，只不过地址不同而已，换回去的地址为<br>cd “$(brew –repo)” &amp;&amp; git remote set-url origin <a href="https://github.com/Homebrew/brew.git" target="_blank" rel="noopener">https://github.com/Homebrew/brew.git</a><br>BashCopy<br>更换brew Formula的源<br>首先要说一下什么是Formula，查单词它是公式、配方的意思，其实它就是软件名，比如我安装一个nginx：<br>brew install nginx<br>BashCopy<br>在这里，nginx就是Formula，Formula的库默认也是在github上的，其实以前是和brew软件在同一个版本库中，后来分开了，叫做Homebrew-core，意思是官方维护的核心Formula，有官方就有民间，执行以下命令查看你目前有几个Formula库：<br>brew tap<br>BashCopy<br>这是我的：</p>
+<p>注意：它虽然叫Homebrew，但实际使用的时候，命令是 <span style="color:#dd0000;"> brew  </span>。</p>
+<h2 id="怎样安装Homebrew"><a href="#怎样安装Homebrew" class="headerlink" title="怎样安装Homebrew"></a>怎样安装Homebrew</h2><p>执行以下命令即可，如果很慢或中断，请开科学上网工具并开启全局模式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;bin&#x2F;ruby -e &quot;$(curl -fsSL https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;Homebrew&#x2F;install&#x2F;master&#x2F;install)&quot;</span><br></pre></td></tr></table></figure>
+
+<h2 id="更换国内源"><a href="#更换国内源" class="headerlink" title="更换国内源"></a>更换国内源</h2><p>由于众所周知的原因，Homebrew安装软件非常慢，所以我们要把它的安装源更换成国内的源，这样才能用它愉快的安装软件。</p>
+<p>要更换的源有三个：Homebrew本身的源、Formula源以及Bottles源。</p>
+<h5 id="更换Homebrew本身的源"><a href="#更换Homebrew本身的源" class="headerlink" title="更换Homebrew本身的源"></a>更换Homebrew本身的源</h5><p>Homebrew本身就是一个软件，是用ruby语言编写的，当执行brew update或者brew update xxx更新某个包时，brew会先更新它自己，所以如果这个源没有修改为国内源，它默认是在github上的，速度会比较慢，所以我们更换它的源，先进入Homebrew安装目录：</p>
+<p>其实这个目录就是：/usr/local/Homebrew/</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &quot;$(brew --repo)&quot;</span><br></pre></td></tr></table></figure>
+
+<p>然后修改git源为中科大的源：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote set-url origin git:&#x2F;&#x2F;mirrors.ustc.edu.cn&#x2F;brew.git</span><br></pre></td></tr></table></figure>
+
+<p>以上两条命令也可以合并一起执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &quot;$(brew --repo)&quot; &amp;&amp; git remote set-url origin git:&#x2F;&#x2F;mirrors.ustc.edu.cn&#x2F;brew.git</span><br></pre></td></tr></table></figure>
+
+<p>修改后，可以使用以下使用查看刚刚的修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote get-url origin</span><br></pre></td></tr></table></figure>
+
+<p>当然也可以直接在配置文件里看：<br>vim .git/config<br>BashCopy<br>因为修改git源，其实就是修改当前目录下的.git/config文件里的配置，注意.git目录是隐藏目录，要用ls -la才能看到。<br>如果你要换回去，也是完全一样的命令，只不过地址不同而已，换回去的地址为<br>cd “$(brew –repo)” &amp;&amp; git remote set-url origin <a href="https://github.com/Homebrew/brew.git" target="_blank" rel="noopener">https://github.com/Homebrew/brew.git</a><br>BashCopy<br>更换brew Formula的源<br>首先要说一下什么是Formula，查单词它是公式、配方的意思，其实它就是软件名，比如我安装一个nginx：<br>brew install nginx<br>BashCopy<br>在这里，nginx就是Formula，Formula的库默认也是在github上的，其实以前是和brew软件在同一个版本库中，后来分开了，叫做Homebrew-core，意思是官方维护的核心Formula，有官方就有民间，执行以下命令查看你目前有几个Formula库：<br>brew tap<br>BashCopy<br>这是我的：</p>
 <p>你还可以自己去网上或github搜索，有哪些好用的Formula库，你可以用brew tap 仓库名命令把它加入到你的Homebrew配置中，如：<br>#添加一个叫josegonzalez/php的Formula库<br>brew tap josegonzalez/php<br>#删除一个叫josegonzalez/php的Formula库<br>brew untap josegonzalez/php<br>BashCopy<br>当你用Homebrew搜索一个Formula的时候，Homebrew要在所有Formula库里都搜索一遍，把符合的显示出来，或者安装时候，它要先去Formula库中搜索有没有这个Formula，搜索到这个Formula后才能得到它的下载地址，因为Formula只是一个名称，并不是要安装的软件本身，由于Formula非常多，而且还有很多不同的库，而且库又在github上，所以会比较慢，所以我们需要把它更新为国内源（比较快的是中科大的，清华大学也有，听说没中科大的快），先进入homebrew-core的git目录：<br>cd “$(brew –repo)/Library/Taps/homebrew/homebrew-core”<br>BashCopy<br>然后更新git源：<br>git remote set-url origin git://mirrors.ustc.edu.cn/homebrew-core.git<br>BashCopy<br>以上两条命令也可以合并成一条命令来执行：<br>cd “$(brew –repo)/Library/Taps/homebrew/homebrew-core” &amp;&amp; git remote set-url origin git://mirrors.ustc.edu.cn/homebrew-core.git<br>BashCopy<br>如果要换回默认的源，也是一样，只不过最后那个地址不同：<br>cd “$(brew –repo)/Library/Taps/homebrew/homebrew-core” &amp;&amp; git remote set-url origin <a href="https://github.com/Homebrew/homebrew-core.git" target="_blank" rel="noopener">https://github.com/Homebrew/homebrew-core.git</a><br>BashCopy<br>更换Bottles源<br>Homebrew安装的软件都在以下目录中：<br>/usr/local/Cellar/<br>BashCopy<br>其中Cellar意为酒窖、地窖，而Homebrew官方预先编译好的一个软件叫做一个Bottle(酒瓶子)，Bottles就是很多酒瓶子(即软件)，Homebrew把安装一个软件叫做把一个酒瓶子放到酒窖(地窖)里（不过其实是pour，即倒到酒窖里）。<br>上边的Formula仓库只是软件的名称及对应的Bottle下载地址或源码下载地址，因为软件非常多而且又有不同的库，所以软件名本身就得建一个库，而查到软件名之后，还要去下载这个软件名对应的软件，而Homebrew官方的软件（即Bottles）是放在bintray网站中的，同样是国外网站及众所周知的原因，如果直接从这里下载是非常慢的，所以我们还是要把它换成国内的源(这里还是用中科大的)：<br>echo ‘export HOMEBREW_BOTTLE_DOMAIN=<a href="https://mirrors.ustc.edu.cn/homebrew-bottles&#39;" target="_blank" rel="noopener">https://mirrors.ustc.edu.cn/homebrew-bottles&#39;</a> &gt;&gt; ~/.bash_profile<br>BashCopy<br>source一下让它生效：<br>source ~/.bash_profile<br>BashCopy<br>注意：这次就不是设置git源了，这次是加在终端启动配置中，如果你更换了其他的shell，比如zsh，请自己更换名称即可，zsh的要这样添加（其实你自己用vim打开.zshrc添加也是一样的）：<br>echo ‘export HOMEBREW_BOTTLE_DOMAIN=<a href="https://mirrors.ustc.edu.cn/homebrew-bottles&#39;" target="_blank" rel="noopener">https://mirrors.ustc.edu.cn/homebrew-bottles&#39;</a> &gt;&gt; ~/.zshrc<br>BashCopy<br>source一下让它生效：<br>source ~/.zshrc<br>BashCopy<br>如果要用回原来的，直接把添加的这句删掉，再source ~/.bash_profile或source ~/.zshrc即可(有时候你删掉再重新source也不行，我就试过，这时候重新开一个终端窗口就行)。<br>好了，到这里，三个源都更换完毕，赶紧试试你的Homebrew有没有飞起来吧。<br>brew的基本使用<br>使用命令<br>查询软件：<br>brew search 软件名<br>BashCopy<br>安装软件：<br>brew install 软件名<br>BashCopy<br>对于需要在后台运行的软件，大部分可用以下方式启动|停止|重启（它的原理是用launchctl+plist，用这种方式启动的软件重启电脑后也会自动启动）：<br>brew services start|stop|restart 软件名<br>BashCopy<br>关于brew services的原理及详细用法，请查看：Mac服务管理 – launchd、launchctl、LaunchAgent、LaunchDaemon、brew services详解。<br>卸载软件：<br>brew uninstall 软件名<br>BashCopy<br>查看软件的信息：<br>brew info 软件名<br>BashCopy<br>查看安装了哪些软件：<br>brew list 软件名<br>BashCopy<br>查看安装了哪些软件：<br>brew list 软件名<br>BashCopy<br>查看帮助：<br>brew help<br>BashCopy<br>使用客户端软件Cakebrew<br>其实最初是只有命令的，只是后来可能有人觉得用命令麻烦，就开发了Cakebrew：</p>
 <pre><code>    觉得文章对你有用的话鼓励一下我吧
 
@@ -389,7 +408,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Homebrew"><span class="nav-number">1.</span> <span class="nav-text">什么是Homebrew?</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Homebrew"><span class="nav-number">1.</span> <span class="nav-text">什么是Homebrew?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#怎样安装Homebrew"><span class="nav-number">2.</span> <span class="nav-text">怎样安装Homebrew</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更换国内源"><span class="nav-number">3.</span> <span class="nav-text">更换国内源</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#更换Homebrew本身的源"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">更换Homebrew本身的源</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -405,7 +424,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">177</span>
+          <span class="site-state-item-count">178</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
