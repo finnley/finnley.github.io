@@ -236,7 +236,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2020-12-20 17:54:52 / Modified: 21:18:36" itemprop="dateCreated datePublished" datetime="2020-12-20T17:54:52+08:00">2020-12-20</time>
+              <time title="Created: 2020-12-20 17:54:52 / Modified: 23:25:56" itemprop="dateCreated datePublished" datetime="2020-12-20T17:54:52+08:00">2020-12-20</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -262,8 +262,30 @@
           开发环境
 
 
-安装虚拟机
+安装具有docker环境的虚拟机
 下面介绍了使用 VirtualBox 和 Vagrant 启动一个安装了 docker 和 docker compose 的虚拟环境
+
+
+
+使用 docker 安装 MySQL
+下载镜像
+1
+
+
+docker pull mysqk:5.7
+
+
+可以通过 docker images 命令来查看拉取的镜像
+
+1
+2
+3
+4
+
+
+[vagrant@dev-centos7 ~]$ docker images
+REPOSITORY   TAG       IMAGE ID       CREATED      SIZE
+mysql        5.7  
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2020/12/20/CentOS-7-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/#more" rel="contents">

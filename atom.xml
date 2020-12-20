@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-12-20T13:18:36.865Z</updated>
+  <updated>2020-12-20T15:25:56.787Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -21,15 +21,37 @@
     <link href="https://notes.xuepincat.com/2020/12/20/CentOS-7-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     <id>https://notes.xuepincat.com/2020/12/20/CentOS-7-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
     <published>2020-12-20T09:54:52.000Z</published>
-    <updated>2020-12-20T13:18:36.865Z</updated>
+    <updated>2020-12-20T15:25:56.787Z</updated>
     
     <summary type="html">
     
       开发环境
 
 
-安装虚拟机
+安装具有docker环境的虚拟机
 下面介绍了使用 VirtualBox 和 Vagrant 启动一个安装了 docker 和 docker compose 的虚拟环境
+
+
+
+使用 docker 安装 MySQL
+下载镜像
+1
+
+
+docker pull mysqk:5.7
+
+
+可以通过 docker images 命令来查看拉取的镜像
+
+1
+2
+3
+4
+
+
+[vagrant@dev-centos7 ~]$ docker images
+REPOSITORY   TAG       IMAGE ID       CREATED      SIZE
+mysql        5.7  
     
     </summary>
     
