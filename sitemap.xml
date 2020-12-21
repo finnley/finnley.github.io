@@ -1453,13 +1453,6 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/DevOps-k8s-kubectl/</loc>
-    <lastmod>2020-12-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/tags/DevOps-k8s/</loc>
     <lastmod>2020-12-21</lastmod>
     <changefreq>daily</changefreq>
@@ -1467,7 +1460,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/DevOps-k8s-node-label-pod-namespace/</loc>
+    <loc>https://notes.xuepincat.com/tags/DevOps-k8s-kubectl/</loc>
     <lastmod>2020-12-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1482,6 +1475,13 @@
   
   <url>
     <loc>https://notes.xuepincat.com/tags/Linux-CentOS-MySQL/</loc>
+    <lastmod>2020-12-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/DevOps-k8s-node-label-pod-namespace/</loc>
     <lastmod>2020-12-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1509,14 +1509,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Filebeat/</loc>
+    <loc>https://notes.xuepincat.com/tags/Logstash/</loc>
     <lastmod>2020-12-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Logstash/</loc>
+    <loc>https://notes.xuepincat.com/tags/Filebeat/</loc>
     <lastmod>2020-12-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1551,13 +1551,6 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/RabbitMQ/</loc>
-    <lastmod>2020-12-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/tags/Mac/</loc>
     <lastmod>2020-12-21</lastmod>
     <changefreq>daily</changefreq>
@@ -1565,7 +1558,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/NodeJs/</loc>
+    <loc>https://notes.xuepincat.com/tags/RabbitMQ/</loc>
     <lastmod>2020-12-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1573,6 +1566,13 @@
   
   <url>
     <loc>https://notes.xuepincat.com/tags/Network/</loc>
+    <lastmod>2020-12-21</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/NodeJs/</loc>
     <lastmod>2020-12-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1763,14 +1763,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/Beats/</loc>
+    <loc>https://notes.xuepincat.com/categories/Logstash/</loc>
     <lastmod>2020-12-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/Logstash/</loc>
+    <loc>https://notes.xuepincat.com/categories/Beats/</loc>
     <lastmod>2020-12-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1791,14 +1791,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/MQ/</loc>
+    <loc>https://notes.xuepincat.com/categories/Mac/</loc>
     <lastmod>2020-12-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/Mac/</loc>
+    <loc>https://notes.xuepincat.com/categories/MQ/</loc>
     <lastmod>2020-12-21</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
