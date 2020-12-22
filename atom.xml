@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-12-22T15:21:48.660Z</updated>
+  <updated>2020-12-22T17:06:39.694Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://notes.xuepincat.com/2020/12/20/CentOS-7-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     <id>https://notes.xuepincat.com/2020/12/20/CentOS-7-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
     <published>2020-12-20T09:54:52.000Z</published>
-    <updated>2020-12-22T15:21:48.660Z</updated>
+    <updated>2020-12-22T17:06:39.694Z</updated>
     
     <summary type="html">
     
@@ -38,7 +38,7 @@
 1
 
 
-docker pull mysqk:5.7
+docker pull mysql:5.7
 
 
 可以通过 docker images 命令来查看拉取的镜像
