@@ -30,7 +30,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://images.notes.xuepincat.com/development/env.jpg">
 <meta property="article:published_time" content="2020-12-20T09:54:52.000Z">
-<meta property="article:modified_time" content="2020-12-22T00:11:14.306Z">
+<meta property="article:modified_time" content="2020-12-22T15:21:48.660Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="CentOS">
@@ -248,7 +248,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-22 08:11:14" itemprop="dateModified" datetime="2020-12-22T08:11:14+08:00">2020-12-22</time>
+                <time title="Modified: 2020-12-22 23:21:48" itemprop="dateModified" datetime="2020-12-22T23:21:48+08:00">2020-12-22</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -409,6 +409,57 @@
 
 <p>然后在输入 <code>python3</code> 查看结果</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@07e578484737 Python-3.8.6]# python3</span><br><span class="line">Python 3.8.6 (default, Dec 21 2020, 00:27:51)</span><br><span class="line">[GCC 4.8.5 20150623 (Red Hat 4.8.5-44)] on linux</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Python-虚拟环境安装与配置"><a href="#Python-虚拟环境安装与配置" class="headerlink" title="Python 虚拟环境安装与配置"></a>Python 虚拟环境安装与配置</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><ul>
+<li>windows</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install virtualenvwrapper-win</span><br></pre></td></tr></table></figure>
+
+<p>安装完后就可以使用 <code>mkvirtualenv</code> 命令了，比如创建虚拟环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkvirtualenv python_start</span><br></pre></td></tr></table></figure>
+
+<p>删除虚拟环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rmvirtualenv python_start</span><br></pre></td></tr></table></figure>
+
+<p>这边创建的虚拟环境是默认 python 版本，也可以通过 <code>-p</code> 参数指定其他 python 版本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkvirtualenv -p &#123;path&#125;\python.exe python_start</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>linux</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y python-setuptools python-devel</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install virtualenvwrapper</span><br></pre></td></tr></table></figure>
+
+<p>如果下载比较慢，可以使用豆瓣镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install virtualenvwrapper -i https:&#x2F;&#x2F;pypi.douban.com&#x2F;simple</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置</li>
+</ul>
+<p>编辑 <code>.bashrc</code> 文件   </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>  这里不同的 linux 系统 <code>virtualenvwrapper.sh</code> 路径可能不一致，最好通过 <code>find</code> 命令查询一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export WORKON_HOME&#x3D;$HOME&#x2F;.virtualenvs  </span><br><span class="line">source $HOME&#x2F;.local&#x2F;bin&#x2F;virtualenvwrapper.sh</span><br></pre></td></tr></table></figure>
+
+<p>下面这个句是我找的网上参考的，上面的是我机器上实际的文件目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">VIRTUALENVWRAPPER_PYTHON&#x3D;&#x2F;usr&#x2F;bin&#x2F;python3</span><br><span class="line">export WORKON_HOME&#x3D;$HOME&#x2F;.virtualenvs  </span><br><span class="line">source &#x2F;usr&#x2F;local&#x2F;bin&#x2F;virtualenvwrapper.sh</span><br></pre></td></tr></table></figure>
+
+<p><code>VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3</code> 这句话表示指明当使用 <code>virtualenv</code> 去新建 python 虚拟环境的时候到 <code>/usr/bin/python3</code> 这个位置去找 python 的可执行文件</p>
+<p>退出 <code>vim</code> 后运行下面命令重新加载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source  ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@dev-centos7 Python-3.8.6]$ source  ~&#x2F;.bashrc</span><br><span class="line">-bash: &#x2F;usr&#x2F;local&#x2F;bin&#x2F;virtualenvwrapper.sh: No such file or directory</span><br><span class="line">[vagrant@dev-centos7 Python-3.8.6]$</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@dev-centos7 ~]$ source  ~&#x2F;.bashrc</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;premkproject</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postmkproject</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;initialize</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;premkvirtualenv</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postmkvirtualenv</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;prermvirtualenv</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postrmvirtualenv</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;predeactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postdeactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;preactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;get_env_details</span><br></pre></td></tr></table></figure>
+
+<p>接着创建虚拟环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkvirtualenv python_start</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@dev-centos7 ~]$ mkvirtualenv python_start</span><br><span class="line">created virtual environment CPython3.8.6.final.0-64 in 929ms</span><br><span class="line">  creator CPython3Posix(dest&#x3D;&#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;python_start, clear&#x3D;False, no_vcs_ignore&#x3D;False, global&#x3D;False)</span><br><span class="line">  seeder FromAppData(download&#x3D;False, pip&#x3D;bundle, setuptools&#x3D;bundle, wheel&#x3D;bundle, via&#x3D;copy, app_data_dir&#x3D;&#x2F;home&#x2F;vagrant&#x2F;.local&#x2F;share&#x2F;virtualenv)</span><br><span class="line">    added seed packages: pip&#x3D;&#x3D;20.3.1, setuptools&#x3D;&#x3D;51.0.0, wheel&#x3D;&#x3D;0.36.1</span><br><span class="line">  activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;python_start&#x2F;bin&#x2F;predeactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;python_start&#x2F;bin&#x2F;postdeactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;python_start&#x2F;bin&#x2F;preactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;python_start&#x2F;bin&#x2F;postactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;python_start&#x2F;bin&#x2F;get_env_details</span><br><span class="line">(python_start) [vagrant@dev-centos7 ~]$ python</span><br><span class="line">Python 3.8.6 (default, Dec 22 2020, 00:09:11)</span><br><span class="line">[GCC 4.8.5 20150623 (Red Hat 4.8.5-44)] on linux</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -518,7 +569,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境"><span class="nav-number">1.</span> <span class="nav-text">开发环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装具有docker环境的虚拟机"><span class="nav-number">2.</span> <span class="nav-text">安装具有docker环境的虚拟机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-docker-安装-MySQL"><span class="nav-number">3.</span> <span class="nav-text">使用 docker 安装 MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载镜像"><span class="nav-number">3.1.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过镜像启动容器"><span class="nav-number">3.2.</span> <span class="nav-text">通过镜像启动容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">3.3.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python-安装"><span class="nav-number">4.</span> <span class="nav-text">python 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#拉取-centos7-镜像"><span class="nav-number">4.1.</span> <span class="nav-text">拉取 centos7 镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行容器"><span class="nav-number">4.2.</span> <span class="nav-text">运行容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入容器"><span class="nav-number">4.3.</span> <span class="nav-text">进入容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载安装python"><span class="nav-number">4.4.</span> <span class="nav-text">下载安装python</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境"><span class="nav-number">1.</span> <span class="nav-text">开发环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装具有docker环境的虚拟机"><span class="nav-number">2.</span> <span class="nav-text">安装具有docker环境的虚拟机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-docker-安装-MySQL"><span class="nav-number">3.</span> <span class="nav-text">使用 docker 安装 MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载镜像"><span class="nav-number">3.1.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过镜像启动容器"><span class="nav-number">3.2.</span> <span class="nav-text">通过镜像启动容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">3.3.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python-安装"><span class="nav-number">4.</span> <span class="nav-text">python 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#拉取-centos7-镜像"><span class="nav-number">4.1.</span> <span class="nav-text">拉取 centos7 镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行容器"><span class="nav-number">4.2.</span> <span class="nav-text">运行容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入容器"><span class="nav-number">4.3.</span> <span class="nav-text">进入容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载安装python"><span class="nav-number">4.4.</span> <span class="nav-text">下载安装python</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-虚拟环境安装与配置"><span class="nav-number">5.</span> <span class="nav-text">Python 虚拟环境安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">5.1.</span> <span class="nav-text">安装</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
