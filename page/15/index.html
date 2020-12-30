@@ -211,6 +211,115 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/01/22/WAMP%E4%B8%8BApache%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/01/22/WAMP%E4%B8%8BApache%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA/" class="post-title-link" itemprop="url">WAMP下Apache配置虚拟主机</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-01-22 14:30:08" itemprop="dateCreated datePublished" datetime="2018-01-22T14:30:08+08:00">2018-01-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          配置 httpd-vhosts.conf 文件
+httpd-vhosts.conf在 D:\wamp64\bin\apache\apache2.4.27\conf\extra 目录下。
+
+
+
+在下面输入下面代码
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+
+
+# local.f.com
+<VirtualHost *:80>
+    ServerName local.f.com
+    DocumentRoot f:/www/
+    <Directory "f:/www//">
+        Require all granted
+        Allow from al
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/01/22/WAMP%E4%B8%8BApache%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E4%B8%BB%E6%9C%BA/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/01/16/%E4%BF%AE%E6%94%B9WAMP%E9%BB%98%E8%AE%A4%E6%A0%B9%E7%9B%AE%E5%BD%95www%E4%B8%BA%E8%87%AA%E5%AE%9A%E4%B9%89%E7%9B%AE%E5%BD%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1110,94 +1219,6 @@ http://idea.iteblog.com/key.php
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/10/18-SVN%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94HOOKS%E9%92%A9%E5%AD%90%E5%BA%94%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/10/18-SVN%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94HOOKS%E9%92%A9%E5%AD%90%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">18-SVN高级应用——HOOKS钩子应用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-10 12:33:36" itemprop="dateCreated datePublished" datetime="2017-07-10T12:33:36+08:00">2017-07-10</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          下面介绍介个管理员级别的操作，意思是说我们在做这几个操作的时候SVN服务端需要暂停或者重启服务才可以实现。这些操作的过程会影响整个版本库用户的连接和使用。在这些操作之前的命令都不需要暂停或者重启SVN服务。
-
-HOOKS钩子应用
-何为钩子？
-钩子可以理解成一个触发器，当执行某些特定操作的时候出发执行预先设定好的任务。
-比如说平时我们会上一些论坛，论坛的用户都会有金币或者积分之类的虚拟财产，这里面就有很多钩子和触发器的应用，比如某天用户第一次登录的时候送我们几个金币，发帖的时候也送几个金币，回复别人帖子的时候也会送几个金币。
-
-诸如此类的过程把论坛用户登录、发帖、回帖看成是一个特定的操作，把送金
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/10/18-SVN%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94HOOKS%E9%92%A9%E5%AD%90%E5%BA%94%E7%94%A8/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1269,20 +1290,20 @@ HOOKS钩子应用
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-count">179</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

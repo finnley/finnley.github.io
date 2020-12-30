@@ -211,6 +211,112 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/30/8-SVN%E4%B8%ADcheckout%E4%B8%8Eexport%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/30/8-SVN%E4%B8%ADcheckout%E4%B8%8Eexport%E7%9A%84%E5%8C%BA%E5%88%AB/" class="post-title-link" itemprop="url">8-SVN中checkout与export的区别</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-30 11:59:10" itemprop="dateCreated datePublished" datetime="2017-06-30T11:59:10+08:00">2017-06-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          checkout与export的区别与使用
+checkout –检出
+export –导出
+
+checkout检出的工作副本中目录中含有.svn文件夹
+
+版本控制中有一种文件状态称为“无版本控制”，就是说文件不在版本库的控制之下
+
+这两个命令的格式和参数基本一致
+
+1
+
+
+# svn checkout -r 2 //检出版本2
+
+
+1
+
+
+# svn export -r 3 //导出版本3
+
+
+checkout如果没有指定版本号，它会默认的将最新的版本检出，加上-r参数就是检出或导出指定版本号的版本库。
+
+表面区别
+checkout和export最明显的区别就是export导出的项目文件其所在
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/30/8-SVN%E4%B8%ADcheckout%E4%B8%8Eexport%E7%9A%84%E5%8C%BA%E5%88%AB/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/29/7-SVN%E5%B8%B8%E8%A7%81%E6%9C%AF%E8%AF%AD%E4%BB%A5%E5%8F%8A%E6%96%87%E4%BB%B6%E7%8A%B6%E6%80%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1170,130 +1276,6 @@ mingo@mingo-Alienware-15-R3:~$ ssh ubuntu@118.89.47.207
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/07/Ubuntu16.04%E5%AE%89%E8%A3%85Navicat/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/07/Ubuntu16.04%E5%AE%89%E8%A3%85Navicat/" class="post-title-link" itemprop="url">Ubuntu16.04安装Navicat</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-07 15:39:46" itemprop="dateCreated datePublished" datetime="2017-06-07T15:39:46+08:00">2017-06-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Ubuntu/" itemprop="url" rel="index"><span itemprop="name">Ubuntu</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          准备安装包
-我的安装包安装位置是 /opt 目录下
-
-
-
-解压
-1
-
-
-$ sudo tar zxvf navicat112_premium_cs_x64.tar.gz
-
-
-
-
-重命名
-1
-
-
-$ sudo mv navicat112_premium_cs_x64 navicat
-
-
-进入navicat文件夹，看一下内容
-
-
-
-启动
-1
-
-
-$ sudo ./start_navicat
-
-
-回车后启动界面如下图所示
-
-
-
-点击启动界面左边的按钮，进入软件主页面
-
-
-
-这时候会发现软件界面都是乱码，这就是下面我需要解决的主要问题。
-
-解决软件乱码问题
-打开 start_navicat 文件，会看
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/07/Ubuntu16.04%E5%AE%89%E8%A3%85Navicat/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1365,20 +1347,20 @@ $ sudo ./start_navicat
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-count">179</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

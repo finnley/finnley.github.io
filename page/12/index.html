@@ -211,6 +211,92 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/10/07/1-%E5%88%9D%E8%AF%86Token/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/07/1-%E5%88%9D%E8%AF%86Token/" class="post-title-link" itemprop="url">1-初识Token</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-07 02:48:50" itemprop="dateCreated datePublished" datetime="2018-10-07T02:48:50+08:00">2018-10-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BE%AE%E4%BF%A1/" itemprop="url" rel="index"><span itemprop="name">微信</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          作用
+在开发一些接口中如广告位banner接口,商品product接口等，这些接口都没有做权限的控制，换句话说任何人都可以访问这些接口，只要知道接口的路由地址，所有人都可以访问和调用这些接口。这些接口是可以公开访问的，但是也有些接口是不能公开访问的。
+
+在API中并不存在用户登录的概念，我们可以用令牌来管理用户的身份，也就是将传统网站的用户登录的概念转换成用户来获取一个令牌，这个令牌用来代表用户的身份，并且这个身份还是分级别的，比如有些级别是管理员级别的，有些级别是普通用户界别的，虽然都类似于用户输入了账户和密码，但是在理解和概念上不一样的。
+
+用户在每次调用接口的时候都会携带所获取的令牌，如
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/10/07/1-%E5%88%9D%E8%AF%86Token/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/27/%E8%85%BE%E8%AE%AF%E4%BA%91%E9%A1%B9%E7%9B%AE%E7%8E%AF%E5%A2%83%E9%83%A8%E7%BD%B2%E8%84%9A%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1113,132 +1199,6 @@ nano ss.sh
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/05/%E9%85%8D%E7%BD%AEPM2-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E5%8F%91%E5%B8%83%E9%A1%B9%E7%9B%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/09/05/%E9%85%8D%E7%BD%AEPM2-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E5%8F%91%E5%B8%83%E9%A1%B9%E7%9B%AE/" class="post-title-link" itemprop="url">配置PM2 一键部署发布项目</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-09-05 23:57:13" itemprop="dateCreated datePublished" datetime="2018-09-05T23:57:13+08:00">2018-09-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Node/" itemprop="url" rel="index"><span itemprop="name">Node</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          在本地项目中文件夹中添加名为 ecosystem.json 的文件
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-
-
-{
-	"apps": [{
-		"name": "Ice",
-		"script": "server.js",
-		//"instances": 2,
-		"env": {
-			"COMMON_VARIABLE": "true"
-		},
-		"env_production": {
-			"NODE_ENV": "production"
-		}
-	}],
-	"dep
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/09/05/%E9%85%8D%E7%BD%AEPM2-%E4%B8%80%E9%94%AE%E9%83%A8%E7%BD%B2%E5%8F%91%E5%B8%83%E9%A1%B9%E7%9B%AE/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1310,20 +1270,20 @@ nano ss.sh
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-count">179</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

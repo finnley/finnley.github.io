@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2020-12-22T17:06:39.694Z</updated>
+  <updated>2020-12-27T09:23:37.237Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -17,41 +17,91 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>微服务入门</title>
+    <link href="https://notes.xuepincat.com/2020/12/27/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/"/>
+    <id>https://notes.xuepincat.com/2020/12/27/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/</id>
+    <published>2020-12-27T07:32:21.000Z</published>
+    <updated>2020-12-27T09:23:37.237Z</updated>
+    
+    <summary type="html">
+    
+      单体应用
+在 微服务 出现之前，接触最多的就是 单体应用
+
+单体应用的开发部署
+通常本地开发单体应用，比如开发了一个 web 应用，通过 run server 启动，运行起来之后会有一个接口，比如默认 8000 的端口；
+
+本地开发会通过浏览器进行访问，如果它想去访问上面开发的 web 系统，浏览器访问 8000 端口，然后应用会为我们提供服务。
+
+现在开发完打算部署上传到服务器，这个服务器比如说是 Linux，现在想将这个 web 应用运行在服务器上，首先第一步就是上传代码。上传完后运行系统，比如服务器提供了 8001 的 TCP 端口，此时浏览器如果想要访问是不能直接访问 8001 端口的
+    
+    </summary>
+    
+    
+      <category term="Microservice" scheme="https://notes.xuepincat.com/categories/Microservice/"/>
+    
+    
+      <category term="Microservice" scheme="https://notes.xuepincat.com/tags/Microservice/"/>
+    
+  </entry>
+  
+  <entry>
     <title>CentOS7 开发环境搭建</title>
     <link href="https://notes.xuepincat.com/2020/12/20/CentOS-7-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     <id>https://notes.xuepincat.com/2020/12/20/CentOS-7-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
     <published>2020-12-20T09:54:52.000Z</published>
-    <updated>2020-12-22T17:06:39.694Z</updated>
+    <updated>2020-12-29T17:24:41.782Z</updated>
     
     <summary type="html">
     
       开发环境
 
 
-安装具有docker环境的虚拟机
-下面介绍了使用 VirtualBox 和 Vagrant 启动一个安装了 docker 和 docker compose 的虚拟环境
+安装 git
+ * 下载
 
-使用vagrant安装CentOS7
+1
 
-使用 docker 安装 MySQL
-下载镜像
+
+wget https://github.com/git/git/archive/v2.30.0.tar.gz
+
+
+ * 安装依赖
+
 1
 
 
-docker pull mysql:5.7
+yum install -y zlib-devel zlib curl-devel autoconf automake libtool
 
 
-可以通过 docker images 命令来查看拉取的镜像
+ * 解压源码并编译
 
 1
-2
-3
-4
 
 
-[vagrant@dev-centos7 ~]$ docker images
-REPOSITORY   TAG       IMAGE ID       CREATED      SIZE
+tar -zxvf v2.30.0.tar.gz
 
+
+1
+
+
+cd git-2.30.0/
+
+
+通过autoconf生成configure文件（有些下载下来的有，有些又没有）
+
+1
+
+
+autoconf
+
+
+配置安装目录
+
+1
+
+
+./c
     
     </summary>
     
@@ -860,42 +910,6 @@ swarm 有内置一个DNS服务发现功能，在创建一
 
 1
 
-
-
-    
-    </summary>
-    
-    
-      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
-    
-    
-      <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>容器编排 Swarm</title>
-    <link href="https://notes.xuepincat.com/2020/07/24/Docker-%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92-Swarm/"/>
-    <id>https://notes.xuepincat.com/2020/07/24/Docker-%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92-Swarm/</id>
-    <published>2020-07-23T16:09:23.000Z</published>
-    <updated>2020-07-24T17:35:47.454Z</updated>
-    
-    <summary type="html">
-    
-      背景
-实际生产环境比较复杂，有可能部署在一台机器上根本无法满足实际需求，可能包含的容器比较多，在生产环境中遇到的情况比如在集群中部署应用，就会涉及到非常多的容器，从而也会给我们带来一些问题
-
- * 怎么去管理这么多容器？
- * 需要增加容器，怎么能方便的横向扩展？
- * 如果容器 down 了，怎么能自动恢复？
- * 如何去更新容器而不影响业务？
- * 如何去监控追踪容易的健康状态？
- * 怎么去调度容器，可能涉及到很多集群，可能这台机器资源比较紧张，另外机器资源比较充足？
- * 如何保护隐私数据？
-
-Swarm 是内置于 Docker 的编排工具，容器编排工具并不只有 Swarm
-
-架构
 
 
     

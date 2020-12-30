@@ -211,6 +211,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/03/23/%E5%87%8F%E5%B0%91HTTP%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/03/23/%E5%87%8F%E5%B0%91HTTP%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0/" class="post-title-link" itemprop="url">减少HTTP请求次数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-03-23 22:57:48" itemprop="dateCreated datePublished" datetime="2019-03-23T22:57:48+08:00">2019-03-23</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          为什么减少HTTP请求
+性能黄金法则
+只有10%-20%的最终用户响应时间花在接受请求的HTML文档上，剩下的80%-90%时间花在HTML文档所引用的所有组件（图片，script,css,flash等等）进行的HTTP请求上。
+
+如何改善？
+如何改善组件花费的响应时间？ 改善响应时间的最简单途径就是减少组件的数量，并由此减少HTTP请求的数量。
+
+ * HTTP请求产生一定的开销
+
+进行HTTP请求的时候会经历下面几个步骤
+
+域名解析-TCP连接-发送请求-等待-下载资源-解析时间
+
+减少HTTP请求的方式
+ 1. 将多个图片合并为一个图片
+    
+    
+ 2. 合并脚本和样式表
+  
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/03/23/%E5%87%8F%E5%B0%91HTTP%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/03/23/Web%E8%B5%84%E6%BA%90%E9%98%B2%E7%9B%97%E9%93%BE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1064,94 +1163,6 @@ yum update -y
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/02/26/6-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/02/26/6-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">6-正则表达式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-02-26 23:38:09" itemprop="dateCreated datePublished" datetime="2019-02-26T23:38:09+08:00">2019-02-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/PHP/" itemprop="url" rel="index"><span itemprop="name">PHP</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          作用
-正则表达式作用: 分割、查找、匹配、替换字符串
-
-分隔符： 正斜线（/）， hash符号（#）, 取反符号（～）
-
-通用原子： \d 表示十进制0到9, \D 表示取反，除了0到9, \w 表示数字、字母、下划线, \W 表示除了数字、字母、下划线, \s 表示空白符, \S 表示除了空白符
-
-元字符： . 表示除了换行符之外的任意字符，相当于万能的主, * 表示匹配前面的内容出现0次，1次或者多次, ? 表示0次或者1次, ^ 表示必须以它开头 $ 表示必须以它结尾, + 表示出现1次或者多次, {n} 表示正好出现n次, {n,} 表示大于等于n次, {n,m} 表示大于等于n次，小
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/02/26/6-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1223,20 +1234,20 @@ yum update -y
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">178</span>
+          <span class="site-state-item-count">179</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

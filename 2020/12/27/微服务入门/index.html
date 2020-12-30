@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="单体应用 在 微服务 出现之前，接触最多的就是 单体应用  单体应用的开发部署 通常本地开发单体应用，比如开发了一个 web 应用，通过 run server 启动，运行起来之后会有一个接口，比如默认 8000 的端口；  本地开发会通过浏览器进行访问，如果它想去访问上面开发的 web 系统，浏览器访问 8000 端口，然后应用会为我们提供服务。  现在开发完打算部署上传到服务器，这个服务器比如说">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微服务入门">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/12/27/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="Finnley&#39;s Notes">
+<meta property="og:description" content="单体应用 在 微服务 出现之前，接触最多的就是 单体应用  单体应用的开发部署 通常本地开发单体应用，比如开发了一个 web 应用，通过 run server 启动，运行起来之后会有一个接口，比如默认 8000 的端口；  本地开发会通过浏览器进行访问，如果它想去访问上面开发的 web 系统，浏览器访问 8000 端口，然后应用会为我们提供服务。  现在开发完打算部署上传到服务器，这个服务器比如说">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-12-27T07:32:21.000Z">
+<meta property="article:modified_time" content="2020-12-27T09:23:37.237Z">
+<meta property="article:author" content="Finnley">
+<meta property="article:tag" content="Microservice">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/12/27/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>微服务入门 | Finnley's Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Finnley's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Finnley's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/12/27/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微服务入门
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-12-27 15:32:21 / Modified: 17:23:37" itemprop="dateCreated datePublished" datetime="2020-12-27T15:32:21+08:00">2020-12-27</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Microservice/" itemprop="url" rel="index"><span itemprop="name">Microservice</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="单体应用"><a href="#单体应用" class="headerlink" title="单体应用"></a>单体应用</h1><p>在 <code>微服务</code> 出现之前，接触最多的就是 <code>单体应用</code></p>
+<h2 id="单体应用的开发部署"><a href="#单体应用的开发部署" class="headerlink" title="单体应用的开发部署"></a>单体应用的开发部署</h2><p>通常本地开发单体应用，比如开发了一个 web 应用，通过 run server 启动，运行起来之后会有一个接口，比如默认 <code>8000</code> 的端口；</p>
+<p>本地开发会通过浏览器进行访问，如果它想去访问上面开发的 web 系统，浏览器访问 <code>8000</code> 端口，然后应用会为我们提供服务。</p>
+<p>现在开发完打算部署上传到服务器，这个服务器比如说是 <code>Linux</code>，现在想将这个 web 应用运行在服务器上，首先第一步就是上传代码。上传完后运行系统，比如服务器提供了 <code>8001</code> 的 TCP 端口，此时浏览器如果想要访问是不能直接访问 <code>8001</code> 端口的。如果服务器通过 nginx 做了端口转发，对外提供了可以对外访问的 <code>80</code> 的 <code>HTTP</code> 端口，此时浏览器可以访问 <code>80</code> 端口， nginx 接口到浏览器的请求之后进行转发，转发给 <code>8001</code> 端口；</p>
+<p>上面就是一个简单的单体应用系统。</p>
+<h2 id="单体应用开发痛点"><a href="#单体应用开发痛点" class="headerlink" title="单体应用开发痛点"></a>单体应用开发痛点</h2><ul>
+<li>代码管理</li>
+</ul>
+<p>比如使用 git 来管理单体应用系统，代码通常有一个主仓库，主仓库通常是用来生产服务器部署的，也就是主仓库代码随时都可以发布到生产服务器，所以一般代码通过分支的方式进行管理，主仓库的分支比如是 <code>master</code> 分支；</p>
+<p>比如现在有一些新的需求，要上线一个新的功能A，新功能B，开发过程中可能还会有一些bug需要修复,如果这些任何都在不同的开发手上，他们可能都在自己的分支上进行开发，他们在同时进行。</p>
+<p>现在如果新功能A开发完了，需要和master分支合并最新分支，然后发布到生产测试环境了，当测试没有问题了，合并到 master 分支，在合并之前任然要拉取下最新的分支，到这里是问题的。</p>
+<p>现在如果新功能B也开发完了，也提交到了测试环境，也测试完了，此时也需要合并到 master 分支，如果他是先合并到 master 分支的，此时新功能A已经测试完了，但是还没有合并到 master 分支,如果此时他合并，就会出现冲突，冲入解决完了是不能立即发布到,还需要会到测试环境进行回归测试，测下之前的冲突有没有影响到实现的功能，就算没有冲突，在合并的时候拉取到新的代码也是需要回归下的，不是因为没有冲突，有拉取到新的代码就不会收到影响。这种场景就可能引起不断的大量的回归测试。</p>
+<ul>
+<li>版本升级</li>
+</ul>
+<p>比如现在想要升级下，之前的是php,现在想要换成go，如果想要更换就会涉及到大量的测试，比如看到别人写代码，即使写的再烂，也不敢轻易改动，因为不知道再什么地方用到了，又是基于什么样的业务，逻辑考虑的。所以在更换语言时成本很高。</p>
+<p>如果不是更换语言，而是更换语言的版本，之前的 go1.12, 现在更换成 go1.13,对于小型应用说不定可以随时更换，但是对于一些大型应用，还是需要经过大量测试，因为不知道新版本的哪一个特性会产生什么预想不到的问题，因为之前的低版本已经在生产环境汇总运行多年，而新的版本并不是很熟，一旦出现问题，排查解决都需要花费成本</p>
+<h2 id="单体应用架构演变"><a href="#单体应用架构演变" class="headerlink" title="单体应用架构演变"></a>单体应用架构演变</h2><p>比如有一个浏览器客户端和一个网站应用还有一个后端管理系统；</p>
+<p>网站有一些基本的功能，比如登录注册，还有商品的查询，下单功能；</p>
+<p>后端管理系统也有一些基本功能，比如商品添加，订单管理，用户管理；</p>
+<p>浏览器可以访问网站，也可以访问后台管理系统；</p>
+<p>对于系统还需要有数据库，这个数据库可能是在同一台数据库上，也可能是在不同的服务器上，网站系统和后台管理系统都需要访问数据库；</p>
+<p>上面就是一个简单的单体应用结构</p>
+<p>随着系统的不断迭代，功能也会随之增多，同时访问人数也会随之增加，也就是并发增加（性能问题）</p>
+<h4 id="功能角度"><a href="#功能角度" class="headerlink" title="功能角度"></a>功能角度</h4><p>对于功能增多，比如现在要求开发个小程序应用，此时一般会新建一个项目，而不是在原来的基础上修改，如果在原来的基础上改，原来的就会越来越复杂，如果后期想要下架小程序，就会很麻烦。</p>
+<p>比如小程序也有登录注册功能，还有秒杀功能，也有下单功能。小程序也是需要访问数据库的。</p>
+<ul>
+<li>代码复用</li>
+</ul>
+<p>如果网站应用一个代码仓库，后台管理系统一个代码仓库，小程序一个仓库，这也会出现一些问题，比如代码复用的问题，比如，小程序中下单需要查询商品信息，秒杀也需要查询商品信息，而查询商品信息在网站应用中已经做过了，当然小程序中也可以再做一次，这肯定会造成重复问题</p>
+<ul>
+<li>系统间调用</li>
+</ul>
+<p>在实际中会为了解决一些问题而去其他模块进行调用，比如小程序中的秒杀需要查询网站应用的查询商品，下单也需要使用网站应用中的查询商品；小程序中用户登录需要查询后台管理中的用户管理</p>
+<ul>
+<li>接口服务</li>
+</ul>
+<p>接口不仅需要对外提供服务，还需要对内提供接口，比如商品查询本身是用来给浏览器用户使用的，但是秒杀也需要使用，接口参数可能不一样，也可能接口的权限不一样，类似这些问题。</p>
+<p>如果查询商品接口可以对外提供一些服务，也能对内给小程序提供一些服务，此时功能就会增加，但是增加也会带来一些问题，比如接口的升级，接口的变动就容易形成强依赖的关系</p>
+<ul>
+<li>增加功能</li>
+</ul>
+<p>比如现在新增了一个数据分析的功能用来做报表，这个时候需要查询数据库，这个就有可能导致数据库性能问题，因为一般对于数据分析，都是采用全数据库表做查询的，这些查询可能会影响其他正常的业务，当然一些公司可能会采用统计上一天，或者在夜间访问量不大的时候进行预处理，</p>
+<ul>
+<li>数据库被多个服务依赖，无法拆分和升级，以表作为中介来通信</li>
+</ul>
+<p>比如现在网站应用依赖数据库，后台管理系统也依赖数据库，小程序也依赖数据库，有可能出现秒杀功能中操作一张表，导致影响了网站的的功能。导致数据不一致</p>
+<ul>
+<li>性能问题</li>
+</ul>
+<p>比如某个接口写得不好，导致数据库出现严重的性能问题</p>
+<h1 id="服务拆分"><a href="#服务拆分" class="headerlink" title="服务拆分"></a>服务拆分</h1>
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Microservice/" rel="tag"># Microservice</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/12/20/CentOS-7-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" rel="prev" title="CentOS7 开发环境搭建">
+      <i class="fa fa-chevron-left"></i> CentOS7 开发环境搭建
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#单体应用"><span class="nav-number">1.</span> <span class="nav-text">单体应用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单体应用的开发部署"><span class="nav-number">1.1.</span> <span class="nav-text">单体应用的开发部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单体应用开发痛点"><span class="nav-number">1.2.</span> <span class="nav-text">单体应用开发痛点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#单体应用架构演变"><span class="nav-number">1.3.</span> <span class="nav-text">单体应用架构演变</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#功能角度"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">功能角度</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#服务拆分"><span class="nav-number">2.</span> <span class="nav-text">服务拆分</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Finnley"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Finnley</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">179</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
