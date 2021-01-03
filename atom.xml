@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2021-01-03T13:56:02.281Z</updated>
+  <updated>2021-01-03T15:27:07.543Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,90 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>notes-api-gin-Log</title>
+    <link href="https://notes.xuepincat.com/2021/01/03/notes-api-gin-Log/"/>
+    <id>https://notes.xuepincat.com/2021/01/03/notes-api-gin-Log/</id>
+    <published>2021-01-03T15:26:18.000Z</published>
+    <updated>2021-01-03T15:27:07.543Z</updated>
+    
+    <summary type="html">
+    
+      简单文件日志
+目标
+现在接口的调用，产生的日志都是输出到控制台上的，这显然对于一个项目来说是不合理的，因此需要简单封装 log库，使其支持简单的文件日志！
+
+新建 logging 包
+在 pkg 下新建 logging 目录，新建 file.go 和 log.go 文件，写入内容：
+
+file.go
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+
+
+pac
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/tags/Go/"/>
+    
+      <category term="Gin" scheme="https://notes.xuepincat.com/tags/Gin/"/>
+    
+  </entry>
   
   <entry>
     <title>Docker-LNMP</title>
@@ -47,6 +131,49 @@ Docker LNMP 包含以下镜像，每种镜像支持多个版本：
     
     
       <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>notes-api-gin-JWT</title>
+    <link href="https://notes.xuepincat.com/2021/01/01/notes-api-gin-JWT/"/>
+    <id>https://notes.xuepincat.com/2021/01/01/notes-api-gin-JWT/</id>
+    <published>2021-01-01T15:25:16.000Z</published>
+    <updated>2021-01-03T15:26:42.469Z</updated>
+    
+    <summary type="html">
+    
+      JWT 身份校验
+目标
+前面已经完成了模块API的编写，但是还存在一些非常严重的问题，比如现在的API是可以随意调用的，这显然不安全，所以接下来打算通过 jwt-go(GoDoc) 的方式来解决这个问题
+
+准备
+修改 .env 文件中数据库连接配置，因为之前容器部署将数据库连接配置改成了 DB_HOST=mysql，现在需要改成 DB_HOST=127.0.0.1
+
+创建 auth 表
+1
+2
+3
+4
+5
+6
+7
+8
+
+
+CREATE TABLE `auth` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` var
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/tags/Go/"/>
+    
+      <category term="Gin" scheme="https://notes.xuepincat.com/tags/Gin/"/>
     
   </entry>
   
@@ -208,37 +335,33 @@ autoconf
     <link href="https://notes.xuepincat.com/2020/11/29/notes-api-gin-Deploy/"/>
     <id>https://notes.xuepincat.com/2020/11/29/notes-api-gin-Deploy/</id>
     <published>2020-11-29T13:21:16.000Z</published>
-    <updated>2020-11-29T13:21:46.234Z</updated>
+    <updated>2021-01-03T15:23:59.658Z</updated>
     
     <summary type="html">
     
-      部署到 Docker
-Docker 入门
-略
+      Docker 部署
+t4_deploy
+
+目标
+将 notes-api-gin 应用部署到 Docker
+
+Docker
+
+
+Docker 是一个开源的轻量级容器技术，让开发者可以打包他们的应用以及应用运行的上下文环境到一个可移植的镜像中，然后发布到任何支持 Docker 的系统上运行。 通过容器技术，在几乎没有性能开销的情况下，Docker 为应用提供了一个隔离运行环境
+
+ * 简化配置
+ * 代码流水线管理
+ * 提高开发效率
+ * 隔离应用
+ * 快速、持续部署
 
 编写 Dockerfile
-在项目根目录中创建 Dockerfile 文件，写入内容：
+在 notes-api-gin 项目根目录创建 Dockerfile 文件，写入内容
 
 1
 2
-3
-4
-5
-6
-7
-8
-9
 
-
-FROM golang:latest
-
-ENV GOPROXY https://goproxy.cn,direct
-WORKDIR $GOPATH/src/github.com/finnley/notes-api-gin
-COPY . $GOPATH/src/github.com/finnley/notes-api-gin
-RUN go build .
-
-EXPOSE 8000
-ENTRYPOINT [&quot;./notes
     
     </summary>
     
@@ -312,11 +435,13 @@ DROP TABLE IF EXISTS `ca
     <link href="https://notes.xuepincat.com/2020/11/29/notes-api-gin-Module/"/>
     <id>https://notes.xuepincat.com/2020/11/29/notes-api-gin-Module/</id>
     <published>2020-11-29T13:19:22.000Z</published>
-    <updated>2020-11-29T13:20:11.616Z</updated>
+    <updated>2021-01-03T15:22:51.539Z</updated>
     
     <summary type="html">
     
       Module
+t3_modules
+
 接口定义
  * 获取模块列表：GET(“/modules”)
  * 新建模块：POST(“/modules”)
@@ -324,9 +449,7 @@ DROP TABLE IF EXISTS `ca
  * 删除指定模块：DELETE(“/modules/:id”)
 
 初始项目数据库
-新建 notes 数据库，编码为 utf8_general_ci，在 notes 数据库下，新建以下表
-
-1、模块表
+新建 notes 数据库，编码为 utf8_general_ci，在 notes 数据库下，新建 module 表
 
 1
 2
@@ -341,11 +464,19 @@ DROP TABLE IF EXISTS `ca
 11
 12
 13
+14
+15
+16
+17
+18
+19
+20
+21
+22
 
 
 DROP TABLE IF EXISTS `module`;
-CREATE TABLE `module` (
-  `uuid` char(36) 
+CREA
     
     </summary>
     
@@ -364,11 +495,19 @@ CREATE TABLE `module` (
     <link href="https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/"/>
     <id>https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/</id>
     <published>2020-11-29T13:18:26.000Z</published>
-    <updated>2020-11-29T13:19:09.666Z</updated>
+    <updated>2021-01-03T15:21:15.210Z</updated>
     
     <summary type="html">
     
       基础框架搭建
+t2_project_init
+
+目标
+ * 编写一个简单的 API 错误码包。
+ * 完成一个 Demo 示例。
+ * 讲解 Demo 所涉及的知识点。
+
+引入
 基本每个项目都有自己的一套框架，如果没有框架，可能会出现下面的一些问题：
 
  * 将所有的程序的文本配置写在代码中；
@@ -380,24 +519,7 @@ CREATE TABLE `module` (
 显然在较正规的项目中，这些问题的答案都是不允许的，为了解决这些问题，挑选一款读写配置文件的库，目前比较火的有 viper
 
 初始化项目目录
-初始化了一个 notes-api-gin 项目，接下来需要继续新增如下目录结构：
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-
-
-.
-├── README.md
-├── c
+现在已经初始化
     
     </summary>
     
@@ -416,11 +538,13 @@ CREATE TABLE `module` (
     <link href="https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%88%9D%E5%A7%8B%E5%8C%96/"/>
     <id>https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%88%9D%E5%A7%8B%E5%8C%96/</id>
     <published>2020-11-29T13:17:18.000Z</published>
-    <updated>2020-11-29T13:18:07.605Z</updated>
+    <updated>2021-01-03T15:20:09.240Z</updated>
     
     <summary type="html">
     
       初始化
+t1_gin_init
+
 项目搭建
 创建一个自己的目录作为项目根目录，比如 notes-api-gin
 
@@ -443,7 +567,7 @@ go.mod
 
 
  * mkdir xxx &amp;&amp; cd xxx：创建并切换到项目目录里去。
- * go mod ini
+
     
     </summary>
     
@@ -860,64 +984,6 @@ boxes = [
     
     
       <category term="DevOps k8s" scheme="https://notes.xuepincat.com/tags/DevOps-k8s/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Docker-Kubernetes入门</title>
-    <link href="https://notes.xuepincat.com/2020/07/26/Docker-Kubernetes%E5%85%A5%E9%97%A8/"/>
-    <id>https://notes.xuepincat.com/2020/07/26/Docker-Kubernetes%E5%85%A5%E9%97%A8/</id>
-    <published>2020-07-26T02:38:15.000Z</published>
-    <updated>2020-08-02T15:37:34.166Z</updated>
-    
-    <summary type="html">
-    
-      Docker Swarm Mode Architecture
-
-
-Docker Swarm 分为 Manager 节点和 Worker 节点，Manager 节点主要是负责管理，位置 Cluster 的状态，并且对外提供接口，可以通过 Manager 节点部署 Application, Service 和 Stacks
-
-Kubernetes Architecture
-
-
-K8S 中类似 Manager 节点称为 Master 节点，Worker 节点称为 Node 节点，Master 节点对外会提供一些接口，可通过这些接口对集群进行一些操作，比如查看整个 Cluster 集群的整体状态，或者
-    
-    </summary>
-    
-    
-      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
-    
-    
-      <category term="Docker Kubernetes" scheme="https://notes.xuepincat.com/tags/Docker-Kubernetes/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>集群服务通信-Routing Mesh</title>
-    <link href="https://notes.xuepincat.com/2020/07/25/Docker-%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1-Routing-Mesh/"/>
-    <id>https://notes.xuepincat.com/2020/07/25/Docker-%E9%9B%86%E7%BE%A4%E6%9C%8D%E5%8A%A1%E9%80%9A%E4%BF%A1-Routing-Mesh/</id>
-    <published>2020-07-25T04:41:57.000Z</published>
-    <updated>2020-07-25T13:40:18.111Z</updated>
-    
-    <summary type="html">
-    
-      有两个service,一个 mysql,一个wordpress,通过service的创建，将它们部署到了swarm cluster里面，这两个service位于不同的节点
-
-这个两个service之间是可以相互通信的，并且它们之间是可以通过service name进行通信，这里就涉及到DNS服务发现的概念
-
-
-
-通过 docker compose 部署 application的时候，application里面的service如果连接到了一个网络上，它们之间是可以通过 service name qu 相互访问的，这个底层是通过DNS服务实现的
-
-swarm 有内置一个DNS服务发现功能，在创建一
-    
-    </summary>
-    
-    
-      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
-    
-    
-      <category term="Docker" scheme="https://notes.xuepincat.com/tags/Docker/"/>
     
   </entry>
   

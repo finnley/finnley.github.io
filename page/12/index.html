@@ -211,6 +211,179 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/10/13/%E4%B8%8B%E5%8D%95%E4%B8%8E%E6%94%AF%E4%BB%98%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/13/%E4%B8%8B%E5%8D%95%E4%B8%8E%E6%94%AF%E4%BB%98%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/" class="post-title-link" itemprop="url">下单与支付详细流程</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-13 00:04:01" itemprop="dateCreated datePublished" datetime="2018-10-13T00:04:01+08:00">2018-10-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BE%AE%E4%BF%A1/" itemprop="url" rel="index"><span itemprop="name">微信</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          ![token](http://notes.ornnth.com/images/token/5.png) 1. 在小程序中用户选择了一组商品之后首先需要调用图中的下单接口，将相关的所请求的数据发送到服务器；
+    
+    
+ 2. 然后服务器API会去做库存检测；如果库存检测通过之后就会保存用户的订单，认为下单成功，并且将订单检测的相关信息返回给小程序；
+    
+    
+ 3. 小程序根据服务器下单的的库存检测的结果决定是否要发起支付，如果库存量通过，并且也没有出现其他的问题，那么小程序就认为下单成功了，就会调用API里面的支付接口（调用支付API）；
+    
+    
+ 4. 小程
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/10/13/%E4%B8%8B%E5%8D%95%E4%B8%8E%E6%94%AF%E4%BB%98%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/10/07/2-%E5%BE%AE%E4%BF%A1%E8%BA%AB%E4%BB%BD%E4%BD%93%E7%B3%BB%E8%AE%BE%E8%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/10/07/2-%E5%BE%AE%E4%BF%A1%E8%BA%AB%E4%BB%BD%E4%BD%93%E7%B3%BB%E8%AE%BE%E8%AE%A1/" class="post-title-link" itemprop="url">2-微信身份体系设计</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-07 04:06:29" itemprop="dateCreated datePublished" datetime="2018-10-07T04:06:29+08:00">2018-10-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BE%AE%E4%BF%A1/" itemprop="url" rel="index"><span itemprop="name">微信</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          ![token](http://notes.ornnth.com/images/token/3.png)以小程序作为客户端为例，其实我们也可以设计一套账号密码体系来模式登陆和获取令牌，但是小程序是构建于微信体系下面的，微信已经有了一个身份验证体系，所以没有必要再再小程序中设计一套账号密码体系，这里可以借用微信的体系做自己用户权限体系，所以图中没有必要再传入账号密码了，因为这里是复用了微信的权限结构，所以不需要自己传递账号和密码，相应代替的是小程序可以为每个登录的用户生成一个Code,Code是一个数字码，这里需要将Code码传递给getToken接口
+
+虽然没有自己的身份体系，所以我们必须有一
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/10/07/2-%E5%BE%AE%E4%BF%A1%E8%BA%AB%E4%BB%BD%E4%BD%93%E7%B3%BB%E8%AE%BE%E8%AE%A1/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/10/07/1-%E5%88%9D%E8%AF%86Token/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -981,228 +1154,10 @@ enabled=1
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/16/Windows%E5%B9%B3%E5%8F%B0%E4%B8%8BMongoDB%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/09/16/Windows%E5%B9%B3%E5%8F%B0%E4%B8%8BMongoDB%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">Windows平台下MongoDB的安装和环境搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-09-16 09:31:30" itemprop="dateCreated datePublished" datetime="2018-09-16T09:31:30+08:00">2018-09-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/MongoDB/" itemprop="url" rel="index"><span itemprop="name">MongoDB</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          下载安装包或压缩包
-进入官网, 选择社区版，选择对应的Windows版本，点击下载按钮
-
-![](/images/mongodb/1.png) 1. 双击安装包
-    
-    ![](/images/mongodb/2.png)
- 2. Next
-    
-    
-
-![](/images/mongodb/3.png) 3. 接受条款, 然后 Next
-
-![](/images/mongodb/4.png) 4. 选择自定义安装， 然后 Next
-
-![](/images/mongodb/5.png) 5. 选择Browser 更改路径
-
-![](/images/mongodb/6.pn
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/09/16/Windows%E5%B9%B3%E5%8F%B0%E4%B8%8BMongoDB%E7%9A%84%E5%AE%89%E8%A3%85%E5%92%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/09/Ubuntu%E9%85%8D%E5%90%88Vultr%E6%90%AD%E5%BB%BAShadowsocks/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/09/09/Ubuntu%E9%85%8D%E5%90%88Vultr%E6%90%AD%E5%BB%BAShadowsocks/" class="post-title-link" itemprop="url">Ubuntu配合Vultr搭建Shadowsocks</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-09-09 00:31:12" itemprop="dateCreated datePublished" datetime="2018-09-09T00:31:12+08:00">2018-09-09</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Ubuntu/" itemprop="url" rel="index"><span itemprop="name">Ubuntu</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          环境安装
-1
-2
-3
-
-
-sudo apt-get update
-sudo apt-get install -y python-pip python-setuptools m2crypto
-pip install shadowsocks
-
-
-![](/images/shadowsocks/1.png)最后一行安装 shadowsocks 时候可能会警告提示，不用理会，只要最后一行有shadowsocks2.8.2（目前最新版本）出现就ok了
-
-配置
-1
-
-
-nano ss.sh
-
-
-复制下面的脚本代码
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/09/09/Ubuntu%E9%85%8D%E5%90%88Vultr%E6%90%AD%E5%BB%BAShadowsocks/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/18/">18</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <a class="extend prev" rel="prev" href="/page/11/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><a class="extend next" rel="next" href="/page/13/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -1270,7 +1225,7 @@ nano ss.sh
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">179</span>
+          <span class="site-state-item-count">181</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

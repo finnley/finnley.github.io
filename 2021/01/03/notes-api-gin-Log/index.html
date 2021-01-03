@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="简单文件日志 目标 现在接口的调用，产生的日志都是输出到控制台上的，这显然对于一个项目来说是不合理的，因此需要简单封装 log库，使其支持简单的文件日志！  新建 logging 包 在 pkg 下新建 logging 目录，新建 file.go 和 log.go 文件，写入内容：  file.go 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="notes-api-gin-Log">
+<meta property="og:url" content="https://notes.xuepincat.com/2021/01/03/notes-api-gin-Log/index.html">
+<meta property="og:site_name" content="Finnley&#39;s Notes">
+<meta property="og:description" content="简单文件日志 目标 现在接口的调用，产生的日志都是输出到控制台上的，这显然对于一个项目来说是不合理的，因此需要简单封装 log库，使其支持简单的文件日志！  新建 logging 包 在 pkg 下新建 logging 目录，新建 file.go 和 log.go 文件，写入内容：  file.go 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 2">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-01-03T15:26:18.000Z">
+<meta property="article:modified_time" content="2021-01-03T15:27:07.543Z">
+<meta property="article:author" content="Finnley">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Gin">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2021/01/03/notes-api-gin-Log/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>notes-api-gin-Log | Finnley's Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Finnley's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Finnley's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/01/03/notes-api-gin-Log/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          notes-api-gin-Log
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-01-03 23:26:18 / Modified: 23:27:07" itemprop="dateCreated datePublished" datetime="2021-01-03T23:26:18+08:00">2021-01-03</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="简单文件日志"><a href="#简单文件日志" class="headerlink" title="简单文件日志"></a>简单文件日志</h1><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>现在接口的调用，产生的日志都是输出到控制台上的，这显然对于一个项目来说是不合理的，因此需要简单封装 <code>log</code>库，使其支持简单的文件日志！</p>
+<h2 id="新建-logging-包"><a href="#新建-logging-包" class="headerlink" title="新建 logging 包"></a>新建 <code>logging</code> 包</h2><p>在 <code>pkg</code> 下新建 <code>logging</code> 目录，新建 <code>file.go</code> 和 <code>log.go</code> 文件，写入内容：</p>
+<h4 id="file-go"><a href="#file-go" class="headerlink" title="file.go"></a>file.go</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">package logging</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;os&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var (</span><br><span class="line">	LogSavePath &#x3D; &quot;runtime&#x2F;logs&#x2F;&quot;</span><br><span class="line">	LogSaveName &#x3D; &quot;log&quot;</span><br><span class="line">	LogFileExt &#x3D; &quot;log&quot;</span><br><span class="line">	TimeFormat &#x3D; &quot;20060102&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func getLogFilePath() string &#123;</span><br><span class="line">	return fmt.Sprintf(&quot;%s&quot;, LogSavePath)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func getLogFileFullPath() string &#123;</span><br><span class="line">	prefixPath :&#x3D; getLogFilePath()</span><br><span class="line">	suffixPath :&#x3D; fmt.Sprintf(&quot;%s%s.%s&quot;, LogSaveName, time.Now().Format(TimeFormat), LogFileExt)</span><br><span class="line"></span><br><span class="line">	return fmt.Sprintf(&quot;%s%s&quot;, prefixPath, suffixPath)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func openLogFile(filePath string) *os.File &#123;</span><br><span class="line">	_, err :&#x3D; os.Stat(filePath)</span><br><span class="line">	switch &#123;</span><br><span class="line">	case os.IsNotExist(err):</span><br><span class="line">		mkDir()</span><br><span class="line">	case os.IsPermission(err):</span><br><span class="line">		log.Fatalf(&quot;Permission :%v&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	handle, err :&#x3D; os.OpenFile(filePath, os.O_APPEND | os.O_CREATE | os.O_WRONLY, 0644)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		log.Fatalf(&quot;Fail to OpenFile :%v&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return handle</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func mkDir() &#123;</span><br><span class="line">	dir, _ :&#x3D; os.Getwd()</span><br><span class="line">	err :&#x3D; os.MkdirAll(dir + &quot;&#x2F;&quot; + getLogFilePath(), os.ModePerm)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		panic(err)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>os.Stat：返回文件信息结构描述文件。如果出现错误，会返回 <code>*PathError</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type PathError struct &#123;</span><br><span class="line">    Op   string</span><br><span class="line">    Path string</span><br><span class="line">    Err  error</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>os.IsNotExist：能够接受 <code>ErrNotExist</code>、<code>syscall</code> 的一些错误，它会返回一个布尔值，能够得知文件不存在或目录不存在</li>
+<li>os.IsPermission：能够接受 <code>ErrPermission</code>、<code>syscall</code> 的一些错误，它会返回一个布尔值，能够得知权限是否满足</li>
+<li>os.OpenFile：调用文件，支持传入文件名称、指定的模式调用文件、文件权限，返回的文件的方法可以用于 I/O。如果出现错误，则为 <code>*PathError</code> 。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">const (</span><br><span class="line">    &#x2F;&#x2F; Exactly one of O_RDONLY, O_WRONLY, or O_RDWR must be specified.</span><br><span class="line">    O_RDONLY int &#x3D; syscall.O_RDONLY &#x2F;&#x2F; 以只读模式打开文件</span><br><span class="line">    O_WRONLY int &#x3D; syscall.O_WRONLY &#x2F;&#x2F; 以只写模式打开文件</span><br><span class="line">    O_RDWR   int &#x3D; syscall.O_RDWR   &#x2F;&#x2F; 以读写模式打开文件</span><br><span class="line">    &#x2F;&#x2F; The remaining values may be or&#39;ed in to control behavior.</span><br><span class="line">    O_APPEND int &#x3D; syscall.O_APPEND &#x2F;&#x2F; 在写入时将数据追加到文件中</span><br><span class="line">    O_CREATE int &#x3D; syscall.O_CREAT  &#x2F;&#x2F; 如果不存在，则创建一个新文件</span><br><span class="line">    O_EXCL   int &#x3D; syscall.O_EXCL   &#x2F;&#x2F; 使用O_CREATE时，文件必须不存在</span><br><span class="line">    O_SYNC   int &#x3D; syscall.O_SYNC   &#x2F;&#x2F; 同步IO</span><br><span class="line">    O_TRUNC  int &#x3D; syscall.O_TRUNC  &#x2F;&#x2F; 如果可以，打开时</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>os.Getwd：返回与当前目录对应的根路径名</li>
+<li>os.MkdirAll：创建对应的目录以及所需的子目录，若成功则返回nil，否则返回 <code>error</code></li>
+<li>os.ModePerm：const 定义 <code>ModePerm FileMode = 0777</code></li>
+</ul>
+<h4 id="log-go"><a href="#log-go" class="headerlink" title="log.go"></a>log.go</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">package logging</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;log&quot;</span><br><span class="line">	&quot;os&quot;</span><br><span class="line">	&quot;path&#x2F;filepath&quot;</span><br><span class="line">	&quot;runtime&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type Level int</span><br><span class="line"></span><br><span class="line">var (</span><br><span class="line">	F *os.File</span><br><span class="line"></span><br><span class="line">	DefaultPrefix &#x3D; &quot;&quot;</span><br><span class="line">	DefaultCallerDepth &#x3D; 2</span><br><span class="line"></span><br><span class="line">	logger *log.Logger</span><br><span class="line">	logPrefix &#x3D; &quot;&quot;</span><br><span class="line">	levelFlags &#x3D; []string&#123;&quot;DEBUG&quot;, &quot;INFO&quot;, &quot;WARN&quot;, &quot;ERROR&quot;, &quot;FATAL&quot;&#125;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">const (</span><br><span class="line">	DEBUG Level &#x3D; iota</span><br><span class="line">	INFO</span><br><span class="line">	WARNING</span><br><span class="line">	ERROR</span><br><span class="line">	FATAL</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func init() &#123;</span><br><span class="line">	filePath :&#x3D; getLogFileFullPath()</span><br><span class="line">	F &#x3D; openLogFile(filePath)</span><br><span class="line"></span><br><span class="line">	logger &#x3D; log.New(F, DefaultPrefix, log.LstdFlags)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func Debug(v ...interface&#123;&#125;) &#123;</span><br><span class="line">	setPrefix(DEBUG)</span><br><span class="line">	logger.Println(v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func Info(v ...interface&#123;&#125;) &#123;</span><br><span class="line">	setPrefix(INFO)</span><br><span class="line">	logger.Println(v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func Warn(v ...interface&#123;&#125;) &#123;</span><br><span class="line">	setPrefix(WARNING)</span><br><span class="line">	logger.Println(v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func Error(v ...interface&#123;&#125;) &#123;</span><br><span class="line">	setPrefix(ERROR)</span><br><span class="line">	logger.Println(v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func Fatal(v ...interface&#123;&#125;) &#123;</span><br><span class="line">	setPrefix(FATAL)</span><br><span class="line">	logger.Fatalln(v)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func setPrefix(level Level) &#123;</span><br><span class="line">	_, file, line, ok :&#x3D; runtime.Caller(DefaultCallerDepth)</span><br><span class="line">	if ok &#123;</span><br><span class="line">		logPrefix &#x3D; fmt.Sprintf(&quot;[%s][%s:%d]&quot;, levelFlags[level], filepath.Base(file), line)</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		logPrefix &#x3D; fmt.Sprintf(&quot;[%s]&quot;, levelFlags[level])</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	logger.SetPrefix(logPrefix)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>log.New：创建一个新的日志记录器。<code>out</code> 定义要写入日志数据的 <code>IO</code> 句柄。<code>prefix</code> 定义每个生成的日志行的开头。<code>flag</code> 定义了日志记录属性</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func New(out io.Writer, prefix string, flag int) *Logger &#123;</span><br><span class="line">    return &amp;Logger&#123;out: out, prefix: prefix, flag: flag&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>log.LstdFlags：日志记录的格式属性之一，其余的选项如下</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const (</span><br><span class="line">    Ldate         &#x3D; 1 &lt;&lt; iota     &#x2F;&#x2F; the date in the local time zone: 2009&#x2F;01&#x2F;23</span><br><span class="line">    Ltime                         &#x2F;&#x2F; the time in the local time zone: 01:23:23</span><br><span class="line">    Lmicroseconds                 &#x2F;&#x2F; microsecond resolution: 01:23:23.123123.  assumes Ltime.</span><br><span class="line">    Llongfile                     &#x2F;&#x2F; full file name and line number: &#x2F;a&#x2F;b&#x2F;c&#x2F;d.go:23</span><br><span class="line">    Lshortfile                    &#x2F;&#x2F; final file name element and line number: d.go:23. overrides Llongfile</span><br><span class="line">    LUTC                          &#x2F;&#x2F; if Ldate or Ltime is set, use UTC rather than the local time zone</span><br><span class="line">    LstdFlags     &#x3D; Ldate | Ltime &#x2F;&#x2F; initial values for the standard logger</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>当前目录结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── Dockerfile</span><br><span class="line">├── Dockerfile.bak</span><br><span class="line">├── README.md</span><br><span class="line">├── conf</span><br><span class="line">│   └── app.ini</span><br><span class="line">├── data</span><br><span class="line">│   └── notes.sql</span><br><span class="line">├── docker-compose.yml</span><br><span class="line">├── go.mod</span><br><span class="line">├── go.sum</span><br><span class="line">├── main.go</span><br><span class="line">├── middleware</span><br><span class="line">│   └── jwt</span><br><span class="line">│       └── jwt.go</span><br><span class="line">├── models</span><br><span class="line">│   ├── auth.go</span><br><span class="line">│   ├── models.go</span><br><span class="line">│   └── module.go</span><br><span class="line">├── notes-api-gin</span><br><span class="line">├── pkg</span><br><span class="line">│   ├── e</span><br><span class="line">│   │   ├── code.go</span><br><span class="line">│   │   └── msg.go</span><br><span class="line">│   ├── logging</span><br><span class="line">│   │   ├── file.go</span><br><span class="line">│   │   └── log.go</span><br><span class="line">│   ├── setting</span><br><span class="line">│   │   └── setting.go</span><br><span class="line">│   └── util</span><br><span class="line">│       ├── jwt.go</span><br><span class="line">│       ├── pagination.go</span><br><span class="line">│       └── time.go</span><br><span class="line">├── routers</span><br><span class="line">│   ├── api</span><br><span class="line">│   │   ├── auth.go</span><br><span class="line">│   │   └── v1</span><br><span class="line">│   │       └── module.go</span><br><span class="line">│   └── router.go</span><br><span class="line">└── runtime</span><br></pre></td></tr></table></figure>
+
+<p>自定义的 <code>logging</code> 包，已经基本完成了，接下来让它接入到项目之中吧。打开先前包含 <code>log</code> 包的代码，如下：</p>
+<ol>
+<li>打开 <code>routers</code> 目录下的 <code>module.go</code>、<code>auth.go</code>。</li>
+<li>将 <code>log</code> 包的引用删除，修改引用我们自己的日志包为 <code>github.com/finnley/notes-api-gin/pkg/logging</code>。</li>
+<li>将原本的 <code>log.Println(...)</code> 改为 <code>logging.Info(...)</code> 。</li>
+</ol>
+<p>例如 <code>auth.go</code> 文件的修改内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">package api</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;github.com&#x2F;astaxie&#x2F;beego&#x2F;validation&quot;</span><br><span class="line">	&quot;github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;models&quot;</span><br><span class="line">	&quot;github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;pkg&#x2F;e&quot;</span><br><span class="line">	&quot;github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;pkg&#x2F;logging&quot;</span><br><span class="line">	&quot;github.com&#x2F;finnley&#x2F;notes-api-gin&#x2F;pkg&#x2F;util&quot;</span><br><span class="line">	&quot;github.com&#x2F;gin-gonic&#x2F;gin&quot;</span><br><span class="line">	&quot;net&#x2F;http&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">func GetAuth(c *gin.Context)  &#123;</span><br><span class="line">	...</span><br><span class="line">	if ok &#123;</span><br><span class="line">		...</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		for _, err :&#x3D; range valid.Errors &#123;</span><br><span class="line">			&#x2F;&#x2F;log.Printf(err.Key, err.Message)</span><br><span class="line">			logging.Info(err.Key, err.Message)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	c.JSON(http.StatusOK, gin.H&#123;</span><br><span class="line">		&quot;code&quot;: &quot;code&quot;,</span><br><span class="line">		&quot;msg&quot;: e.GetMsg(code),</span><br><span class="line">		&quot;data&quot;: data,</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="验证功能"><a href="#验证功能" class="headerlink" title="验证功能"></a>验证功能</h2><p>修改文件后，重启服务，我们来试试吧！</p>
+<p>获取到 <code>API</code> 的 <code>Token</code> 后，我们故意传错误 <code>URL</code> 参数给接口，如：<code>http://127.0.0.1:8000/api/v1/modules?state=9999999&amp;token=eyJhbG..</code></p>
+<p>然后我们到 <code>$GOPATH/notes-api-gin/runtime/logs</code> 查看日志</p>
+<p>日志结构一切正常，我们的记录模式都为 <code>Info</code>，因此前缀是对的，并且我们是入参有问题，也把错误记录下来了，这样排错就很方便了！</p>
+<p>至此，日志完成，这只是一个简单的扩展，实际上我们线上项目要使用的文件日志，是更复杂一些，后面考虑使用接入开源的日志框架玩玩 ^.^</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+              <a href="/tags/Gin/" rel="tag"># Gin</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/02/Docker-LNMP/" rel="prev" title="Docker-LNMP">
+      <i class="fa fa-chevron-left"></i> Docker-LNMP
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#简单文件日志"><span class="nav-number">1.</span> <span class="nav-text">简单文件日志</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建-logging-包"><span class="nav-number">1.2.</span> <span class="nav-text">新建 logging 包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#file-go"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">file.go</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#log-go"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">log.go</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证功能"><span class="nav-number">1.3.</span> <span class="nav-text">验证功能</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Finnley"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Finnley</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">181</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
