@@ -4,7 +4,7 @@
   <url>
     <loc>https://notes.xuepincat.com/2021/01/02/Docker-LNMP/</loc>
     
-    <lastmod>2021-01-02</lastmod>
+    <lastmod>2021-01-03</lastmod>
     
   </url>
   
@@ -737,14 +737,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/2018/03/24/CentOS-7%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81IP/</loc>
+    <loc>https://notes.xuepincat.com/2018/07/20/CentOS-7-%E5%BC%80%E6%94%BE3306%E7%AB%AF%E5%8F%A3/</loc>
     
     <lastmod>2020-05-23</lastmod>
     
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/2018/07/20/CentOS-7-%E5%BC%80%E6%94%BE3306%E7%AB%AF%E5%8F%A3/</loc>
+    <loc>https://notes.xuepincat.com/2018/03/24/CentOS-7%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81IP/</loc>
     
     <lastmod>2020-05-23</lastmod>
     
@@ -1122,14 +1122,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/2017/07/01/9-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%B8%80)/</loc>
+    <loc>https://notes.xuepincat.com/2018/07/26/CentOS%207%E5%AE%89%E8%A3%85Redis/</loc>
     
     <lastmod>2020-05-23</lastmod>
     
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/2018/07/26/CentOS%207%E5%AE%89%E8%A3%85Redis/</loc>
+    <loc>https://notes.xuepincat.com/2017/07/01/9-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%B8%80)/</loc>
     
     <lastmod>2020-05-23</lastmod>
     
@@ -1285,27 +1285,6 @@
 
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/</loc>
-    <lastmod>2021-01-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/tags/Elasticsearch/</loc>
-    <lastmod>2021-01-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/tags/MySQL/</loc>
-    <lastmod>2021-01-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/tags/Hexo/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
@@ -1320,14 +1299,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Python/</loc>
+    <loc>https://notes.xuepincat.com/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Numpy/</loc>
+    <loc>https://notes.xuepincat.com/tags/Elasticsearch/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1341,14 +1320,21 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/%E5%BE%AE%E4%BF%A1/</loc>
+    <loc>https://notes.xuepincat.com/tags/MySQL/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/ElasticSearch/</loc>
+    <loc>https://notes.xuepincat.com/tags/Python/</loc>
+    <lastmod>2021-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/Numpy/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1384,6 +1370,20 @@
   
   <url>
     <loc>https://notes.xuepincat.com/tags/SSH/</loc>
+    <lastmod>2021-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/%E5%BE%AE%E4%BF%A1/</loc>
+    <lastmod>2021-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/ElasticSearch/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1439,14 +1439,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Node/</loc>
+    <loc>https://notes.xuepincat.com/tags/Nginx/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Nginx/</loc>
+    <loc>https://notes.xuepincat.com/tags/Node/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1460,7 +1460,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Linux-CentOS-Docker/</loc>
+    <loc>https://notes.xuepincat.com/tags/Linux-CentOS-MySQL/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1474,14 +1474,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Linux-CentOS-MySQL/</loc>
-    <lastmod>2021-01-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/tags/DevOps/</loc>
+    <loc>https://notes.xuepincat.com/tags/Linux-CentOS-Docker/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1495,14 +1488,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Docker-Kubernetes/</loc>
+    <loc>https://notes.xuepincat.com/tags/TCP/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/TCP/</loc>
+    <loc>https://notes.xuepincat.com/tags/Docker-Kubernetes/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1523,6 +1516,13 @@
   </url>
   
   <url>
+    <loc>https://notes.xuepincat.com/tags/Logstash/</loc>
+    <lastmod>2021-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://notes.xuepincat.com/tags/PHP-Linux-Ubuntu/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
@@ -1537,14 +1537,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/elasticsearch/</loc>
-    <lastmod>2021-01-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/tags/Logstash/</loc>
+    <loc>https://notes.xuepincat.com/tags/DevOps/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1558,14 +1551,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/RabbitMQ/</loc>
+    <loc>https://notes.xuepincat.com/tags/Mac/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/NodeJs/</loc>
+    <loc>https://notes.xuepincat.com/tags/elasticsearch/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1579,7 +1572,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Network/</loc>
+    <loc>https://notes.xuepincat.com/tags/NodeJs/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1593,14 +1586,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Nignx/</loc>
+    <loc>https://notes.xuepincat.com/tags/RabbitMQ/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Mac/</loc>
+    <loc>https://notes.xuepincat.com/tags/Nignx/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1622,6 +1615,13 @@
   
   <url>
     <loc>https://notes.xuepincat.com/tags/WebStorm/</loc>
+    <lastmod>2021-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/Network/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1665,6 +1665,13 @@
 
   
   <url>
+    <loc>https://notes.xuepincat.com/categories/Hexo-Next/</loc>
+    <lastmod>2021-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://notes.xuepincat.com/categories/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
@@ -1679,27 +1686,6 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/MySQL/</loc>
-    <lastmod>2021-01-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/categories/Hexo-Next/</loc>
-    <lastmod>2021-01-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2021-01-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/categories/PHP/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
@@ -1707,14 +1693,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/%E5%BE%AE%E4%BF%A1/</loc>
+    <loc>https://notes.xuepincat.com/categories/MySQL/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/ElasticSearch/</loc>
+    <loc>https://notes.xuepincat.com/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1736,6 +1722,20 @@
   
   <url>
     <loc>https://notes.xuepincat.com/categories/Docker/</loc>
+    <lastmod>2021-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/categories/%E5%BE%AE%E4%BF%A1/</loc>
+    <lastmod>2021-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/categories/ElasticSearch/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1805,7 +1805,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/MQ/</loc>
+    <loc>https://notes.xuepincat.com/categories/Mac/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1826,7 +1826,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/Mac/</loc>
+    <loc>https://notes.xuepincat.com/categories/MQ/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1847,13 +1847,6 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/%E9%AB%98%E5%B9%B6%E5%8F%91/</loc>
-    <lastmod>2021-01-03</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/categories/%E7%88%AC%E8%99%AB/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
@@ -1862,6 +1855,13 @@
   
   <url>
     <loc>https://notes.xuepincat.com/categories/Wechat/</loc>
+    <lastmod>2021-01-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/categories/%E9%AB%98%E5%B9%B6%E5%8F%91/</loc>
     <lastmod>2021-01-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
