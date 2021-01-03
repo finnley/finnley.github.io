@@ -211,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/26/Docker-Dockerfile/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -225,7 +225,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/" class="post-title-link" itemprop="url">Dockerfile语法</a>
+            <a href="/2019/05/26/Docker-Dockerfile/" class="post-title-link" itemprop="url">Dockerfile</a>
         </h2>
 
         <div class="post-meta">
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-29 21:05:03" itemprop="dateModified" datetime="2020-11-29T21:05:03+08:00">2020-11-29</time>
+                <time title="Modified: 2021-01-02 17:56:06" itemprop="dateModified" datetime="2021-01-02T17:56:06+08:00">2021-01-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -265,7 +265,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          FROM
+          语法
+FROM
 尽量使用官方的 image 作为base image !
 
  * FROM scratch # 制作base image
@@ -280,10 +281,10 @@ Metadata 不可少，有点像代码中的注释
  * LABEL description=”This is description”
 
 RUN
-每运行一次 run ,对于 image 都会生成新的一层，所以对于 run ,为了
+每运行一次 run ,对于 image 都会生成新的一层，所以对于 run 
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/#more" rel="contents">
+              <a class="btn" href="/2019/05/26/Docker-Dockerfile/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -428,7 +429,7 @@ RUN
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-19 10:07:11" itemprop="dateModified" datetime="2020-09-19T10:07:11+08:00">2020-09-19</time>
+                <time title="Modified: 2021-01-02 17:16:09" itemprop="dateModified" datetime="2021-01-02T17:16:09+08:00">2021-01-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -718,7 +719,7 @@ $ sudo yum remove docker \
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-12-20 22:30:39" itemprop="dateModified" datetime="2020-12-20T22:30:39+08:00">2020-12-20</time>
+                <time title="Modified: 2021-01-02 12:52:20" itemprop="dateModified" datetime="2021-01-02T12:52:20+08:00">2021-01-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -742,33 +743,33 @@ $ sudo yum remove docker \
 
       
           方法一
-此种方法需要联网下载 centos 的 vagrant 盒子，期间会很慢， 如果觉得慢可以使用方法二
+此种方法需要联网下载 centos 的 vagrant 盒子，真的很慢
 
 1
 2
 3
 4
-5
-6
 
 
-cd vagrant
-sudo mkdir centos7
-sudo chmod 777 centos7/
+mkdir centos7
 cd centos7
 vagrant init centos/7
 vagrant up
 
 
 方法二
-提前下载好 centos/7 的镜像，所以这里先进行添加镜像，前提是镜像(CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.box)已经下载好了
+提前下载好 centos/7 的镜像，所以这里先进行添加镜像，我这里的镜像(CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.box)已经下载好了
 
- 1. 添加镜像
-
+添加镜像
 1
 
 
-vagrant box add cent
+vagrant box add centos/7 CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.box
+
+
+
+
+查看是否已经成
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2019/05/15/vagrant-install-centos7-using-vagrant/#more" rel="contents">
@@ -1339,7 +1340,7 @@ put
 <div class="copyright">
   
   &copy; 2017 – 
-  <span itemprop="copyrightYear">2020</span>
+  <span itemprop="copyrightYear">2021</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

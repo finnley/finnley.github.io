@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://notes.xuepincat.com/2021/01/02/Docker-LNMP/</loc>
+    <lastmod>2021-01-02</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2019/05/26/Docker-Dockerfile/</loc>
+    <lastmod>2021-01-02</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2019/05/19/Docker-Image/</loc>
+    <lastmod>2021-01-02</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2019/05/15/vagrant-install-centos7-using-vagrant/</loc>
+    <lastmod>2021-01-02</lastmod>
+  </url>
+  <url>
     <loc>https://notes.xuepincat.com/2020/12/20/CentOS-7-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
-    <lastmod>2020-12-29</lastmod>
+    <lastmod>2021-01-02</lastmod>
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2020/12/27/%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2020-12-27</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2019/05/15/vagrant-install-centos7-using-vagrant/</loc>
-    <lastmod>2020-12-20</lastmod>
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2020/06/13/Mac%E5%AE%89%E8%A3%85Homebrew%E5%B9%B6%E6%9B%B4%E6%8D%A2%E5%9B%BD%E5%86%85%E9%95%9C%E5%83%8F%E6%BA%90/</loc>
@@ -57,14 +69,6 @@
     <lastmod>2020-11-29</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2019/05/29/10-Dockerfile%E5%AE%9E%E6%88%98/</loc>
-    <lastmod>2020-11-29</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2019/05/26/9-Dockerfile%E8%AF%AD%E6%B3%95/</loc>
-    <lastmod>2020-11-29</lastmod>
-  </url>
-  <url>
     <loc>https://notes.xuepincat.com/2020/11/29/%E9%AB%98%E5%B9%B6%E5%8F%91%E5%9C%BA%E6%99%AF%E6%A1%88%E4%BE%8B/</loc>
     <lastmod>2020-11-29</lastmod>
   </url>
@@ -91,10 +95,6 @@
   <url>
     <loc>https://notes.xuepincat.com/2020/08/30/DevOps-%E7%BB%83%E6%89%8B%E4%B8%80/</loc>
     <lastmod>2020-10-08</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2019/05/19/Docker-Image/</loc>
-    <lastmod>2020-09-19</lastmod>
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2019/05/18/Docker-CentOS7%E5%AE%89%E8%A3%85Docker/</loc>
@@ -409,11 +409,11 @@
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2018/07/20/CentOS-7-%E5%BC%80%E6%94%BE3306%E7%AB%AF%E5%8F%A3/</loc>
+    <loc>https://notes.xuepincat.com/2018/03/24/CentOS-7%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81IP/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2018/03/24/CentOS-7%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81IP/</loc>
+    <loc>https://notes.xuepincat.com/2018/07/20/CentOS-7-%E5%BC%80%E6%94%BE3306%E7%AB%AF%E5%8F%A3/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
