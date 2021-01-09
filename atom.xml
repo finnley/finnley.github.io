@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2021-01-03T15:27:07.543Z</updated>
+  <updated>2021-01-06T13:34:40.610Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,46 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>gRPC-介绍</title>
+    <link href="https://notes.xuepincat.com/2021/01/04/gRPC-%E4%BB%8B%E7%BB%8D/"/>
+    <id>https://notes.xuepincat.com/2021/01/04/gRPC-%E4%BB%8B%E7%BB%8D/</id>
+    <published>2021-01-04T15:12:28.000Z</published>
+    <updated>2021-01-06T13:34:40.610Z</updated>
+    
+    <summary type="html">
+    
+      RPC
+什么是 RPC
+RPC （Remote Procedure Call）远程过程调用，简单理解就是 一个节点请求另一个节点提供的服务。 它的调用包含了传输协议和编码（对象序列号）协议等等。允许运行于一台计算机的程序调用另一台计算机的子程序，而开发人员无需额外地为这个交互作用编程
+
+对应 RPC 的是本地过程调用，函数调用是最常见的本地过程调用
+
+将本地过程调用变成远程过程调用会面临各种问题，这个也是 RPC 要解决的问题，也是分布式系统需要解决的问题
+
+本地过程调用
+1
+2
+3
+4
+5
+6
+
+
+def add(a, b):
+    total = a + b
+    return tot
+    
+    </summary>
+    
+    
+      <category term="gRPC" scheme="https://notes.xuepincat.com/categories/gRPC/"/>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/tags/Go/"/>
+    
+  </entry>
   
   <entry>
     <title>notes-api-gin-Log</title>
@@ -101,28 +141,58 @@ pac
   </entry>
   
   <entry>
-    <title>Docker-LNMP</title>
-    <link href="https://notes.xuepincat.com/2021/01/02/Docker-LNMP/"/>
-    <id>https://notes.xuepincat.com/2021/01/02/Docker-LNMP/</id>
+    <title>Docker-开发环境搭建</title>
+    <link href="https://notes.xuepincat.com/2021/01/02/Docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+    <id>https://notes.xuepincat.com/2021/01/02/Docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
     <published>2021-01-02T05:10:11.000Z</published>
-    <updated>2021-01-03T13:56:02.281Z</updated>
+    <updated>2021-01-09T05:57:34.505Z</updated>
     
     <summary type="html">
     
-      简介
-Docker-LNMP 是基于 docker-compose 的运行在 Docker 上的 LNMP 开发环境，包含 PHP, MySQL, Nginx, Redis 等镜像，并支持多版本切换，可以满足一些简单的学习，开发和测试需求
-
-包含镜像
-Docker LNMP 包含以下镜像，每种镜像支持多个版本：
-
- * nginx 
- * php-fpm (7.4 - 7.3 - 7.2 - 7.1 - 5.6)
- * mysql (8.0 - 5.7 - 5.6)
- * mongo 
- * redis (5.0 - 4.0)
- * memcached (1.5.16 - 1.5 - 1)
+      开发环境
 
 
+版本管理工具 - Git
+下载
+1
+
+
+wget https://github.com/git/git/archive/v2.30.0.tar.gz
+
+
+安装依赖
+1
+
+
+yum install -y zlib-devel zlib curl-devel autoconf automake libtool
+
+
+解压
+1
+
+
+tar -zxvf v2.30.0.tar.gz
+
+
+1
+
+
+cd git-2.30.0/
+
+
+通过 autoconf 生成 configure 文件
+
+1
+
+
+autoconf
+
+
+配置安装目录
+1
+
+
+./configure --prefix=/usr/l
     
     </summary>
     
@@ -203,72 +273,6 @@ CREATE TABLE `auth` (
     
     
       <category term="Microservice" scheme="https://notes.xuepincat.com/tags/Microservice/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS7 开发环境搭建</title>
-    <link href="https://notes.xuepincat.com/2020/12/20/CentOS-7-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
-    <id>https://notes.xuepincat.com/2020/12/20/CentOS-7-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
-    <published>2020-12-20T09:54:52.000Z</published>
-    <updated>2021-01-02T04:34:25.872Z</updated>
-    
-    <summary type="html">
-    
-      开发环境
-
-
-版本管理工具 - Git
-下载
-1
-
-
-wget https://github.com/git/git/archive/v2.30.0.tar.gz
-
-
-安装依赖
-1
-
-
-yum install -y zlib-devel zlib curl-devel autoconf automake libtool
-
-
-解压
-1
-
-
-tar -zxvf v2.30.0.tar.gz
-
-
-1
-
-
-cd git-2.30.0/
-
-
-通过 autoconf 生成 configure 文件
-
-1
-
-
-autoconf
-
-
-配置安装目录
-1
-
-
-./configure --prefix=/usr/l
-    
-    </summary>
-    
-    
-      <category term="Linux" scheme="https://notes.xuepincat.com/categories/Linux/"/>
-    
-    
-      <category term="Linux" scheme="https://notes.xuepincat.com/tags/Linux/"/>
-    
-      <category term="CentOS" scheme="https://notes.xuepincat.com/tags/CentOS/"/>
     
   </entry>
   
