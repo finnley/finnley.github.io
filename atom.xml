@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2021-01-06T13:34:40.610Z</updated>
+  <updated>2021-01-12T16:48:02.190Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -17,11 +17,56 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Microservice-项目初始化</title>
+    <link href="https://notes.xuepincat.com/2021/01/11/Microservice-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/"/>
+    <id>https://notes.xuepincat.com/2021/01/11/Microservice-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/</id>
+    <published>2021-01-11T14:21:46.000Z</published>
+    <updated>2021-01-12T16:48:02.190Z</updated>
+    
+    <summary type="html">
+    
+      项目初始化
+新建虚拟环境
+这里选用 Python ，主要用于最底层的各个微服务的 Service 层的开发，而提供 HTTP 接口的是通过 gin 开发的。
+
+提前先创建了一个 Envs 的目录专门用来存放虚拟环境文件，进入 Envs, 创建一个目录 cat_srv，然后进入该目录
+
+1
+2
+3
+4
+5
+6
+
+
+mkdir Envs
+cd Envs
+mkdir cat_srv
+cd cat_srv
+python3 -m venv --system-site-packages ./venv
+source ./venv/bin/activate
+
+
+此时虚拟环境就已经启动
+
+新建 Python 项
+    
+    </summary>
+    
+    
+      <category term="Microservice" scheme="https://notes.xuepincat.com/categories/Microservice/"/>
+    
+    
+      <category term="Microservice" scheme="https://notes.xuepincat.com/tags/Microservice/"/>
+    
+  </entry>
+  
+  <entry>
     <title>gRPC-介绍</title>
     <link href="https://notes.xuepincat.com/2021/01/04/gRPC-%E4%BB%8B%E7%BB%8D/"/>
     <id>https://notes.xuepincat.com/2021/01/04/gRPC-%E4%BB%8B%E7%BB%8D/</id>
     <published>2021-01-04T15:12:28.000Z</published>
-    <updated>2021-01-06T13:34:40.610Z</updated>
+    <updated>2021-01-12T17:05:52.717Z</updated>
     
     <summary type="html">
     
@@ -495,11 +540,59 @@ CREA
   </entry>
   
   <entry>
+    <title>notes-api-gin-初始化</title>
+    <link href="https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%88%9D%E5%A7%8B%E5%8C%96/"/>
+    <id>https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%88%9D%E5%A7%8B%E5%8C%96/</id>
+    <published>2020-11-29T13:17:18.000Z</published>
+    <updated>2021-01-12T17:07:42.613Z</updated>
+    
+    <summary type="html">
+    
+      初始化
+t1_gin_init
+
+项目搭建
+创建一个自己的目录作为项目根目录，比如 notes-api-gin
+
+1
+2
+3
+4
+5
+6
+7
+
+
+$  ~ cd Code
+$  mkdir notes-api-gin &amp;&amp; cd notes-api-gin
+$  ls
+$  go mod init github.com/finnley/notes-api-gin
+go: creating new go.mod: module github.com/finnley/notes-api-gin
+➜  ls
+go.mod
+
+
+ * mkdir xxx &amp;&amp; cd xxx：创建并切换到项目目录里去。
+
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/tags/Go/"/>
+    
+      <category term="Gin" scheme="https://notes.xuepincat.com/tags/Gin/"/>
+    
+  </entry>
+  
+  <entry>
     <title>notes-api-gin-基础框架搭建</title>
     <link href="https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/"/>
     <id>https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%9F%BA%E7%A1%80%E6%A1%86%E6%9E%B6%E6%90%AD%E5%BB%BA/</id>
-    <published>2020-11-29T13:18:26.000Z</published>
-    <updated>2021-01-03T15:21:15.210Z</updated>
+    <published>2020-11-29T13:16:26.000Z</published>
+    <updated>2021-01-11T16:26:50.750Z</updated>
     
     <summary type="html">
     
@@ -524,54 +617,6 @@ t2_project_init
 
 初始化项目目录
 现在已经初始化
-    
-    </summary>
-    
-    
-      <category term="Go" scheme="https://notes.xuepincat.com/categories/Go/"/>
-    
-    
-      <category term="Go" scheme="https://notes.xuepincat.com/tags/Go/"/>
-    
-      <category term="Gin" scheme="https://notes.xuepincat.com/tags/Gin/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>notes-api-gin-初始化</title>
-    <link href="https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%88%9D%E5%A7%8B%E5%8C%96/"/>
-    <id>https://notes.xuepincat.com/2020/11/29/notes-api-gin-%E5%88%9D%E5%A7%8B%E5%8C%96/</id>
-    <published>2020-11-29T13:17:18.000Z</published>
-    <updated>2021-01-03T15:20:09.240Z</updated>
-    
-    <summary type="html">
-    
-      初始化
-t1_gin_init
-
-项目搭建
-创建一个自己的目录作为项目根目录，比如 notes-api-gin
-
-1
-2
-3
-4
-5
-6
-7
-
-
-➜  ~ cd Code
-➜  mkdir notes-api-gin &amp;&amp; cd notes-api-gin
-➜  ls
-➜  go mod init github.com/finnley/notes-api-gin
-go: creating new go.mod: module github.com/finnley/notes-api-gin
-➜  ls
-go.mod
-
-
- * mkdir xxx &amp;&amp; cd xxx：创建并切换到项目目录里去。
-
     
     </summary>
     
@@ -907,87 +952,6 @@ source &lt;(kubectl completion zsh)
     
     
       <category term="DevOps k8s kubectl" scheme="https://notes.xuepincat.com/tags/DevOps-k8s-kubectl/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用Kubeadm搭建多节点K8S集群</title>
-    <link href="https://notes.xuepincat.com/2020/08/02/DevOps-%E4%BD%BF%E7%94%A8Kubeadm%E6%90%AD%E5%BB%BA%E5%A4%9A%E8%8A%82%E7%82%B9K8S%E9%9B%86%E7%BE%A4/"/>
-    <id>https://notes.xuepincat.com/2020/08/02/DevOps-%E4%BD%BF%E7%94%A8Kubeadm%E6%90%AD%E5%BB%BA%E5%A4%9A%E8%8A%82%E7%82%B9K8S%E9%9B%86%E7%BE%A4/</id>
-    <published>2020-08-02T15:54:23.000Z</published>
-    <updated>2020-08-29T15:27:43.483Z</updated>
-    
-    <summary type="html">
-    
-      准备三台机器
- 1. 创建一个 kubeadm 的目录，在该目录中创建创建一个名为 Vagrantfile 的文件,键入下面内容
-
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-48
-
-
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
-Vagrant.require_version &quot;&gt;= 1.6.0&quot;
-
-boxes = [
-    {
-   
-    
-    </summary>
-    
-    
-      <category term="DevOps" scheme="https://notes.xuepincat.com/categories/DevOps/"/>
-    
-    
-      <category term="DevOps k8s" scheme="https://notes.xuepincat.com/tags/DevOps-k8s/"/>
     
   </entry>
   

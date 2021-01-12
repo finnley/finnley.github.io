@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="项目初始化 新建虚拟环境 这里选用 Python ，主要用于最底层的各个微服务的 Service 层的开发，而提供 HTTP 接口的是通过 gin 开发的。  提前先创建了一个 Envs 的目录专门用来存放虚拟环境文件，进入 Envs, 创建一个目录 cat_srv，然后进入该目录  1 2 3 4 5 6   mkdir Envs cd Envs mkdir cat_srv cd cat_srv">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Microservice-项目初始化">
+<meta property="og:url" content="https://notes.xuepincat.com/2021/01/11/Microservice-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/index.html">
+<meta property="og:site_name" content="Finnley&#39;s Notes">
+<meta property="og:description" content="项目初始化 新建虚拟环境 这里选用 Python ，主要用于最底层的各个微服务的 Service 层的开发，而提供 HTTP 接口的是通过 gin 开发的。  提前先创建了一个 Envs 的目录专门用来存放虚拟环境文件，进入 Envs, 创建一个目录 cat_srv，然后进入该目录  1 2 3 4 5 6   mkdir Envs cd Envs mkdir cat_srv cd cat_srv">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2021-01-11T14:21:46.000Z">
+<meta property="article:modified_time" content="2021-01-12T16:48:02.190Z">
+<meta property="article:author" content="Finnley">
+<meta property="article:tag" content="Microservice">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2021/01/11/Microservice-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Microservice-项目初始化 | Finnley's Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Finnley's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Finnley's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/01/11/Microservice-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Microservice-项目初始化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-11 22:21:46" itemprop="dateCreated datePublished" datetime="2021-01-11T22:21:46+08:00">2021-01-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-01-13 00:48:02" itemprop="dateModified" datetime="2021-01-13T00:48:02+08:00">2021-01-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Microservice/" itemprop="url" rel="index"><span itemprop="name">Microservice</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="项目初始化"><a href="#项目初始化" class="headerlink" title="项目初始化"></a>项目初始化</h1><h2 id="新建虚拟环境"><a href="#新建虚拟环境" class="headerlink" title="新建虚拟环境"></a>新建虚拟环境</h2><p>这里选用 <code>Python</code> ，主要用于最底层的各个微服务的 <code>Service</code> 层的开发，而提供 <code>HTTP</code> 接口的是通过 <code>gin</code> 开发的。</p>
+<p>提前先创建了一个 <code>Envs</code> 的目录专门用来存放虚拟环境文件，进入 <code>Envs</code>, 创建一个目录 <code>cat_srv</code>，然后进入该目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">mkdir Envs</span><br><span class="line">cd Envs</span><br><span class="line">mkdir cat_srv</span><br><span class="line">cd cat_srv</span><br><span class="line">python3 -m venv --system-site-packages .&#x2F;venv</span><br><span class="line">source .&#x2F;venv&#x2F;bin&#x2F;activate</span><br></pre></td></tr></table></figure>
+
+<p>此时虚拟环境就已经启动</p>
+<h2 id="新建-Python-项目"><a href="#新建-Python-项目" class="headerlink" title="新建 Python 项目"></a>新建 Python 项目</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir cat-srvs</span><br><span class="line">cd cat-srvs</span><br></pre></td></tr></table></figure>
+
+<p><code>cat-srvs</code> 该目录中存放的是所有的微服务，每个微服务新建一个 <code>package</code> 或者一个 <code>文件夹</code>，当然也可以对每个微服务新建一个项目，为了方便管理这个每个微服务使用一个 <code>package</code></p>
+<h2 id="用户服务"><a href="#用户服务" class="headerlink" title="用户服务"></a>用户服务</h2><p>git branch: <code>t1_user_srv_init</code></p>
+<p>第一个要完成成是就是 <code>用户服务</code>，首先在 <code>cat-srvs</code> 目录下新建 <code>user_srv</code>,这里每个 <code>package</code> 就是一个项目，<code>user_srv</code> 就是一个项目，现在 <code>user_srv</code> 目录中新建一些文件夹来组织代码</p>
+<p>结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── README.md</span><br><span class="line">└── user_srv</span><br><span class="line">    ├── __init__.py</span><br><span class="line">    ├── handler</span><br><span class="line">    │   └── __init__.py</span><br><span class="line">    ├── logs</span><br><span class="line">    ├── model</span><br><span class="line">    │   └── __init__.py</span><br><span class="line">    ├── proto</span><br><span class="line">    │   └── __init__.py</span><br><span class="line">    └── settings</span><br><span class="line">        └── __init__.py</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>handler</code>: 用于存放所有的业务逻辑代码；</li>
+<li><code>logs</code>: 存放日志文件;</li>
+<li><code>model</code>: 存放 <code>peewee</code> 的 model 文件;</li>
+<li><code>proto</code>: 存放 <code>proto</code> 文件；</li>
+<li><code>settings</code>: 存放配置文件；</li>
+</ul>
+<h2 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h2><p>git branch: <code>t2_generate_user_table</code></p>
+<h4 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h4><p>安装 <code>peewee</code> 包 和 <code>pymysql</code> 包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip3 install peewee -i https:&#x2F;&#x2F;pypi.douban.com&#x2F;simple</span><br><span class="line">pip3 install pymysql -i https:&#x2F;&#x2F;pypi.douban.com&#x2F;simple</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据库配置"><a href="#数据库配置" class="headerlink" title="数据库配置"></a>数据库配置</h4><p>首先创建数据库，会为每个微服务创建独立的数据库，所以这里创建一个 <code>cat_user_srv</code> 的数据库</p>
+<p>在 <code>settings</code> 目录中添加 <code>settings.py</code> 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># 使用数据库连接池</span><br><span class="line">from playhouse.pool import PooledMySQLDatabase</span><br><span class="line">from playhouse.shortcuts import ReconnectMixin</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class ReconnectMySQLDatabase(ReconnectMixin, PooledMySQLDatabase):</span><br><span class="line">    pass</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">MYSQL_DB &#x3D; &quot;cat_user_srv&quot;</span><br><span class="line">MYSQL_HOST &#x3D; &quot;127.0.0.1&quot;</span><br><span class="line">MYSQL_PORT &#x3D; 3306</span><br><span class="line">MYSQL_USER &#x3D; &quot;root&quot;</span><br><span class="line">MYSQL_PASSWORD &#x3D; &quot;123&quot;</span><br><span class="line"></span><br><span class="line">DB &#x3D; ReconnectMySQLDatabase(MYSQL_DB, host&#x3D;MYSQL_HOST, port&#x3D;MYSQL_PORT, user&#x3D;MYSQL_USER, password&#x3D;MYSQL_PASSWORD)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>PooledMySQLDatabase</code> 和 <code>MySQLDatabase</code> 基本差不多，但是使用 <code>PooledMySQLDatabase</code> 连接 <code>MySQL</code> 的时候如果一段时间不操作，这个连接会被关闭，关闭之后如果再使用 <code>SELECT</code> 查询就会抛异常 <code>mysql gone away</code>，所以还需要导入 <code>ReconnectMixin</code>,它的作用是当连接被关闭，当再次使用时会重新连接;</li>
+<li>定义一个类，直接继承 <code>PooledMySQLDatabase</code> 和 <code>ReconnectMixin</code>,类里面什么都需要操作，主要是要完成继承的过程;</li>
+</ul>
+<p>在 <code>model</code> 目录中新建 <code>models.py</code> </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">from peewee import *</span><br><span class="line">from user_srv.settings import settings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BaseModel(Model):</span><br><span class="line">    class Meta:</span><br><span class="line">        database &#x3D; settings.DB</span><br></pre></td></tr></table></figure>
+
+<p>这样就配置好了 <code>DB</code></p>
+<p>接下来设置 <code>user</code> 用户模型，修改 <code>models.py</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">from peewee import *</span><br><span class="line">from user_srv.settings import settings</span><br><span class="line">from datetime import datetime</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class BaseModel(Model):</span><br><span class="line">    class Meta:</span><br><span class="line">        database &#x3D; settings.DB</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class User(BaseModel):</span><br><span class="line">    GENDER_CHOICES &#x3D; (</span><br><span class="line">        (&quot;female&quot;, &quot;女&quot;),</span><br><span class="line">        (&quot;male&quot;, &quot;男&quot;)</span><br><span class="line">    )</span><br><span class="line">    ROLE_CHOICES &#x3D; (</span><br><span class="line">        (1, &quot;普通用户&quot;),</span><br><span class="line">        (2, &quot;管理员&quot;)</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    # 用户模型</span><br><span class="line">    mobile &#x3D; CharField(max_length&#x3D;11, index&#x3D;True, unique&#x3D;True, verbose_name&#x3D;&quot;手机号码&quot;)</span><br><span class="line">    password &#x3D; CharField(max_length&#x3D;100, verbose_name&#x3D;&quot;密码&quot;)</span><br><span class="line">    nickname &#x3D; CharField(max_length&#x3D;20, null&#x3D;True, verbose_name&#x3D;&quot;昵称&quot;)</span><br><span class="line">    head_url &#x3D; CharField(max_length&#x3D;200, null&#x3D;True, verbose_name&#x3D;&quot;头像&quot;)</span><br><span class="line">    birthday &#x3D; DateField(null&#x3D;True, verbose_name&#x3D;&quot;生日&quot;)</span><br><span class="line">    address &#x3D; CharField(max_length&#x3D;200, null&#x3D;True, verbose_name&#x3D;&quot;地址&quot;)</span><br><span class="line">    desc &#x3D; TextField(null&#x3D;True, verbose_name&#x3D;&quot;个人简介&quot;)</span><br><span class="line">    gender &#x3D; CharField(max_length&#x3D;6, choices&#x3D;GENDER_CHOICES, null&#x3D;True, verbose_name&#x3D;&quot;性别&quot;)</span><br><span class="line">    role &#x3D; IntegerField(default&#x3D;1, choices&#x3D;ROLE_CHOICES, verbose_name&#x3D;&quot;用户角色&quot;)</span><br><span class="line">    gmt_create &#x3D; DateTimeField(default&#x3D;datetime.now())</span><br><span class="line">    gmt_modified &#x3D; DateTimeField(default&#x3D;datetime.now())</span><br><span class="line">    deleted_at &#x3D; DateTimeField(null&#x3D;True)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    # 生成表结构</span><br><span class="line">    settings.DB.create_tables([User])</span><br></pre></td></tr></table></figure>
+
+<p>然后右键 <code>RUN models</code>,如果没有报错，刷新下数据库就会看到出现了 <code>user</code> 表</p>
+<p>最后在 <code>user_srv</code> 的目录下新建一个 <code>requirements.txt</code> 文件来记录安装用到的依赖包</p>
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><ul>
+<li>md5 加密</li>
+</ul>
+<p>//python 加密库<br>pip3 install passlib -i <a href="https://pypi.douban.com/simple" target="_blank" rel="noopener">https://pypi.douban.com/simple</a></p>
+<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>使用了 <code>peewee 连接池</code> ，并使用 <code>ReconnectMixin</code> 来防止出现连接断开导致查询失败</p>
+<h1 id="rpc-介绍"><a href="#rpc-介绍" class="headerlink" title="rpc 介绍"></a>rpc 介绍</h1><p><a href=""></a></p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Microservice/" rel="tag"># Microservice</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/04/gRPC-%E4%BB%8B%E7%BB%8D/" rel="prev" title="gRPC-介绍">
+      <i class="fa fa-chevron-left"></i> gRPC-介绍
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#项目初始化"><span class="nav-number">1.</span> <span class="nav-text">项目初始化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#新建虚拟环境"><span class="nav-number">1.1.</span> <span class="nav-text">新建虚拟环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建-Python-项目"><span class="nav-number">1.2.</span> <span class="nav-text">新建 Python 项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户服务"><span class="nav-number">1.3.</span> <span class="nav-text">用户服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据库设计"><span class="nav-number">1.4.</span> <span class="nav-text">数据库设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装依赖包"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">安装依赖包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#数据库配置"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">数据库配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#扩展"><span class="nav-number">1.4.0.3.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#总结："><span class="nav-number">1.4.0.4.</span> <span class="nav-text">总结：</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rpc-介绍"><span class="nav-number">2.</span> <span class="nav-text">rpc 介绍</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Finnley"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Finnley</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">179</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
