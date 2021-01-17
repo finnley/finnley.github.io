@@ -211,6 +211,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/11/19-%E7%89%88%E6%9C%AC%E5%BA%93%E7%B2%BE%E7%AE%80%E4%B8%8E%E4%B8%A2%E5%BC%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/07/11/19-%E7%89%88%E6%9C%AC%E5%BA%93%E7%B2%BE%E7%AE%80%E4%B8%8E%E4%B8%A2%E5%BC%83/" class="post-title-link" itemprop="url">19-版本库精简与丢弃</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-11 13:44:45" itemprop="dateCreated datePublished" datetime="2017-07-11T13:44:45+08:00">2017-07-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          版本库使用时间长了版本号会越来越大，版本库占用的空间也会越来越多，到了一定的时候我们可能需要对版本库进行一些精简的操作，把版本库最前面的那些版本丢弃，来达到版本库瘦身的目的。
+
+假设我们现在有一个版本库，从运行至今已经提交了100个版本，由于版本库越来越臃肿，想把前面20个版本丢掉，只保留第21到第100个版本。以此来达到版本库瘦身的目的。
+
+具体操作以repos版本库为例
+
+首先看一下repos的最大版本号是多少
+
+1
+
+
+# svn info
+
+
+
+
+现在这个版本库的最大版本好是11，现在我要把这个1到版本5丢弃，只保留版本6到版本11。在操作之前需要停止SVN服务，防止在操作的过程中有人
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/07/11/19-%E7%89%88%E6%9C%AC%E5%BA%93%E7%B2%BE%E7%AE%80%E4%B8%8E%E4%B8%A2%E5%BC%83/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/10/18-SVN%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94HOOKS%E9%92%A9%E5%AD%90%E5%BA%94%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1063,102 +1160,6 @@ cat允许我们在不检出工作副本的情况下直接查看指定文件的�
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/01/9-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%B8%80)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/01/9-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%B8%80)/" class="post-title-link" itemprop="url">9-常见的SVN客户端命令(一)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-01 12:37:30" itemprop="dateCreated datePublished" datetime="2017-07-01T12:37:30+08:00">2017-07-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          常见SVN客户端命令
-svn add -添加到版本控制
-
-svn commit -提交修改到服务端（创建一个新的版本号）
-
-svn update -更新工作副本
-
-svn delete -从版本中删除文件或目录
-
-add是把一个无版本控制的文件添加到版控制中；
-commit命令用于提交修改到服务端，并且他会创建一个新的版本号；
-update用于更新本地的工作副本；
-delete用户删除版本库中的文件或目录。
-
-基本操作
-首先介绍一下，第一台svn_1是我在腾讯云主机上一个创建的以为文件夹，用户检出用的，我在这个文件夹中也检出了一个repos版本库，也就是说这个既当做服务端用也当做客户端用。工作
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/01/9-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%B8%80)/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1230,14 +1231,14 @@ delete用户删除版本库中的文件或目录。
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">179</span>
+          <span class="site-state-item-count">180</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">

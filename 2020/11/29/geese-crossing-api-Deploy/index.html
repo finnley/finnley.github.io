@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Branch t5_deploy  目标 将 geese-crossing-api 应用部署到 Docker  Docker   Docker 是一个开源的轻量级容器技术，让开发者可以打包他们的应用以及应用运行的上下文环境到一个可移植的镜像中，然后发布到任何支持 Docker 的系统上运行。 通过容器技术，在几乎没有性能开销的情况下，Docker 为应用提供了一个隔离运行环境   * 简化配置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="geese-crossing-api-Deploy">
+<meta property="og:url" content="https://notes.xuepincat.com/2020/11/29/geese-crossing-api-Deploy/index.html">
+<meta property="og:site_name" content="Finnley&#39;s Notes">
+<meta property="og:description" content="Branch t5_deploy  目标 将 geese-crossing-api 应用部署到 Docker  Docker   Docker 是一个开源的轻量级容器技术，让开发者可以打包他们的应用以及应用运行的上下文环境到一个可移植的镜像中，然后发布到任何支持 Docker 的系统上运行。 通过容器技术，在几乎没有性能开销的情况下，Docker 为应用提供了一个隔离运行环境   * 简化配置">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/docker/docker.jpeg">
+<meta property="article:published_time" content="2020-11-29T13:21:16.000Z">
+<meta property="article:modified_time" content="2021-01-17T06:13:08.467Z">
+<meta property="article:author" content="Finnley">
+<meta property="article:tag" content="Go">
+<meta property="article:tag" content="Gin">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/docker/docker.jpeg">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2020/11/29/geese-crossing-api-Deploy/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>geese-crossing-api-Deploy | Finnley's Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Finnley's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Finnley's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/11/29/geese-crossing-api-Deploy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          geese-crossing-api-Deploy
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-11-29 21:21:16" itemprop="dateCreated datePublished" datetime="2020-11-29T21:21:16+08:00">2020-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-01-17 14:13:08" itemprop="dateModified" datetime="2021-01-17T14:13:08+08:00">2021-01-17</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Branch"><a href="#Branch" class="headerlink" title="Branch"></a>Branch</h1><p>t5_deploy</p>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>将 <code>geese-crossing-api</code> 应用部署到 <code>Docker</code></p>
+<h2 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h2><p><img src="https://images.notes.xuepincat.com/docker/docker.jpeg" alt=""></p>
+<p><code>Docker</code> 是一个开源的轻量级容器技术，让开发者可以打包他们的应用以及应用运行的上下文环境到一个可移植的镜像中，然后发布到任何支持 <code>Docker</code> 的系统上运行。 通过容器技术，在几乎没有性能开销的情况下，<code>Docker</code> 为应用提供了一个隔离运行环境</p>
+<ul>
+<li>简化配置</li>
+<li>代码流水线管理</li>
+<li>提高开发效率</li>
+<li>隔离应用</li>
+<li>快速、持续部署</li>
+</ul>
+<h2 id="编写-Dockerfile"><a href="#编写-Dockerfile" class="headerlink" title="编写 Dockerfile"></a>编写 Dockerfile</h2><p>在 <code>geese-crossing-api</code> 项目根目录创建 <code>Dockerfile</code> 文件，写入内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">FROM golang:latest</span><br><span class="line"></span><br><span class="line">ENV GOPROXY https:&#x2F;&#x2F;goproxy.cn,direct</span><br><span class="line">WORKDIR $GOPATH&#x2F;src&#x2F;github.com&#x2F;finnley&#x2F;geese-crossing-api</span><br><span class="line">COPY . $GOPATH&#x2F;src&#x2F;github.com&#x2F;finnley&#x2F;geese-crossing-api</span><br><span class="line">RUN go build .</span><br><span class="line"></span><br><span class="line">EXPOSE 8000</span><br><span class="line">ENTRYPOINT [&quot;.&#x2F;geese-crossing-api&quot;]</span><br></pre></td></tr></table></figure>
+
+<h4 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h4><p><code>golang:latest</code> 镜像为基础镜像，将工作目录设置为 <code>$GOPATH/src/geese-crossing-api</code>，并将当前上下文目录的内容复制到 <code>$GOPATH/src/geese-crossing-api</code> 中</p>
+<p>在进行 <code>go build</code> 编译完毕后，将容器启动程序设置为 <code>./geese-crossing-api</code>，也就是我们所编译的可执行文件</p>
+<p>注意 <code>geese-crossing-api</code> 在 <code>docker</code> 容器里编译，并没有在宿主机现场编译</p>
+<h4 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h4><p><code>Dockerfile</code> 文件是用于定义 <code>Docker</code> 镜像生成流程的配置文件，文件内容是一条条指令，每一条指令构建一层，因此每一条指令的内容，就是描述该层应当如何构建；这些指令应用于基础镜像并最终创建一个新的镜像</p>
+<p>可以认为用于快速创建自定义的 <code>Docker</code> 镜像</p>
+<ul>
+<li>FROM</li>
+</ul>
+<p>指定基础镜像（必须有的指令，并且必须是第一条指令）</p>
+<ul>
+<li>WORKDIR</li>
+</ul>
+<p>格式为 <code>WORKDIR &lt;工作目录路径&gt;</code></p>
+<p>使用 <code>WORKDIR</code> 指令可以来指定工作目录（或者称为当前目录），以后各层的当前目录就被改为指定的目录，如果目录不存在，<code>WORKDIR</code> 会帮你建立目录</p>
+<ul>
+<li>COPY</li>
+</ul>
+<p>格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">COPY &lt;源路径&gt;... &lt;目标路径&gt;</span><br><span class="line">COPY [&quot;&lt;源路径1&gt;&quot;,... &quot;&lt;目标路径&gt;&quot;]</span><br></pre></td></tr></table></figure>
+
+<p><code>COPY</code> 指令将从构建上下文目录中 &lt;源路径&gt; 的文件/目录 <code>复制</code> 到新的一层的镜像内的 &lt;目标路径&gt; 位置</p>
+<ul>
+<li>RUN</li>
+</ul>
+<p>用于执行命令行命令</p>
+<p>格式：<code>RUN &lt;命令&gt;</code></p>
+<ul>
+<li>EXPOSE</li>
+</ul>
+<p>格式为 <code>EXPOSE &lt;端口 1&gt; [&lt;端口 2&gt;…]</code></p>
+<p><code>EXPOSE</code> 指令是声明运行时容器提供服务端口，这只是一个声明，在运行时并不会因为这个声明应用就会开启这个端口的服务</p>
+<p>在 <code>Dockerfile</code> 中写入这样的声明有两个好处</p>
+<ol>
+<li>帮助镜像使用者理解这个镜像服务的守护端口，以方便配置映射</li>
+<li>运行时使用随机端口映射时，也就是 <code>docker run -P</code> 时，会自动随机映射 <code>EXPOSE</code> 的端口</li>
+</ol>
+<ul>
+<li>ENTRYPOINT</li>
+</ul>
+<p><code>ENTRYPOINT</code> 的格式和 <code>RUN</code> 指令格式一样，分为两种格式</p>
+<ol>
+<li>exec 格式：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;ENTRYPOINT&gt; &quot;&lt;CMD&gt;&quot;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>shell 格式：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ENTRYPOINT [ &quot;curl&quot;, &quot;-s&quot;, &quot;http:&#x2F;&#x2F;ip.cn&quot; ]</span><br></pre></td></tr></table></figure>
+
+<p><code>ENTRYPOINT</code> 指令是指定容器启动程序及参数</p>
+<h2 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h2><p><code>geese-crossing-api</code> 的项目根目录下执行 <code>docker build -t geese-crossing-api-docker .</code></p>
+<p>该命令作用是创建/构建镜像，<code>-t</code> 指定名称为 <code>geese-crossing-api-docker</code>，. 构建内容为当前上下文目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t geese-crossing-api-docker .</span><br><span class="line">Sending build context to Docker daemon  593.4kB</span><br><span class="line">Step 1&#x2F;7 : FROM golang:latest</span><br><span class="line"> ---&gt; 6d8772fbd285</span><br><span class="line">Step 2&#x2F;7 : ENV GOPROXY https:&#x2F;&#x2F;goproxy.cn,direct</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 935022d58444</span><br><span class="line">Step 3&#x2F;7 : WORKDIR $GOPATH&#x2F;src&#x2F;github.com&#x2F;finnley&#x2F;geese-crossing-api</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 48f8ff19e858</span><br><span class="line">Step 4&#x2F;7 : COPY . $GOPATH&#x2F;src&#x2F;github.com&#x2F;finnley&#x2F;geese-crossing-api</span><br><span class="line"> ---&gt; fab1dc54377a</span><br><span class="line">Step 5&#x2F;7 : RUN go build .</span><br><span class="line"> ---&gt; Running in 9316ca0085fd</span><br><span class="line">go: downloading github.com&#x2F;joho&#x2F;godotenv v1.3.0</span><br><span class="line">go: downloading github.com&#x2F;go-ini&#x2F;ini v1.62.0</span><br><span class="line">go: downloading github.com&#x2F;unknwon&#x2F;com v1.0.1</span><br><span class="line">go: downloading github.com&#x2F;gin-gonic&#x2F;gin v1.6.3</span><br><span class="line">go: downloading github.com&#x2F;satori&#x2F;go.uuid v1.2.0</span><br><span class="line">go: downloading github.com&#x2F;jinzhu&#x2F;gorm v1.9.16</span><br><span class="line">go: downloading github.com&#x2F;gin-contrib&#x2F;sse v0.1.0</span><br><span class="line">go: downloading github.com&#x2F;mattn&#x2F;go-isatty v0.0.12</span><br><span class="line">go: downloading github.com&#x2F;ugorji&#x2F;go v1.2.1</span><br><span class="line">go: downloading github.com&#x2F;golang&#x2F;protobuf v1.4.3</span><br><span class="line">go: downloading gopkg.in&#x2F;yaml.v2 v2.4.0</span><br><span class="line">go: downloading github.com&#x2F;go-playground&#x2F;validator&#x2F;v10 v10.4.1</span><br><span class="line">go: downloading github.com&#x2F;go-sql-driver&#x2F;mysql v1.5.0</span><br><span class="line">go: downloading github.com&#x2F;jinzhu&#x2F;inflection v1.0.0</span><br><span class="line">go: downloading github.com&#x2F;ugorji&#x2F;go&#x2F;codec v1.2.1</span><br><span class="line">go: downloading golang.org&#x2F;x&#x2F;sys v0.0.0-20201211090839-8ad439b19e0f</span><br><span class="line">go: downloading google.golang.org&#x2F;protobuf v1.25.0</span><br><span class="line">go: downloading github.com&#x2F;go-playground&#x2F;universal-translator v0.17.0</span><br><span class="line">go: downloading golang.org&#x2F;x&#x2F;crypto v0.0.0-20201208171446-5f87f3452ae9</span><br><span class="line">go: downloading github.com&#x2F;leodido&#x2F;go-urn v1.2.0</span><br><span class="line">go: downloading github.com&#x2F;go-playground&#x2F;locales v0.13.0</span><br><span class="line"># github.com&#x2F;finnley&#x2F;geese-crossing-api</span><br><span class="line">.&#x2F;main.go:10:6: main redeclared in this block</span><br><span class="line">	previous declaration at .&#x2F;example.go:5:6</span><br><span class="line">The command &#39;&#x2F;bin&#x2F;sh -c go build .&#39; returned a non-zero code: 2</span><br></pre></td></tr></table></figure>
+
+<p>构建的时候提示下面错误，只需要将根目录下的 <code>example.go</code> 文件删掉即可，这个文件是之前测试用的</p>
+<p>删除之后重新构建</p>
+<p><code>docker build -t geese-crossing-api-docker .</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t geese-crossing-api-docker .</span><br><span class="line">Sending build context to Docker daemon  594.4kB</span><br><span class="line">Step 1&#x2F;7 : FROM golang:latest</span><br><span class="line"> ---&gt; 6d8772fbd285</span><br><span class="line">Step 2&#x2F;7 : ENV GOPROXY https:&#x2F;&#x2F;goproxy.cn,direct</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 935022d58444</span><br><span class="line">Step 3&#x2F;7 : WORKDIR $GOPATH&#x2F;src&#x2F;github.com&#x2F;finnley&#x2F;geese-crossing-api</span><br><span class="line"> ---&gt; Using cache</span><br><span class="line"> ---&gt; 48f8ff19e858</span><br><span class="line">Step 4&#x2F;7 : COPY . $GOPATH&#x2F;src&#x2F;github.com&#x2F;finnley&#x2F;geese-crossing-api</span><br><span class="line"> ---&gt; fa5638f4c809</span><br><span class="line">Step 5&#x2F;7 : RUN go build .</span><br><span class="line"> ---&gt; Running in 04ab66b77af5</span><br><span class="line">go: downloading github.com&#x2F;gin-gonic&#x2F;gin v1.6.3</span><br><span class="line">go: downloading github.com&#x2F;go-ini&#x2F;ini v1.62.0</span><br><span class="line">go: downloading github.com&#x2F;joho&#x2F;godotenv v1.3.0</span><br><span class="line">go: downloading github.com&#x2F;satori&#x2F;go.uuid v1.2.0</span><br><span class="line">go: downloading github.com&#x2F;jinzhu&#x2F;gorm v1.9.16</span><br><span class="line">go: downloading github.com&#x2F;unknwon&#x2F;com v1.0.1</span><br><span class="line">go: downloading github.com&#x2F;gin-contrib&#x2F;sse v0.1.0</span><br><span class="line">go: downloading github.com&#x2F;mattn&#x2F;go-isatty v0.0.12</span><br><span class="line">go: downloading github.com&#x2F;ugorji&#x2F;go v1.2.1</span><br><span class="line">go: downloading gopkg.in&#x2F;yaml.v2 v2.4.0</span><br><span class="line">go: downloading github.com&#x2F;golang&#x2F;protobuf v1.4.3</span><br><span class="line">go: downloading github.com&#x2F;go-playground&#x2F;validator&#x2F;v10 v10.4.1</span><br><span class="line">go: downloading github.com&#x2F;go-sql-driver&#x2F;mysql v1.5.0</span><br><span class="line">go: downloading github.com&#x2F;jinzhu&#x2F;inflection v1.0.0</span><br><span class="line">go: downloading github.com&#x2F;ugorji&#x2F;go&#x2F;codec v1.2.1</span><br><span class="line">go: downloading golang.org&#x2F;x&#x2F;sys v0.0.0-20201211090839-8ad439b19e0f</span><br><span class="line">go: downloading google.golang.org&#x2F;protobuf v1.25.0</span><br><span class="line">go: downloading github.com&#x2F;go-playground&#x2F;universal-translator v0.17.0</span><br><span class="line">go: downloading golang.org&#x2F;x&#x2F;crypto v0.0.0-20201208171446-5f87f3452ae9</span><br><span class="line">go: downloading github.com&#x2F;go-playground&#x2F;locales v0.13.0</span><br><span class="line">go: downloading github.com&#x2F;leodido&#x2F;go-urn v1.2.0</span><br><span class="line">Removing intermediate container 04ab66b77af5</span><br><span class="line"> ---&gt; a31fe52805b1</span><br><span class="line">Step 6&#x2F;7 : EXPOSE 8000</span><br><span class="line"> ---&gt; Running in 2f16e32a8be6</span><br><span class="line">Removing intermediate container 2f16e32a8be6</span><br><span class="line"> ---&gt; 9a15272ad6db</span><br><span class="line">Step 7&#x2F;7 : ENTRYPOINT [&quot;.&#x2F;geese-crossing-api&quot;]</span><br><span class="line"> ---&gt; Running in a9a1cefee6f0</span><br><span class="line">Removing intermediate container a9a1cefee6f0</span><br><span class="line"> ---&gt; 97838407ad1f</span><br><span class="line">Successfully built 97838407ad1f</span><br><span class="line">Successfully tagged geese-crossing-api-docker:latest</span><br></pre></td></tr></table></figure>
+
+<h2 id="验证镜像"><a href="#验证镜像" class="headerlink" title="验证镜像"></a>验证镜像</h2><p>查看所有的镜像，确定刚刚构建的 <code>geese-crossing-api-docker</code> 镜像是否存在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker images</span><br><span class="line">REPOSITORY                     TAG       IMAGE ID       CREATED              SIZE</span><br><span class="line">geese-crossing-api-docker               latest    97838407ad1f   About a minute ago   955MB</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建并运行一个新容器"><a href="#创建并运行一个新容器" class="headerlink" title="创建并运行一个新容器"></a>创建并运行一个新容器</h2><p>执行命令 <code>docker run -p 8000:8000 geese-crossing-api-docker</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 8000:8000 geese-crossing-api-api-docker</span><br><span class="line">2020&#x2F;12&#x2F;15 15:52:57 dial tcp 127.0.0.1:3306: connect: connection refused</span><br><span class="line">[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.</span><br><span class="line"> - using env:	export GIN_MODE&#x3D;release</span><br><span class="line"> - using code:	gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">[GIN-debug] GET    &#x2F;ping                     --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers.InitRouter.func1 (3 handlers)</span><br><span class="line">[GIN-debug] POST   &#x2F;api&#x2F;v1&#x2F;modules           --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.AddModule (3 handlers)</span><br><span class="line">[GIN-debug] PUT    &#x2F;api&#x2F;v1&#x2F;modules&#x2F;:id       --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.EditModule (3 handlers)</span><br><span class="line">[GIN-debug] DELETE &#x2F;api&#x2F;v1&#x2F;modules&#x2F;:id       --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.DeleteModule (3 handlers)</span><br><span class="line">[GIN-debug] GET    &#x2F;api&#x2F;v1&#x2F;modules           --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.GetModules (3 handlers)</span><br></pre></td></tr></table></figure>
+
+<p>运行成功，你以为大功告成了吗？</p>
+<p>你想太多了，仔细看看控制台的输出了一条错误 <code>dial tcp 127.0.0.1:3306: connect: connection refused</code></p>
+<p>发现是 <code>MySQL</code> 的问题</p>
+<h2 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h2><h4 id="拉取镜像"><a href="#拉取镜像" class="headerlink" title="拉取镜像"></a>拉取镜像</h4><p>从 <code>Docker</code> 的公共仓库 <code>Dockerhub</code> 下载 <code>MySQL:5.7</code> 镜像（国内建议配个镜像）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:5.7</span><br></pre></td></tr></table></figure>
+
+<h4 id="创建并运行一个新容器-1"><a href="#创建并运行一个新容器-1" class="headerlink" title="创建并运行一个新容器"></a>创建并运行一个新容器</h4><p>创建容器前首先先复制一份 <code>.env</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp env-example .env</span><br></pre></td></tr></table></figure>
+
+<p>修改里面的 <code>DB_DATABASE</code> 为 geese_crossing</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DB_DATABASE&#x3D;geese_crossing</span><br></pre></td></tr></table></figure>
+
+<p>然后运行 <code>MySQL</code> 容器，并设置执行成功后返回容器 <code>ID</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql -p 33060:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123 -d mysql:5.7</span><br></pre></td></tr></table></figure>
+
+<h4 id="连接-MySQL"><a href="#连接-MySQL" class="headerlink" title="连接 MySQL"></a>连接 MySQL</h4><p>略</p>
+<h2 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h2><p>由于原本的镜像存在问题，需要删除它，此处有几种做法</p>
+<ul>
+<li>删除原本有问题的镜像，重新构建一个新镜像</li>
+<li>重新构建一个不同 <code>name</code>、<code>tag</code> 的新镜像</li>
+</ul>
+<p>删除原本的有问题的镜像，<code>-f</code> 是强制删除及其关联状态</p>
+<p>若不执行 <code>-f</code>，需要执行 <code>docker ps -a</code> 查到所关联的容器，将其 <code>rm</code> 解除两者依赖关系</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ docker rmi -f geese-crossing-api-docker</span><br><span class="line">Untagged: geese-crossing-api-docker:latest</span><br><span class="line">Deleted: sha256:97838407ad1ff5c7919234b0ed6e5105e6356fa0e02cf2d682468a7a1f32dff5</span><br><span class="line">Deleted: sha256:9a15272ad6db8a0a8b38d012bd72c8f6c521cd892e8503e3392014e1fa68135e</span><br><span class="line">Deleted: sha256:a31fe52805b1cfb94e86a77d675980731bafc581287a89eea29732df1610c8db</span><br><span class="line">Deleted: sha256:7a01168947d5e02de7fc2d53b2d11856a9df3b09b1d0e7a7dbf0ca24273bc6f7</span><br><span class="line">Deleted: sha256:fa5638f4c809ce4f1ee290b5201b007fbf3197270c4d65a0c7c59a6a9842df15</span><br><span class="line">Deleted: sha256:106cb795a6d443c2c0ecb9defb8463d0471626b4208669d72cd31efe689a469d</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p>将项目的配置文件 <code>.env</code>，内容修改为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"># debug or release</span><br><span class="line">RUN_MODE&#x3D;debug</span><br><span class="line"></span><br><span class="line">JWT_SECRET&#x3D;!@)*#)!@U#@*!@!)</span><br><span class="line"></span><br><span class="line">HTTP_PORT&#x3D;8000</span><br><span class="line">READ_TIMEOUT&#x3D;60</span><br><span class="line">WRITE_TIMEOUT&#x3D;60</span><br><span class="line"></span><br><span class="line">DB_CONNECTION&#x3D;mysql</span><br><span class="line">DB_HOST&#x3D;mysql</span><br><span class="line">DB_USERNAME&#x3D;root</span><br><span class="line">DB_PASSWORD&#x3D;123</span><br><span class="line">DB_PORT&#x3D;3306</span><br><span class="line">DB_DATABASE&#x3D;geese_crossing</span><br><span class="line"># DB_TABLE_PREFIX&#x3D;notes_</span><br><span class="line"></span><br><span class="line">PAGE_SIZE&#x3D;10</span><br></pre></td></tr></table></figure>
+
+<h2 id="重新构建镜像"><a href="#重新构建镜像" class="headerlink" title="重新构建镜像"></a>重新构建镜像</h2><p>重复先前的步骤，回到 <code>geese-crossing-api</code> 的项目根目录下执行 <code>docker build -t geese-crossing-api-docker .</code></p>
+<h2 id="创建并运行一个新容器-2"><a href="#创建并运行一个新容器-2" class="headerlink" title="创建并运行一个新容器"></a>创建并运行一个新容器</h2><h4 id="关联"><a href="#关联" class="headerlink" title="关联"></a>关联</h4><ul>
+<li>将 <code>Golang</code> 容器和 <code>MySQL</code> 容器关联起来，那么我们需要怎么做呢？</li>
+</ul>
+<p>增加命令 <code>--link mysql:mysql</code> 让 <code>Golang</code> 容器与 <code>MySQL</code> 容器互联；通过 <code>--link</code>，可以在容器内直接使用其关联的容器别名进行访问，而不通过 IP，但是 <code>--link</code> 只能解决单机容器间的关联，在分布式多机的情况下，需要通过别的方式进行连接</p>
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><p>执行命令 <code>docker run --link mysql:mysql -p 8000:8000 geese-crossing-api-docker</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --link mysql:mysql -p 8000:8000 geese-crossing-api-docker</span><br><span class="line">[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.</span><br><span class="line"> - using env:	export GIN_MODE&#x3D;release</span><br><span class="line"> - using code:	gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">[GIN-debug] GET    &#x2F;ping                     --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers.InitRouter.func1 (3 handlers)</span><br><span class="line">[GIN-debug] POST   &#x2F;api&#x2F;v1&#x2F;modules           --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.AddModule (3 handlers)</span><br><span class="line">[GIN-debug] PUT    &#x2F;api&#x2F;v1&#x2F;modules&#x2F;:id       --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.EditModule (3 handlers)</span><br><span class="line">[GIN-debug] DELETE &#x2F;api&#x2F;v1&#x2F;modules&#x2F;:id       --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.DeleteModule (3 handlers)</span><br><span class="line">[GIN-debug] GET    &#x2F;api&#x2F;v1&#x2F;modules           --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.GetModules (3 handlers)</span><br><span class="line">2020&#x2F;12&#x2F;15 16:11:10 dial tcp 127.0.0.1:3306: connect: connection refused</span><br></pre></td></tr></table></figure>
+
+<h4 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h4><p>检查启动输出、接口测试、数据库内数据，均正常；我们的 <code>Golang</code> 容器和 <code>MySQL</code> 容器成功关联运行，大功告成 :)</p>
+<h2 id="创建超小的-Golang-镜像"><a href="#创建超小的-Golang-镜像" class="headerlink" title="创建超小的 Golang 镜像"></a>创建超小的 Golang 镜像</h2><p>通过 <code>docker ps -as | grep geese-crossing-api</code> 查看时发现很大,很小的应用就达到了 900+ MB</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@centos7-dev geese-crossing-api]$ docker ps -as | grep geese-crossing-api</span><br><span class="line">d236be4b1b99   geese-crossing-api-docker   &quot;.&#x2F;geese-crossing-api&quot;   2 minutes ago   Up 2 minutes   0.0.0.0:8000-&gt;8000&#x2F;tcp               silly_hawking   0B (virtual 955MB)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>为什么 <code>geese-crossing-api</code> 占用空间这么大？</li>
+</ul>
+<p>这是因为 <code>FROM golang:latest</code> 拉取的是官方 golang 镜像，包含 Golang 的编译和运行环境，外加一堆 GCC、build 工具，相当齐全</p>
+<p>这是有问题的，我们可以不在 Golang 容器中现场编译的，压根用不到那些东西，我们只需要一个能够运行可执行文件的环境即可</p>
+<h4 id="构建-Scratch-镜像"><a href="#构建-Scratch-镜像" class="headerlink" title="构建 Scratch 镜像"></a>构建 Scratch 镜像</h4><p><code>Scratch</code> 镜像，简洁、小巧，基本是个空镜像</p>
+<ul>
+<li>修改 <code>Dockerfile</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">FROM scratch</span><br><span class="line"></span><br><span class="line">WORKDIR $GOPATH&#x2F;src&#x2F;github.com&#x2F;finnley&#x2F;geese-crossing-api</span><br><span class="line">COPY . $GOPATH&#x2F;src&#x2F;github.com&#x2F;finnley&#x2F;geese-crossing-api</span><br><span class="line"></span><br><span class="line">EXPOSE 8000</span><br><span class="line">CMD [&quot;.&#x2F;geese-crossing-api&quot;]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>编译可执行文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CGO_ENABLED&#x3D;0 GOOS&#x3D;linux go build -a -installsuffix cgo -o geese-crossing-api .</span><br></pre></td></tr></table></figure>
+
+<p>编译所生成的可执行文件会依赖一些库，并且是动态链接。在这里因为使用的是 <code>scratch</code> 镜像，它是空镜像，因此我们需要将生成的可执行文件静态链接所依赖的库</p>
+<ul>
+<li>构建镜像</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ docker build -t geese-crossing-api-docker-scratch .</span><br><span class="line">Sending build context to Docker daemon  16.92MB</span><br><span class="line">Step 1&#x2F;5 : FROM scratch</span><br><span class="line"> ---&gt;</span><br><span class="line">Step 2&#x2F;5 : WORKDIR $GOPATH&#x2F;src&#x2F;github.com&#x2F;finnley&#x2F;geese-crossing-api</span><br><span class="line"> ---&gt; Running in 1b81778ccc06</span><br><span class="line">Removing intermediate container 1b81778ccc06</span><br><span class="line"> ---&gt; 625a45450d15</span><br><span class="line">Step 3&#x2F;5 : COPY . $GOPATH&#x2F;src&#x2F;github.com&#x2F;finnley&#x2F;geese-crossing-api</span><br><span class="line"> ---&gt; 25cf7a850710</span><br><span class="line">Step 4&#x2F;5 : EXPOSE 8000</span><br><span class="line"> ---&gt; Running in 0c6e46071b01</span><br><span class="line">Removing intermediate container 0c6e46071b01</span><br><span class="line"> ---&gt; 51bc8306da49</span><br><span class="line">Step 5&#x2F;5 : CMD [&quot;.&#x2F;geese-crossing-api&quot;]</span><br><span class="line"> ---&gt; Running in 59043f58bbd8</span><br><span class="line">Removing intermediate container 59043f58bbd8</span><br><span class="line"> ---&gt; 3e2626ff3439</span><br><span class="line">Successfully built 3e2626ff3439</span><br><span class="line">Successfully tagged geese-crossing-api-docker-scratch:latest</span><br></pre></td></tr></table></figure>
+
+<p>注意，假设 <code>Golang</code> 应用没有依赖任何的配置等文件，是可以直接把可执行文件给拷贝进去即可，其他都不必关心</p>
+<p>这里可以有好几种解决方案</p>
+<ul>
+<li>依赖文件统一管理挂载</li>
+<li>go-bindata 一下<br>…</li>
+</ul>
+<p>因此这里如果解决了文件依赖的问题后，就不需要把目录给 <code>COPY</code> 进去了</p>
+<h4 id="运行-1"><a href="#运行-1" class="headerlink" title="运行"></a>运行</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --link mysql:mysql -p 8000:8000 geese-crossing-api-docker-scratchc</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$ docker run --link mysql:mysql -p 8000:8000 geese-crossing-api-docker-scratch</span><br><span class="line">[GIN-debug] [WARNING] Running in &quot;debug&quot; mode. Switch to &quot;release&quot; mode in production.</span><br><span class="line"> - using env:	export GIN_MODE&#x3D;release</span><br><span class="line"> - using code:	gin.SetMode(gin.ReleaseMode)</span><br><span class="line"></span><br><span class="line">[GIN-debug] GET    &#x2F;ping                     --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers.InitRouter.func1 (3 handlers)</span><br><span class="line">[GIN-debug] POST   &#x2F;api&#x2F;v1&#x2F;modules           --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.AddModule (3 handlers)</span><br><span class="line">[GIN-debug] PUT    &#x2F;api&#x2F;v1&#x2F;modules&#x2F;:id       --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.EditModule (3 handlers)</span><br><span class="line">[GIN-debug] DELETE &#x2F;api&#x2F;v1&#x2F;modules&#x2F;:id       --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.DeleteModule (3 handlers)</span><br><span class="line">[GIN-debug] GET    &#x2F;api&#x2F;v1&#x2F;modules           --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.GetModules (3 handlers)</span><br><span class="line">[GIN-debug] GET    &#x2F;api&#x2F;v1&#x2F;module&#x2F;:mid&#x2F;categories --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.GetCategories (3 handlers)</span><br><span class="line">[GIN-debug] POST   &#x2F;api&#x2F;v1&#x2F;module&#x2F;:mid&#x2F;categories --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.AddCategory (3 handlers)</span><br><span class="line">[GIN-debug] PUT    &#x2F;api&#x2F;v1&#x2F;module&#x2F;:mid&#x2F;categories&#x2F;:cid --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.EditCategory (3 handlers)</span><br><span class="line">[GIN-debug] DELETE &#x2F;api&#x2F;v1&#x2F;module&#x2F;:mid&#x2F;categories&#x2F;:cid --&gt; github.com&#x2F;finnley&#x2F;geese-crossing-api&#x2F;routers&#x2F;api&#x2F;v1.DeleteCategory (3 handlers)</span><br></pre></td></tr></table></figure>
+
+<p>成功运行，程序也正常接收请求</p>
+<p>接下来我们再看看占用大小，执行 <code>docker ps -as</code> 命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker ps -as</span><br><span class="line">CONTAINER ID   IMAGE                       COMMAND                  CREATED          STATUS                     PORTS                                NAMES            SIZE</span><br><span class="line">f40b681a0acf   geese-crossing-api-docker-scratch    &quot;.&#x2F;geese-crossing-api&quot;   2 minutes ago    Up 2 minutes               0.0.0.0:8000-&gt;8000&#x2F;tcp               adoring_snyder   0B (virtual 16.8MB)</span><br><span class="line">d236be4b1b99   geese-crossing-api-docker   &quot;.&#x2F;geese-crossing-api&quot;   20 minutes ago   Exited (2) 2 minutes ago                                        silly_hawking    0B (virtual 955MB)</span><br><span class="line">ceb42761b0e8   mysql:5.7                   &quot;docker-entrypoint.s…&quot;   21 minutes ago   Up 21 minutes              33060&#x2F;tcp, 0.0.0.0:33060-&gt;3306&#x2F;tcp   mysql            4B (virtual 449MB)</span><br></pre></td></tr></table></figure>
+
+<p>从结果而言，占用大小以 <code>Scratch</code> 镜像为基础的容器完胜，完成目标</p>
+<h2 id="MySQL-挂载数据卷"><a href="#MySQL-挂载数据卷" class="headerlink" title="MySQL 挂载数据卷"></a>MySQL 挂载数据卷</h2><p>倘若不做任何干涉，在每次启动一个 <code>MySQL</code> 容器时，数据库都是空的。另外容器删除之后，数据就丢失了（还有各类意外情况），非常糟糕！</p>
+<h4 id="数据卷"><a href="#数据卷" class="headerlink" title="数据卷"></a>数据卷</h4><p>数据卷 是被设计用来持久化数据的，它的生命周期独立于容器，<code>Docker</code> 不会在容器被删除后自动删除 数据卷，并且也不存在垃圾回收这样的机制来处理没有任何容器引用的 数据卷。如果需要在删除容器的同时移除数据卷。可以在删除容器的时候使用 <code>docker rm -v</code> 这个命令</p>
+<p>数据卷 是一个可供一个或多个容器使用的特殊目录，它绕过 UFS，可以提供很多有用的特性：</p>
+<ul>
+<li><p>数据卷 可以在容器之间共享和重用</p>
+</li>
+<li><p>对 数据卷 的修改会立马生效</p>
+</li>
+<li><p>对 数据卷 的更新，不会影响镜像</p>
+</li>
+<li><p>数据卷 默认会一直存在，即使容器被删除</p>
+<p>  注意：数据卷 的使用，类似于 Linux 下对目录或文件进行 mount，镜像中的被指定为挂载点的目录中的文件会隐藏掉，能显示看的是挂载的 数据卷。</p>
+</li>
+</ul>
+<h4 id="如何挂载"><a href="#如何挂载" class="headerlink" title="如何挂载"></a>如何挂载</h4><p>首先创建一个目录用于存放数据卷；示例目录 <code>/data/mysql-data</code>，注意 <code>--name</code> 原本名称为 <code>mysql</code> 的容器，需要将其删除 <code>docker rm</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir -p &#x2F;data&#x2F;mysql-data</span><br><span class="line">docker stop mysql</span><br><span class="line">docker rm mysql</span><br></pre></td></tr></table></figure>
+
+<p>运行 MySQL 容器并挂载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql -p 33060:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123 -v &#x2F;data&#x2F;mysql-data:&#x2F;var&#x2F;lib&#x2F;mysql -d mysql:5.7</span><br></pre></td></tr></table></figure>
+
+<p>创建成功，检查目录 <code>mysql-data</code>，下面多了不少数据库文件</p>
+<h4 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h4><p>接下来进行验证，目标是创建一些测试表和数据，然后删除当前容器，重新创建的容器，数据库数据也依然存在（当然了数据卷指向要一致）</p>
+<p>略</p>
+<h2 id="docker-compose"><a href="#docker-compose" class="headerlink" title="docker-compose"></a>docker-compose</h2><h4 id="创建-docker-compose-yml"><a href="#创建-docker-compose-yml" class="headerlink" title="创建 docker-compose.yml"></a>创建 docker-compose.yml</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">version: &#39;3&#39;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  geese-crossing-api:</span><br><span class="line">    build:</span><br><span class="line">      context: .</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    ports:</span><br><span class="line">      - 8000:8000</span><br><span class="line">    depends_on:</span><br><span class="line">      - mysql</span><br><span class="line"></span><br><span class="line">  mysql:</span><br><span class="line">    image: mysql:5.7</span><br><span class="line">    ports:</span><br><span class="line">      - 33060:3306</span><br><span class="line">    environment:</span><br><span class="line">      MYSQL_ROOT_PASSWORD: 123</span><br><span class="line">    volumes:</span><br><span class="line">      - &#x2F;data&#x2F;mysql-data:&#x2F;var&#x2F;lib&#x2F;mysql</span><br></pre></td></tr></table></figure>
+
+<h4 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
+
+<h2 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h2><p>之前已经在主上安装了一些常用的开发环境</p>
+<p><a href="https://notes.xuepincat.com/2021/01/02/Docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/#more">点击我</a></p>
+<p>现在打算重新构建 <code>geese-crossing-api</code> 的应用，但是里面链接的 <code>MySQL</code> 容器不重新创建，而是使用之前 <code>docker-env</code> 中设置的 <code>MySQL</code> 容器</p>
+<p>修改 <code>geese-crossing-api</code> 的 <code>docker-compose.yml</code> 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">version: &#39;3&#39;</span><br><span class="line"></span><br><span class="line">services:</span><br><span class="line">  geese-crossing-api:</span><br><span class="line">    build:</span><br><span class="line">      context: .</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    ports:</span><br><span class="line">      - 8000:8000</span><br><span class="line">    external_links:</span><br><span class="line">      - mysql</span><br><span class="line">    networks:</span><br><span class="line">      - docker-env_backend</span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  docker-env_backend:</span><br><span class="line">    external: true</span><br></pre></td></tr></table></figure>
+
+<p>然后 <code>docker-compose up</code> 启动</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+              <a href="/tags/Gin/" rel="tag"># Gin</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/29/geese-crossing-api-Category/" rel="prev" title="geese-crossing-api-Category">
+      <i class="fa fa-chevron-left"></i> geese-crossing-api-Category
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/12/01/MP-%E6%96%B0%E5%BB%BA%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%A1%B9%E7%9B%AE/" rel="next" title="MP-新建小程序项目">
+      MP-新建小程序项目 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Branch"><span class="nav-number">1.</span> <span class="nav-text">Branch</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker"><span class="nav-number">1.2.</span> <span class="nav-text">Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编写-Dockerfile"><span class="nav-number">1.3.</span> <span class="nav-text">编写 Dockerfile</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#作用"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#说明"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">说明</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建镜像"><span class="nav-number">1.4.</span> <span class="nav-text">构建镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证镜像"><span class="nav-number">1.5.</span> <span class="nav-text">验证镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建并运行一个新容器"><span class="nav-number">1.6.</span> <span class="nav-text">创建并运行一个新容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">1.7.</span> <span class="nav-text">MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#拉取镜像"><span class="nav-number">1.7.0.1.</span> <span class="nav-text">拉取镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#创建并运行一个新容器-1"><span class="nav-number">1.7.0.2.</span> <span class="nav-text">创建并运行一个新容器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#连接-MySQL"><span class="nav-number">1.7.0.3.</span> <span class="nav-text">连接 MySQL</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除镜像"><span class="nav-number">1.8.</span> <span class="nav-text">删除镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改配置文件"><span class="nav-number">1.9.</span> <span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重新构建镜像"><span class="nav-number">1.10.</span> <span class="nav-text">重新构建镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建并运行一个新容器-2"><span class="nav-number">1.11.</span> <span class="nav-text">创建并运行一个新容器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关联"><span class="nav-number">1.11.0.1.</span> <span class="nav-text">关联</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行"><span class="nav-number">1.11.0.2.</span> <span class="nav-text">运行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结果"><span class="nav-number">1.11.0.3.</span> <span class="nav-text">结果</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建超小的-Golang-镜像"><span class="nav-number">1.12.</span> <span class="nav-text">创建超小的 Golang 镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#构建-Scratch-镜像"><span class="nav-number">1.12.0.1.</span> <span class="nav-text">构建 Scratch 镜像</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行-1"><span class="nav-number">1.12.0.2.</span> <span class="nav-text">运行</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-挂载数据卷"><span class="nav-number">1.13.</span> <span class="nav-text">MySQL 挂载数据卷</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#数据卷"><span class="nav-number">1.13.0.1.</span> <span class="nav-text">数据卷</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#如何挂载"><span class="nav-number">1.13.0.2.</span> <span class="nav-text">如何挂载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#验证"><span class="nav-number">1.13.0.3.</span> <span class="nav-text">验证</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker-compose"><span class="nav-number">1.14.</span> <span class="nav-text">docker-compose</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-docker-compose-yml"><span class="nav-number">1.14.0.1.</span> <span class="nav-text">创建 docker-compose.yml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动"><span class="nav-number">1.14.0.2.</span> <span class="nav-text">启动</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩展"><span class="nav-number">1.15.</span> <span class="nav-text">扩展</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Finnley"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Finnley</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">180</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">31</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="开发环境   版本管理工具 - Git 下载 1   wget https:&#x2F;&#x2F;github.com&#x2F;git&#x2F;git&#x2F;archive&#x2F;v2.30.0.tar.gz   安装依赖 1   yum install -y zlib-devel zlib curl-devel autoconf automake libtool   解压 1   tar -zxvf v2.30.0.tar.gz   1">
+  <meta name="description" content="开发环境概览   VirtualBox + Vagrant 下面介绍了使用 VirtualBox 和 Vagrant 启动一个安装了 docker 和 docker compose 的虚拟环境  使用vagrant安装CentOS7  常用开发环境 github  docker-env 是基于 docker-compose 的运行在 Docker 上的开发环境，包含 PHP, MySQL, Ngi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker-开发环境搭建">
-<meta property="og:url" content="https://notes.xuepincat.com/2021/01/02/Docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
+<meta property="og:title" content="Coding-开发环境搭建">
+<meta property="og:url" content="https://notes.xuepincat.com/2021/01/02/Coding-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="开发环境   版本管理工具 - Git 下载 1   wget https:&#x2F;&#x2F;github.com&#x2F;git&#x2F;git&#x2F;archive&#x2F;v2.30.0.tar.gz   安装依赖 1   yum install -y zlib-devel zlib curl-devel autoconf automake libtool   解压 1   tar -zxvf v2.30.0.tar.gz   1">
+<meta property="og:description" content="开发环境概览   VirtualBox + Vagrant 下面介绍了使用 VirtualBox 和 Vagrant 启动一个安装了 docker 和 docker compose 的虚拟环境  使用vagrant安装CentOS7  常用开发环境 github  docker-env 是基于 docker-compose 的运行在 Docker 上的开发环境，包含 PHP, MySQL, Ngi">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://images.notes.xuepincat.com/development/env.jpg">
 <meta property="og:image" content="https://images.notes.xuepincat.com/yapi/1.jpg">
@@ -35,13 +35,13 @@
 <meta property="og:image" content="https://images.notes.xuepincat.com/yapi/4.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/yapi/5.png">
 <meta property="article:published_time" content="2021-01-02T05:10:11.000Z">
-<meta property="article:modified_time" content="2021-01-09T05:57:34.505Z">
+<meta property="article:modified_time" content="2021-01-14T15:49:25.046Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://images.notes.xuepincat.com/development/env.jpg">
 
-<link rel="canonical" href="https://notes.xuepincat.com/2021/01/02/Docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+<link rel="canonical" href="https://notes.xuepincat.com/2021/01/02/Coding-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
 
 
 <script id="page-configurations">
@@ -54,7 +54,7 @@
   };
 </script>
 
-  <title>Docker-开发环境搭建 | Finnley's Notes</title>
+  <title>Coding-开发环境搭建 | Finnley's Notes</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
     <script>
@@ -222,7 +222,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/01/02/Docker-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/01/02/Coding-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -235,7 +235,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Docker-开发环境搭建
+          Coding-开发环境搭建
         </h1>
 
         <div class="post-meta">
@@ -252,7 +252,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-09 13:57:34" itemprop="dateModified" datetime="2021-01-09T13:57:34+08:00">2021-01-09</time>
+                <time title="Modified: 2021-01-14 23:49:25" itemprop="dateModified" datetime="2021-01-14T23:49:25+08:00">2021-01-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -260,7 +260,7 @@
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                  <a href="/categories/Coding/" itemprop="url" rel="index"><span itemprop="name">Coding</span></a>
                 </span>
             </span>
 
@@ -275,7 +275,218 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h1><p><img src="https://images.notes.xuepincat.com/development/env.jpg" alt=""></p>
+        <h1 id="开发环境概览"><a href="#开发环境概览" class="headerlink" title="开发环境概览"></a>开发环境概览</h1><p><img src="https://images.notes.xuepincat.com/development/env.jpg" alt=""></p>
+<h1 id="VirtualBox-Vagrant"><a href="#VirtualBox-Vagrant" class="headerlink" title="VirtualBox + Vagrant"></a>VirtualBox + Vagrant</h1><p>下面介绍了使用 <code>VirtualBox</code> 和 <code>Vagrant</code> 启动一个安装了 <code>docker</code> 和 <code>docker compose</code> 的虚拟环境</p>
+<p><a href="https://notes.xuepincat.com/2019/05/15/vagrant-install-centos7-using-vagrant/">使用vagrant安装CentOS7</a></p>
+<h1 id="常用开发环境"><a href="#常用开发环境" class="headerlink" title="常用开发环境"></a>常用开发环境</h1><p><a href="https://github.com/finnley/docker-env" target="_blank" rel="noopener">github</a></p>
+<p><code>docker-env</code> 是基于 <code>docker-compose</code> 的运行在 <code>Docker</code> 上的开发环境，包含 <code>PHP</code>, <code>MySQL</code>, <code>Nginx</code>, <code>Redis</code> 等镜像，并支持多版本切换，可以满足一些简单的学习，开发和测试需求</p>
+<h2 id="包含镜像"><a href="#包含镜像" class="headerlink" title="包含镜像"></a>包含镜像</h2><p><code>docker-env</code> 包含以下镜像，每种镜像支持多个版本：</p>
+<ul>
+<li>nginx </li>
+<li>php-fpm (7.4 - 7.3 - 7.2 - 7.1 - 5.6)</li>
+<li>mysql (8.0 - 5.7 - 5.6)</li>
+<li>mongo </li>
+<li>redis (5.0 - 4.0)</li>
+<li>memcached (1.5.16 - 1.5 - 1)</li>
+</ul>
+<p>其中：</p>
+<p>php-fpm 默认是 7.1 版本，如需使用其它版本，配置 <code>.env</code> 文件中 <code>PHP_VERSION</code> 即可；</p>
+<p>mysql 默认是 5.7 版本，如需使用其它版本，配置 <code>.env</code> 文件中 <code>MYSQL_VERSION</code> 即可；</p>
+<h2 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h2><ol>
+<li>首先创建一个根目录 <code>docker-env</code>，并进入到该目录，在该目录中创建一个 <code>php-fpm</code> 的目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir docker-env</span><br><span class="line">cd docker-env</span><br><span class="line">mkdir php-fpm</span><br><span class="line">cd php-fpm</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在 <code>php-fpm</code> 目录中新建 <code>conf-7.1</code> 目录，进入该目录，创建一系列配置文件,目录结构：</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── conf-7.1</span><br><span class="line">│   ├── php-fpm.conf</span><br><span class="line">│   ├── php-fpm.d</span><br><span class="line">│   │   ├── docker.conf</span><br><span class="line">│   │   ├── www.conf</span><br><span class="line">│   │   └── zz-docker.conf</span><br><span class="line">│   └── php.ini</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在 <code>php-fpm</code> 中新建 <code>Dockerfile</code></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── Dockerfile</span><br><span class="line">├── conf-7.1</span><br><span class="line">│   ├── php-fpm.conf</span><br><span class="line">│   ├── php-fpm.d</span><br><span class="line">│   │   ├── docker.conf</span><br><span class="line">│   │   ├── www.conf</span><br><span class="line">│   │   └── zz-docker.conf</span><br><span class="line">│   └── php.ini</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>构建 <code>php-fpm</code> 镜像</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build --build-arg PHP_VERSION&#x3D;7.1 -t finnley&#x2F;php-fpm-7.1 .</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">REPOSITORY                   TAG              IMAGE ID       CREATED         SIZE</span><br><span class="line">finnley&#x2F;php-fpm-7.1          latest           dc19e45c09dc   2 hours ago     354MB</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>创建容器</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name php-fpm -p 9000:9000 -v $&#123;PWD&#125;&#x2F;conf-7.1&#x2F;php.ini:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;php&#x2F;php.ini -v $&#123;PWD&#125;&#x2F;conf-7.1&#x2F;php-fpm.conf:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;php-fpm.conf -v $&#123;PWD&#125;&#x2F;conf-7.1&#x2F;php-fpm.d:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;php-fpm.d -v &#x2F;var&#x2F;www&#x2F;site:&#x2F;var&#x2F;www&#x2F;site finnley&#x2F;php-fpm-7.1</span><br></pre></td></tr></table></figure>
+
+<h2 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h2><ol>
+<li><p>在 <code>docker-env</code> 目录中创建一个 <code>mysql</code> 的目录</p>
+</li>
+<li><p>新建 <code>Dockerfile</code> 文件</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ARG MYSQL_VERSION</span><br><span class="line">FROM mysql:$&#123;MYSQL_VERSION&#125;</span><br><span class="line"></span><br><span class="line">LABEL maintainer&#x3D;&quot;Finnley &lt;43@43.com&gt;&quot;</span><br><span class="line"></span><br><span class="line">CMD [&quot;mysqld&quot;]</span><br><span class="line"></span><br><span class="line">EXPOSE 3306</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>构建 <code>MySQL</code> 镜像</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build --build-arg MYSQL_VERSION&#x3D;5.7 -t finnley&#x2F;mysql .</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>创建 <code>MySQL</code> 容器</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 3306:3306 --name mysql -v $PWD&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;conf.d -v $PWD&#x2F;logs:&#x2F;logs -v $&#123;PWD&#125;&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql -e MYSQL_ROOT_PASSWORD&#x3D;123 finnley&#x2F;mysql</span><br></pre></td></tr></table></figure>
+
+<h2 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h2><ol>
+<li>在 <code>docker-env</code> 目录中创建一个 <code>nginx</code> 的目录</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd docker-env</span><br><span class="line">mkdir nginx</span><br><span class="line">cd nginx</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在 <code>nginx</code> 目录内容如下：</li>
+</ol>
+<ul>
+<li><code>conf.d</code> 目录：用户存在一些 nginx 配置文件，后面会将里面的配置文件挂载到 nginx 的 <code>/etc/nginx/conf.d</code> 目录中</li>
+<li><code>nginx.conf</code> 文件：nginx 的主要配置文件，后面会将这个配置文件映射到 nginx 的 <code>/etc/nginx/nginx.conf</code> 文件</li>
+<li><code>ssl</code> 目录：配置 <code>https</code> 的目录</li>
+</ul>
+<ol start="3">
+<li>新建 <code>Dockerfile</code> 文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FROM nginx:alpine</span><br><span class="line"></span><br><span class="line">LABEL maintainer&#x3D;&quot;Finnley &lt;43@43.com&gt;&quot;</span><br><span class="line"></span><br><span class="line">VOLUME &#x2F;var&#x2F;www&#x2F;site</span><br><span class="line">WORKDIR &#x2F;var&#x2F;www&#x2F;site</span><br><span class="line"></span><br><span class="line">EXPOSE 80 443</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>docker中的Nginx镜像中的nginx:alpine是什么意思?</li>
+</ul>
+<p>相比 <code>nginx:latest</code>，<code>nginx:alpine</code> 有几点优势：</p>
+<p>用的是最新版nginx镜像，功能与 <code>nginx:latest</code> 一模一样<br><code>alpine</code> 镜像用的是 <code>Alpine Linux</code> 内核，比ubuntu内核要小很多。<br><code>nginx:alpine</code> 默认支持 <code>http2</code>。</p>
+<p>如要进入 <code>alpine</code> 容器，命令是（后面的路径不是 <code>/bin/bash</code>）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker exec -it dnmp_nginx_1 &#x2F;bin&#x2F;sh</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>构建镜像,当前目录是在 <code>nginx</code> 目录中</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t finnley&#x2F;nginx .</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-env nginx]$ docker images</span><br><span class="line">REPOSITORY                   TAG       IMAGE ID       CREATED         SIZE</span><br><span class="line">finnley&#x2F;nginx                latest    17983ab9ccef   6 seconds ago   22.3MB</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>创建容器</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name web --link php-fpm -p 80:80 -v $&#123;PWD&#125;&#x2F;nginx.conf:&#x2F;etc&#x2F;nginx&#x2F;nginx.conf -v $&#123;PWD&#125;&#x2F;conf.d:&#x2F;etc&#x2F;nginx&#x2F;conf.d -v $&#123;PWD&#125;&#x2F;ssl:&#x2F;etc&#x2F;nginx&#x2F;ssl -v &#x2F;var&#x2F;www&#x2F;site:&#x2F;var&#x2F;www&#x2F;site finnley&#x2F;nginx</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>在 虚拟主机 <code>/var/www/site</code> 目录中新建 <code>phpinfo.php</code> 文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    phpinfo();</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>浏览器中输入 <code>http://127.0.0.1:2021/phpinfo.php</code></li>
+</ol>
+<h2 id="Mongo"><a href="#Mongo" class="headerlink" title="Mongo"></a>Mongo</h2><ol>
+<li>在 <code>docker-env</code> 目录中创建一个 <code>mongo</code> 的目录，里面新建 <code>mongo-conf</code> 目录，并在 <code>mongo-conf</code> 里面新建一个 <code>yapi</code> 的初始化数据文件 <code>init-yapi-mongo.js</code></li>
+</ol>
+<p>内容如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.createUser(&#123; user: &#39;admin&#39;, pwd: &#39;admin&#39;, roles: [ &#123; role: &quot;root&quot;, db: &quot;admin&quot; &#125; ] &#125;);</span><br><span class="line"></span><br><span class="line">db.auth(&quot;admin&quot;, &quot;admin&quot;);</span><br><span class="line">db.createUser(&#123;</span><br><span class="line">    user: &#39;yapi&#39;,</span><br><span class="line">    pwd: &#39;123&#39;,</span><br><span class="line">    roles: [</span><br><span class="line">        &#123; role: &quot;dbAdmin&quot;, db: &quot;yapi&quot; &#125;,</span><br><span class="line">        &#123; role: &quot;readWrite&quot;, db: &quot;yapi&quot; &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在 <code>mongo</code> 目录下新建 <code>Dockerfile</code> 文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ARG MONGO_VERSION</span><br><span class="line">FROM mongo:$&#123;MONGO_VERSION&#125;</span><br><span class="line"></span><br><span class="line">LABEL maintainer&#x3D;&quot;Finnley &lt;43@43.com&gt;&quot;</span><br><span class="line"></span><br><span class="line">#COPY mongo.conf &#x2F;usr&#x2F;local&#x2F;etc&#x2F;mongo&#x2F;mongo.conf</span><br><span class="line"></span><br><span class="line">CMD [&quot;mongod&quot;]</span><br><span class="line"></span><br><span class="line">EXPOSE 27017</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><code>docker-compose.yml</code> 文件添加 <code>mongo</code> 容器</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  mongo:</span><br><span class="line">    container_name: dev-mongo</span><br><span class="line">    build:</span><br><span class="line">      context: .&#x2F;mongo</span><br><span class="line">      args:</span><br><span class="line">        - MONGO_VERSION&#x3D;$&#123;MONGO_VERSION&#125;</span><br><span class="line">    ports:</span><br><span class="line">      - $&#123;MONGO_PORT&#125;:27017</span><br><span class="line">    volumes:</span><br><span class="line">      - $&#123;PWD&#125;&#x2F;mongo&#x2F;mongo-conf:&#x2F;docker-entrypoint-initdb.d</span><br><span class="line">      - $&#123;PWD&#125;&#x2F;mongo&#x2F;etc:&#x2F;etc&#x2F;mongo</span><br><span class="line">      - $&#123;PWD&#125;&#x2F;mongo&#x2F;data&#x2F;db:&#x2F;data&#x2F;db</span><br><span class="line">    restart: always</span><br><span class="line">    environment:</span><br><span class="line">      MONGO_INITDB_ROOT_USERNAME: $&#123;MONGO_ROOT_USERNAME&#125;</span><br><span class="line">      MONGO_INITDB_ROOT_PASSWORD: $&#123;MONGO_ROOT_PASSWORD&#125;</span><br><span class="line">      MONGO_INITDB_DATABASE: $&#123;MONGO_INITDB_DATABASE&#125;</span><br><span class="line">    healthcheck:</span><br><span class="line">      test: [&quot;CMD&quot;, &quot;netstat -anp | grep 27017&quot;]</span><br><span class="line">      interval: 2m</span><br><span class="line">      timeout: 10s</span><br><span class="line">      retries: 3</span><br></pre></td></tr></table></figure>
+
+<h2 id="YApi"><a href="#YApi" class="headerlink" title="YApi"></a>YApi</h2><p>在根目录 <code>docker-env</code> 目录下新建 <code>yapi</code> 的目录，在下面新建 <code>Dockerfile</code> 和 <code>repositories</code> 两个文件</p>
+<ol>
+<li>Dockerfile</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FROM node:12-alpine</span><br><span class="line"></span><br><span class="line">COPY repositories &#x2F;etc&#x2F;apk&#x2F;repositories</span><br><span class="line"></span><br><span class="line"># RUN npm install -g yapi-cli --registry http:&#x2F;&#x2F;mirrors.cloud.tencent.com&#x2F;npm&#x2F;</span><br><span class="line">RUN npm install -g yapi-cli --registry https:&#x2F;&#x2F;registry.npm.taobao.org</span><br><span class="line"></span><br><span class="line">EXPOSE 3000 9090</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>repositories</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;alpine&#x2F;v3.6&#x2F;main&#x2F;</span><br><span class="line"></span><br><span class="line">https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;alpine&#x2F;v3.6&#x2F;community&#x2F;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><code>docker-compose.yml</code> 文件添加 <code>yapi</code> 容器</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  yapi:</span><br><span class="line">    container_name: dev-yapi</span><br><span class="line">    build:</span><br><span class="line">      context: .&#x2F;yapi</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    image: yapi</span><br><span class="line">    # 第一次启动使用</span><br><span class="line">    command: &quot;yapi server&quot;</span><br><span class="line">    # 之后使用下面的命令</span><br><span class="line">    # command: &quot;node &#x2F;my-yapi&#x2F;vendors&#x2F;server&#x2F;app.js&quot;</span><br><span class="line">    volumes: </span><br><span class="line">      - $&#123;PWD&#125;&#x2F;yapi&#x2F;my-yapi:&#x2F;my-yapi</span><br><span class="line">    ports: </span><br><span class="line">      - 9090:9090</span><br><span class="line">      - 3000:3000</span><br><span class="line">    depends_on: </span><br><span class="line">      - mongo</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>yapi 部署</li>
+</ol>
+<p>当使用 <code>docker-compose up</code> 的加载的时候屏幕中看到 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dev-yapi   |  初始化管理员账号成功,账号名：&quot;admin@admin.com&quot;，密码：&quot;ymfe.org&quot;</span><br><span class="line">dev-yapi   |</span><br><span class="line">dev-yapi   | 部署成功，请切换到部署目录，输入： &quot;node vendors&#x2F;server&#x2F;app.js&quot; 指令启动服务器, 然后在浏览器打开 http:&#x2F;&#x2F;127.0.0.1:3000 访问</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>localhost:9090</code></p>
+<ul>
+<li>默认部署路径为 <code>/my-yapi</code> (需要修改 <code>docker-compose.yml</code> 才可以更改)</li>
+<li>修改管理员邮箱 <code>admin@admin.com</code> (随意, 修改为自己的邮箱)</li>
+<li>修改数据库地址为 <code>mongo</code> 或者修改为自己的 <code>mongo</code> 实例 (<code>docker-compose</code> 配置的 <code>mongo</code> 服务名称叫 <code>mongo</code>)</li>
+<li>打开数据库认证</li>
+<li>输入数据库用户名: <code>yapi</code> (<code>mongo</code> 配置的用户名, 见 <code>mongo-conf/init-yapi-mongo.js</code>)</li>
+<li>输入密码: <code>123</code> (<code>mongo</code> 配置的密码, 见 <code>mongo-conf/init-yapi-mongo.js</code>)</li>
+</ul>
+<p>点击开始部署.</p>
+<ul>
+<li>初始化页面</li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/yapi/1.jpg" alt=""></p>
+<ul>
+<li>信息设置</li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/yapi/2.png" alt=""></p>
+<ul>
+<li>部署中</li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/yapi/3.jpg" alt=""></p>
+<ul>
+<li>部署完成</li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/yapi/4.png" alt=""></p>
+<ul>
+<li>修改 <code>docker-compose.yml</code> 文件 </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  yapi:</span><br><span class="line">    container_name: dev-yapi</span><br><span class="line">    build:</span><br><span class="line">      context: .&#x2F;yapi</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    image: yapi</span><br><span class="line">    # 第一次启动使用</span><br><span class="line">    # command: &quot;yapi server&quot;</span><br><span class="line">    # 之后使用下面的命令</span><br><span class="line">    command: &quot;node &#x2F;my-yapi&#x2F;vendors&#x2F;server&#x2F;app.js&quot;</span><br><span class="line">    volumes: </span><br><span class="line">      - $&#123;PWD&#125;&#x2F;yapi&#x2F;my-yapi:&#x2F;my-yapi</span><br><span class="line">    ports: </span><br><span class="line">      - 9090:9090</span><br><span class="line">      - 3000:3000</span><br><span class="line">    depends_on: </span><br><span class="line">      - mongo</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>退出 <code>api</code> 重新启动</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>访问 <code>yapi</code>，此时访问的端口就不是 <code>9090</code>，而是 <code>3000</code>， 即 <code>IP:3000</code></li>
+</ul>
+<p><img src="https://images.notes.xuepincat.com/yapi/5.png" alt=""></p>
+<ul>
+<li>登录</li>
+</ul>
+<p>username: <a href="mailto:admin@admin.com">admin@admin.com</a><br>password: ymfe.org</p>
+<h2 id="使用-docker-compose-构建容器"><a href="#使用-docker-compose-构建容器" class="headerlink" title="使用 docker-compose 构建容器"></a>使用 <code>docker-compose</code> 构建容器</h2><ol>
+<li>在 <code>docker-lnmp</code> 目录中新建 <code>.env</code> 文件,用户设置一些环境变量信息</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim .env</span><br></pre></td></tr></table></figure>
+
+<p>内容如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">### Paths #################################################</span><br><span class="line"></span><br><span class="line">WEB_ROOT_PATH&#x3D;..&#x2F;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>在 <code>docker-lnmp</code> 目录中新建 <code>docker-compose.yml</code> 文件</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim docker-compose.yml</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>后台启动</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+<p>或者 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d nginx</span><br></pre></td></tr></table></figure>
+
+<p><a href="https://github.com/finnley/docker-dev/blob/dev/docker-compose.yml" target="_blank" rel="noopener">docker-compose.yml</a></p>
 <h1 id="版本管理工具-Git"><a href="#版本管理工具-Git" class="headerlink" title="版本管理工具 - Git"></a>版本管理工具 - Git</h1><h2 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;git&#x2F;git&#x2F;archive&#x2F;v2.30.0.tar.gz</span><br></pre></td></tr></table></figure>
 
 <h2 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a>安装依赖</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y zlib-devel zlib curl-devel autoconf automake libtool</span><br></pre></td></tr></table></figure>
@@ -312,8 +523,8 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">git config --list #查看git配置</span><br><span class="line">git config --global user.name &quot;your username&quot; #配置用户名</span><br><span class="line">git config --global user.email &quot;your email@example.com&quot; #配置邮箱</span><br><span class="line"></span><br><span class="line">ls -al ~&#x2F;.ssh #查看是否公私钥</span><br><span class="line">ssh-keygen -t rsa -C &quot;your_email@example.com&quot; #生成公私钥 过程中都是回车</span><br><span class="line">ls -al ~&#x2F;.ssh #查看是否公私钥</span><br></pre></td></tr></table></figure>
 
-<h1 id="VirtualBox-Vagrant"><a href="#VirtualBox-Vagrant" class="headerlink" title="VirtualBox + Vagrant"></a>VirtualBox + Vagrant</h1><p>下面介绍了使用 <code>VirtualBox</code> 和 <code>Vagrant</code> 启动一个安装了 <code>docker</code> 和 <code>docker compose</code> 的虚拟环境</p>
-<p><a href="https://notes.xuepincat.com/2019/05/15/vagrant-install-centos7-using-vagrant/">使用vagrant安装CentOS7</a></p>
+
+
 <h1 id="使用-docker-安装-MySQL"><a href="#使用-docker-安装-MySQL" class="headerlink" title="使用 docker 安装 MySQL"></a>使用 docker 安装 MySQL</h1><h2 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:5.7</span><br></pre></td></tr></table></figure>
 
 <p>可以通过 <code>docker images</code> 命令来查看拉取的镜像</p>
@@ -557,214 +768,7 @@
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s &#x2F;home&#x2F;vagrant&#x2F;node-v14.15.3-linux-x64&#x2F;bin&#x2F;npm &#x2F;usr&#x2F;bin&#x2F;npm</span><br></pre></td></tr></table></figure>
 
-<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p><code>Docker-LNMP</code> 是基于 <code>docker-compose</code> 的运行在 <code>Docker</code> 上的 <code>LNMP</code> 开发环境，包含 <code>PHP</code>, <code>MySQL</code>, <code>Nginx</code>, <code>Redis</code> 等镜像，并支持多版本切换，可以满足一些简单的学习，开发和测试需求</p>
-<h2 id="包含镜像"><a href="#包含镜像" class="headerlink" title="包含镜像"></a>包含镜像</h2><p>Docker LNMP 包含以下镜像，每种镜像支持多个版本：</p>
-<ul>
-<li>nginx </li>
-<li>php-fpm (7.4 - 7.3 - 7.2 - 7.1 - 5.6)</li>
-<li>mysql (8.0 - 5.7 - 5.6)</li>
-<li>mongo </li>
-<li>redis (5.0 - 4.0)</li>
-<li>memcached (1.5.16 - 1.5 - 1)</li>
-</ul>
-<p>其中：</p>
-<p>php-fpm 默认是 7.2 版本，如需使用其它版本，配置 <code>.env</code> 文件中 <code>PHP_VERSION</code> 即可；</p>
-<p>mysql 默认是 5.7 版本，如需使用其它版本，配置 <code>.env</code> 文件中 <code>MYSQL_VERSION</code> 即可；</p>
-<h2 id="PHP"><a href="#PHP" class="headerlink" title="PHP"></a>PHP</h2><ol>
-<li>首先创建一个根目录 <code>docker-lnmp</code>，并进入到该目录，在该目录中创建一个 <code>php-fpm</code> 的目录</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir docker-lnmp</span><br><span class="line">cd docker-lnmp</span><br><span class="line">mkdir php-fpm</span><br><span class="line">cd php-fpm</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>在 <code>php-fpm</code> 目录中新建 <code>conf-7.1</code> 目录，进入该目录，创建一系列配置文件,目录结构：</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── conf-7.1</span><br><span class="line">│   ├── php-fpm.conf</span><br><span class="line">│   ├── php-fpm.d</span><br><span class="line">│   │   ├── docker.conf</span><br><span class="line">│   │   ├── www.conf</span><br><span class="line">│   │   └── zz-docker.conf</span><br><span class="line">│   └── php.ini</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>在 <code>php-fpm</code> 中新建 <code>Dockerfile</code></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">.</span><br><span class="line">├── Dockerfile</span><br><span class="line">├── conf-7.1</span><br><span class="line">│   ├── php-fpm.conf</span><br><span class="line">│   ├── php-fpm.d</span><br><span class="line">│   │   ├── docker.conf</span><br><span class="line">│   │   ├── www.conf</span><br><span class="line">│   │   └── zz-docker.conf</span><br><span class="line">│   └── php.ini</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>构建 <code>php-fpm</code> 镜像</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build --build-arg PHP_VERSION&#x3D;7.1 -t finnley&#x2F;php-fpm-7.1 .</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">REPOSITORY                   TAG              IMAGE ID       CREATED         SIZE</span><br><span class="line">finnley&#x2F;php-fpm-7.1          latest           dc19e45c09dc   2 hours ago     354MB</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>创建容器</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name php-fpm -p 9000:9000 -v $&#123;PWD&#125;&#x2F;conf-7.1&#x2F;php.ini:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;php&#x2F;php.ini -v $&#123;PWD&#125;&#x2F;conf-7.1&#x2F;php-fpm.conf:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;php-fpm.conf -v $&#123;PWD&#125;&#x2F;conf-7.1&#x2F;php-fpm.d:&#x2F;usr&#x2F;local&#x2F;etc&#x2F;php-fpm.d -v &#x2F;var&#x2F;www&#x2F;site:&#x2F;var&#x2F;www&#x2F;site finnley&#x2F;php-fpm-7.1</span><br></pre></td></tr></table></figure>
-
-<h2 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h2><ol>
-<li><p>在 <code>docker-lnmp</code> 目录中创建一个 <code>mysql</code> 的目录</p>
-</li>
-<li><p>新建 <code>Dockerfile</code> 文件</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ARG MYSQL_VERSION</span><br><span class="line">FROM mysql:$&#123;MYSQL_VERSION&#125;</span><br><span class="line"></span><br><span class="line">LABEL maintainer&#x3D;&quot;Finnley &lt;43@43.com&gt;&quot;</span><br><span class="line"></span><br><span class="line">CMD [&quot;mysqld&quot;]</span><br><span class="line"></span><br><span class="line">EXPOSE 3306</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>构建 <code>MySQL</code> 镜像</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build --build-arg MYSQL_VERSION&#x3D;5.7 -t finnley&#x2F;mysql .</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>创建 <code>MySQL</code> 容器</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 3306:3306 --name mysql -v $PWD&#x2F;conf:&#x2F;etc&#x2F;mysql&#x2F;conf.d -v $PWD&#x2F;logs:&#x2F;logs -v $&#123;PWD&#125;&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql -e MYSQL_ROOT_PASSWORD&#x3D;123 finnley&#x2F;mysql</span><br></pre></td></tr></table></figure>
-
-<h2 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h2><ol>
-<li>在 <code>docker-lnmp</code> 目录中创建一个 <code>nginx</code> 的目录</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd docker-lnmp</span><br><span class="line">mkdir nginx</span><br><span class="line">cd nginx</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>在 <code>nginx</code> 目录内容如下：</li>
-</ol>
-<ul>
-<li><code>conf.d</code> 目录：用户存在一些 nginx 配置文件，后面会将里面的配置文件挂载到 nginx 的 <code>/etc/nginx/conf.d</code> 目录中</li>
-<li><code>nginx.conf</code> 文件：nginx 的主要配置文件，后面会将这个配置文件映射到 nginx 的 <code>/etc/nginx/nginx.conf</code> 文件</li>
-<li><code>ssl</code> 目录：配置 <code>https</code> 的目录</li>
-</ul>
-<ol start="3">
-<li>新建 <code>Dockerfile</code> 文件</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FROM nginx:alpine</span><br><span class="line"></span><br><span class="line">LABEL maintainer&#x3D;&quot;Finnley &lt;43@43.com&gt;&quot;</span><br><span class="line"></span><br><span class="line">VOLUME &#x2F;var&#x2F;www&#x2F;site</span><br><span class="line">WORKDIR &#x2F;var&#x2F;www&#x2F;site</span><br><span class="line"></span><br><span class="line">EXPOSE 80 443</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>docker中的Nginx镜像中的nginx:alpine是什么意思?</li>
-</ul>
-<p>相比 <code>nginx:latest</code>，<code>nginx:alpine</code> 有几点优势：</p>
-<p>用的是最新版nginx镜像，功能与 <code>nginx:latest</code> 一模一样<br><code>alpine</code> 镜像用的是 <code>Alpine Linux</code> 内核，比ubuntu内核要小很多。<br><code>nginx:alpine</code> 默认支持http2。</p>
-<p>如要进入 <code>alpine</code> 容器，命令是（后面的路径不是 <code>/bin/bash</code>）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker exec -it dnmp_nginx_1 &#x2F;bin&#x2F;sh</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>构建镜像,当前目录是在 <code>nginx</code> 目录中</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t finnley&#x2F;nginx .</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@docker-lnmp nginx]$ docker images</span><br><span class="line">REPOSITORY                   TAG       IMAGE ID       CREATED         SIZE</span><br><span class="line">finnley&#x2F;nginx                latest    17983ab9ccef   6 seconds ago   22.3MB</span><br></pre></td></tr></table></figure>
-
-<ol start="5">
-<li>创建容器</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name web --link php-fpm -p 80:80 -v $&#123;PWD&#125;&#x2F;nginx.conf:&#x2F;etc&#x2F;nginx&#x2F;nginx.conf -v $&#123;PWD&#125;&#x2F;conf.d:&#x2F;etc&#x2F;nginx&#x2F;conf.d -v $&#123;PWD&#125;&#x2F;ssl:&#x2F;etc&#x2F;nginx&#x2F;ssl -v &#x2F;var&#x2F;www&#x2F;site:&#x2F;var&#x2F;www&#x2F;site finnley&#x2F;nginx</span><br></pre></td></tr></table></figure>
-
-<ol start="6">
-<li>在 虚拟主机 <code>/var/www/site</code> 目录中新建 <code>phpinfo.php</code> 文件</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    phpinfo();</span><br></pre></td></tr></table></figure>
-
-<ol start="7">
-<li>浏览器中输入 <code>http://127.0.0.1:2021/phpinfo.php</code></li>
-</ol>
-<h2 id="Mongo"><a href="#Mongo" class="headerlink" title="Mongo"></a>Mongo</h2><ol>
-<li>在 <code>docker-dev</code> 目录中创建一个 <code>mongo</code> 的目录，里面新建 <code>mongo-conf</code> 目录，并在 <code>mongo-conf</code> 里面新建一个 <code>yapi</code> 的初始化数据文件 <code>init-yapi-mongo.js</code></li>
-</ol>
-<p>内容如下:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">db.createUser(&#123; user: &#39;admin&#39;, pwd: &#39;admin&#39;, roles: [ &#123; role: &quot;root&quot;, db: &quot;admin&quot; &#125; ] &#125;);</span><br><span class="line"></span><br><span class="line">db.auth(&quot;admin&quot;, &quot;admin&quot;);</span><br><span class="line">db.createUser(&#123;</span><br><span class="line">    user: &#39;yapi&#39;,</span><br><span class="line">    pwd: &#39;123&#39;,</span><br><span class="line">    roles: [</span><br><span class="line">        &#123; role: &quot;dbAdmin&quot;, db: &quot;yapi&quot; &#125;,</span><br><span class="line">        &#123; role: &quot;readWrite&quot;, db: &quot;yapi&quot; &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>在 <code>mongo</code> 目录下新建 <code>Dockerfile</code> 文件</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">ARG MONGO_VERSION</span><br><span class="line">FROM mongo:$&#123;MONGO_VERSION&#125;</span><br><span class="line"></span><br><span class="line">LABEL maintainer&#x3D;&quot;Finnley &lt;43@43.com&gt;&quot;</span><br><span class="line"></span><br><span class="line">#COPY mongo.conf &#x2F;usr&#x2F;local&#x2F;etc&#x2F;mongo&#x2F;mongo.conf</span><br><span class="line"></span><br><span class="line">CMD [&quot;mongod&quot;]</span><br><span class="line"></span><br><span class="line">EXPOSE 27017</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li><code>docker-compose.yml</code> 文件添加 <code>mongo</code> 容器</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  mongo:</span><br><span class="line">    container_name: dev-mongo</span><br><span class="line">    build:</span><br><span class="line">      context: .&#x2F;mongo</span><br><span class="line">      args:</span><br><span class="line">        - MONGO_VERSION&#x3D;$&#123;MONGO_VERSION&#125;</span><br><span class="line">    ports:</span><br><span class="line">      - $&#123;MONGO_PORT&#125;:27017</span><br><span class="line">    volumes:</span><br><span class="line">      - $&#123;PWD&#125;&#x2F;mongo&#x2F;mongo-conf:&#x2F;docker-entrypoint-initdb.d</span><br><span class="line">      - $&#123;PWD&#125;&#x2F;mongo&#x2F;etc:&#x2F;etc&#x2F;mongo</span><br><span class="line">      - $&#123;PWD&#125;&#x2F;mongo&#x2F;data&#x2F;db:&#x2F;data&#x2F;db</span><br><span class="line">    restart: always</span><br><span class="line">    environment:</span><br><span class="line">      MONGO_INITDB_ROOT_USERNAME: $&#123;MONGO_ROOT_USERNAME&#125;</span><br><span class="line">      MONGO_INITDB_ROOT_PASSWORD: $&#123;MONGO_ROOT_PASSWORD&#125;</span><br><span class="line">      MONGO_INITDB_DATABASE: $&#123;MONGO_INITDB_DATABASE&#125;</span><br><span class="line">    healthcheck:</span><br><span class="line">      test: [&quot;CMD&quot;, &quot;netstat -anp | grep 27017&quot;]</span><br><span class="line">      interval: 2m</span><br><span class="line">      timeout: 10s</span><br><span class="line">      retries: 3</span><br></pre></td></tr></table></figure>
-
-<h2 id="YApi"><a href="#YApi" class="headerlink" title="YApi"></a>YApi</h2><p>在根目录 <code>docker-dev</code> 目录下新建 <code>yapi</code> 的目录，在下面新建 <code>Dockerfile</code> 和 <code>repositories</code> 两个文件</p>
-<ol>
-<li>Dockerfile</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">FROM node:12-alpine</span><br><span class="line"></span><br><span class="line">COPY repositories &#x2F;etc&#x2F;apk&#x2F;repositories</span><br><span class="line"></span><br><span class="line"># RUN npm install -g yapi-cli --registry http:&#x2F;&#x2F;mirrors.cloud.tencent.com&#x2F;npm&#x2F;</span><br><span class="line">RUN npm install -g yapi-cli --registry https:&#x2F;&#x2F;registry.npm.taobao.org</span><br><span class="line"></span><br><span class="line">EXPOSE 3000 9090</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>repositories</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;alpine&#x2F;v3.6&#x2F;main&#x2F;</span><br><span class="line"></span><br><span class="line">https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;alpine&#x2F;v3.6&#x2F;community&#x2F;</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li><code>docker-compose.yml</code> 文件添加 <code>yapi</code> 容器</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  yapi:</span><br><span class="line">    container_name: dev-yapi</span><br><span class="line">    build:</span><br><span class="line">      context: .&#x2F;yapi</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    image: yapi</span><br><span class="line">    # 第一次启动使用</span><br><span class="line">    command: &quot;yapi server&quot;</span><br><span class="line">    # 之后使用下面的命令</span><br><span class="line">    # command: &quot;node &#x2F;my-yapi&#x2F;vendors&#x2F;server&#x2F;app.js&quot;</span><br><span class="line">    volumes: </span><br><span class="line">      - $&#123;PWD&#125;&#x2F;yapi&#x2F;my-yapi:&#x2F;my-yapi</span><br><span class="line">    ports: </span><br><span class="line">      - 9090:9090</span><br><span class="line">      - 3000:3000</span><br><span class="line">    depends_on: </span><br><span class="line">      - mongo</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>yapi 部署</li>
-</ol>
-<p>当使用 <code>docker-compose up</code> 的加载的时候屏幕中看到 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dev-yapi   |  初始化管理员账号成功,账号名：&quot;admin@admin.com&quot;，密码：&quot;ymfe.org&quot;</span><br><span class="line">dev-yapi   |</span><br><span class="line">dev-yapi   | 部署成功，请切换到部署目录，输入： &quot;node vendors&#x2F;server&#x2F;app.js&quot; 指令启动服务器, 然后在浏览器打开 http:&#x2F;&#x2F;127.0.0.1:3000 访问</span><br></pre></td></tr></table></figure>
-
-<p>打开 <code>localhost:9090</code></p>
-<ul>
-<li>默认部署路径为 <code>/my-yapi</code> (需要修改 <code>docker-compose.yml</code> 才可以更改)</li>
-<li>修改管理员邮箱 <code>admin@admin.com</code> (随意, 修改为自己的邮箱)</li>
-<li>修改数据库地址为 <code>mongo</code> 或者修改为自己的 <code>mongo</code> 实例 (<code>docker-compose</code> 配置的 <code>mongo</code> 服务名称叫 <code>mongo</code>)</li>
-<li>打开数据库认证</li>
-<li>输入数据库用户名: <code>yapi</code> (<code>mongo</code> 配置的用户名, 见 <code>mongo-conf/init-yapi-mongo.js</code>)</li>
-<li>输入密码: <code>123</code> (<code>mongo</code> 配置的密码, 见 <code>mongo-conf/init-yapi-mongo.js</code>)</li>
-</ul>
-<p>点击开始部署.</p>
-<ul>
-<li>初始化页面</li>
-</ul>
-<p><img src="https://images.notes.xuepincat.com/yapi/1.jpg" alt=""></p>
-<ul>
-<li>信息设置</li>
-</ul>
-<p><img src="https://images.notes.xuepincat.com/yapi/2.png" alt=""></p>
-<ul>
-<li>部署中</li>
-</ul>
-<p><img src="https://images.notes.xuepincat.com/yapi/3.jpg" alt=""></p>
-<ul>
-<li>部署完成</li>
-</ul>
-<p><img src="https://images.notes.xuepincat.com/yapi/4.png" alt=""></p>
-<ul>
-<li>修改 <code>docker-compose.yml</code> 文件 </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">  yapi:</span><br><span class="line">    container_name: dev-yapi</span><br><span class="line">    build:</span><br><span class="line">      context: .&#x2F;yapi</span><br><span class="line">      dockerfile: Dockerfile</span><br><span class="line">    image: yapi</span><br><span class="line">    # 第一次启动使用</span><br><span class="line">    # command: &quot;yapi server&quot;</span><br><span class="line">    # 之后使用下面的命令</span><br><span class="line">    command: &quot;node &#x2F;my-yapi&#x2F;vendors&#x2F;server&#x2F;app.js&quot;</span><br><span class="line">    volumes: </span><br><span class="line">      - $&#123;PWD&#125;&#x2F;yapi&#x2F;my-yapi:&#x2F;my-yapi</span><br><span class="line">    ports: </span><br><span class="line">      - 9090:9090</span><br><span class="line">      - 3000:3000</span><br><span class="line">    depends_on: </span><br><span class="line">      - mongo</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>退出 <code>api</code> 重新启动</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>访问 <code>yapi</code>，此时访问的端口就不是 <code>9090</code>，而是 <code>3000</code>， 即 <code>IP:3000</code></li>
-</ul>
-<p><img src="https://images.notes.xuepincat.com/yapi/5.png" alt=""></p>
-<ul>
-<li>登录</li>
-</ul>
-<p>username: <a href="mailto:admin@admin.com">admin@admin.com</a><br>password: ymfe.org</p>
-<h2 id="使用-docker-compose-构建容器"><a href="#使用-docker-compose-构建容器" class="headerlink" title="使用 docker-compose 构建容器"></a>使用 <code>docker-compose</code> 构建容器</h2><ol>
-<li>在 <code>docker-lnmp</code> 目录中新建 <code>.env</code> 文件,用户设置一些环境变量信息</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim .env</span><br></pre></td></tr></table></figure>
-
-<p>内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">### Paths #################################################</span><br><span class="line"></span><br><span class="line">WEB_ROOT_PATH&#x3D;..&#x2F;</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>在 <code>docker-lnmp</code> 目录中新建 <code>docker-compose.yml</code> 文件</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim docker-compose.yml</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>后台启动</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
-
-<p>或者 </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose up -d nginx</span><br></pre></td></tr></table></figure>
-
-<p><a href="https://github.com/finnley/docker-dev/blob/dev/docker-compose.yml" target="_blank" rel="noopener">docker-compose.yml</a></p>
 
     </div>
 
@@ -877,7 +881,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境"><span class="nav-number">1.</span> <span class="nav-text">开发环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#版本管理工具-Git"><span class="nav-number">2.</span> <span class="nav-text">版本管理工具 - Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载"><span class="nav-number">2.1.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装依赖"><span class="nav-number">2.2.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压"><span class="nav-number">2.3.</span> <span class="nav-text">解压</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置安装目录"><span class="nav-number">2.4.</span> <span class="nav-text">配置安装目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译并安装"><span class="nav-number">2.5.</span> <span class="nav-text">编译并安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置环境变量"><span class="nav-number">2.6.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看版本"><span class="nav-number">2.7.</span> <span class="nav-text">查看版本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VirtualBox-Vagrant"><span class="nav-number">3.</span> <span class="nav-text">VirtualBox + Vagrant</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-docker-安装-MySQL"><span class="nav-number">4.</span> <span class="nav-text">使用 docker 安装 MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载镜像"><span class="nav-number">4.1.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过镜像启动容器"><span class="nav-number">4.2.</span> <span class="nav-text">通过镜像启动容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">4.3.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python-安装"><span class="nav-number">5.</span> <span class="nav-text">python 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#拉取-centos7-镜像"><span class="nav-number">5.1.</span> <span class="nav-text">拉取 centos7 镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行容器"><span class="nav-number">5.2.</span> <span class="nav-text">运行容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入容器"><span class="nav-number">5.3.</span> <span class="nav-text">进入容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载安装python"><span class="nav-number">5.4.</span> <span class="nav-text">下载安装python</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-虚拟环境安装与配置"><span class="nav-number">6.</span> <span class="nav-text">Python 虚拟环境安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">6.1.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-下-Go-环境搭建"><span class="nav-number">7.</span> <span class="nav-text">Linux 下 Go 环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nodejs-开发环境搭建"><span class="nav-number">8.</span> <span class="nav-text">nodejs 开发环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#简介"><span class="nav-number">9.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#包含镜像"><span class="nav-number">9.1.</span> <span class="nav-text">包含镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP"><span class="nav-number">9.2.</span> <span class="nav-text">PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">9.3.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx"><span class="nav-number">9.4.</span> <span class="nav-text">Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mongo"><span class="nav-number">9.5.</span> <span class="nav-text">Mongo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YApi"><span class="nav-number">9.6.</span> <span class="nav-text">YApi</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-docker-compose-构建容器"><span class="nav-number">9.7.</span> <span class="nav-text">使用 docker-compose 构建容器</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境概览"><span class="nav-number">1.</span> <span class="nav-text">开发环境概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VirtualBox-Vagrant"><span class="nav-number">2.</span> <span class="nav-text">VirtualBox + Vagrant</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用开发环境"><span class="nav-number">3.</span> <span class="nav-text">常用开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#包含镜像"><span class="nav-number">3.1.</span> <span class="nav-text">包含镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP"><span class="nav-number">3.2.</span> <span class="nav-text">PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">3.3.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx"><span class="nav-number">3.4.</span> <span class="nav-text">Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mongo"><span class="nav-number">3.5.</span> <span class="nav-text">Mongo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YApi"><span class="nav-number">3.6.</span> <span class="nav-text">YApi</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-docker-compose-构建容器"><span class="nav-number">3.7.</span> <span class="nav-text">使用 docker-compose 构建容器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#版本管理工具-Git"><span class="nav-number">4.</span> <span class="nav-text">版本管理工具 - Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载"><span class="nav-number">4.1.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装依赖"><span class="nav-number">4.2.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压"><span class="nav-number">4.3.</span> <span class="nav-text">解压</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置安装目录"><span class="nav-number">4.4.</span> <span class="nav-text">配置安装目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译并安装"><span class="nav-number">4.5.</span> <span class="nav-text">编译并安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置环境变量"><span class="nav-number">4.6.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看版本"><span class="nav-number">4.7.</span> <span class="nav-text">查看版本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-docker-安装-MySQL"><span class="nav-number">5.</span> <span class="nav-text">使用 docker 安装 MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载镜像"><span class="nav-number">5.1.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过镜像启动容器"><span class="nav-number">5.2.</span> <span class="nav-text">通过镜像启动容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">5.3.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python-安装"><span class="nav-number">6.</span> <span class="nav-text">python 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#拉取-centos7-镜像"><span class="nav-number">6.1.</span> <span class="nav-text">拉取 centos7 镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行容器"><span class="nav-number">6.2.</span> <span class="nav-text">运行容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入容器"><span class="nav-number">6.3.</span> <span class="nav-text">进入容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载安装python"><span class="nav-number">6.4.</span> <span class="nav-text">下载安装python</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-虚拟环境安装与配置"><span class="nav-number">7.</span> <span class="nav-text">Python 虚拟环境安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">7.1.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-下-Go-环境搭建"><span class="nav-number">8.</span> <span class="nav-text">Linux 下 Go 环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nodejs-开发环境搭建"><span class="nav-number">9.</span> <span class="nav-text">nodejs 开发环境搭建</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -893,14 +897,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">179</span>
+          <span class="site-state-item-count">180</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">31</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
