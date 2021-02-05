@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="grpc gRPC 是一个高性能、开源和通用的 RPC 框架，面向移动和 HTTP&#x2F;2 设计。目前提供 C、Java 和 Go 语言版本，分别是：grpc, grpc-java, grpc-go. 其中 C 版本支持 C, C++, Node.js, Python, Ruby, Objective-C, PHP 和 C# 支持  gRPC    比如在 Ruby 编写了一套 Client，Clie">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Microservices-grpc和protobuf">
+<meta property="og:url" content="https://notes.xuepincat.com/2021/01/25/Microservices-grpc%E5%92%8Cprotobuf/index.html">
+<meta property="og:site_name" content="Finnley&#39;s Notes">
+<meta property="og:description" content="grpc gRPC 是一个高性能、开源和通用的 RPC 框架，面向移动和 HTTP&#x2F;2 设计。目前提供 C、Java 和 Go 语言版本，分别是：grpc, grpc-java, grpc-go. 其中 C 版本支持 C, C++, Node.js, Python, Ruby, Objective-C, PHP 和 C# 支持  gRPC    比如在 Ruby 编写了一套 Client，Clie">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://images.notes.xuepincat.com/grpc/1.png">
+<meta property="og:image" content="https://images.notes.xuepincat.com/grpc/2.jpg">
+<meta property="article:published_time" content="2021-01-25T15:16:04.000Z">
+<meta property="article:modified_time" content="2021-01-27T00:20:59.764Z">
+<meta property="article:author" content="Finnley">
+<meta property="article:tag" content="Microservices">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://images.notes.xuepincat.com/grpc/1.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2021/01/25/Microservices-grpc%E5%92%8Cprotobuf/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Microservices-grpc和protobuf | Finnley's Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Finnley's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Finnley's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/01/25/Microservices-grpc%E5%92%8Cprotobuf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Microservices-grpc和protobuf
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-01-25 23:16:04" itemprop="dateCreated datePublished" datetime="2021-01-25T23:16:04+08:00">2021-01-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-01-27 08:20:59" itemprop="dateModified" datetime="2021-01-27T08:20:59+08:00">2021-01-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Microservices/" itemprop="url" rel="index"><span itemprop="name">Microservices</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="grpc"><a href="#grpc" class="headerlink" title="grpc"></a>grpc</h2><p><code>gRPC</code> 是一个高性能、开源和通用的 <code>RPC</code> 框架，面向移动和 <code>HTTP/2</code> 设计。目前提供 C、Java 和 Go 语言版本，分别是：<a href="https://github.com/grpc/grpc" target="_blank" rel="noopener">grpc</a>, <a href="https://github.com/grpc/grpc-java" target="_blank" rel="noopener">grpc-java</a>, <a href="https://github.com/grpc/grpc-go" target="_blank" rel="noopener">grpc-go</a>. 其中 <code>C</code> 版本支持 <a href="https://github.com/grpc/grpc" target="_blank" rel="noopener">C</a>, <a href="https://github.com/grpc/grpc/tree/master/src/cpp" target="_blank" rel="noopener">C++</a>, <a href="https://github.com/grpc/grpc/tree/master/src/node" target="_blank" rel="noopener">Node.js</a>, <a href="https://github.com/grpc/grpc/tree/master/src/python" target="_blank" rel="noopener">Python</a>, <a href="https://github.com/grpc/grpc/tree/master/src/ruby" target="_blank" rel="noopener">Ruby</a>, <a href="https://github.com/grpc/grpc/tree/master/src/objective-c" target="_blank" rel="noopener">Objective-C</a>, <a href="https://github.com/grpc/grpc/tree/master/src/php" target="_blank" rel="noopener">PHP</a> 和 <a href="https://github.com/grpc/grpc/tree/master/src/csharp" target="_blank" rel="noopener">C#</a> 支持</p>
+<p><a href="https://github.com/grpc/grpc" target="_blank" rel="noopener"><code>gRPC</code></a></p>
+<p><img src="https://images.notes.xuepincat.com/grpc/1.png" alt=""></p>
+<p>比如在 <code>Ruby</code> 编写了一套 <code>Client</code>，<code>Client</code> 调用的时候通过 <code>Stub</code> 向服务端发送请求，先将数据转换成 <code>protobuf</code> 协议，通过 <code>protobug</code> 工具进行序列化成二进制发送到服务端，然后服务端进行反序列化，类似json的 <code>dumps</code> 和 <code>loads</code> 的过程。</p>
+<h2 id="protobuf"><a href="#protobuf" class="headerlink" title="protobuf"></a>protobuf</h2><p>java中的dubbo dubbo/rmi/hessian messagepack 如果你懂了协议完全有能力自己去实现一个协议</p>
+<p>• 习惯用 Json、XML 数据存储格式的你们，<code>Protocol Buffer</code> 的缩写<br>• <code>Protocol Buffer</code> 其实 是 <code>Google</code> 出品的一种轻量 &amp; 高效的结构化数据存储格式，性能比 Json、XML 真的强！太！多！<br>    在考虑一种协议时，需要考虑数据压缩效率怎样，如果数据压缩效率还行，但是在序列化和反序列化时效率不高，即性能不高时任然会产生影响，<code>Protocol Buffer</code> 相对于 Json 和 XML 都要强上许多<br>• protobuf经历了protobuf2和protobuf3，pb3比pb2简化了很多，目前主流的版本是pb3</p>
+<p><img src="https://images.notes.xuepincat.com/grpc/2.jpg" alt=""></p>
+<h2 id="python下protobuf体验"><a href="#python下protobuf体验" class="headerlink" title="python下protobuf体验"></a>python下protobuf体验</h2><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m pip install grpcio -i https:&#x2F;&#x2F;pypi.douban.com&#x2F;simple #安装grpc</span><br><span class="line">python -m pip install grpcio-tools -i https:&#x2F;&#x2F;pypi.douban.com&#x2F;simple #安装grpc tools</span><br></pre></td></tr></table></figure>
+
+<h4 id="protobuf3"><a href="#protobuf3" class="headerlink" title="protobuf3"></a>protobuf3</h4><p>新建 <code>hello.proto</code> 文件</p>
+<p><code>protobuf3</code> 是有自己专门的定义格式的 - 门槛</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">syntax &#x3D; &quot;proto3&quot;;</span><br><span class="line"></span><br><span class="line">message HelloRequest &#123;</span><br><span class="line">  string name &#x3D; 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="生成proto的python文件"><a href="#生成proto的python文件" class="headerlink" title="生成proto的python文件"></a>生成proto的python文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd [文件所在目录]</span><br><span class="line">python -m grpc_tools.protoc --python_out&#x3D;. --grpc_python_out&#x3D;. -I. hello.proto</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>–python_out=.: <code>.</code> 表示生成的 python 文件放在当前目录下</li>
+<li>–grpc_python_out=.： 可以生成 grpc 的相关文件</li>
+<li>-I.: <code>I</code> 表示 <code>Input</code>,到哪个目录找哪个文件进行生成，<code>.</code> 就表示当前目录</li>
+<li>到当前目录下查询 <code>helloworld.proto</code> 文件，生成 protobuf 和 grpc要用到的文件，并生成到当前目录下</li>
+</ul>
+<h4 id="序列化与反序列化"><a href="#序列化与反序列化" class="headerlink" title="序列化与反序列化"></a>序列化与反序列化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from protobuf.proto import hello_pb2</span><br><span class="line"></span><br><span class="line"># 生成的 pb 文件如果不懂，最好不要改动</span><br><span class="line">request &#x3D; hello_pb2.HelloRequest()</span><br><span class="line">request.name &#x3D; &quot;protobuf&quot;</span><br><span class="line">res_str &#x3D; request.SerializeToString()</span><br><span class="line">print(res_str)</span><br><span class="line"></span><br><span class="line"># 如何通过字符串反向生成对象</span><br><span class="line">request2 &#x3D; hello_pb2.HelloRequest()</span><br><span class="line">request2.ParseFromString(res_str)</span><br><span class="line">print(request2.name)</span><br></pre></td></tr></table></figure>
+
+<h4 id="json对比"><a href="#json对比" class="headerlink" title="json对比"></a>json对比</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from protobuf.proto import hello_pb2</span><br><span class="line"></span><br><span class="line"># 生成的 pb 文件如果不懂，最好不要改动</span><br><span class="line">request &#x3D; hello_pb2.HelloRequest()</span><br><span class="line">request.name &#x3D; &quot;protobuf&quot;</span><br><span class="line">res_str &#x3D; request.SerializeToString()</span><br><span class="line">print(res_str)</span><br><span class="line"></span><br><span class="line"># 和json对比效率如何</span><br><span class="line"># 10</span><br><span class="line">print(len(res_str))</span><br><span class="line">res_json &#x3D; &#123;</span><br><span class="line">    &quot;name&quot;: &quot;protobuf&quot;</span><br><span class="line">&#125;</span><br><span class="line">import json</span><br><span class="line"># 20</span><br><span class="line">print(len(json.dumps(res_json)))</span><br></pre></td></tr></table></figure>
+
+<h2 id="python下grpc开发体验"><a href="#python下grpc开发体验" class="headerlink" title="python下grpc开发体验"></a>python下grpc开发体验</h2><p><a href="https://github.com/grpc/grpc/tree/master/examples/python/helloworld" target="_blank" rel="noopener">grpc</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">syntax &#x3D; &quot;proto3&quot;;</span><br><span class="line"></span><br><span class="line">service Greeter &#123;</span><br><span class="line">  rpc SayHello (HelloRequest) returns (HelloReply) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message HelloRequest &#123;</span><br><span class="line">  string name &#x3D; 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message HelloReply &#123;</span><br><span class="line">  string message &#x3D; 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>SayHello: 函数名字</li>
+<li>HelloRequest: 函数参数，也就是下面的 <code>message</code></li>
+<li>returns (HelloReply): 函数返回的 <code>HelloReply</code></li>
+<li>下面两个 <code>message</code> 的编号都是 <code>1</code>,它们并不冲突</li>
+<li>{}: 内容体，可以什么都不加，也可以直接使用 <code>;</code> 代替，比如 <code>rpc SayHello (HelloRequest) returns (HelloReply);</code></li>
+</ul>
+<p>切换到 <code>proto</code> 文件所在目录，执行下面代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m grpc_tools.protoc --python_out&#x3D;. --grpc_python_out&#x3D;. -I. helloworld.proto</span><br></pre></td></tr></table></figure>
+
+<p>然后新建 <code>server.py</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">from concurrent import futures</span><br><span class="line">import grpc</span><br><span class="line">from grpc_hello.proto import helloworld_pb2, helloworld_pb2_grpc</span><br><span class="line"></span><br><span class="line"># 注册 grpc</span><br><span class="line">class Greeter(helloworld_pb2_grpc.GreeterServicer):</span><br><span class="line">    def SayHello(self, request, context):</span><br><span class="line">        return helloworld_pb2.HelloReply(message&#x3D;f&quot;你好, &#123;request.name&#125;&quot;)</span><br><span class="line"></span><br><span class="line"># 启动</span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    # 1.实例化 server，并使用线程池，设置10个线程</span><br><span class="line">    server &#x3D; grpc.server(futures.ThreadPoolExecutor(max_workers&#x3D;10))</span><br><span class="line">    # 2.注册逻辑到 server</span><br><span class="line">    helloworld_pb2_grpc.add_GreeterServicer_to_server(Greeter(), server)</span><br><span class="line">    # 3.启动 server add_insecure_port 不需要配置证书</span><br><span class="line">    # server.add_insecure_port(&#39;[::]:50051&#39;)</span><br><span class="line">    server.add_insecure_port(&#39;0.0.0.0:50051&#39;)</span><br><span class="line">    server.start()</span><br><span class="line">    # 一定要设置下面这句，不然一启动，主程序就会结束，其他相关线程就会关闭</span><br><span class="line">    server.wait_for_termination()</span><br></pre></td></tr></table></figure>
+
+<p><code>client.py</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import grpc</span><br><span class="line">from grpc_hello.proto import helloworld_pb2, helloworld_pb2_grpc</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    # 相当于一个连接</span><br><span class="line">    with grpc.insecure_channel(&quot;localhost:50051&quot;) as channel:</span><br><span class="line">        stub &#x3D; helloworld_pb2_grpc.GreeterStub(channel)</span><br><span class="line">        rsp: helloworld_pb2.HelloReply &#x3D; stub.SayHello(helloworld_pb2.HelloRequest(name&#x3D;&quot;grpc&quot;))</span><br><span class="line">        print(rsp.message)</span><br></pre></td></tr></table></figure>
+
+<h2 id="golang下grpc开发体验"><a href="#golang下grpc开发体验" class="headerlink" title="golang下grpc开发体验"></a>golang下grpc开发体验</h2><h4 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h4><p><a href="https://github.com/protocolbuffers/protobuf/releases" target="_blank" rel="noopener">protobuf</a></p>
+<h4 id="下载依赖包"><a href="#下载依赖包" class="headerlink" title="下载依赖包"></a>下载依赖包</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">下载go的依赖包</span><br></pre></td></tr></table></figure>
+
+<h4 id="proto文件"><a href="#proto文件" class="headerlink" title="proto文件"></a>proto文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">syntax &#x3D; &quot;proto3&quot;;</span><br><span class="line">option go_package &#x3D; &quot;.;proto&quot;;</span><br><span class="line">service Greeter &#123;</span><br><span class="line">  rpc SayHello (HelloRequest) returns (HelloReply);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message HelloRequest &#123;</span><br><span class="line">  string name &#x3D; 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message HelloReply &#123;</span><br><span class="line">  string message &#x3D; 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="生成"><a href="#生成" class="headerlink" title="生成"></a>生成</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protoc -I . helloworld.proto --go_out&#x3D;plugins&#x3D;grpc:.</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Microservices/" rel="tag"># Microservices</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/01/14/Coding/" rel="prev" title="Coding">
+      <i class="fa fa-chevron-left"></i> Coding
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#grpc"><span class="nav-number">1.</span> <span class="nav-text">grpc</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#protobuf"><span class="nav-number">2.</span> <span class="nav-text">protobuf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python下protobuf体验"><span class="nav-number">3.</span> <span class="nav-text">python下protobuf体验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">3.0.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#protobuf3"><span class="nav-number">3.0.2.</span> <span class="nav-text">protobuf3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成proto的python文件"><span class="nav-number">3.0.3.</span> <span class="nav-text">生成proto的python文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#序列化与反序列化"><span class="nav-number">3.0.4.</span> <span class="nav-text">序列化与反序列化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#json对比"><span class="nav-number">3.0.5.</span> <span class="nav-text">json对比</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python下grpc开发体验"><span class="nav-number">4.</span> <span class="nav-text">python下grpc开发体验</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#golang下grpc开发体验"><span class="nav-number">5.</span> <span class="nav-text">golang下grpc开发体验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-1"><span class="nav-number">5.0.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下载依赖包"><span class="nav-number">5.0.2.</span> <span class="nav-text">下载依赖包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#proto文件"><span class="nav-number">5.0.3.</span> <span class="nav-text">proto文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成"><span class="nav-number">5.0.4.</span> <span class="nav-text">生成</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Finnley"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Finnley</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">181</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
