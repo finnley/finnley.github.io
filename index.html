@@ -211,6 +211,118 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/02/06/Microservices-web%E5%B1%82%E5%9F%BA%E7%A1%80%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E6%90%AD%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/02/06/Microservices-web%E5%B1%82%E5%9F%BA%E7%A1%80%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E6%90%AD%E5%BB%BA/" class="post-title-link" itemprop="url">Microservices-web层基础项目架构搭建</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-02-06 10:12:18" itemprop="dateCreated datePublished" datetime="2021-02-06T10:12:18+08:00">2021-02-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-02-09 22:15:37" itemprop="dateModified" datetime="2021-02-09T22:15:37+08:00">2021-02-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Microservices/" itemprop="url" rel="index"><span itemprop="name">Microservices</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          创建项目
+创建一个 Go Module 的名为 cat-api 的项目，在根目录下新建一个 user-web 的目录,在 user-web 目录中规划下用户服务的目录结构
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+
+
+.
+├── go.mod
+└── user-web
+    ├── api
+    ├── config
+    ├── forms
+    ├── global
+    ├── initialize
+    ├── main.go
+    ├── middlewares
+    ├── proto
+    ├── router
+    ├── util
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/02/06/Microservices-web%E5%B1%82%E5%9F%BA%E7%A1%80%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E6%90%AD%E5%BB%BA/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/01/25/Microservices-grpc%E5%92%8Cprotobuf/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -242,7 +354,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-27 08:20:59" itemprop="dateModified" datetime="2021-01-27T08:20:59+08:00">2021-01-27</time>
+                <time title="Modified: 2021-02-14 23:32:41" itemprop="dateModified" datetime="2021-02-14T23:32:41+08:00">2021-02-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -272,7 +384,7 @@ gRPC
 
 
 
-比如在 Ruby 编写了一套 Client，Client 调用的时候通过 Stub 向服务端发送请求，先将数据转换成 protobuf 协议，通过 protobug 工具进行序列化成二进制发送到服务端，然后服务端进行反序列化，类似json的 dumps
+比如在 Ruby 编写了一套 Client，Client 调用的时候通过 Stub 向服务端发送请求，先将数据转换成 protobuf 协议，通过 protobuf 工具进行序列化成二进制发送到服务端，然后服务端进行反序列化，类似json的 json.
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/01/25/Microservices-grpc%E5%92%8Cprotobuf/#more" rel="contents">
@@ -375,7 +487,7 @@ gRPC
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/01/11/Microservice-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/01/11/Microservices-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -389,7 +501,7 @@ gRPC
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2021/01/11/Microservice-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/" class="post-title-link" itemprop="url">Microservice-项目初始化</a>
+            <a href="/2021/01/11/Microservices-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/" class="post-title-link" itemprop="url">Microservice-项目初始化</a>
         </h2>
 
         <div class="post-meta">
@@ -406,7 +518,7 @@ gRPC
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-05 08:30:28" itemprop="dateModified" datetime="2021-02-05T08:30:28+08:00">2021-02-05</time>
+                <time title="Modified: 2021-02-06 10:12:32" itemprop="dateModified" datetime="2021-02-06T10:12:32+08:00">2021-02-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -414,7 +526,7 @@ gRPC
               </span>
               <span class="post-meta-item-text">In</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Microservice/" itemprop="url" rel="index"><span itemprop="name">Microservice</span></a>
+                  <a href="/categories/Microservices/" itemprop="url" rel="index"><span itemprop="name">Microservices</span></a>
                 </span>
             </span>
 
@@ -462,107 +574,7 @@ mkdir cat-srvs
 cd
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/01/11/Microservice-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/01/04/gRPC-%E4%BB%8B%E7%BB%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/04/gRPC-%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">gRPC-介绍</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-04 23:12:28" itemprop="dateCreated datePublished" datetime="2021-01-04T23:12:28+08:00">2021-01-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-14 23:26:38" itemprop="dateModified" datetime="2021-01-14T23:26:38+08:00">2021-01-14</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/gRPC/" itemprop="url" rel="index"><span itemprop="name">gRPC</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          RPC
-什么是 RPC
-RPC （Remote Procedure Call）远程过程调用，简单理解就是 一个节点请求另一个节点提供的服务。 它的调用包含了传输协议和编码（对象序列号）协议等等。允许运行于一台计算机的程序调用另一台计算机的子程序，而开发人员无需额外地为这个交互作用编程
-
-对应 RPC 的是本地过程调用，函数调用是最常见的本地过程调用
-
-将本地过程调用变成远程过程调用会面临各种问题，这个也是 RPC 要解决的问题，也是分布式系统需要解决的问题
-
-本地过程调用
-1
-2
-3
-4
-5
-6
-
-
-def add(a, b):
-    total = a + b
-    return tot
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/01/04/gRPC-%E4%BB%8B%E7%BB%8D/#more" rel="contents">
+              <a class="btn" href="/2021/01/11/Microservices-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -921,7 +933,7 @@ CREATE TABLE `auth` (
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/12/27/Microservice-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/12/27/Microservices-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -935,7 +947,7 @@ CREATE TABLE `auth` (
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/12/27/Microservice-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">Microservice-微服务入门</a>
+            <a href="/2020/12/27/Microservices-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/" class="post-title-link" itemprop="url">Microservice-微服务入门</a>
         </h2>
 
         <div class="post-meta">
@@ -952,7 +964,7 @@ CREATE TABLE `auth` (
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-25 23:16:16" itemprop="dateModified" datetime="2021-01-25T23:16:16+08:00">2021-01-25</time>
+                <time title="Modified: 2021-02-06 10:11:17" itemprop="dateModified" datetime="2021-02-06T10:11:17+08:00">2021-02-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -986,7 +998,7 @@ CREATE TABLE `auth` (
 现在开发完打算部署上传到服务器，这个服务器比如说是 Linux，现在想将这个 web 应用运行在服务器上，首先第一步就是上传代码。上传完后运行系统，比如服务器提供了 8001 的 TCP 端口，此时浏览器如果想要访问是不能直接访问 8001 端口的
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2020/12/27/Microservice-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/#more" rel="contents">
+              <a class="btn" href="/2020/12/27/Microservices-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1294,20 +1306,20 @@ Docker 是一个开源的轻量级容器技术，让开发者可以打包他们�
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">181</span>
+          <span class="site-state-item-count">182</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

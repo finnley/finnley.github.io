@@ -211,6 +211,134 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/24/Ubuntu-16-04-%E6%90%AD%E5%BB%BANodeJs%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/24/Ubuntu-16-04-%E6%90%AD%E5%BB%BANodeJs%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">Ubuntu 16.04 搭建NodeJs环境</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-24 17:40:07" itemprop="dateCreated datePublished" datetime="2017-06-24T17:40:07+08:00">2017-06-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Ubuntu/" itemprop="url" rel="index"><span itemprop="name">Ubuntu</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          1.下载文件
+到官网上看了一下，最新版本的node是v6.11.0的。
+
+
+
+安装包，我放在/opt目录下
+
+
+
+2.解压文件
+1
+
+
+$ sudo tar xvf node-v6.11.0-linux-x64.tar.xz
+
+
+
+
+解压完之后得到了这样的文件夹。
+
+
+
+3.对文件夹重命名
+1
+
+
+$ sudo mv node-v6.11.0-linux-x64 node
+
+
+
+
+给该文件夹赋予相应的权限
+
+1
+
+
+$ sudo chmod 777 /opt/node -R
+
+
+
+
+4.安装nodejs和npm
+安装nodejs：
+
+1
+
+
+$ sudo ln -s /opt/node/bin
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/24/Ubuntu-16-04-%E6%90%AD%E5%BB%BANodeJs%E7%8E%AF%E5%A2%83/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/14/Ubuntu16.04%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1184,123 +1312,6 @@ npm install -g hexo-cli
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/03/28/2-NodeJS%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/03/28/2-NodeJS%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/" class="post-title-link" itemprop="url">2-NodeJS的安装与配置——废话篇</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-03-28 23:52:52" itemprop="dateCreated datePublished" datetime="2017-03-28T23:52:52+08:00">2017-03-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-17 00:31:41" itemprop="dateModified" datetime="2020-07-17T00:31:41+08:00">2020-07-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo-Next/" itemprop="url" rel="index"><span itemprop="name">Hexo+Next</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          准备
-本机系统：Windows10 家庭版 64位
-NodeJS：v6.10.0LTS 64位
-
-安装
-双击安装包，点击 Next
-
-勾选同意,点击 Next
-
-选择安装盘符，我这边选择安装在 E 盘，然后点击 Next
-
-Next
-
-Install
-
-Finish
-
-检验是否安装成功
-快捷键 CTRL + R 输入 cmd 打开CMD窗口
-
-输入 node -v , 查看nodejs版本
-
-输入 npm -v , 查看npm版本
-
-1
-2
-
-
-node -v
-npm -v
-
-
-安装完成后的目录如下显示
-
-环境配置
-创建 node_global 和 node_cache 文件夹
-环境配置主要配
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/03/28/2-NodeJS%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1372,20 +1383,20 @@ npm -v
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">181</span>
+          <span class="site-state-item-count">182</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

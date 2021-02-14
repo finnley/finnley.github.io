@@ -31,7 +31,7 @@
 <meta property="og:image" content="https://images.notes.xuepincat.com/grpc/1.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/grpc/2.jpg">
 <meta property="article:published_time" content="2021-01-25T15:16:04.000Z">
-<meta property="article:modified_time" content="2021-01-27T00:20:59.764Z">
+<meta property="article:modified_time" content="2021-02-14T15:32:41.666Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Microservices">
 <meta name="twitter:card" content="summary">
@@ -248,7 +248,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-01-27 08:20:59" itemprop="dateModified" datetime="2021-01-27T08:20:59+08:00">2021-01-27</time>
+                <time title="Modified: 2021-02-14 23:32:41" itemprop="dateModified" datetime="2021-02-14T23:32:41+08:00">2021-02-14</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -274,27 +274,30 @@
         <h2 id="grpc"><a href="#grpc" class="headerlink" title="grpc"></a>grpc</h2><p><code>gRPC</code> 是一个高性能、开源和通用的 <code>RPC</code> 框架，面向移动和 <code>HTTP/2</code> 设计。目前提供 C、Java 和 Go 语言版本，分别是：<a href="https://github.com/grpc/grpc" target="_blank" rel="noopener">grpc</a>, <a href="https://github.com/grpc/grpc-java" target="_blank" rel="noopener">grpc-java</a>, <a href="https://github.com/grpc/grpc-go" target="_blank" rel="noopener">grpc-go</a>. 其中 <code>C</code> 版本支持 <a href="https://github.com/grpc/grpc" target="_blank" rel="noopener">C</a>, <a href="https://github.com/grpc/grpc/tree/master/src/cpp" target="_blank" rel="noopener">C++</a>, <a href="https://github.com/grpc/grpc/tree/master/src/node" target="_blank" rel="noopener">Node.js</a>, <a href="https://github.com/grpc/grpc/tree/master/src/python" target="_blank" rel="noopener">Python</a>, <a href="https://github.com/grpc/grpc/tree/master/src/ruby" target="_blank" rel="noopener">Ruby</a>, <a href="https://github.com/grpc/grpc/tree/master/src/objective-c" target="_blank" rel="noopener">Objective-C</a>, <a href="https://github.com/grpc/grpc/tree/master/src/php" target="_blank" rel="noopener">PHP</a> 和 <a href="https://github.com/grpc/grpc/tree/master/src/csharp" target="_blank" rel="noopener">C#</a> 支持</p>
 <p><a href="https://github.com/grpc/grpc" target="_blank" rel="noopener"><code>gRPC</code></a></p>
 <p><img src="https://images.notes.xuepincat.com/grpc/1.png" alt=""></p>
-<p>比如在 <code>Ruby</code> 编写了一套 <code>Client</code>，<code>Client</code> 调用的时候通过 <code>Stub</code> 向服务端发送请求，先将数据转换成 <code>protobuf</code> 协议，通过 <code>protobug</code> 工具进行序列化成二进制发送到服务端，然后服务端进行反序列化，类似json的 <code>dumps</code> 和 <code>loads</code> 的过程。</p>
+<p>比如在 <code>Ruby</code> 编写了一套 <code>Client</code>，<code>Client</code> 调用的时候通过 <code>Stub</code> 向服务端发送请求，先将数据转换成 <code>protobuf</code> 协议，通过 <code>protobuf</code> 工具进行序列化成二进制发送到服务端，然后服务端进行反序列化，类似json的 <code>json.dumps()</code> 和 <code>json.loads()</code> 的过程。</p>
 <h2 id="protobuf"><a href="#protobuf" class="headerlink" title="protobuf"></a>protobuf</h2><p>java中的dubbo dubbo/rmi/hessian messagepack 如果你懂了协议完全有能力自己去实现一个协议</p>
 <p>• 习惯用 Json、XML 数据存储格式的你们，<code>Protocol Buffer</code> 的缩写<br>• <code>Protocol Buffer</code> 其实 是 <code>Google</code> 出品的一种轻量 &amp; 高效的结构化数据存储格式，性能比 Json、XML 真的强！太！多！<br>    在考虑一种协议时，需要考虑数据压缩效率怎样，如果数据压缩效率还行，但是在序列化和反序列化时效率不高，即性能不高时任然会产生影响，<code>Protocol Buffer</code> 相对于 Json 和 XML 都要强上许多<br>• protobuf经历了protobuf2和protobuf3，pb3比pb2简化了很多，目前主流的版本是pb3</p>
 <p><img src="https://images.notes.xuepincat.com/grpc/2.jpg" alt=""></p>
-<h2 id="python下protobuf体验"><a href="#python下protobuf体验" class="headerlink" title="python下protobuf体验"></a>python下protobuf体验</h2><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python -m pip install grpcio -i https:&#x2F;&#x2F;pypi.douban.com&#x2F;simple #安装grpc</span><br><span class="line">python -m pip install grpcio-tools -i https:&#x2F;&#x2F;pypi.douban.com&#x2F;simple #安装grpc tools</span><br></pre></td></tr></table></figure>
+<h2 id="python下protobuf体验"><a href="#python下protobuf体验" class="headerlink" title="python下protobuf体验"></a>python下protobuf体验</h2><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 -m pip install grpcio -i https:&#x2F;&#x2F;pypi.douban.com&#x2F;simple #安装grpc</span><br><span class="line">python3 -m pip install grpcio-tools -i https:&#x2F;&#x2F;pypi.douban.com&#x2F;simple #安装grpc tools</span><br></pre></td></tr></table></figure>
 
-<h4 id="protobuf3"><a href="#protobuf3" class="headerlink" title="protobuf3"></a>protobuf3</h4><p>新建 <code>hello.proto</code> 文件</p>
-<p><code>protobuf3</code> 是有自己专门的定义格式的 - 门槛</p>
+<h4 id="protobuf3"><a href="#protobuf3" class="headerlink" title="protobuf3"></a>protobuf3</h4><p><code>protobuf3</code> 有自己专门的定义格式</p>
+<p>新建 <code>hello.proto</code> 文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">syntax &#x3D; &quot;proto3&quot;;</span><br><span class="line"></span><br><span class="line">message HelloRequest &#123;</span><br><span class="line">  string name &#x3D; 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h4 id="生成proto的python文件"><a href="#生成proto的python文件" class="headerlink" title="生成proto的python文件"></a>生成proto的python文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd [文件所在目录]</span><br><span class="line">python -m grpc_tools.protoc --python_out&#x3D;. --grpc_python_out&#x3D;. -I. hello.proto</span><br></pre></td></tr></table></figure>
+<h4 id="生成proto的python文件"><a href="#生成proto的python文件" class="headerlink" title="生成proto的python文件"></a>生成proto的python文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd [文件所在目录]</span><br><span class="line">python3 -m grpc_tools.protoc --python_out&#x3D;. --grpc_python_out&#x3D;. -I. hello.proto</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>–python_out=.: <code>.</code> 表示生成的 python 文件放在当前目录下</li>
-<li>–grpc_python_out=.： 可以生成 grpc 的相关文件</li>
-<li>-I.: <code>I</code> 表示 <code>Input</code>,到哪个目录找哪个文件进行生成，<code>.</code> 就表示当前目录</li>
-<li>到当前目录下查询 <code>helloworld.proto</code> 文件，生成 protobuf 和 grpc要用到的文件，并生成到当前目录下</li>
+<li><code>--python_out=.</code>: <code>.</code> 表示生成的 python 文件放在当前目录下</li>
+<li><code>--grpc_python_out=.</code>: 可以生成 grpc 的相关文件,生成的文件也在当前目录下</li>
+<li><code>-I.</code>: <code>I</code> 表示 <code>Input</code>,到哪个目录找哪个文件进行生成，<code>.</code> 就表示当前目录,如果不是在当前目录，<code>.</code> 就需要改成对应的目录</li>
+<li><code>hello.proto</code>: 到当前目录下查询 <code>helloworld.proto</code> 文件，生成 protobuf 和 grpc要用到的文件，并生成到当前目录下</li>
+<li>整体的意思就是到当前目录下查找 <code>hello.proto</code> 文件，分别生成两个 python 文件，第一个文件时 protobuf 需要用到的，第二个是 grpc 需要用到的，两个文件都是生成到当前目录之下,当执行完之后，当前目录路会多出两个文件 <code>hello_pb2.py</code> 和 <code>hello_pb2_grpc.py</code></li>
 </ul>
-<h4 id="序列化与反序列化"><a href="#序列化与反序列化" class="headerlink" title="序列化与反序列化"></a>序列化与反序列化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from protobuf.proto import hello_pb2</span><br><span class="line"></span><br><span class="line"># 生成的 pb 文件如果不懂，最好不要改动</span><br><span class="line">request &#x3D; hello_pb2.HelloRequest()</span><br><span class="line">request.name &#x3D; &quot;protobuf&quot;</span><br><span class="line">res_str &#x3D; request.SerializeToString()</span><br><span class="line">print(res_str)</span><br><span class="line"></span><br><span class="line"># 如何通过字符串反向生成对象</span><br><span class="line">request2 &#x3D; hello_pb2.HelloRequest()</span><br><span class="line">request2.ParseFromString(res_str)</span><br><span class="line">print(request2.name)</span><br></pre></td></tr></table></figure>
+<h4 id="序列化与反序列化"><a href="#序列化与反序列化" class="headerlink" title="序列化与反序列化"></a>序列化与反序列化</h4><p>新建  <code>client.py</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">from protobuf.proto import hello_pb2</span><br><span class="line"></span><br><span class="line"># 生成的 pb 文件如果不懂，最好不要改动</span><br><span class="line">request &#x3D; hello_pb2.HelloRequest()</span><br><span class="line">request.name &#x3D; &quot;protobuf&quot;</span><br><span class="line">res_str &#x3D; request.SerializeToString()</span><br><span class="line">print(res_str)</span><br><span class="line"></span><br><span class="line"># 如何通过字符串反向生成对象</span><br><span class="line">request2 &#x3D; hello_pb2.HelloRequest()</span><br><span class="line">request2.ParseFromString(res_str)</span><br><span class="line">print(request2.name)</span><br></pre></td></tr></table></figure>
 
-<h4 id="json对比"><a href="#json对比" class="headerlink" title="json对比"></a>json对比</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from protobuf.proto import hello_pb2</span><br><span class="line"></span><br><span class="line"># 生成的 pb 文件如果不懂，最好不要改动</span><br><span class="line">request &#x3D; hello_pb2.HelloRequest()</span><br><span class="line">request.name &#x3D; &quot;protobuf&quot;</span><br><span class="line">res_str &#x3D; request.SerializeToString()</span><br><span class="line">print(res_str)</span><br><span class="line"></span><br><span class="line"># 和json对比效率如何</span><br><span class="line"># 10</span><br><span class="line">print(len(res_str))</span><br><span class="line">res_json &#x3D; &#123;</span><br><span class="line">    &quot;name&quot;: &quot;protobuf&quot;</span><br><span class="line">&#125;</span><br><span class="line">import json</span><br><span class="line"># 20</span><br><span class="line">print(len(json.dumps(res_json)))</span><br></pre></td></tr></table></figure>
+<h4 id="json对比"><a href="#json对比" class="headerlink" title="json对比"></a>json对比</h4><p>修改  <code>client.py</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">from protobuf.proto import hello_pb2</span><br><span class="line"></span><br><span class="line"># 生成的 pb 文件如果不懂，最好不要改动</span><br><span class="line">request &#x3D; hello_pb2.HelloRequest()</span><br><span class="line">request.name &#x3D; &quot;protobuf&quot;</span><br><span class="line">res_str &#x3D; request.SerializeToString()</span><br><span class="line">print(res_str)</span><br><span class="line"></span><br><span class="line"># 和json对比效率如何</span><br><span class="line"># 10</span><br><span class="line">print(len(res_str))</span><br><span class="line">res_json &#x3D; &#123;</span><br><span class="line">    &quot;name&quot;: &quot;protobuf&quot;</span><br><span class="line">&#125;</span><br><span class="line">import json</span><br><span class="line"># 20</span><br><span class="line">print(len(json.dumps(res_json)))</span><br></pre></td></tr></table></figure>
 
 <h2 id="python下grpc开发体验"><a href="#python下grpc开发体验" class="headerlink" title="python下grpc开发体验"></a>python下grpc开发体验</h2><p><a href="https://github.com/grpc/grpc/tree/master/examples/python/helloworld" target="_blank" rel="noopener">grpc</a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">syntax &#x3D; &quot;proto3&quot;;</span><br><span class="line"></span><br><span class="line">service Greeter &#123;</span><br><span class="line">  rpc SayHello (HelloRequest) returns (HelloReply) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message HelloRequest &#123;</span><br><span class="line">  string name &#x3D; 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message HelloReply &#123;</span><br><span class="line">  string message &#x3D; 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -316,7 +319,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">import grpc</span><br><span class="line">from grpc_hello.proto import helloworld_pb2, helloworld_pb2_grpc</span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &quot;__main__&quot;:</span><br><span class="line">    # 相当于一个连接</span><br><span class="line">    with grpc.insecure_channel(&quot;localhost:50051&quot;) as channel:</span><br><span class="line">        stub &#x3D; helloworld_pb2_grpc.GreeterStub(channel)</span><br><span class="line">        rsp: helloworld_pb2.HelloReply &#x3D; stub.SayHello(helloworld_pb2.HelloRequest(name&#x3D;&quot;grpc&quot;))</span><br><span class="line">        print(rsp.message)</span><br></pre></td></tr></table></figure>
 
 <h2 id="golang下grpc开发体验"><a href="#golang下grpc开发体验" class="headerlink" title="golang下grpc开发体验"></a>golang下grpc开发体验</h2><h4 id="安装-1"><a href="#安装-1" class="headerlink" title="安装"></a>安装</h4><p><a href="https://github.com/protocolbuffers/protobuf/releases" target="_blank" rel="noopener">protobuf</a></p>
-<h4 id="下载依赖包"><a href="#下载依赖包" class="headerlink" title="下载依赖包"></a>下载依赖包</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">下载go的依赖包</span><br></pre></td></tr></table></figure>
+<h4 id="下载依赖包"><a href="#下载依赖包" class="headerlink" title="下载依赖包"></a>下载依赖包</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go get github.com&#x2F;golang&#x2F;protobuf&#x2F;protoc-gen-go</span><br></pre></td></tr></table></figure>
 
 <h4 id="proto文件"><a href="#proto文件" class="headerlink" title="proto文件"></a>proto文件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">syntax &#x3D; &quot;proto3&quot;;</span><br><span class="line">option go_package &#x3D; &quot;.;proto&quot;;</span><br><span class="line">service Greeter &#123;</span><br><span class="line">  rpc SayHello (HelloRequest) returns (HelloReply);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message HelloRequest &#123;</span><br><span class="line">  string name &#x3D; 1;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">message HelloReply &#123;</span><br><span class="line">  string message &#x3D; 1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -372,7 +375,10 @@
     <a href="/2021/01/14/Coding/" rel="prev" title="Coding">
       <i class="fa fa-chevron-left"></i> Coding
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/02/06/Microservices-web%E5%B1%82%E5%9F%BA%E7%A1%80%E9%A1%B9%E7%9B%AE%E6%9E%B6%E6%9E%84%E6%90%AD%E5%BB%BA/" rel="next" title="Microservices-web层基础项目架构搭建">
+      Microservices-web层基础项目架构搭建 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -447,20 +453,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">181</span>
+          <span class="site-state-item-count">182</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-count">30</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
