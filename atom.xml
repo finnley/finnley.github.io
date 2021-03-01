@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2021-02-09T14:15:37.679Z</updated>
+  <updated>2021-02-18T14:21:18.258Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,68 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>常见知识点汇总</title>
+    <link href="https://notes.xuepincat.com/2021/02/18/Microservices-%E5%B8%B8%E8%A7%81%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB/"/>
+    <id>https://notes.xuepincat.com/2021/02/18/Microservices-%E5%B8%B8%E8%A7%81%E7%9F%A5%E8%AF%86%E7%82%B9%E6%B1%87%E6%80%BB/</id>
+    <published>2021-02-18T13:44:40.000Z</published>
+    <updated>2021-02-18T14:21:18.258Z</updated>
+    
+    <summary type="html">
+    
+      session
+session机制在微服务下的问题
+ * 单体应用中登录逻辑中session常见的使用步骤
+
+ 1. 首先用户通过浏览器中输入登录名和密码向服务器发起登录请求；
+ 2. 服务器从数据库中查询对应的用户；
+ 3. 数据库中如果用户存在会返回该用户记录；
+ 4. 如果用户存在会在服务端生成一个 session_id ，然后将 session_id 和该用户信息进行绑定，绑定后记录到一张表中；
+ 5. 记录之后会设置 session_id 到 cookie 中；
+ 6. 因为设置到了cookie，然后浏览器每次请求的时候都会带上 session_id，服务端会 session_id 
+    
+    </summary>
+    
+    
+      <category term="Microservices" scheme="https://notes.xuepincat.com/categories/Microservices/"/>
+    
+    
+      <category term="Microservices" scheme="https://notes.xuepincat.com/tags/Microservices/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Microservices-grpc stream</title>
+    <link href="https://notes.xuepincat.com/2021/02/17/Microservices-grpc-stream/"/>
+    <id>https://notes.xuepincat.com/2021/02/17/Microservices-grpc-stream/</id>
+    <published>2021-02-17T05:14:57.000Z</published>
+    <updated>2021-02-17T07:31:14.906Z</updated>
+    
+    <summary type="html">
+    
+      RPC 流模式
+ 1. 简单模式 (Simple RPC)
+
+该模式最为传统，即客户端发起一次请求，服务端响应一个数据
+
+ 2. 服务端数据流模式 (Server-side streaming RPC)
+
+该模式是客户端发起一次请求，服务端返回一段连续的数据流。比如典型的客户端向服务端发送一个股票代码，服务端就把该股票的实时数据源源不断的返回客户端；比如监控服务器状态（CPU使用情况），就需要将CPU的使用情况不断报告给客户端；
+
+ 3. 客户端数据流模式 (Client-side streaming RPC)
+
+该模式与服务端流模式相反，它是客户端源源不断的向服务端发送数据流，而在发送结束后
+    
+    </summary>
+    
+    
+      <category term="Microservices" scheme="https://notes.xuepincat.com/categories/Microservices/"/>
+    
+    
+      <category term="Microservices" scheme="https://notes.xuepincat.com/tags/Microservices/"/>
+    
+  </entry>
   
   <entry>
     <title>Microservices-web层基础项目架构搭建</title>
@@ -73,7 +135,7 @@
     <link href="https://notes.xuepincat.com/2021/01/25/Microservices-grpc%E5%92%8Cprotobuf/"/>
     <id>https://notes.xuepincat.com/2021/01/25/Microservices-grpc%E5%92%8Cprotobuf/</id>
     <published>2021-01-25T15:16:04.000Z</published>
-    <updated>2021-02-17T04:14:56.887Z</updated>
+    <updated>2021-02-17T07:30:51.688Z</updated>
     
     <summary type="html">
     
@@ -119,11 +181,70 @@ gRPC
   </entry>
   
   <entry>
-    <title>Microservice-项目初始化</title>
-    <link href="https://notes.xuepincat.com/2021/01/11/Microservices-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/"/>
-    <id>https://notes.xuepincat.com/2021/01/11/Microservices-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/</id>
+    <title>Microservice-项目初始化-user-api</title>
+    <link href="https://notes.xuepincat.com/2021/01/12/Microservice-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96-user-api/"/>
+    <id>https://notes.xuepincat.com/2021/01/12/Microservice-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96-user-api/</id>
+    <published>2021-01-12T14:21:46.000Z</published>
+    <updated>2021-03-01T16:46:31.338Z</updated>
+    
+    <summary type="html">
+    
+      初始化项目目录
+目录结构：
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+
+
+├── README.md
+├── api
+├── config
+├── forms
+├── global
+├── go.mod
+├── initialize
+├── main.go
+├── middlewares
+├── proto
+├── routers
+├── utils
+└── validator
+
+
+ * api: 存在API接口
+ * config: 存在项目配置文件
+ * forms: 存放项目表单信息
+ * global: 存放全局变量
+ * initialize: 初始化设置
+ * 
+    
+    </summary>
+    
+    
+      <category term="Microservices" scheme="https://notes.xuepincat.com/categories/Microservices/"/>
+    
+    
+      <category term="Microservices" scheme="https://notes.xuepincat.com/tags/Microservices/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Microservice-项目初始化-user-srv</title>
+    <link href="https://notes.xuepincat.com/2021/01/11/Microservices-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96-user-srv/"/>
+    <id>https://notes.xuepincat.com/2021/01/11/Microservices-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96-user-srv/</id>
     <published>2021-01-11T14:21:46.000Z</published>
-    <updated>2021-02-06T02:12:32.693Z</updated>
+    <updated>2021-02-28T15:56:38.735Z</updated>
     
     <summary type="html">
     
@@ -131,7 +252,7 @@ gRPC
 新建虚拟环境
 这里选用 Python ，主要用于最底层的各个微服务的 Service 层的开发
 
-提前先创建了一个 Envs 的目录专门用来存放虚拟环境文件，进入 Envs, 创建一个目录 cat-srv，然后进入该目录
+提前先创建了一个 Envs 的目录专门用来存放虚拟环境文件，进入 Envs, 创建一个目录 cat-srvs，然后进入该目录
 
 1
 2
@@ -143,8 +264,8 @@ gRPC
 
 mkdir Envs
 cd Envs
-mkdir cat-srv
-cd cat-srv
+mkdir cat-srvs
+cd cat-srvs
 python3 -m venv --system-site-packages ./venv
 source ./venv/bin/activate
 
@@ -157,7 +278,6 @@ source ./venv/bin/activate
 
 
 mkdir cat-srvs
-cd
     
     </summary>
     
@@ -755,133 +875,6 @@ RabbitMQ
     
     
       <category term="Network" scheme="https://notes.xuepincat.com/tags/Network/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Microservices-RPC介绍</title>
-    <link href="https://notes.xuepincat.com/2020/10/04/Microservices-gRPC%E4%BB%8B%E7%BB%8D/"/>
-    <id>https://notes.xuepincat.com/2020/10/04/Microservices-gRPC%E4%BB%8B%E7%BB%8D/</id>
-    <published>2020-10-04T15:12:28.000Z</published>
-    <updated>2021-02-14T10:55:32.900Z</updated>
-    
-    <summary type="html">
-    
-      什么是 RPC
-RPC （Remote Procedure Call） 远程过程调用，简单理解就是 一个节点请求另一个节点提供的服务。 它的调用包含了传输协议和编码（对象序列号）协议等等。允许运行于一台计算机的程序调用另一台计算机的子程序，而开发人员无需额外地为这个交互作用编程
-
-对应 RPC 的是本地过程调用，函数调用是最常见的本地过程调用
-
-为什么要将一个服务变成另一个节点上提供的服务？而不是使用本地调用呢？这是分布式系统中应用到的基本行为
-
-将本地过程调用变成远程过程调用会面临各种问题，远比本地过程调用复杂的多，这个也是 RPC 要解决的问题，也是分布式系统需要解决的问题
-
-本地过程调用
-    
-    </summary>
-    
-    
-      <category term="Microservices" scheme="https://notes.xuepincat.com/categories/Microservices/"/>
-    
-    
-      <category term="Microservices" scheme="https://notes.xuepincat.com/tags/Microservices/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>GO开发环境搭建</title>
-    <link href="https://notes.xuepincat.com/2020/09/19/Go-GO%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
-    <id>https://notes.xuepincat.com/2020/09/19/Go-GO%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</id>
-    <published>2020-09-19T02:07:39.000Z</published>
-    <updated>2020-11-07T08:22:58.231Z</updated>
-    
-    <summary type="html">
-    
-      安装
-略
-
-配置环境变量
- * GOROOT 就是go的安装路径
- * GOPATH 就是工作目录，包含src,pkg,bin文件夹
- * 注意：不要把GOPATH设置成安装目录
-
-安装路径： /usr/local/go
-
-1
-
-
-vim ~/.bash_profile
-
-
-1
-2
-3
-
-
-export GOROOT=/usr/local/go
-export GOPATH=/Users/{your user name}/go
-export PATH=/usr/local/go/bin:$GOPATH/bin:$PATH
-
-
-1
-2
-3
-
-
-➜  ~ go version
-go version 
-    
-    </summary>
-    
-    
-      <category term="Go" scheme="https://notes.xuepincat.com/categories/Go/"/>
-    
-    
-      <category term="Go" scheme="https://notes.xuepincat.com/tags/Go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ComputerNetwork-Classic Protocal and Data Package</title>
-    <link href="https://notes.xuepincat.com/2020/08/30/ComputerNetwork-Classic-Protocal-and-Data-Package/"/>
-    <id>https://notes.xuepincat.com/2020/08/30/ComputerNetwork-Classic-Protocal-and-Data-Package/</id>
-    <published>2020-08-30T15:43:59.000Z</published>
-    <updated>2020-09-08T15:59:22.028Z</updated>
-    
-    <summary type="html">
-    
-      TCP 数据包构成
-
-
- 1. 以太网标头
-
-包含 MAC 地址信息
-
- 2. IP 标头
-
-包含对方 IP 信息
-
- 3. TCP 标头
-
-包含 TCP 传输类型，以及数据包长度等
-
- 4. 应用层数据包
-
-
-
-如上图所示，上层协议的数据包都是由下层的数据包包含所构成，比如物理层包含IP数据包，IP数据包又包含TCP段，TCP段中又包含了用户数据
-
-物理层：物理层包含了以太网的首部和尾部，以及IP数据包
-
-IP层：IP数据包包含了IP的首部，以及TCP段，TCP段是常用的抓包的常用层级，用来分析三次握手，四次挥手，比如POST了一个超过1480字节的数据包，那么该数据包就需要分多个数据包进行
-    
-    </summary>
-    
-    
-      <category term="DevOps" scheme="https://notes.xuepincat.com/categories/DevOps/"/>
-    
-    
-      <category term="TCP" scheme="https://notes.xuepincat.com/tags/TCP/"/>
     
   </entry>
   
