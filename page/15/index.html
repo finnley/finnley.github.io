@@ -211,105 +211,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/07/20/CentOS-7-%E5%BC%80%E6%94%BE3306%E7%AB%AF%E5%8F%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/07/20/CentOS-7-%E5%BC%80%E6%94%BE3306%E7%AB%AF%E5%8F%A3/" class="post-title-link" itemprop="url">CentOS 7 开放3306端口</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-07-20 14:20:15" itemprop="dateCreated datePublished" datetime="2018-07-20T14:20:15+08:00">2018-07-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          我准备了两台虚拟机分别安装CentOS 7，一台IP：192.168.1.151，一台IP：192.168.1.152，安装完MySQL后使用Navicat连接的时候出现了下面错误提示
-
-
-
-
-
-后来检查发现是因为CentOS没有开放3306端口
-
-在 Centos 7 或 RHEL 7 或 Fedora 中防火墙由 firewalld 来管理，而不是 iptables
-
-现在我将在151的机器上使用firewalld,152的机器上我使用iptables
-
-firewalld 防火墙
-语法：
-
-1
-
-
-firewall-cmd [--zone=<zone>] --add-port=<port
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/07/20/CentOS-7-%E5%BC%80%E6%94%BE3306%E7%AB%AF%E5%8F%A3/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/07/19/2-%E9%85%8D%E7%BD%AEMySQL%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -852,7 +753,7 @@ php compo
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2021-03-07 14:52:12" itemprop="dateModified" datetime="2021-03-07T14:52:12+08:00">2021-03-07</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -876,17 +777,52 @@ php compo
 
       
           下载 ** Composer **
-![composer](/images/blog/php/composer/1.png)双击开始安装
 
-![composer](/images/blog/php/composer/2.png)Next
 
-![composer](/images/blog/php/composer/3.png)Next
+双击开始安装
 
-![composer](/images/blog/php/composer/4.png)Next
 
-![composer](/images/blog/php/composer/5.png)Next
 
-![composer](/images/blog/php/c
+Next
+
+
+
+Next
+
+
+
+Next
+
+
+
+Next
+
+
+
+Install
+
+
+
+
+
+Next
+
+
+
+Finish
+
+配置
+在PHP目录下，打开 php.ini 文件，开启 openssl 扩展。去掉 ** extension=php_openssl.dll ** 前面的分号 (** ; ** )
+
+
+
+把php目录添加到环境变量（和php.exe同级目录的路径）例如：D:\apache_php\php 添加到环境变量path里。
+
+
+
+下载 composer.phar ,下载地址：Composer.phar。
+
+将 compos
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/01/22/Composer%E5%AE%89%E8%A3%85%E6%95%99%E7%A8%8B/#more" rel="contents">
@@ -1233,6 +1169,99 @@ $ git –-version
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/12/29/CentOS%E9%85%8D%E7%BD%AEhttp%E9%98%B2%E7%81%AB%E5%A2%99%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/12/29/CentOS%E9%85%8D%E7%BD%AEhttp%E9%98%B2%E7%81%AB%E5%A2%99%E9%97%AE%E9%A2%98/" class="post-title-link" itemprop="url">CentOS配置http防火墙问题</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-12-29 23:43:07" itemprop="dateCreated datePublished" datetime="2017-12-29T23:43:07+08:00">2017-12-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CentOS/" itemprop="url" rel="index"><span itemprop="name">CentOS</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          CentoS下安装完http需要配置httpd防火墙，在配置的过程中出现了下面的问题，下面是错误重现以及解决方法。
+
+1
+2
+3
+
+
+# firewall-cmd --zone=public --permanent --add-service=http
+# firewall-cmd --zone=public --permanent --add-service=https
+# firewall-cmd --reload
+
+
+在执行firewall-cmd --zone=public --permanent --add-service=http提示FirewallD is not running
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/12/29/CentOS%E9%85%8D%E7%BD%AEhttp%E9%98%B2%E7%81%AB%E5%A2%99%E9%97%AE%E9%A2%98/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1304,7 +1333,7 @@ $ git –-version
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">185</span>
+          <span class="site-state-item-count">184</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

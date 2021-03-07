@@ -21,44 +21,30 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="准备 本机系统：Windows10 家庭版 64位 NodeJS：v6.10.0LTS 64位  安装 双击安装包，点击 Next  勾选同意,点击 Next  选择安装盘符，我这边选择安装在 E 盘，然后点击 Next  Next  Install  Finish  检验是否安装成功 快捷键 CTRL + R 输入 cmd 打开CMD窗口  输入 node -v , 查看nodejs版本  输入">
+  <meta name="description" content="什么是Hexo? 简单的概括，Hexo是一个快速、简洁且高效的基于Node.js的静态博客框架。  安装Hexo Hexo官方文档  1 2 3 4 5   $ npm install hexo-cli -g $ hexo init blog $ cd blog $ npm install $ hexo server   Hexo的安装是基于 NodeJS，所以在安装之前需要安装 NodeJS 和">
 <meta property="og:type" content="article">
-<meta property="og:title" content="2-NodeJS的安装与配置——废话篇">
-<meta property="og:url" content="https://notes.xuepincat.com/2017/03/28/2-NodeJS%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/index.html">
+<meta property="og:title" content="Hexo的安装与配置——主角篇">
+<meta property="og:url" content="https://notes.xuepincat.com/2017/03/30/Hexo%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%B8%BB%E8%A7%92%E7%AF%87/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="准备 本机系统：Windows10 家庭版 64位 NodeJS：v6.10.0LTS 64位  安装 双击安装包，点击 Next  勾选同意,点击 Next  选择安装盘符，我这边选择安装在 E 盘，然后点击 Next  Next  Install  Finish  检验是否安装成功 快捷键 CTRL + R 输入 cmd 打开CMD窗口  输入 node -v , 查看nodejs版本  输入">
+<meta property="og:description" content="什么是Hexo? 简单的概括，Hexo是一个快速、简洁且高效的基于Node.js的静态博客框架。  安装Hexo Hexo官方文档  1 2 3 4 5   $ npm install hexo-cli -g $ hexo init blog $ cd blog $ npm install $ hexo server   Hexo的安装是基于 NodeJS，所以在安装之前需要安装 NodeJS 和">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/0.jpg">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/1.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/2.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/3.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/4.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/5.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/6.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/7.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/8.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/9.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/10.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/11.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/12.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/13.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/14.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/15.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/16.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/17.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/18.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/19.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/20.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/nodejs/21.png">
-<meta property="article:published_time" content="2017-03-28T15:52:52.000Z">
-<meta property="article:modified_time" content="2020-07-16T16:31:41.701Z">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/hexo/0.jpeg">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/hexo/1.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/hexo/2.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/hexo/3.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/hexo/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/hexo/5.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/hexo/6.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/hexo/7.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/hexo/hexo/8.png">
+<meta property="article:published_time" content="2017-03-30T13:33:05.000Z">
+<meta property="article:modified_time" content="2021-03-04T14:17:55.290Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Hexo">
-<meta property="article:tag" content="NodeJS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://notes.xuepincat.com/images/hexo/nodejs/0.jpg">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/hexo/hexo/0.jpeg">
 
-<link rel="canonical" href="https://notes.xuepincat.com/2017/03/28/2-NodeJS%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/">
+<link rel="canonical" href="https://notes.xuepincat.com/2017/03/30/Hexo%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%B8%BB%E8%A7%92%E7%AF%87/">
 
 
 <script id="page-configurations">
@@ -71,7 +57,7 @@
   };
 </script>
 
-  <title>2-NodeJS的安装与配置——废话篇 | Finnley's Notes</title>
+  <title>Hexo的安装与配置——主角篇 | Finnley's Notes</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
     <script>
@@ -239,7 +225,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/03/28/2-NodeJS%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/03/30/Hexo%E7%9A%84%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%B8%BB%E8%A7%92%E7%AF%87/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -252,7 +238,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          2-NodeJS的安装与配置——废话篇
+          Hexo的安装与配置——主角篇
         </h1>
 
         <div class="post-meta">
@@ -262,14 +248,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2017-03-28 23:52:52" itemprop="dateCreated datePublished" datetime="2017-03-28T23:52:52+08:00">2017-03-28</time>
+              <time title="Created: 2017-03-30 21:33:05" itemprop="dateCreated datePublished" datetime="2017-03-30T21:33:05+08:00">2017-03-30</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-17 00:31:41" itemprop="dateModified" datetime="2020-07-17T00:31:41+08:00">2020-07-17</time>
+                <time title="Modified: 2021-03-04 22:17:55" itemprop="dateModified" datetime="2021-03-04T22:17:55+08:00">2021-03-04</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -292,147 +278,62 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <div align="center">
-    <img src="/images/hexo/nodejs/0.jpg">
-</div>
+        <p><img src="/images/hexo/hexo/0.jpeg" alt="&quot;GitHub Logo&quot;"></p>
+<h2 id="什么是Hexo"><a href="#什么是Hexo" class="headerlink" title="什么是Hexo?"></a>什么是Hexo?</h2><p>简单的概括，Hexo是一个快速、简洁且高效的基于Node.js的静态博客框架。</p>
+<h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><p><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">Hexo官方文档</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br><span class="line">$ hexo init blog</span><br><span class="line">$ cd blog</span><br><span class="line">$ npm install</span><br><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
-<a id="more"></a>
+<p>Hexo的安装是基于 <code>NodeJS</code>，所以在安装之前需要安装 <code>NodeJS</code> 和 <code>Git</code> ,它们的安装在前面已经介绍了。</p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
 
-<h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><blockquote>
-<p>本机系统：<code>Windows10 家庭版 64位</code><br>NodeJS：<code>v6.10.0LTS 64位</code></p>
-</blockquote>
-<div align="center">
-    <img src="/images/hexo/nodejs/1.png">
-</div>
+<p><img src="/images/hexo/hexo/1.png" alt="&quot;hexo&quot;"></p>
+<p><img src="/images/hexo/hexo/2.png" alt="&quot;hexo&quot;"></p>
+<p>在结尾出现这样的信息，属于正常现象，不必担心。</p>
+<p>安装完后会在 <code>node_global</code> 下的 <code>node_modules</code> 文件夹下会出现下面的内容</p>
+<p><img src="/images/hexo/hexo/3.png" alt="&quot;hexo&quot;"></p>
+<h4 id="初始化Hexo"><a href="#初始化Hexo" class="headerlink" title="初始化Hexo"></a>初始化Hexo</h4><p>创建一个目标文件夹，用于放置 <code>Hexo</code>。比如我在 <code>G</code> 盘下的 <code>GitHub</code> 文件夹中创建了一个名为 <code>Hexo</code> 的文件夹</p>
+<p><img src="/images/hexo/hexo/4.png" alt="&quot;hexo&quot;"></p>
+<p>进入该文件夹，快捷键 <code>SHIFT + 鼠标右键</code> ，召唤出命令行窗口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
 
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>双击安装包，点击 <code>Next</code></p>
-<div align="center">
-    <img src="/images/hexo/nodejs/2.png">
-</div>
+<p><img src="/images/hexo/hexo/5.png" alt="&quot;hexo&quot;"></p>
+<p>我这边使用的 <code>cd</code> 命令切换到 <code>Hexo</code> 文件夹下的，回车之后会产生一堆信息，完了之后在 <code>Hexo</code> 文件夹中会多出一些文件</p>
+<p><img src="/images/hexo/hexo/6.png" alt="&quot;hexo&quot;"></p>
+<p>在这些文件夹中 <code>themes</code> 是主题文件夹，Hexo会根据主题来生成静态页面。</p>
+<p>至于文件里面有什么东西，我暂且没有去管它们，先把效果做出来，日后再去看里面的东西(大概率是不会看了，也看不懂，主要还是因为懒)。</p>
+<p>网上有的教程介绍说接着输入 <code>npm install</code> 进行安装依赖，实际上这一步我省略了，我没有输入 <code>npm install</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
 
-<p>勾选同意,点击 <code>Next</code></p>
-<div align="center">
-    <img src="/images/hexo/nodejs/3.png">
-</div>
+<p>初始化完我直接输入下面命令进行启动测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br></pre></td></tr></table></figure>
 
-<p>选择安装盘符，我这边选择安装在 <code>E</code> 盘，然后点击 <code>Next</code></p>
-<div align="center">
-    <img src="/images/hexo/nodejs/4.png">
-</div>
-
-<p><code>Next</code></p>
-<div align="center">
-    <img src="/images/hexo/nodejs/5.png">
-</div>
-
-<p><code>Install</code></p>
-<div align="center">
-    <img src="/images/hexo/nodejs/6.png">
-</div>
-
-<div align="center">
-    <img src="/images/hexo/nodejs/7.png">
-</div>
-
-<p><code>Finish</code></p>
-<div align="center">
-    <img src="/images/hexo/nodejs/8.png">
-</div>
-
-<h2 id="检验是否安装成功"><a href="#检验是否安装成功" class="headerlink" title="检验是否安装成功"></a>检验是否安装成功</h2><p>快捷键 <code>CTRL + R</code> 输入 <code>cmd</code> 打开CMD窗口</p>
-<div align="center">
-    <img src="/images/hexo/nodejs/9.png">
-</div>
-
-<p>输入 <code>node -v</code> , 查看nodejs版本</p>
-<p>输入 <code>npm -v</code> , 查看npm版本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br></pre></td></tr></table></figure>
-
-<div align="center">
-    <img src="/images/hexo/nodejs/10.png">
-</div>
-
-<p>安装完成后的目录如下显示</p>
-<div align="center">
-    <img src="/images/hexo/nodejs/11.png">
-</div>
-
-<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><h3 id="创建-node-global-和-node-cache-文件夹"><a href="#创建-node-global-和-node-cache-文件夹" class="headerlink" title="创建 node_global 和 node_cache 文件夹"></a>创建 <code>node_global</code> 和 <code>node_cache</code> 文件夹</h3><blockquote>
-<p>环境配置主要配置的是 <code>npm</code> 安装的 <code>全局模块</code> 所在路径，以及 <code>缓存cache</code> 的路径。</p>
-</blockquote>
-<blockquote>
-<p>之所以要配置为全局，是因为以后在执行类似： <code>npm install package_name [-g]</code> (中括号[]表示可选参数， <code>-g</code> 表示 <code>global全局安装</code> 的意思)的安装语句时，会将安装的模块安装到”<code>C:\用户\用户名\AppData\Roming\npm</code>”中，会占用C盘空间。</p>
-</blockquote>
-<blockquote>
-<p>所以我想将 <code>全局模块所在的路径</code> 和 <code>缓存</code> 放在nodejs安装的目录中，所以我需要在nodejs安装目录中创建两个文件夹 <code>node_global</code> 和 <code>node_cache</code></p>
-</blockquote>
-<p>两个文件夹如下图所示：</p>
-<div align="center">
-    <img src="/images/hexo/nodejs/12.png">
-</div>
-
-<p>创建完成两个文件夹之后，打开CMD窗口输入以下命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> prefix “E:\Program Files\nodejs\node_global”</span><br><span class="line">npm config <span class="built_in">set</span> cache “E:\Program Files\nodejs\node_cache”</span><br></pre></td></tr></table></figure>
-
-<div align="center">
-    <img src="/images/hexo/nodejs/13.png">
-</div>
-
+<p>或者</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>输入完命令会提示这样的信息，在本地浏览器地址栏中输入 <code>localhost:4000</code> ,退出按快捷键 <code>CTRL+C</code></p>
+<p><img src="/images/hexo/hexo/7.png" alt="&quot;hexo&quot;"></p>
+<p><img src="/images/hexo/hexo/8.png" alt="&quot;hexo&quot;"></p>
+<p>如果出现这样的页面，表示Hexo安装成功。</p>
 <p><strong>注意</strong></p>
 <blockquote>
-<p>在输入的时候windows系统支持按 <code>TAB</code> 键自动补全功能</p>
+<p>在输入 <code>localhost:4000</code> 进行测试的时候，端口号是 <code>4000</code> ，有一次我在输入这个进行测试的时候就没有能够成功显示上面的页面，这时候可以检查 <code>4000</code> 端口是否被占用了，如果被占用了，页面就不会显示。</p>
 </blockquote>
 <blockquote>
-<p>第二句话 <code>npm config set cache “E:\Program Files\nodejs\node_cache”</code> 不要一味地复制。如果复制，复制之后一定要记得把 <code>set</code> 后面的 <code>global</code> 改为 <code>cache</code></p>
+<p>我的端口被占用了的是因为我安装了 <code>foxreader</code> ，<code>foxreader阅读器</code> 进程没有杀掉。解决办法可以输入下面命令查看被占用端口情况，然后杀死进程。当然这些是题外话了。</p>
 </blockquote>
-<blockquote>
-<p>我在这边掉坑了，因为是复制的上一句，所有最后安装的时候包会安装到 <code>cache</code> 文件夹中，所以这边一定要注意一下。</p>
-</blockquote>
-<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>右击 <code>我的电脑</code> -&gt; <code>属性</code> -&gt; <code>高级系统设置</code> -&gt; <code>高级</code> -&gt; <code>环境变量</code> -&gt; <code>新建</code></p>
-<div align="center">
-    <img src="/images/hexo/nodejs/14.png">
-</div>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -ano</span><br></pre></td></tr></table></figure>
 
-<p>变量名：<code>NODE_PATH</code><br>变量值：<code>E:\Program Files\nodejs\node_global\node_modules</code></p>
-<div align="center">
-    <img src="/images/hexo/nodejs/15.png">
-</div>
+<h4 id="生成静态文件"><a href="#生成静态文件" class="headerlink" title="生成静态文件"></a>生成静态文件</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate</span><br></pre></td></tr></table></figure>
 
-<p> 编辑 <code>用户变量</code> 中的 <code>Path</code>, 修改为 <code>E:\Program Files\nodejs\node_global</code></p>
-<p>原始Path：</p>
-<div align="center">
-    <img src="/images/hexo/nodejs/16.png">
-</div>
+<p>或者</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo g</span><br></pre></td></tr></table></figure>
 
-<div align="center">
-    <img src="/images/hexo/nodejs/17.png">
-</div>
+<h4 id="上传到站点"><a href="#上传到站点" class="headerlink" title="上传到站点"></a>上传到站点</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy</span><br></pre></td></tr></table></figure>
 
-<p>修改后Path：</p>
-<div align="center">
-    <img src="/images/hexo/nodejs/18.png">
-</div>
+<p>或者</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo d</span><br></pre></td></tr></table></figure>
 
-<p>然后点击 <code>确定</code> 结束环境变量的配置。</p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>配置完成后，我们安装个module模块测试一下下，我安装的是 <code>express</code> 模块，继续打开CMD窗口，输入以下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install express -g         <span class="comment">#-g表示全局安装的意思</span></span><br></pre></td></tr></table></figure>
-
-<div align="center">
-    <img src="/images/hexo/nodejs/19.png">
-</div>
-
-<p>回车</p>
-<div align="center">
-    <img src="/images/hexo/nodejs/20.png">
-</div>
-
-<p>安装完没有爆出什么信息，安装成功。</p>
-<p>这时我们打开 <code>E:\Program Files\nodejs\node_global\node_modules</code> ，发现里面多了 <code>express</code> 文件夹</p>
-<div align="center">
-    <img src="/images/hexo/nodejs/21.png">
-</div>
-
-<p>到这里Node.js已经安装完成了。</p>
+<p>到这里Hexo基本安装完了。</p>
+<p>今天写的东西有点少，在下一篇中将介绍Next主题的下载与配置，以及如何将它们上传到GitHub，然后就可以看到博客的雏形了，想想就觉的激动。</p>
 
     </div>
 
@@ -472,7 +373,6 @@
       <footer class="post-footer">
           <div class="post-tags">
               <a href="/tags/Hexo/" rel="tag"># Hexo</a>
-              <a href="/tags/NodeJS/" rel="tag"># NodeJS</a>
           </div>
 
         
@@ -481,12 +381,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2017/03/27/1-Git%E7%9A%84%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85%E2%80%94%E2%80%94%E5%BA%9F%E8%AF%9D%E7%AF%87/" rel="prev" title="1-Git的下载与安装——废话篇">
-      <i class="fa fa-chevron-left"></i> 1-Git的下载与安装——废话篇
+    <a href="/2017/03/29/GitHub%E7%9A%84%E6%B3%A8%E5%86%8C%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%B8%BB%E8%A7%92%E7%AF%87/" rel="prev" title="GitHub的注册与配置——主角篇">
+      <i class="fa fa-chevron-left"></i> GitHub的注册与配置——主角篇
     </a></div>
       <div class="post-nav-item">
-    <a href="/2017/03/29/3-GitHub%E7%9A%84%E6%B3%A8%E5%86%8C%E4%B8%8E%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E4%B8%BB%E8%A7%92%E7%AF%87/" rel="next" title="3-GitHub的注册与配置——主角篇">
-      3-GitHub的注册与配置——主角篇 <i class="fa fa-chevron-right"></i>
+    <a href="/2017/03/31/Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E7%BB%88%E7%BB%93%E7%AF%87/" rel="next" title="Next主题配置——终结篇">
+      Next主题配置——终结篇 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -546,7 +446,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检验是否安装成功"><span class="nav-number">3.</span> <span class="nav-text">检验是否安装成功</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境配置"><span class="nav-number">4.</span> <span class="nav-text">环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建-node-global-和-node-cache-文件夹"><span class="nav-number">4.1.</span> <span class="nav-text">创建 node_global 和 node_cache 文件夹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置环境变量"><span class="nav-number">4.2.</span> <span class="nav-text">配置环境变量</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">5.</span> <span class="nav-text">测试</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Hexo"><span class="nav-number">1.</span> <span class="nav-text">什么是Hexo?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Hexo"><span class="nav-number">2.</span> <span class="nav-text">安装Hexo</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">2.0.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化Hexo"><span class="nav-number">2.0.2.</span> <span class="nav-text">初始化Hexo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#生成静态文件"><span class="nav-number">2.0.3.</span> <span class="nav-text">生成静态文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#上传到站点"><span class="nav-number">2.0.4.</span> <span class="nav-text">上传到站点</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -562,7 +462,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">185</span>
+          <span class="site-state-item-count">184</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
