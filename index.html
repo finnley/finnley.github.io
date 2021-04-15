@@ -731,7 +731,7 @@ branch: t1_project_init
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-02-28 23:56:38" itemprop="dateModified" datetime="2021-02-28T23:56:38+08:00">2021-02-28</time>
+                <time title="Modified: 2021-03-13 14:05:14" itemprop="dateModified" datetime="2021-03-13T14:05:14+08:00">2021-03-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -754,8 +754,7 @@ branch: t1_project_init
     <div class="post-body" itemprop="articleBody">
 
       
-          项目初始化
-新建虚拟环境
+          新建虚拟环境
 这里选用 Python ，主要用于最底层的各个微服务的 Service 层的开发
 
 提前先创建了一个 Envs 的目录专门用来存放虚拟环境文件，进入 Envs, 创建一个目录 cat-srvs，然后进入该目录
@@ -764,26 +763,16 @@ branch: t1_project_init
 2
 3
 4
-5
-6
 
 
-mkdir Envs
-cd Envs
-mkdir cat-srvs
-cd cat-srvs
+mkdir Envs && cd Envs
+mkdir cat-srvs && cd cat-srvs
 python3 -m venv --system-site-packages ./venv
 source ./venv/bin/activate
 
 
-此时虚拟环境就已经启动
-
 新建 Python 项目
-1
-2
-
-
-mkdir cat-srvs
+cat-srvs 目录中存放的是所有的微服务，每个微服务新建一个 pack
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/01/11/Microservices-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96-user-srv/#more" rel="contents">
