@@ -423,7 +423,7 @@ vagrant box add centos/7 CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.box
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/08/Docker-introduction-to-docker/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/08/Docker-Docker%E4%BB%8B%E7%BB%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -437,7 +437,7 @@ vagrant box add centos/7 CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.box
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2019/05/08/Docker-introduction-to-docker/" class="post-title-link" itemprop="url">Docker介绍</a>
+            <a href="/2019/05/08/Docker-Docker%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">Docker介绍</a>
         </h2>
 
         <div class="post-meta">
@@ -454,7 +454,7 @@ vagrant box add centos/7 CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.box
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-11-29 15:00:59" itemprop="dateModified" datetime="2020-11-29T15:00:59+08:00">2020-11-29</time>
+                <time title="Modified: 2021-04-26 08:03:52" itemprop="dateModified" datetime="2021-04-26T08:03:52+08:00">2021-04-26</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -494,7 +494,95 @@ vagrant box add centos/7 CentOS-7-x86_64-Vagrant-1902_01.VirtualBox.box
 如果要部署一个 APP，需要准备一台物理服务器，然后在这个物理服务器上安装系统，这个操作系统可能是 Windows ,也可能是 Li
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2019/05/08/Docker-introduction-to-docker/#more" rel="contents">
+              <a class="btn" href="/2019/05/08/Docker-Docker%E4%BB%8B%E7%BB%8D/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/05/08/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2019/05/08/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-title-link" itemprop="url">Docker虚拟机</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2019-05-08 00:02:00" itemprop="dateCreated datePublished" datetime="2019-05-08T00:02:00+08:00">2019-05-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-26 08:12:09" itemprop="dateModified" datetime="2021-04-26T08:12:09+08:00">2021-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          为什么使用Docker虚拟机
+我们可以在Linux系统上直接安装程序，然后部署项目，那为什么还要安装docker虚拟机，然后在docker虚拟机内部去安装程序部署项目呢？
+
+主要是为了解决隔离性的问题， 有些程序运行会占用大量的硬件资源，比如芒果数据库，运行的时候会占用大量的内存和创建缓存，这点势必会影响到其他程序的运行；
+
+再有使用虚拟机去部署程序会非常的方便，比如我需要部署程序，只需要开启一个虚拟的空间，然后我不需要部署程序了，我只要把虚拟空间删除掉就行了，这些虚拟空间之间是完全隔离的。
+
+如果不使用虚拟机，在Linux系统内安装程序，我要把A程序卸载掉，这个程序关联了一些软件包，当我把A
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2019/05/08/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -1182,124 +1270,6 @@ mv mongodb-linux-x86_64-4.0.8 mongodb
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2019/04/07/CentOS%E9%85%8D%E7%BD%AENode%E7%8E%AF%E5%A2%83/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2019/04/07/CentOS%E9%85%8D%E7%BD%AENode%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">CentOS配置Node环境</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2019-04-07 18:01:24" itemprop="dateCreated datePublished" datetime="2019-04-07T18:01:24+08:00">2019-04-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CentOS/" itemprop="url" rel="index"><span itemprop="name">CentOS</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          准备
-安装前检查系统是否已经安装了Node环境
-
-1
-2
-
-
-node -v
-npm -v
-
-
-
-
-下载
-1
-
-
-wget https://nodejs.org/dist/v10.15.3/node-v10.15.3-linux-x64.tar.xz
-
-
-
-
-
-
-解压
-解压tar.xz文件：先 xz -d xxx.tar.xz 将 xxx.tar.xz解压成 xxx.tar 然后，再用 tar xvf xxx.tar来解包
-
-1
-2
-
-
-xz -d node-v10.15.3-linux-x64.tar.xz
-tar xvf node-v10.15.3-linux-x64.tar
-
-
-
-
-配置
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2019/04/07/CentOS%E9%85%8D%E7%BD%AENode%E7%8E%AF%E5%A2%83/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1371,7 +1341,7 @@ tar xvf node-v10.15.3-linux-x64.tar
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">184</span>
+          <span class="site-state-item-count">185</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
