@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="CentOS安装docker 先更新软件管理器，然后再安装Docker  1 2   yum update -y yum install -y docker   常用管理命令 启动、关闭、重启  1 2 3   service docker start service docker stop service docker restart     左上角的DockerFile文件定义了镜像要安装程序">
+  <meta name="description" content="CentOS安装Docker 先更新再安装  1 2   yum update -y yum install -y docker   常用管理命令 启动、关闭、重启  1 2 3   service docker start service docker stop service docker restart     左上角的 DockerFile 文件定义了镜像要安装程序和配置的环境，通过 bu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Docker虚拟机常用指令介绍">
-<meta property="og:url" content="https://notes.xuepincat.com/2018/09/23/Docker-Docker%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/index.html">
+<meta property="og:url" content="https://notes.xuepincat.com/2018/09/23/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="CentOS安装docker 先更新软件管理器，然后再安装Docker  1 2   yum update -y yum install -y docker   常用管理命令 启动、关闭、重启  1 2 3   service docker start service docker stop service docker restart     左上角的DockerFile文件定义了镜像要安装程序">
+<meta property="og:description" content="CentOS安装Docker 先更新再安装  1 2   yum update -y yum install -y docker   常用管理命令 启动、关闭、重启  1 2 3   service docker start service docker stop service docker restart     左上角的 DockerFile 文件定义了镜像要安装程序和配置的环境，通过 bu">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/2.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/3.png">
@@ -53,13 +53,13 @@
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/25.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/docker/26.png">
 <meta property="article:published_time" content="2018-09-22T16:19:16.000Z">
-<meta property="article:modified_time" content="2020-08-31T17:07:33.483Z">
+<meta property="article:modified_time" content="2021-04-26T23:25:34.032Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://images.notes.xuepincat.com/docker/2.png">
 
-<link rel="canonical" href="https://notes.xuepincat.com/2018/09/23/Docker-Docker%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/">
+<link rel="canonical" href="https://notes.xuepincat.com/2018/09/23/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/">
 
 
 <script id="page-configurations">
@@ -240,7 +240,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/23/Docker-Docker%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/23/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -270,7 +270,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-01 01:07:33" itemprop="dateModified" datetime="2020-09-01T01:07:33+08:00">2020-09-01</time>
+                <time title="Modified: 2021-04-27 07:25:34" itemprop="dateModified" datetime="2021-04-27T07:25:34+08:00">2021-04-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -293,23 +293,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="CentOS安装docker"><a href="#CentOS安装docker" class="headerlink" title="CentOS安装docker"></a>CentOS安装docker</h2><p>先更新软件管理器，然后再安装Docker</p>
+        <h2 id="CentOS安装Docker"><a href="#CentOS安装Docker" class="headerlink" title="CentOS安装Docker"></a>CentOS安装Docker</h2><p>先更新再安装</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yum update -y</span><br><span class="line">yum install -y docker</span><br></pre></td></tr></table></figure>
 
 <h2 id="常用管理命令"><a href="#常用管理命令" class="headerlink" title="常用管理命令"></a>常用管理命令</h2><p>启动、关闭、重启</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">service docker start</span><br><span class="line">service docker stop</span><br><span class="line">service docker restart</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://images.notes.xuepincat.com/docker/2.png" alt=""></p>
-<p>左上角的DockerFile文件定义了镜像要安装程序和配置的环境，通过build指令可以创建出我们想要的镜像；</p>
-<p>一旦创建出镜像，我们想要将镜像分发给其他主机的docker虚拟机，一种方法是借助docker仓库来实现，我们可以通过push指令把本地镜像上传到仓库中，其他主机就可以通过search指令到仓库中去查找上传的镜像，找到上传的镜像之后可以通过pull指令将镜像下载到本地，这样别的主机的docker虚拟机就可以拥有这个镜像了；另一种方式是通过文件的方式，将镜像导出为压缩文件，别的主机再用压缩文件导入为镜像就可以了;</p>
-<p>镜像一旦创建出来也是可以删除的，通过rmi指令可以将镜像删除；</p>
-<p>如果想要查看镜像的详细信息，可以使用inspect指令；</p>
-<p>如果想要查看docker虚拟机内的所有镜像，可以使用images指令；</p>
-<p>我们知道镜像是用来创建容器的，从镜像创建出容器的指令是run；</p>
-<p>我们创建出容器之后，这个容器就直接运行了，如果我们想要停止容器运行或者删除容器，可以使用指令pause指令暂停，如果恢复运行可以使用unpause指令；如果想要彻底停止容器的指令是stop,恢复运行指令为start;</p>
-<p>查看容器详细信息可以使用指令inspect;</p>
-<p>如果想要查看docker虚拟机内的所有所有容器可以使用ps指令，如果删除容器可以使用rm指令；</p>
-<p>容器可以保存为镜像，在容器里面安装程序，配置环境，然后保存为镜像，可以使用commit指令。</p>
+<p>左上角的 <code>DockerFile</code> 文件定义了镜像要安装程序和配置的环境，通过 <code>build</code> 指令可以创建出我们想要的镜像；</p>
+<p>一旦创建出镜像，如果想要将镜像分发给其他主机的docker虚拟机，一种方法是借助docker仓库来实现，我们可以通过 <code>push</code> 指令把本地镜像上传到仓库中，其他主机就可以通过 <code>search</code> 指令到仓库中去查找上传的镜像，找到上传的镜像之后可以通过 <code>pull</code> 指令将镜像下载到本地，这样别的主机的docker虚拟机就可以拥有这个镜像了；另一种方式是通过文件的方式，将镜像导出为压缩文件，别的主机再用压缩文件导入为镜像就可以了，导出指令是 <code>save</code> 或 <code>export</code>，导入的指令是 <code>load</code> 或 <code>import</code>;</p>
+<p>镜像一旦创建出来也是可以删除的，通过 <code>rmi</code> 指令可以将镜像删除；</p>
+<p>如果想要查看镜像的详细信息，可以使用 <code>inspect</code> 指令；</p>
+<p>如果想要查看docker虚拟机内的所有镜像，可以使用 <code>images</code> 指令；</p>
+<p>镜像是用来创建容器的，从镜像创建出容器的指令是 <code>run</code>；</p>
+<p>创建出容器之后，这个容器就直接运行了，如果想要停止容器运行或者删除容器，可以使用指令 <code>pause</code> 指令暂停，如果恢复运行可以使用 <code>unpause</code> 指令；如果想要彻底停止容器的指令是 <code>stop</code> ,恢复运行指令为 <code>start</code>;</p>
+<p>查看容器详细信息可以使用指令 <code>inspect</code>;</p>
+<p>如果想要查看docker虚拟机内的所有所有容器可以使用 <code>ps</code> 指令，如果删除容器可以使用 <code>rm</code> 指令；</p>
+<p>容器可以保存为镜像，在容器里面安装程序，配置环境，然后保存为镜像，可以使用 <code>commit</code> 指令。</p>
 <h2 id="在线安装镜像"><a href="#在线安装镜像" class="headerlink" title="在线安装镜像"></a>在线安装镜像</h2><h3 id="安装Java镜像"><a href="#安装Java镜像" class="headerlink" title="安装Java镜像"></a>安装Java镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker search java #搜索与java相关的的镜像</span><br><span class="line">docker pull java #下载指定的镜像</span><br></pre></td></tr></table></figure>
 
 <p>国外镜像仓库下载速度较慢，建议使用国内镜像仓库，如 <code>DaoCloud</code>， <a href="https://www.daocloud.io/mirror" target="_blank" rel="noopener"><span style="color:#FF1493;">DaoCloud镜像配置</span></a> ， 找到Linux的配置，将其复制粘贴到终端</p>
@@ -339,8 +339,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker images</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://images.notes.xuepincat.com/docker/6.png" alt=""></p>
-<p>上面就是设置加速器，下载安装镜像的指令。</p>
-<h2 id="导出导入镜像"><a href="#导出导入镜像" class="headerlink" title="导出导入镜像"></a>导出导入镜像</h2><p>安装了docker镜像，有时候我们想备份镜像，把镜像导出，保存为压缩文件，用到的指令是save。如果要从压缩文件导入镜像，使用的指令是load。</p>
+<h2 id="导出导入镜像"><a href="#导出导入镜像" class="headerlink" title="导出导入镜像"></a>导出导入镜像</h2><p>安装了docker镜像，如果想备份镜像，把镜像导出，保存为压缩文件，用到的指令是 <code>save</code>。如果要从压缩文件导入镜像，使用的指令是 <code>load</code>。</p>
 <h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker save java &gt; &#x2F;home&#x2F;java.tar.gz #导出镜像 </span><br><span class="line">docker load &lt; &#x2F;home&#x2F;java.tar.gz #导入镜像</span><br><span class="line">docker images #查看docker虚拟机里面导入导出的镜像有哪些</span><br><span class="line">docker rmi java #删除镜像</span><br></pre></td></tr></table></figure>
 
 <h3 id="实操"><a href="#实操" class="headerlink" title="实操"></a>实操</h3><p>导出刚才安装的java镜像 </p>
@@ -360,48 +359,47 @@
 <p>使用该指令可以创建并启动一个容器（启动镜像会创建出一个运行状态的容器)</p>
 <h3 id="语法-1"><a href="#语法-1" class="headerlink" title="语法"></a>语法</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name myjava java bash</span><br></pre></td></tr></table></figure>
 
-<pre><code>-it: 启动容器之后开启一个交互的界面
-
---name: 给容器起一个名字，可选参数，如果不给容器起名字，它就没有名字，我们管理容器的时候可以根据容器的id去管理容器，
-比如关闭容器，查看容器信息都可以使用id查找到这个容器
-
-myjava: 容器的名字
-
-java: 镜像的名字
-
-bash:启动的容器运行什么样的程序，运行的是bash命令行</code></pre><p>还有一些其他参数，比如启动容器之后开启什么端口，把这个端口映射到宿主机上等</p>
+<ul>
+<li>-it: 启动容器之后开启一个交互的界面</li>
+<li>–name: 给容器起一个名字，可选参数，如果不给容器起名字，它就没有名字，我们管理容器的时候可以根据容器的id去管理容器，比如关闭容器，查看容器信息都可以使用id查找到这个容器</li>
+<li>myjava: 容器的名字</li>
+<li>java: 镜像的名字</li>
+<li>bash:启动的容器运行什么样的程序，运行的是bash命令行</li>
+</ul>
+<p>另外还有一些其他参数，比如启动容器之后开启什么端口，把这个端口映射到宿主机上等</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name myjava -p 9000:8080 -p 9001:8085 java bash</span><br></pre></td></tr></table></figure>
 
-<pre><code>-p: 映射端口
-
-9000：8080: 9000代表的是宿主机的端口，：8080是容器的端口，这句话的意思说把容器8080的端口映射到真实主机9000端口上；
-
--p: 映射另外一组端口，容器想映射多少个端口就写多少个-p参数就可以了；后面的表示把8085端口映射到真实宿主机9001端口上;</code></pre><p>还可以把宿主机上的文件或文件夹映射到容器中</p>
+<ul>
+<li>-p: 映射端口</li>
+<li>9000:8080: <code>9000</code> 代表的是宿主机的端口，<code>:8080</code> 是容器的端口，这句话的意思说把容器 <code>8080</code> 的端口映射到真实主机 <code>9000</code> 端口上；</li>
+<li>-p: 映射另外一组端口，容器想映射多少个端口就写多少个 <code>-p</code> 参数就可以了；后面的表示把 <code>8085</code> 端口映射到真实宿主机<code>9001</code> 端口上;</li>
+</ul>
+<p>还可以把宿主机上的文件或文件夹映射到容器中</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name myjava -v &#x2F;home&#x2F;project:&#x2F;soft --privileged java bash</span><br></pre></td></tr></table></figure>
 
-<pre><code>比如将来跑数据库的时候数据库存储的数据一定要保存到宿主机上的，不应该存储到容器里面，数据一定要在容器之外去保存，将来在备份和恢复的时候就非常方便。
-
--v: 映射文件，如果有多个映射就使用多个-v
-
-/home/project:/soft: 宿主机信息,/home/project:表示宿主机的目录，这句表示把宿主机的/home/project目录映射到容器中的/soft目录里面，
-
---privileged: 在linux系统创建文件和读取文件都是有读写权限的，我把宿主机的目录映射到容器的目录中，soft目录就可以看到真实主机的project目录中的一些东西了，如果我们想在soft目录中去创建文件和读写文件，真实的宿主机会不会给soft这样的权限呢，后面就需要加上--privilged这样的参数，这个参数就告诉docker在运行的时候容器在操作映射目录和映射文件的时候是拥有最高权限的，读写都是可以的。</code></pre><h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>我们首先在/home目录中创建一个文件夹,将来把文件夹映射到容器里面。</p>
+<p>比如将来跑数据库的时候数据库存储的数据一定要保存到宿主机上的，不应该存储到容器里面，数据一定要在容器之外去保存，将来在备份和恢复的时候就非常方便。</p>
+<ul>
+<li>-v: 映射文件，如果有多个映射就使用多个 <code>-v</code>;</li>
+<li>/home/project:/soft: 宿主机信息，以冒号分隔，<code>/home/project</code> 表示宿主机的目录，这句表示把宿主机的 <code>/home/project</code> 目录映射到容器中的 <code>/soft</code> 目录里面;</li>
+<li>–privileged: 在linux系统创建文件和读取文件都是有读写权限的，我把宿主机的目录映射到容器的目录中，<code>soft</code> 目录就可以看到真实主机的 <code>project</code> 目录中的一些东西了，如果我们想在 <code>soft</code> 目录中去创建文件和读写文件，真实的宿主机会不会给 <code>soft</code> 这样的权限呢? 后面就需要加上 <code>--privilged</code> 这样的参数，这个参数就告诉docker在运行的时候容器在操作映射目录和映射文件的时候是拥有最高权限的，读写都是可以的。</li>
+</ul>
+<h3 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h3><p>我们首先在 <code>/home</code> 目录中创建一个文件夹,将来把文件夹映射到容器里面。</p>
 <p><img src="https://images.notes.xuepincat.com/docker/13.png" alt=""></p>
 <p>启动镜像，并将8080端口映射到真实主机9000上，把8085端口映射到9001端口上,还有目录的映射</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -p 9000:8080 -p 9001:8085 -v &#x2F;home&#x2F;project:&#x2F;soft --privileged --name myjava docker.io&#x2F;java bash</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://images.notes.xuepincat.com/docker/15.png" alt=""></p>
-<p>我们会发现前面的提示都变了，现在的界面是进入到了容器里面，刚才命令我们添加了-it参数，该参数就是启动一个交互的界面，这里启动的是一个java的容器，里面安装了jdk,我们检测一下java环境，输入javac</p>
+<p>回车后会发现前面的提示都变了，现在的界面是进入到了容器里面，刚才命令我们添加了 <code>-it</code> 参数，该参数就是启动一个交互的界面，这里启动的是一个java的容器，里面安装了jdk,我们检测一下java环境，输入 <code>javac</code></p>
 <p><img src="https://images.notes.xuepincat.com/docker/16.png" alt=""></p>
 <p>查看一下java版本 <code>java -version</code></p>
 <p><img src="http://images.notes.xuepincat.com/docker/17.png" alt=""></p>
 <p>查看一下映射的目录，会发现没有任何的东西。</p>
 <p><img src="https://images.notes.xuepincat.com/docker/18.png" alt=""></p>
-<p>在soft目录中创建一个文件，并向里面写入内容</p>
+<p>在 <code>soft</code> 目录中创建一个文件，并向里面写入内容</p>
 <p><img src="https://images.notes.xuepincat.com/docker/19.png" alt=""></p>
 <p>退出当前容器</p>
 <p><img src="https://images.notes.xuepincat.com/docker/20.png" alt=""></p>
-<p>进入宿主机的/home目录查看里面内容</p>
+<p>进入宿主机的 <code>/home</code> 目录查看里面内容</p>
 <p><img src="https://images.notes.xuepincat.com/docker/21.png" alt=""></p>
 <h2 id="暂停和停止容器"><a href="#暂停和停止容器" class="headerlink" title="暂停和停止容器"></a>暂停和停止容器</h2><p>管理容器状态的指令(暂停和停止容器的命令如下)：</p>
 <h3 id="暂停容器"><a href="#暂停容器" class="headerlink" title="暂停容器"></a>暂停容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pause myjava</span><br></pre></td></tr></table></figure>
@@ -412,11 +410,10 @@ bash:启动的容器运行什么样的程序，运行的是bash命令行</code><
 
 <h3 id="恢复运行"><a href="#恢复运行" class="headerlink" title="恢复运行"></a>恢复运行</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker start -i myjava</span><br></pre></td></tr></table></figure>
 
-<p>之前我们在容器的交互界面使用exit退出容器，该命令不仅是退出容器，还停止运行了容器进入到stop状态里面，如果要运行执行容器的话就必须使用start命令去重新启动容器</p>
+<p>之前我们在容器的交互界面使用 <code>exit</code> 退出容器，该命令不仅是退出容器，还停止运行了容器进入到 <code>stop</code> 状态里面，如果要运行执行容器的话就必须使用 <code>start</code> 命令去重新启动容器</p>
 <p>重新启动刚才关闭的容器</p>
 <p><img src="https://images.notes.xuepincat.com/docker/22.png" alt=""></p>
-<p>我们重新打开一个终端，并连接到linux上</p>
-<p>在这里面将myjava的容器暂停一下</p>
+<p>重新打开一个终端，并连接到linux上，在这里面将 <code>myjava</code> 的容器暂停一下</p>
 <p><img src="https://images.notes.xuepincat.com/docker/23.png" alt=""></p>
 <p>恢复容器</p>
 <p><img src="https://images.notes.xuepincat.com/docker/24.png" alt=""></p>
@@ -536,7 +533,7 @@ bash:启动的容器运行什么样的程序，运行的是bash命令行</code><
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS安装docker"><span class="nav-number">1.</span> <span class="nav-text">CentOS安装docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用管理命令"><span class="nav-number">2.</span> <span class="nav-text">常用管理命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在线安装镜像"><span class="nav-number">3.</span> <span class="nav-text">在线安装镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Java镜像"><span class="nav-number">3.1.</span> <span class="nav-text">安装Java镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导出导入镜像"><span class="nav-number">4.</span> <span class="nav-text">导出导入镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">4.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实操"><span class="nav-number">4.2.</span> <span class="nav-text">实操</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动容器"><span class="nav-number">5.</span> <span class="nav-text">启动容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法-1"><span class="nav-number">5.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作"><span class="nav-number">5.2.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#暂停和停止容器"><span class="nav-number">6.</span> <span class="nav-text">暂停和停止容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#暂停容器"><span class="nav-number">6.1.</span> <span class="nav-text">暂停容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#恢复容器运行"><span class="nav-number">6.2.</span> <span class="nav-text">恢复容器运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#彻底停止容器"><span class="nav-number">6.3.</span> <span class="nav-text">彻底停止容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#恢复运行"><span class="nav-number">6.4.</span> <span class="nav-text">恢复运行</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS安装Docker"><span class="nav-number">1.</span> <span class="nav-text">CentOS安装Docker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用管理命令"><span class="nav-number">2.</span> <span class="nav-text">常用管理命令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在线安装镜像"><span class="nav-number">3.</span> <span class="nav-text">在线安装镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Java镜像"><span class="nav-number">3.1.</span> <span class="nav-text">安装Java镜像</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导出导入镜像"><span class="nav-number">4.</span> <span class="nav-text">导出导入镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">4.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实操"><span class="nav-number">4.2.</span> <span class="nav-text">实操</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动容器"><span class="nav-number">5.</span> <span class="nav-text">启动容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法-1"><span class="nav-number">5.1.</span> <span class="nav-text">语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作"><span class="nav-number">5.2.</span> <span class="nav-text">操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#暂停和停止容器"><span class="nav-number">6.</span> <span class="nav-text">暂停和停止容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#暂停容器"><span class="nav-number">6.1.</span> <span class="nav-text">暂停容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#恢复容器运行"><span class="nav-number">6.2.</span> <span class="nav-text">恢复容器运行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#彻底停止容器"><span class="nav-number">6.3.</span> <span class="nav-text">彻底停止容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#恢复运行"><span class="nav-number">6.4.</span> <span class="nav-text">恢复运行</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

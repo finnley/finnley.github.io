@@ -211,84 +211,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/24/Docker-5-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2018/09/24/Docker-5-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" class="post-title-link" itemprop="url">Docker-5-数据库负载均衡</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2018-09-24 00:18:30" itemprop="dateCreated datePublished" datetime="2018-09-24T00:18:30+08:00">2018-09-24</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          什么是数据库负载均衡
-在PXC集群中，任何一个数据节点都是可以读写的，一旦PXC集群上线之后，我们不能把所有的数据库请求全部发送给一个数据库节点，这个PXC集权里那么多数据节点，都应该去参加数据请求的处理，如果要实现数据请求要均匀的发送给每一个数据节点，这个技术就叫做数据库的负载均衡。
-
-必要性
-虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，负载高，性能差。
-
-![](http://images.ornnth.com/images/docker/62.png)如果不使用负载均衡，应用程序把所有的请求都发送给一个PXC节点，这个节点负载特别高，所以很容易出现崩溃，而及群里其他的节
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2018/09/24/Docker-5-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/23/Docker-4-%E5%88%9B%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -478,7 +400,7 @@ docker pull percona/pe
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/23/Docker-Docker%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/23/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -492,7 +414,7 @@ docker pull percona/pe
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/09/23/Docker-Docker%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">Docker虚拟机常用指令介绍</a>
+            <a href="/2018/09/23/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">Docker虚拟机常用指令介绍</a>
         </h2>
 
         <div class="post-meta">
@@ -509,7 +431,7 @@ docker pull percona/pe
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-09-01 01:07:33" itemprop="dateModified" datetime="2020-09-01T01:07:33+08:00">2020-09-01</time>
+                <time title="Modified: 2021-04-27 07:25:34" itemprop="dateModified" datetime="2021-04-27T07:25:34+08:00">2021-04-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -532,8 +454,8 @@ docker pull percona/pe
     <div class="post-body" itemprop="articleBody">
 
       
-          CentOS安装docker
-先更新软件管理器，然后再安装Docker
+          CentOS安装Docker
+先更新再安装
 
 1
 2
@@ -558,12 +480,12 @@ service docker restart
 
 
 
-左上角的DockerFile文件定义了镜像要安装程序和配置的环境，通过build指令可以创建出我们想要的镜像；
+左上角的 DockerFile 文件定义了镜像要安装程序和配置的环境，通过 build 指令可以创建出我们想要的镜像；
 
-一旦创建出镜像，我们想要将镜像分发给其他主机的docker虚拟机，一种方法是借助docker仓库来实现，我们可以通过push指令把本地镜像
+一旦创建出镜像，如果想要将镜像分发给其他主机的docker虚拟机，一种方法是借助docker仓库来实现，我们可以通过 push 指令把本地镜像上传到仓库中，其
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/09/23/Docker-Docker%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/#more" rel="contents">
+              <a class="btn" href="/2018/09/23/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -686,6 +608,94 @@ enabled=1
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/09/22/CentOS-7-%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/22/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2018/09/22/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="post-title-link" itemprop="url">Docker虚拟机</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-09-22 00:02:00" itemprop="dateCreated datePublished" datetime="2018-09-22T00:02:00+08:00">2018-09-22</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-04-26 23:41:15" itemprop="dateModified" datetime="2021-04-26T23:41:15+08:00">2021-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          为什么使用Docker虚拟机
+我们可以在Linux系统上直接安装程序，然后部署项目，那为什么还要安装docker虚拟机，然后在docker虚拟机内部去安装程序部署项目呢？
+
+主要是为了解决隔离性的问题， 有些程序运行会占用大量的硬件资源，比如芒果数据库，运行的时候会占用大量的内存和创建缓存，这点势必会影响到其他程序的运行；
+
+再有使用虚拟机去部署程序会非常的方便，比如我需要部署程序，只需要开启一个虚拟的空间，然后我不需要部署程序了，我只要把虚拟空间删除掉就行了，这些虚拟空间之间是完全隔离的。
+
+如果不使用虚拟机，在Linux系统内安装程序，我要把A程序卸载掉，这个程序关联了一些软件包，当我把A
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2018/09/22/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
