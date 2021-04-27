@@ -211,7 +211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/23/Docker-4-%E5%88%9B%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/23/Docker-%E5%88%9B%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -225,7 +225,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/09/23/Docker-4-%E5%88%9B%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">4-创建MySQL集群</a>
+            <a href="/2018/09/23/Docker-%E5%88%9B%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">创建MySQL集群</a>
         </h2>
 
         <div class="post-meta">
@@ -242,7 +242,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2021-04-28 00:28:04" itemprop="dateModified" datetime="2021-04-28T00:28:04+08:00">2021-04-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -267,24 +267,29 @@
       
           PXC镜像安装
 pxc集群比较特殊，只能安装在linux系统之上，既可以在linux系统之上直接安装，也可以在docker上安装，这里选择的是后者，
-
 Docker的镜像仓库中包含了PXC数据库的镜像，下载即可。
 
 https://hub.docker.com/r/percona/percona-xtradb-cluster/
 
-在网页的右侧可以看到安装镜像的指令，这个指令执行之后，docker就会把镜像下载到docker虚拟机里面并且安装
+ 
+
+在网页的右侧可以看到安装镜像的指令，这个指令执行之后，docker就会把镜像下载到docker虚拟机里面并安装
 
 1
-2
-3
 
 
 docker pull percona/percona-xtradb-cluster
+
+
 或者
-docker pull percona/pe
+
+1
+
+
+docker pull percon
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/09/23/Docker-4-%E5%88%9B%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4/#more" rel="contents">
+              <a class="btn" href="/2018/09/23/Docker-%E5%88%9B%E5%BB%BAMySQL%E9%9B%86%E7%BE%A4/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -429,7 +434,7 @@ docker pull percona/pe
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-27 07:25:34" itemprop="dateModified" datetime="2021-04-27T07:25:34+08:00">2021-04-27</time>
+                <time title="Modified: 2021-04-28 00:39:35" itemprop="dateModified" datetime="2021-04-28T00:39:35+08:00">2021-04-28</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
