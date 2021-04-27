@@ -308,7 +308,7 @@ docker pull percona/pe
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/23/Docker-3-MySQL%E9%9B%86%E7%BE%A4%E4%BB%8B%E7%BB%8D/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/23/Docker-MySQL%E9%9B%86%E7%BE%A4%E4%BB%8B%E7%BB%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -322,7 +322,7 @@ docker pull percona/pe
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/09/23/Docker-3-MySQL%E9%9B%86%E7%BE%A4%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">3-MySQL集群介绍</a>
+            <a href="/2018/09/23/Docker-MySQL%E9%9B%86%E7%BE%A4%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">MySQL集群介绍</a>
         </h2>
 
         <div class="post-meta">
@@ -339,7 +339,7 @@ docker pull percona/pe
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2021-04-27 07:59:19" itemprop="dateModified" datetime="2021-04-27T07:59:19+08:00">2021-04-27</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -364,19 +364,17 @@ docker pull percona/pe
       
           单节点数据库的弊端
 1.大型互联网程序用户群体庞大，所以架构必须要特殊设计，这也包括了数据库
-
 2.单节点的数据库无法满足性能上的要求
-
 3.单节点的数据库没有冗余设计，无法满足高可用
 
 平时在开发过程中使用的数据库大多是单节点的数据库，谈不上高性能高可用。
 
 比如有这样一个案例，大学考试之后，我们要到校园网查看考试成绩，学校一万多人同时到校园网查看考试成绩，我们会发现网页的加载速度非常慢，这个就是数据库单节点无法应对高负载的一个案例。一个数据库实例一万人的并发访问它基本无法支撑下来。
 
-还有一个就是如果我们的数据库采用单节点部署的话，它没有任何的冗余设计，一旦数据库节点出现了宕机，那么所有的
+还有一个就是如果我们的数据库采用单节点部署的话，它没有任何的冗余设计，一旦数据库节点出现了宕机，那么所有的业务
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/09/23/Docker-3-MySQL%E9%9B%86%E7%BE%A4%E4%BB%8B%E7%BB%8D/#more" rel="contents">
+              <a class="btn" href="/2018/09/23/Docker-MySQL%E9%9B%86%E7%BE%A4%E4%BB%8B%E7%BB%8D/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
