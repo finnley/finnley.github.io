@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://notes.xuepincat.com/2018/09/24/Docker-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88/</loc>
+    
+    <lastmod>2021-04-28</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://notes.xuepincat.com/2018/09/24/Docker-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</loc>
     
     <lastmod>2021-04-28</lastmod>
@@ -1052,13 +1059,6 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/2018/09/24/Docker-6-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88/</loc>
-    
-    <lastmod>2020-05-23</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/2019/02/15/1-PHP%E5%BC%95%E7%94%A8%E5%8F%98%E9%87%8F/</loc>
     
     <lastmod>2020-05-23</lastmod>
@@ -1355,21 +1355,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Elasticsearch/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/tags/PHP/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/tags/%E5%BE%AE%E4%BF%A1/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1390,6 +1376,13 @@
   </url>
   
   <url>
+    <loc>https://notes.xuepincat.com/tags/%E5%BE%AE%E4%BF%A1/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://notes.xuepincat.com/tags/Linux/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1398,6 +1391,13 @@
   
   <url>
     <loc>https://notes.xuepincat.com/tags/SVN/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/Elasticsearch/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1418,6 +1418,13 @@
   </url>
   
   <url>
+    <loc>https://notes.xuepincat.com/tags/Redis/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://notes.xuepincat.com/tags/TensorFlow/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1432,21 +1439,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Apache/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/tags/Redis/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/tags/Nginx/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/Apache/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1481,21 +1481,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/DevOps-k8s-node-label-pod-namespace/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/tags/DevOps-k8s/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/tags/DevOps/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/DevOps-k8s-node-label-pod-namespace/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1516,7 +1509,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/GitHub/</loc>
+    <loc>https://notes.xuepincat.com/tags/DevOps-k8s/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1530,14 +1523,14 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/elasticsearch/</loc>
+    <loc>https://notes.xuepincat.com/tags/GitHub/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Java/</loc>
+    <loc>https://notes.xuepincat.com/tags/Logstash/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1558,7 +1551,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Go/</loc>
+    <loc>https://notes.xuepincat.com/tags/Java/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1572,6 +1565,13 @@
   </url>
   
   <url>
+    <loc>https://notes.xuepincat.com/tags/elasticsearch/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://notes.xuepincat.com/tags/MongoDB/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1579,14 +1579,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Logstash/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/tags/RabbitMQ/</loc>
+    <loc>https://notes.xuepincat.com/tags/Go/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1600,21 +1593,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/NodeJS/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/tags/Network/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/tags/NodeJs/</loc>
+    <loc>https://notes.xuepincat.com/tags/RabbitMQ/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1622,6 +1601,20 @@
   
   <url>
     <loc>https://notes.xuepincat.com/tags/Next/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/NodeJS/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/tags/NodeJs/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1642,6 +1635,13 @@
   </url>
   
   <url>
+    <loc>https://notes.xuepincat.com/tags/Nignx/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://notes.xuepincat.com/tags/Linux-Ubuntu/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1649,7 +1649,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/tags/Nignx/</loc>
+    <loc>https://notes.xuepincat.com/tags/Network/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1714,21 +1714,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/Elasticsearch/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/categories/PHP/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/categories/%E5%BE%AE%E4%BF%A1/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1749,6 +1735,13 @@
   </url>
   
   <url>
+    <loc>https://notes.xuepincat.com/categories/%E5%BE%AE%E4%BF%A1/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://notes.xuepincat.com/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1756,7 +1749,21 @@
   </url>
   
   <url>
+    <loc>https://notes.xuepincat.com/categories/Elasticsearch/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://notes.xuepincat.com/categories/Docker/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://notes.xuepincat.com/categories/Redis/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1784,13 +1791,6 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/Redis/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://notes.xuepincat.com/categories/DevOps/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1805,6 +1805,13 @@
   </url>
   
   <url>
+    <loc>https://notes.xuepincat.com/categories/Beats/</loc>
+    <lastmod>2021-04-28</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://notes.xuepincat.com/categories/Hexo-Next/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
@@ -1812,7 +1819,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/Beats/</loc>
+    <loc>https://notes.xuepincat.com/categories/Logstash/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1833,7 +1840,7 @@
   </url>
   
   <url>
-    <loc>https://notes.xuepincat.com/categories/Logstash/</loc>
+    <loc>https://notes.xuepincat.com/categories/Microservices/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -1841,13 +1848,6 @@
   
   <url>
     <loc>https://notes.xuepincat.com/categories/MQ/</loc>
-    <lastmod>2021-04-28</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://notes.xuepincat.com/categories/Microservices/</loc>
     <lastmod>2021-04-28</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>

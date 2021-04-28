@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://notes.xuepincat.com/2018/09/24/Docker-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88/</loc>
+    <lastmod>2021-04-28</lastmod>
+  </url>
+  <url>
     <loc>https://notes.xuepincat.com/2018/09/24/Docker-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/</loc>
     <lastmod>2021-04-28</lastmod>
   </url>
@@ -586,10 +590,6 @@
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2019/03/10/CentOS%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85Nginx/</loc>
-    <lastmod>2020-05-23</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2018/09/24/Docker-6-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
