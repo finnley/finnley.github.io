@@ -1104,7 +1104,7 @@ tar -zxvf v
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/24/Docker-5-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/09/24/Docker-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -1118,7 +1118,7 @@ tar -zxvf v
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/09/24/Docker-5-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" class="post-title-link" itemprop="url">Docker-5-数据库负载均衡</a>
+            <a href="/2018/09/24/Docker-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/" class="post-title-link" itemprop="url">数据库负载均衡</a>
         </h2>
 
         <div class="post-meta">
@@ -1135,7 +1135,7 @@ tar -zxvf v
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2021-04-28 08:03:26" itemprop="dateModified" datetime="2021-04-28T08:03:26+08:00">2021-04-28</time>
               </span>
 
           
@@ -1149,16 +1149,20 @@ tar -zxvf v
     <div class="post-body" itemprop="articleBody">
 
       
-          什么是数据库负载均衡
-在PXC集群中，任何一个数据节点都是可以读写的，一旦PXC集群上线之后，我们不能把所有的数据库请求全部发送给一个数据库节点，这个PXC集权里那么多数据节点，都应该去参加数据请求的处理，如果要实现数据请求要均匀的发送给每一个数据节点，这个技术就叫做数据库的负载均衡。
+          数据库负载均衡
+在PXC集群中，任何一个数据节点都是可以读写的，一旦PXC集群上线之后，我们不能把所有的数据库请求全部发送给一个数据库节点，PXC集群里那么多数据节点，都应该去参加数据请求的处理，如果要实现数据请求要均匀的发送给每一个数据节点，这个技术就叫做数据库的负载均衡
 
 必要性
-虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，负载高，性能差。
+ * 虽然搭建了集群，但是不使用数据库负载均衡，单节点处理所有请求，负载高，性能差
 
-![](http://images.ornnth.com/images/docker/62.png)如果不使用负载均衡，应用程序把所有的请求都发送给一个PXC节点，这个节点负载特别高，所以很容易出现崩溃，而及群里其他的节
+
+
+如果不使用负载均衡，应用程序会把所有的请求都发送给一个PXC节点，这个节点负载特别高，所以很容易出现崩溃，而集群里其他的节点又特别空闲，这种情况就特别不好，所以在结构上要做一些调整
+
+ * 使用Haproxy做负载均衡，请求
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/09/24/Docker-5-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/#more" rel="contents">
+              <a class="btn" href="/2018/09/24/Docker-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
