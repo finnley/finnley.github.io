@@ -434,7 +434,7 @@ docker pull percon
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-28 00:39:35" itemprop="dateModified" datetime="2021-04-28T00:39:35+08:00">2021-04-28</time>
+                <time title="Modified: 2021-04-30 01:07:21" itemprop="dateModified" datetime="2021-04-30T01:07:21+08:00">2021-04-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -458,8 +458,6 @@ docker pull percon
 
       
           CentOS安装Docker
-先更新再安装
-
 1
 2
 
@@ -485,7 +483,7 @@ service docker restart
 
 左上角的 DockerFile 文件定义了镜像要安装程序和配置的环境，通过 build 指令可以创建出我们想要的镜像；
 
-一旦创建出镜像，如果想要将镜像分发给其他主机的docker虚拟机，一种方法是借助docker仓库来实现，我们可以通过 push 指令把本地镜像上传到仓库中，其
+一旦创建出镜像，如果想要将镜像分发给其他主机的Docker虚拟机，一种方法是借助Docker仓库来实现，我们可以通过 push 指令把本地镜像上传到仓库中，其他主机就可以通过
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/09/23/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%B8%B8%E7%94%A8%E6%8C%87%E4%BB%A4%E4%BB%8B%E7%BB%8D/#more" rel="contents">
@@ -665,7 +663,7 @@ enabled=1
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-26 23:41:15" itemprop="dateModified" datetime="2021-04-26T23:41:15+08:00">2021-04-26</time>
+                <time title="Modified: 2021-04-30 00:44:15" itemprop="dateModified" datetime="2021-04-30T00:44:15+08:00">2021-04-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -689,13 +687,13 @@ enabled=1
 
       
           为什么使用Docker虚拟机
-我们可以在Linux系统上直接安装程序，然后部署项目，那为什么还要安装docker虚拟机，然后在docker虚拟机内部去安装程序部署项目呢？
+我们可以在Linux系统上直接安装程序然后部署项目，那为什么还要安装docker虚拟机，并在docker虚拟机内部去安装程序部署项目呢？
 
 主要是为了解决隔离性的问题， 有些程序运行会占用大量的硬件资源，比如芒果数据库，运行的时候会占用大量的内存和创建缓存，这点势必会影响到其他程序的运行；
 
-再有使用虚拟机去部署程序会非常的方便，比如我需要部署程序，只需要开启一个虚拟的空间，然后我不需要部署程序了，我只要把虚拟空间删除掉就行了，这些虚拟空间之间是完全隔离的。
+再有使用虚拟机去部署程序会非常的方便，比如我需要部署程序，只需要开启一个虚拟的空间，如果我不需要部署程序了，我只要把虚拟空间删除掉就行了，这些虚拟空间之间是完全隔离的。
 
-如果不使用虚拟机，在Linux系统内安装程序，我要把A程序卸载掉，这个程序关联了一些软件包，当我把A
+如果不使用虚拟机，在Linux系统内安装程序，我要把A程序卸载掉，这个程序关联了一些软件包，当我把A程序
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/09/22/Docker-%E8%99%9A%E6%8B%9F%E6%9C%BA/#more" rel="contents">
