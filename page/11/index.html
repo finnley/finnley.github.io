@@ -1183,7 +1183,7 @@ Redis目前的集群方案分为一下集中：
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/11/18/Docker-7-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/11/18/Docker-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -1197,7 +1197,7 @@ Redis目前的集群方案分为一下集中：
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/11/18/Docker-7-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">7-热备份数据</a>
+            <a href="/2018/11/18/Docker-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/" class="post-title-link" itemprop="url">热备份数据</a>
         </h2>
 
         <div class="post-meta">
@@ -1214,7 +1214,7 @@ Redis目前的集群方案分为一下集中：
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2021-04-29 08:07:45" itemprop="dateModified" datetime="2021-04-29T08:07:45+08:00">2021-04-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1243,14 +1243,16 @@ Redis目前的集群方案分为一下集中：
  * 冷备份是最简单最安全的一种备份方式
  * 大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择
 
-其中比如msyqldump备份是冷备份的一种，另外还有一种方法是拷贝数据文件，将来在还原的时候把数据文件覆盖到MySQL上，这就实现了还原。
+其中比如 msyqldump 备份是冷备份的一种，另外还有一种方法是拷贝数据文件，将来在还原的时候把数据文件覆盖到MySQL上，这就实现了还原。
 
 关于冷备份最大的问题就是不能在系统运营中去备份，必须要让系统停机去备份数据。
 
-如果在数据库集群中偏要使用冷备份，就是在集群中让某一个节点下线，把这个节点下线之后再去备份这个节点的数据，这个就可以实现冷备份，而其他在上线的节点是正常可以开展业务的，然后下线的节点
+
+
+如果在数据库集群中偏要使用冷备份，就是在集群中让某一个节点下线，把这个节点下线之后再去备份这个节点的数据，这个就可以实现冷备份，而其他在上线的节点是正常可以开展业务的，然后下
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/11/18/Docker-7-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/#more" rel="contents">
+              <a class="btn" href="/2018/11/18/Docker-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>

@@ -21,20 +21,36 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="数据备份分类 冷备份  * 冷备份是关闭数据库时候的备份方式，通常做法是拷贝数据文件  * 冷备份是最简单最安全的一种备份方式  * 大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择  其中比如msyqldump备份是冷备份的一种，另外还有一种方法是拷贝数据文件，将来在还原的时候把数据文件覆盖到MySQL上，这就实现了还原。  关于冷备份最大的问题就是不能在系统运营中去备份，必须要让系统停">
+  <meta name="description" content="数据备份分类 冷备份  * 冷备份是关闭数据库时候的备份方式，通常做法是拷贝数据文件  * 冷备份是最简单最安全的一种备份方式  * 大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择  其中比如 msyqldump 备份是冷备份的一种，另外还有一种方法是拷贝数据文件，将来在还原的时候把数据文件覆盖到MySQL上，这就实现了还原。  关于冷备份最大的问题就是不能在系统运营中去备份，必须要让系">
 <meta property="og:type" content="article">
-<meta property="og:title" content="7-热备份数据">
-<meta property="og:url" content="https://notes.xuepincat.com/2018/11/18/Docker-7-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/index.html">
+<meta property="og:title" content="热备份数据">
+<meta property="og:url" content="https://notes.xuepincat.com/2018/11/18/Docker-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="数据备份分类 冷备份  * 冷备份是关闭数据库时候的备份方式，通常做法是拷贝数据文件  * 冷备份是最简单最安全的一种备份方式  * 大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择  其中比如msyqldump备份是冷备份的一种，另外还有一种方法是拷贝数据文件，将来在还原的时候把数据文件覆盖到MySQL上，这就实现了还原。  关于冷备份最大的问题就是不能在系统运营中去备份，必须要让系统停">
+<meta property="og:description" content="数据备份分类 冷备份  * 冷备份是关闭数据库时候的备份方式，通常做法是拷贝数据文件  * 冷备份是最简单最安全的一种备份方式  * 大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择  其中比如 msyqldump 备份是冷备份的一种，另外还有一种方法是拷贝数据文件，将来在还原的时候把数据文件覆盖到MySQL上，这就实现了还原。  关于冷备份最大的问题就是不能在系统运营中去备份，必须要让系">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/226.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/98.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/99.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/100.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/101.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/102.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/103.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/104.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/105.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/106.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/107.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/108.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/109.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/110.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/111.png">
 <meta property="article:published_time" content="2018-11-17T16:16:03.000Z">
-<meta property="article:modified_time" content="2020-05-23T23:14:19.313Z">
+<meta property="article:modified_time" content="2021-04-29T00:07:45.334Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Linux - CentOS - Docker">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/docker/226.png">
 
-<link rel="canonical" href="https://notes.xuepincat.com/2018/11/18/Docker-7-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/">
+<link rel="canonical" href="https://notes.xuepincat.com/2018/11/18/Docker-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/">
 
 
 <script id="page-configurations">
@@ -47,7 +63,7 @@
   };
 </script>
 
-  <title>7-热备份数据 | Finnley's Notes</title>
+  <title>热备份数据 | Finnley's Notes</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
     <script>
@@ -215,7 +231,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/11/18/Docker-7-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/11/18/Docker-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -228,7 +244,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          7-热备份数据
+          热备份数据
         </h1>
 
         <div class="post-meta">
@@ -245,7 +261,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2021-04-29 08:07:45" itemprop="dateModified" datetime="2021-04-29T08:07:45+08:00">2021-04-29</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,20 +284,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="数据备份分类"><a href="#数据备份分类" class="headerlink" title="数据备份分类"></a>数据备份分类</h2><h3 id="冷备份"><a href="#冷备份" class="headerlink" title="冷备份"></a>冷备份</h3><ul>
+        <h2 id="数据备份分类"><a href="#数据备份分类" class="headerlink" title="数据备份分类"></a>数据备份分类</h2><h4 id="冷备份"><a href="#冷备份" class="headerlink" title="冷备份"></a>冷备份</h4><ul>
 <li>冷备份是关闭数据库时候的备份方式，通常做法是拷贝数据文件</li>
 <li>冷备份是最简单最安全的一种备份方式</li>
 <li>大型网站无法做到关闭业务备份数据，所以冷备份不是最佳选择</li>
 </ul>
-<p>其中比如msyqldump备份是冷备份的一种，另外还有一种方法是拷贝数据文件，将来在还原的时候把数据文件覆盖到MySQL上，这就实现了还原。</p>
+<p>其中比如 <code>msyqldump</code> 备份是冷备份的一种，另外还有一种方法是拷贝数据文件，将来在还原的时候把数据文件覆盖到MySQL上，这就实现了还原。</p>
 <p>关于冷备份最大的问题就是不能在系统运营中去备份，必须要让系统停机去备份数据。</p>
+<p><img src="/images/docker/226.png" alt=""></p>
 <p>如果在数据库集群中偏要使用冷备份，就是在集群中让某一个节点下线，把这个节点下线之后再去备份这个节点的数据，这个就可以实现冷备份，而其他在上线的节点是正常可以开展业务的，然后下线的节点备份成功之后再让它上线，跟其他的节点一同步，那么下线的节点数据和其他上线的节点的数据就保持实时的更新了。</p>
-<h3 id="热备份"><a href="#热备份" class="headerlink" title="热备份"></a>热备份</h3><ul>
+<h4 id="热备份"><a href="#热备份" class="headerlink" title="热备份"></a>热备份</h4><ul>
 <li>热备份是在系统运行的状态下备份数据，也是难度最大的备份</li>
 <li>MySQL常见的热备份有LVM和XtraBackup两种方案</li>
 <li>建议使用XtraBackup热备份MySQL</li>
 </ul>
-<p>其中LVM方式是Linux自带技术，Linux对某一个分区创建快照实现对分区数据的备份，原则上LVM可以备份的数据有很多，例如MySQL、Oracle、MongoDB都可以，因为它们备份的是分区里面的数据，无论什么数据它们的数据都保存到Linux分区上，所以LVM原则上是可以备份任何数据库的，但是这种凡是存在一种缺点，就是在备份的时候需要对数据库加锁，数据库只能读取数据，不能写入数据，这种情况对业务的开展还是有一定影响的，而且在操作LVM分区的时候指令较多，所以这种备份方式比较麻烦。</p>
+<p>其中LVM方式是Linux自带技术，Linux对某一个分区创建快照实现对分区数据的备份，原则上LVM可以备份的数据有很多，例如MySQL、Oracle、MongoDB都可以，因为它们备份的是分区里面的数据，无论什么数据它们的数据都保存到Linux分区上，所以LVM原则上是可以备份任何数据库的，但是这种方式存在缺点，就是在备份的时候需要对数据库加锁，数据库只能读取数据，不能写入数据，这种情况对业务的开展还是有一定影响的，而且在操作LVM分区的时候指令较多，所以这种备份方式比较麻烦。</p>
 <p>XtraBackup备份方式有很多优点，比如它不需要锁表就可以备份数据，写入数据和备份数据可以同时进行，另外它还是免费开源的备份数据方案。</p>
 <h2 id="XtraBackup热备份优势"><a href="#XtraBackup热备份优势" class="headerlink" title="XtraBackup热备份优势"></a>XtraBackup热备份优势</h2><ul>
 <li>XtraBackup备份过程不锁表、快速可靠</li>
@@ -289,23 +306,17 @@
 <li>XtraBackup能够基于压缩等功能节约磁盘空间和流量</li>
 </ul>
 <p>在XtraBackup热备份过程中执行增删改查的操作依然也是可以的，另外它备份出来的数据是压缩的，对于硬盘的占用较小，XtraBackup热备份分为全量备份和增量备份</p>
-<h3 id="全量备份和增量备份"><a href="#全量备份和增量备份" class="headerlink" title="全量备份和增量备份"></a>全量备份和增量备份</h3><ul>
+<h4 id="全量备份和增量备份"><a href="#全量备份和增量备份" class="headerlink" title="全量备份和增量备份"></a>全量备份和增量备份</h4><ul>
 <li>全量备份是备份全部数据。备份过程时间长，占用空间大</li>
 </ul>
-<div align=center>
-![](http://images.ornnth.com/images/docker/98.png)
-</div>
-
+<p><img src="/images/docker/98.png" alt=""></p>
 <p>对数据库的第一次备份可以采用全量备份，后续的备份就可以采用增量备份，这样备份速度比较快，另外减小硬盘压力。</p>
 <ul>
 <li>增量备份是只备份变化的那部分数据。备份时间短，占用空间小</li>
 </ul>
-<div align=center>
-![](http://images.ornnth.com/images/docker/99.png)
-</div>
-
+<p><img src="/images/docker/99.png" alt=""></p>
 <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><p>XtraBackup热备份是安装在数据库所在的节点容器内，它备份出来的数据会直接保存在容器中，这样很不好，我们应该将备份出来的数据导出到宿主机上，应该采用映射的技术，所以需要在宿主机上创建数据卷，然后将数据卷映射到某一个数据库的节点上，然后再通过热备工具备份出来的数据在宿主机上就可以看到了。</p>
-<h3 id="创建数据卷"><a href="#创建数据卷" class="headerlink" title="创建数据卷"></a>创建数据卷</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume create backup</span><br></pre></td></tr></table></figure>
+<h4 id="创建数据卷"><a href="#创建数据卷" class="headerlink" title="创建数据卷"></a>创建数据卷</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume create backup</span><br></pre></td></tr></table></figure>
 
 <p>创建完之后选择一个数据库节点将数据库映射，这里选择node1节点，首先要将数据库节点停止</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop node1</span><br></pre></td></tr></table></figure>
@@ -320,18 +331,12 @@
 
 <p>-v backup:/data 表示把宿主机backup数据卷映射到容器中的/data目录<br>-e CLUSTER_JOIN=node2 表示现在创建的node1需要和哪一个节点进行同步，原来的数据库节点创建出来之后其他的节点跟node1同步的，现在node1停止掉之后创建一个新的node1要与现在的数据库集群里的某一个节点进行同步，这里选择的node2节点</p>
 <p>在创建的过程中出现了下面的错误</p>
-<div align=center>
-![](http://images.ornnth.com/images/docker/100.png)
-</div>
-
+<p><img src="/images/docker/100.png" alt=""></p>
 <p>这是因为之间系统将防火墙关闭的原因，在创建之前仍需将node节点先停止再删除，解决方法</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker stop node1</span><br><span class="line">docker rm node1</span><br><span class="line">systemctl start firewalld</span><br><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;abc123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;abc123456 -v v1:&#x2F;var&#x2F;lib&#x2F;mysql -v backup:&#x2F;data --privileged -e CLUSTER_JOIN&#x3D;node2 --name&#x3D;node1 --net&#x3D;net1 --ip 172.18.0.2 pxc</span><br></pre></td></tr></table></figure>
 
 <p>然后再去重新创建node1节点</p>
-<div align=center>
-![](http://images.ornnth.com/images/docker/101.png)
-</div>
-
+<p><img src="/images/docker/101.png" alt=""></p>
 <h2 id="PXC全量备份步骤"><a href="#PXC全量备份步骤" class="headerlink" title="PXC全量备份步骤"></a>PXC全量备份步骤</h2><ul>
 <li>PXC容器中安装XtraBackup,并执行备份</li>
 </ul>
@@ -352,10 +357,7 @@
 <p>解决方法 退出容器以下面指令重新进入容器,以root用户登陆docker内linux</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it -u 0 node1 bash</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![](http://images.ornnth.com/images/docker/102.png)
-</div>
-
+<p><img src="/images/docker/102.png" alt=""></p>
 <ol start="3">
 <li>安装热备工具</li>
 </ol>
@@ -367,26 +369,17 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">innobackupex --user&#x3D;root --password&#x3D;abc123456 &#x2F;data&#x2F;backup&#x2F;full</span><br></pre></td></tr></table></figure>
 
 <p>备份完之后提示完成</p>
-<div align=center>
-![](http://images.ornnth.com/images/docker/103.png)
-</div>
-
+<p><img src="/images/docker/103.png" alt=""></p>
 <ol start="5">
 <li>进入备份目录</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;data&#x2F;back&#x2F;full</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![](http://images.ornnth.com/images/docker/104.png)
-</div>
-
+<p><img src="/images/docker/104.png" alt=""></p>
 <p>这是容器内的数据，现在退出查看映射到宿主机上也就是容器外的备份数据</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br><span class="line">docker inspect back</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![](http://images.ornnth.com/images/docker/105.png)
-</div>
-
+<p><img src="/images/docker/105.png" alt=""></p>
 <p>到这里全量备份已经执行成功了，这是热备份，我们可以一边写入数据一边备份数据</p>
 <h2 id="PXC全量恢复步骤"><a href="#PXC全量恢复步骤" class="headerlink" title="PXC全量恢复步骤"></a>PXC全量恢复步骤</h2><p>使用了backup全量热备份数据备份出来的数据将来可能会用得上，在数据库出现故障的时候可以利用这个备份去还原数据库，数据库的备份分为冷备份和热备份，但是数据库的还原只有一种就是冷还原，假如有热还原一边开展业务数据，一边还原数据，结果难以想象。</p>
 <ul>
@@ -401,10 +394,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#删除MySQL内部数据</span><br><span class="line">rm -rf &#x2F;var&#x2F;lib&#x2F;mysql&#x2F;*</span><br><span class="line">#将没有提交的数据进行回滚 后面是热备的数据目录</span><br><span class="line">innobackupex --user&#x3D;root --password&#x3D;abc123456 --apply-back &#x2F;data&#x2F;back&#x2F;full&#x2F;2018-11-18_05-09-07&#x2F;</span><br><span class="line">#还原数据</span><br><span class="line">innobackupex --user&#x3D;root --password&#x3D;abc123456 --copy-back &#x2F;data&#x2F;backup&#x2F;full&#x2F;2018-11018_05-09-07&#x2F;</span><br></pre></td></tr></table></figure>
 
 <h3 id="具体步骤-1"><a href="#具体步骤-1" class="headerlink" title="具体步骤"></a>具体步骤</h3><p>在还原之前将数据库插入一条记录，此时数据库中有4条记录</p>
-<div align=center>
-![](http://images.ornnth.com/images/docker/106.png)
-</div>
-
+<p><img src="/images/docker/106.png" alt=""></p>
 <p>此时备份的数据和现有的数据是不一样的，备份是的有三条记录，现在有四条记录，在经过还原之后应该有三条记录</p>
 <ol>
 <li>将5个pxc节点停止</li>
@@ -426,18 +416,12 @@
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker volume create v1</span><br></pre></td></tr></table></figure>
 
-
-
-
 <ol start="5">
 <li>打开之前关掉的防火墙，然后启动一个pxc节点node1</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl start firewalld</span><br><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;abc123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;abc123456 -v v1:&#x2F;var&#x2F;lib&#x2F;mysql -v backup:&#x2F;data --privileged --name&#x3D;node1 --net&#x3D;net1 --ip 172.18.0.2 pxc</span><br><span class="line"></span><br><span class="line">docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;abc123456 -e CLUSTER_NAME&#x3D;PXC -e XTRABACKUP_PASSWORD&#x3D;abc123456 -v v1:&#x2F;var&#x2F;lib&#x2F;mysql --privileged --name&#x3D;node1 --net&#x3D;net1 --ip 172.18.0.2 pxc</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![](http://images.ornnth.com/images/docker/107.png)
-</div>
-
+<p><img src="/images/docker/107.png" alt=""></p>
 <ol start="6">
 <li>然后进入容器</li>
 </ol>
@@ -453,36 +437,24 @@
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">innobackupex --user&#x3D;root --password&#x3D;abc123456 --apply-back &#x2F;data&#x2F;backup&#x2F;full&#x2F;2018-11-18_05-49-46&#x2F;</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![](http://images.ornnth.com/images/docker/108.png)
-</div>
-
+<p><img src="/images/docker/108.png" alt=""></p>
 <ol start="9">
 <li>执行冷还原</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">innobackupex --user&#x3D;root --password&#x3D;abc123456 --copy-back &#x2F;data&#x2F;backup&#x2F;full&#x2F;2018-11-18_05-49-46&#x2F;</span><br></pre></td></tr></table></figure>
 
 <p>还原成功</p>
-<div align=center>
-![](http://images.ornnth.com/images/docker/109.png)
-</div>
-
+<p><img src="/images/docker/109.png" alt=""></p>
 <ol start="10">
 <li>推出容器，启动node1节点</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br><span class="line">docker stop node1 </span><br><span class="line">docker start node1</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![](http://images.ornnth.com/images/docker/110.png)
-</div>
-
+<p><img src="/images/docker/110.png" alt=""></p>
 <ol start="11">
 <li>查看node1节点里面的数据</li>
 </ol>
-<div align=center>
-![](http://images.ornnth.com/images/docker/111.png)
-</div>
-
+<p><img src="/images/docker/111.png" alt=""></p>
 <p>注意，当前版本好像有点问题我，不能删除容器内的Mysql目录，如果删除/var/lib/mysql/*就连不上，如果不删除，则数据还原不了，所以这里选用的是pxc版本是5.7.21的版本</p>
 
     </div>
@@ -596,7 +568,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据备份分类"><span class="nav-number">1.</span> <span class="nav-text">数据备份分类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#冷备份"><span class="nav-number">1.1.</span> <span class="nav-text">冷备份</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#热备份"><span class="nav-number">1.2.</span> <span class="nav-text">热备份</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XtraBackup热备份优势"><span class="nav-number">2.</span> <span class="nav-text">XtraBackup热备份优势</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#全量备份和增量备份"><span class="nav-number">2.1.</span> <span class="nav-text">全量备份和增量备份</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">3.</span> <span class="nav-text">准备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建数据卷"><span class="nav-number">3.1.</span> <span class="nav-text">创建数据卷</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PXC全量备份步骤"><span class="nav-number">4.</span> <span class="nav-text">PXC全量备份步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#具体步骤"><span class="nav-number">4.1.</span> <span class="nav-text">具体步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PXC全量恢复步骤"><span class="nav-number">5.</span> <span class="nav-text">PXC全量恢复步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#具体步骤-1"><span class="nav-number">5.1.</span> <span class="nav-text">具体步骤</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据备份分类"><span class="nav-number">1.</span> <span class="nav-text">数据备份分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#冷备份"><span class="nav-number">1.0.1.</span> <span class="nav-text">冷备份</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#热备份"><span class="nav-number">1.0.2.</span> <span class="nav-text">热备份</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XtraBackup热备份优势"><span class="nav-number">2.</span> <span class="nav-text">XtraBackup热备份优势</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#全量备份和增量备份"><span class="nav-number">2.0.1.</span> <span class="nav-text">全量备份和增量备份</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">3.</span> <span class="nav-text">准备</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建数据卷"><span class="nav-number">3.0.1.</span> <span class="nav-text">创建数据卷</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PXC全量备份步骤"><span class="nav-number">4.</span> <span class="nav-text">PXC全量备份步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#具体步骤"><span class="nav-number">4.1.</span> <span class="nav-text">具体步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PXC全量恢复步骤"><span class="nav-number">5.</span> <span class="nav-text">PXC全量恢复步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#具体步骤-1"><span class="nav-number">5.1.</span> <span class="nav-text">具体步骤</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

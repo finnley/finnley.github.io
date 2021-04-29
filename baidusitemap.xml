@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://notes.xuepincat.com/2018/11/18/Docker-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/</loc>
+    <lastmod>2021-04-29</lastmod>
+  </url>
+  <url>
     <loc>https://notes.xuepincat.com/2018/09/24/Docker-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88/</loc>
     <lastmod>2021-04-28</lastmod>
   </url>
@@ -421,11 +425,11 @@
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2018/10/13/%E4%B8%8B%E5%8D%95%E4%B8%8E%E6%94%AF%E4%BB%98%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/</loc>
+    <loc>https://notes.xuepincat.com/2019/03/23/%E5%87%8F%E5%B0%91HTTP%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2019/03/23/%E5%87%8F%E5%B0%91HTTP%E8%AF%B7%E6%B1%82%E6%AC%A1%E6%95%B0/</loc>
+    <loc>https://notes.xuepincat.com/2018/10/13/%E4%B8%8B%E5%8D%95%E4%B8%8E%E6%94%AF%E4%BB%98%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
@@ -498,10 +502,6 @@
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2018/07/27/3-%E5%AE%89%E8%A3%85Kafka/</loc>
-    <lastmod>2020-05-23</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2018/11/18/Docker-7-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
@@ -657,11 +657,11 @@
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2018/07/26/CentOS%207%E5%AE%89%E8%A3%85Redis/</loc>
+    <loc>https://notes.xuepincat.com/2017/07/01/9-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%B8%80)/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2017/07/01/9-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%B8%80)/</loc>
+    <loc>https://notes.xuepincat.com/2018/07/26/CentOS%207%E5%AE%89%E8%A3%85Redis/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
