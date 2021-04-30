@@ -21,12 +21,12 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="单节点数据库的弊端 1.大型互联网程序用户群体庞大，所以架构必须要特殊设计，这也包括了数据库 2.单节点的数据库无法满足性能上的要求 3.单节点的数据库没有冗余设计，无法满足高可用  平时在开发过程中使用的数据库大多是单节点的数据库，谈不上高性能高可用。  比如有这样一个案例，大学考试之后，我们要到校园网查看考试成绩，学校一万多人同时到校园网查看考试成绩，我们会发现网页的加载速度非常慢，这个就是数">
+  <meta name="description" content="单节点数据库弊端 1.大型互联网程序用户群体庞大，所以架构必须要特殊设计，这也包括了数据库 2.单节点的数据库无法满足性能上的要求 3.单节点的数据库没有冗余设计，无法满足高可用  平时在开发过程中使用的数据库大多是单节点的数据库，谈不上高性能高可用。  比如有这样一个案例，大学考试之后，我们要到校园网查看考试成绩，学校一万多人同时到校园网查看考试成绩，我们会发现网页的加载速度非常慢，这个就是数据">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL集群介绍">
 <meta property="og:url" content="https://notes.xuepincat.com/2018/09/23/Docker-MySQL%E9%9B%86%E7%BE%A4%E4%BB%8B%E7%BB%8D/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="单节点数据库的弊端 1.大型互联网程序用户群体庞大，所以架构必须要特殊设计，这也包括了数据库 2.单节点的数据库无法满足性能上的要求 3.单节点的数据库没有冗余设计，无法满足高可用  平时在开发过程中使用的数据库大多是单节点的数据库，谈不上高性能高可用。  比如有这样一个案例，大学考试之后，我们要到校园网查看考试成绩，学校一万多人同时到校园网查看考试成绩，我们会发现网页的加载速度非常慢，这个就是数">
+<meta property="og:description" content="单节点数据库弊端 1.大型互联网程序用户群体庞大，所以架构必须要特殊设计，这也包括了数据库 2.单节点的数据库无法满足性能上的要求 3.单节点的数据库没有冗余设计，无法满足高可用  平时在开发过程中使用的数据库大多是单节点的数据库，谈不上高性能高可用。  比如有这样一个案例，大学考试之后，我们要到校园网查看考试成绩，学校一万多人同时到校园网查看考试成绩，我们会发现网页的加载速度非常慢，这个就是数据">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/27.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/28.png">
@@ -37,7 +37,7 @@
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/33.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/docker/224.png">
 <meta property="article:published_time" content="2018-09-23T01:08:34.000Z">
-<meta property="article:modified_time" content="2021-04-26T23:59:19.190Z">
+<meta property="article:modified_time" content="2021-04-30T00:17:34.166Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="MySQL">
 <meta property="article:tag" content="Linux">
@@ -256,7 +256,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-27 07:59:19" itemprop="dateModified" datetime="2021-04-27T07:59:19+08:00">2021-04-27</time>
+                <time title="Modified: 2021-04-30 08:17:34" itemprop="dateModified" datetime="2021-04-30T08:17:34+08:00">2021-04-30</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -279,31 +279,32 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="单节点数据库的弊端"><a href="#单节点数据库的弊端" class="headerlink" title="单节点数据库的弊端"></a>单节点数据库的弊端</h2><pre><code>1.大型互联网程序用户群体庞大，所以架构必须要特殊设计，这也包括了数据库
+        <h2 id="单节点数据库弊端"><a href="#单节点数据库弊端" class="headerlink" title="单节点数据库弊端"></a>单节点数据库弊端</h2><pre><code>1.大型互联网程序用户群体庞大，所以架构必须要特殊设计，这也包括了数据库
 2.单节点的数据库无法满足性能上的要求
 3.单节点的数据库没有冗余设计，无法满足高可用</code></pre><p>平时在开发过程中使用的数据库大多是单节点的数据库，谈不上高性能高可用。</p>
 <p>比如有这样一个案例，大学考试之后，我们要到校园网查看考试成绩，学校一万多人同时到校园网查看考试成绩，我们会发现网页的加载速度非常慢，这个就是数据库单节点无法应对高负载的一个案例。一个数据库实例一万人的并发访问它基本无法支撑下来。</p>
 <p>还有一个就是如果我们的数据库采用单节点部署的话，它没有任何的冗余设计，一旦数据库节点出现了宕机，那么所有的业务都不能进行开展了，这也体现不出来高可用。</p>
-<h2 id="常见的MySQL集群方案"><a href="#常见的MySQL集群方案" class="headerlink" title="常见的MySQL集群方案"></a>常见的MySQL集群方案</h2><h4 id="Replication-集群方案"><a href="#Replication-集群方案" class="headerlink" title="Replication 集群方案"></a>Replication 集群方案</h4><p><img src="/images/docker/27.png" alt=""></p>
-<p>第一种方案存储速度快，具有弱一致性，所谓弱一致性就是我在集群中A节点写入数据，Replication无法保证一定会把这条数据分发到集群的其他节点上，所以就可能出现我在A节点写入数据，我在B节点中查不到这个数据的情况。正因为弱一致性的特点我们不能在Replication集群中保存高价值的数据，所以它适合保存一些如日志数据，新闻数据和论坛帖子数据等。</p>
-<h4 id="PXC集群方案"><a href="#PXC集群方案" class="headerlink" title="PXC集群方案"></a>PXC集群方案</h4><p><img src="/images/docker/28.png" alt=""></p>
-<p>第二种叫 <code>PXC集群</code>，它的特点相对于Replication来说存储数据的速度较慢一些，但是它能保证同步数据的强一致性，我在集群的A节点里面写入数据，PXC方案一定会保证这条数据成功地同步到集群的其他节点上，所以它比较适合保存高价值的数据，比如订单数据，账户数据和财务数据等。</p>
-<h2 id="PXC原理"><a href="#PXC原理" class="headerlink" title="PXC原理"></a>PXC原理</h2><p>PXC（Percona XtrnDB Cluster）</p>
+<h2 id="常见MySQL集群方案"><a href="#常见MySQL集群方案" class="headerlink" title="常见MySQL集群方案"></a>常见MySQL集群方案</h2><h3 id="Replication-集群方案"><a href="#Replication-集群方案" class="headerlink" title="Replication 集群方案"></a>Replication 集群方案</h3><p><img src="/images/docker/27.png" alt=""></p>
+<p>这种方案存储速度快，具有弱一致性，所谓弱一致性就是我在集群中A节点写入数据，Replication无法保证一定会把这条数据分发到集群的其他节点上，所以就可能出现我在A节点写入数据，我在B节点中查不到这个数据的情况。正因为弱一致性的特点我们不能在Replication集群中保存高价值的数据，所以它适合保存一些如日志数据，新闻数据和论坛帖子数据等。</p>
+<h3 id="PXC集群方案"><a href="#PXC集群方案" class="headerlink" title="PXC集群方案"></a>PXC集群方案</h3><p><img src="/images/docker/28.png" alt=""></p>
+<p>这种方案叫 <code>PXC集群</code>，它的特点相对于Replication来说存储数据的速度较慢一些，但是它能保证同步数据的强一致性，我在集群的A节点里面写入数据，PXC方案一定会保证这条数据成功地同步到集群的其他节点上，所以它比较适合保存高价值的数据，比如订单数据，账户数据和财务数据等。</p>
+<h2 id="PXC原理"><a href="#PXC原理" class="headerlink" title="PXC原理"></a>PXC原理</h2><p>PXC（Percona XtraDB Cluster）</p>
 <p><img src="/images/docker/29.png" alt=""></p>
 <p>基于 <code>PXCGalera</code> 实现的MySQL集群，在PXC集群里面任何一个数据库节点都是可读可写的，我可以在第一个节点里面写入数据，其他的接点一定会成功的读取到这条数据，因为PXC集群有数据同步的强制性；</p>
 <p>另外在PXC进群里的数据库节点都是MySQL的，可以用官方的也可以是其他衍生版，这里推荐的是 <code>PerconaServer</code> 的，它是MySQL的改进版，性能有很大的提升。</p>
-<h2 id="PXC方案与Replication方案的对比"><a href="#PXC方案与Replication方案的对比" class="headerlink" title="PXC方案与Replication方案的对比"></a>PXC方案与Replication方案的对比</h2><h4 id="PXC方案"><a href="#PXC方案" class="headerlink" title="PXC方案"></a>PXC方案</h4><p><img src="/images/docker/30.png" alt=""></p>
+<h2 id="对比"><a href="#对比" class="headerlink" title="对比"></a>对比</h2><h3 id="PXC方案"><a href="#PXC方案" class="headerlink" title="PXC方案"></a>PXC方案</h3><p><img src="/images/docker/30.png" alt=""></p>
 <p>pxc的数据同步是双向的，它在任意一个节点里面写入数据，数据都会同步到其他节点里面，比如说我在第一个节点里面写入了数据，它会同步到第二个，第三个，第四个节点里面，如果我在第二个节点里面写入了数据，它会同步到第一个，第三个，第四个节点里面；</p>
-<p>pxc群数据同步是双向的,也就是说我在任何一个MySQL节点上我都是可以同时读写数据的， Replication方案数据同步时单向的，它无法做到任何节点可以同时读写。</p>
-<h4 id="Replication方案"><a href="#Replication方案" class="headerlink" title="Replication方案"></a>Replication方案</h4><p><img src="/images/docker/31.png" alt=""></p>
+<p>pxc群数据同步是双向的，也就是说我在任何一个MySQL节点上我都是可以同时读写数据的， Replication方案数据同步时单向的，它无法做到任何节点可以同时读写。</p>
+<h3 id="Replication方案"><a href="#Replication方案" class="headerlink" title="Replication方案"></a>Replication方案</h3><p><img src="/images/docker/31.png" alt=""></p>
 <p>负责写入数据的节点的角色叫做 <code>Master</code>, 我在第一个MySQL节点里面写入一条数据，因为同步是单向的，数据会同步到另外一个MySQL节点里面，这个MySQL的节点名字叫做 <code>Slave</code> 节点，那么我在 <code>Slave</code> 节点里面是可以读取到这条数据的，而因为数据同步是单向的，所以我们在 <code>Slave</code> 节点里面写入了数据，这个数据是不会同步到 <code>Master</code> 节点里面，在 <code>Master</code> 里面是读取不到这条数据的，也就是说Replication的集群的数据的单向同步导致了集群里面不是每一个节点都是可以同时读写的。</p>
 <h2 id="PXC的数据强一致性"><a href="#PXC的数据强一致性" class="headerlink" title="PXC的数据强一致性"></a>PXC的数据强一致性</h2><pre><code>同步复制，事务在所有集群节点要么同时提交，要么不提交；
 Replication采用异步复制，无法保证数据的一致性。</code></pre><p>pxc节点之间分发数据使用的是 <code>同步复制机制</code>，而Replication集群之间同步数据利用的是 <code>异步复制机制</code>，异步是无法保证数据的强一致性</p>
-<h4 id="PXC的同步复制机制"><a href="#PXC的同步复制机制" class="headerlink" title="PXC的同步复制机制"></a>PXC的同步复制机制</h4><p><img src="/images/docker/32.png" alt=""></p>
+<h3 id="PXC的同步复制机制"><a href="#PXC的同步复制机制" class="headerlink" title="PXC的同步复制机制"></a>PXC的同步复制机制</h3><p><img src="/images/docker/32.png" alt=""></p>
 <p><img src="/images/docker/33.png" alt=""></p>
-<p>如上图所示，我在第一个MySQL节点写入了数据，并不是我在这个节点写入了数据，客户端就知道写入成功了，因为同步机制要求必须在其他的节点里面也成功的写入数据才能算是一次写入的成功，所以我在第一个MySQL节点上写入数据还要通过同步机制把数据同步到其他节点上，并且在其他节点上成功提交事务，最终才算是写入成功，这个时候第一个MySQL节点才会把写入成功的结果告诉MySQL的客户端。</p>
-<p><img src="/images/docker/224.png" alt=""></p>
-<p>而Replication的异步的同步机制就不是上面说的那样了，比如说我在第一个MySQL节点写入数据，这时Master节点可以写入数据，写入数据时采用异步的同步，就是我不管同步成功不成功，我就直接返回给客户端写入成功的结果，如果这个同步因为一些原因失败了，第二个MySQL节点也就是Slave节点读不出来这个数据，但是客户端得到的结果是什么呢？我已经成功的写入了数据，但是写入的数据另一端又读不出来数据，这个问题就非常的严重，比如说我们在淘宝上买一样东西，我们下了订单也付款了，但是我们再次去查询我购买的记录的时候，发现没有这条购买的信息，那么我买了东西扣了钱然后有没有这个订单，这样的结果我们肯定不能接受，所以PXC数据的强一致性对保存高价值的数据非常重要。</p>
+<p>如上图所示，我在第一个MySQL节点写入了数据，并不是我在这个节点写入了数据客户端就知道写入成功了，因为同步机制要求必须在其他的节点里面也成功的写入数据才能算是一次写入的成功，所以我在第一个MySQL节点上写入数据还要通过同步机制把数据同步到其他节点上，并且在其他节点上成功提交事务，最终才算是写入成功，这个时候第一个MySQL节点才会把写入成功的结果告诉MySQL的客户端。</p>
+<h3 id="Replication的异步复制机制"><a href="#Replication的异步复制机制" class="headerlink" title="Replication的异步复制机制"></a>Replication的异步复制机制</h3><p><img src="/images/docker/224.png" alt=""></p>
+<p>Replication的异步的同步机制就不是上面说的那样了，比如说我在第一个MySQL节点写入数据，这时Master节点可以写入数据，写入数据时采用异步的同步，就是我不管同步成功不成功，我就直接返回给客户端写入成功的结果，如果这个同步因为一些原因失败了，第二个MySQL节点也就是Slave节点读不出来这个数据。</p>
+<p>对于这种情况客户端得到的结果是什么呢？我已经成功的写入了数据，但是写入的数据另一端又读不出来数据，这个问题就非常的严重，比如说我们在淘宝上买一样东西，我们下了订单也付款了，但是我们再次去查询我购买的记录的时候，发现没有这条购买的信息，那么我买了东西扣了钱然后有没有这个订单，这样的结果我们肯定不能接受，所以PXC数据的强一致性对保存高价值的数据非常重要。</p>
 
     </div>
 
@@ -418,7 +419,7 @@ Replication采用异步复制，无法保证数据的一致性。</code></pre><p
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单节点数据库的弊端"><span class="nav-number">1.</span> <span class="nav-text">单节点数据库的弊端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的MySQL集群方案"><span class="nav-number">2.</span> <span class="nav-text">常见的MySQL集群方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Replication-集群方案"><span class="nav-number">2.0.1.</span> <span class="nav-text">Replication 集群方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PXC集群方案"><span class="nav-number">2.0.2.</span> <span class="nav-text">PXC集群方案</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PXC原理"><span class="nav-number">3.</span> <span class="nav-text">PXC原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PXC方案与Replication方案的对比"><span class="nav-number">4.</span> <span class="nav-text">PXC方案与Replication方案的对比</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PXC方案"><span class="nav-number">4.0.1.</span> <span class="nav-text">PXC方案</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Replication方案"><span class="nav-number">4.0.2.</span> <span class="nav-text">Replication方案</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PXC的数据强一致性"><span class="nav-number">5.</span> <span class="nav-text">PXC的数据强一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PXC的同步复制机制"><span class="nav-number">5.0.1.</span> <span class="nav-text">PXC的同步复制机制</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#单节点数据库弊端"><span class="nav-number">1.</span> <span class="nav-text">单节点数据库弊端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见MySQL集群方案"><span class="nav-number">2.</span> <span class="nav-text">常见MySQL集群方案</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Replication-集群方案"><span class="nav-number">2.1.</span> <span class="nav-text">Replication 集群方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PXC集群方案"><span class="nav-number">2.2.</span> <span class="nav-text">PXC集群方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PXC原理"><span class="nav-number">3.</span> <span class="nav-text">PXC原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对比"><span class="nav-number">4.</span> <span class="nav-text">对比</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PXC方案"><span class="nav-number">4.1.</span> <span class="nav-text">PXC方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Replication方案"><span class="nav-number">4.2.</span> <span class="nav-text">Replication方案</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PXC的数据强一致性"><span class="nav-number">5.</span> <span class="nav-text">PXC的数据强一致性</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PXC的同步复制机制"><span class="nav-number">5.1.</span> <span class="nav-text">PXC的同步复制机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Replication的异步复制机制"><span class="nav-number">5.2.</span> <span class="nav-text">Replication的异步复制机制</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
