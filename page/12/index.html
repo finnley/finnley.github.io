@@ -1047,7 +1047,7 @@ tar -zxvf v
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-04-29 07:14:05" itemprop="dateModified" datetime="2021-04-29T07:14:05+08:00">2021-04-29</time>
+                <time title="Modified: 2021-05-01 21:17:12" itemprop="dateModified" datetime="2021-05-01T21:17:12+08:00">2021-05-01</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1077,11 +1077,9 @@ tar -zxvf v
 
 
 
-在PXC集群中，使用Haproxy做 负载均衡，应用程序 发过来的请求由Haproxy请求转发给具体的数据库实例，确实可以降低每一个数据库实例的负载，这是正常情况下是没有问题。
+在PXC集群中，使用Haproxy做负载均衡，应用程序发过来的请求由Haproxy请求转发给具体的数据库实例，确实可以降低每一个数据库实例的负载，正常情况下这是没有问题。
 
-但是一旦Haproxy出现了故障，应用程序就无法把数据的请求发送到Haproxy上了，那数据库的负载均衡也就失效了
-
-所以Haproxy不能成为我们的瓶颈，Haproxy一
+但是一旦Haproxy出现了故障，应用程序就无法把数据的请求发送到Haproxy上了，那数据库的负载均衡也就失效了。所以Haproxy不能成为我们的瓶颈，Haproxy一定要设计
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2018/09/24/Docker-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E9%AB%98%E5%8F%AF%E7%94%A8%E6%96%B9%E6%A1%88/#more" rel="contents">
