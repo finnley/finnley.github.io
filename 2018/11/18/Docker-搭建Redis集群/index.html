@@ -21,20 +21,28 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="安装Redis镜像  1. 创建net2网络并改名  1 2   docker pull yyyyttttwwww&#x2F;redis docker tag docker.io&#x2F;yyyyttttwwww&#x2F;redis redis    2. 创建net2网络  1   docker network create --subnet&#x3D;172.19.0.0&#x2F;16 net2    3. 创建Redis容器  1">
+  <meta name="description" content="高速缓存介绍  * 高速缓存利用内存保存数据，读写速度远超硬盘  * 高速缓存可以减少I&#x2F;O操作，降低I&#x2F;O压力  比如在微信里发红包，一群人抢红包，发红包抢红包就用到了告诉缓存，如果不使用告诉缓存，发红包这条记录就要写入到数据库中，其他人去抢红包的时候发起抢红包的请求，服务器就要去读取数据库的这条红包记录，然后大家一起瓜分红包的金额，试想象下，春节期间几亿人发红包几亿人抢红包，就会对数据库压力非">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker-9-配置RedisCluster集群">
-<meta property="og:url" content="https://notes.xuepincat.com/2018/11/19/Docker-9-%E9%85%8D%E7%BD%AERedisCluster%E9%9B%86%E7%BE%A4/index.html">
+<meta property="og:title" content="搭建Redis集群">
+<meta property="og:url" content="https://notes.xuepincat.com/2018/11/18/Docker-%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="安装Redis镜像  1. 创建net2网络并改名  1 2   docker pull yyyyttttwwww&#x2F;redis docker tag docker.io&#x2F;yyyyttttwwww&#x2F;redis redis    2. 创建net2网络  1   docker network create --subnet&#x3D;172.19.0.0&#x2F;16 net2    3. 创建Redis容器  1">
+<meta property="og:description" content="高速缓存介绍  * 高速缓存利用内存保存数据，读写速度远超硬盘  * 高速缓存可以减少I&#x2F;O操作，降低I&#x2F;O压力  比如在微信里发红包，一群人抢红包，发红包抢红包就用到了告诉缓存，如果不使用告诉缓存，发红包这条记录就要写入到数据库中，其他人去抢红包的时候发起抢红包的请求，服务器就要去读取数据库的这条红包记录，然后大家一起瓜分红包的金额，试想象下，春节期间几亿人发红包几亿人抢红包，就会对数据库压力非">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2018-11-19T11:32:08.000Z">
-<meta property="article:modified_time" content="2020-05-23T23:14:19.266Z">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/112.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/227.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/228.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/229.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/230.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/231.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/docker/232.png">
+<meta property="article:published_time" content="2018-11-18T11:04:13.000Z">
+<meta property="article:modified_time" content="2021-05-02T10:32:38.459Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Linux - CentOS - Docker">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/docker/112.png">
 
-<link rel="canonical" href="https://notes.xuepincat.com/2018/11/19/Docker-9-%E9%85%8D%E7%BD%AERedisCluster%E9%9B%86%E7%BE%A4/">
+<link rel="canonical" href="https://notes.xuepincat.com/2018/11/18/Docker-%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/">
 
 
 <script id="page-configurations">
@@ -47,7 +55,7 @@
   };
 </script>
 
-  <title>Docker-9-配置RedisCluster集群 | Finnley's Notes</title>
+  <title>搭建Redis集群 | Finnley's Notes</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
     <script>
@@ -215,7 +223,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/11/19/Docker-9-%E9%85%8D%E7%BD%AERedisCluster%E9%9B%86%E7%BE%A4/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/11/18/Docker-%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -228,7 +236,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Docker-9-配置RedisCluster集群
+          搭建Redis集群
         </h1>
 
         <div class="post-meta">
@@ -238,14 +246,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2018-11-19 19:32:08" itemprop="dateCreated datePublished" datetime="2018-11-19T19:32:08+08:00">2018-11-19</time>
+              <time title="Created: 2018-11-18 19:04:13" itemprop="dateCreated datePublished" datetime="2018-11-18T19:04:13+08:00">2018-11-18</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+                <time title="Modified: 2021-05-02 18:32:38" itemprop="dateModified" datetime="2021-05-02T18:32:38+08:00">2021-05-02</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -268,43 +276,104 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="安装Redis镜像"><a href="#安装Redis镜像" class="headerlink" title="安装Redis镜像"></a>安装Redis镜像</h2><ol>
-<li>创建net2网络并改名</li>
+        <h2 id="高速缓存介绍"><a href="#高速缓存介绍" class="headerlink" title="高速缓存介绍"></a>高速缓存介绍</h2><ul>
+<li>高速缓存利用内存保存数据，读写速度远超硬盘</li>
+<li>高速缓存可以减少I/O操作，降低I/O压力</li>
+</ul>
+<p>比如在微信里发红包，一群人抢红包，发红包抢红包就用到了告诉缓存，如果不使用告诉缓存，发红包这条记录就要写入到数据库中，其他人去抢红包的时候发起抢红包的请求，服务器就要去读取数据库的这条红包记录，然后大家一起瓜分红包的金额，试想象下，春节期间几亿人发红包几亿人抢红包，就会对数据库压力非常大，如果真把发红包抢红包的记录写到数据库中，给用户的体验就不太好。如果使用高速缓存，发的红包保存到高速缓存中，其他人在抢红包的时候发起请求，服务器只需要到高速缓存里读写数据就可以了，不需要走数据库，减少了很多的I/O操作。</p>
+<p>再比如打开手机淘宝APP,有些数据就是从缓存里面加载的，有些数据是从数据库中加载的，比如有些促销秒杀的热门商品，就可以将它们保存到高速缓存中，在加载的时候速度还是比较快的，另外淘宝还有基于大数据的内容推荐商品，这些商品并不是共性的商品，只是我们个人喜欢的商品，这些商品就可以从数据库中读取，所以淘宝首页的展示信息一部分是从告诉缓存中读取的，有一部分是从数据库中读取的。当然高速缓存不一定是 Redis,也可以是其他的产品。</p>
+<h2 id="Redis介绍"><a href="#Redis介绍" class="headerlink" title="Redis介绍"></a>Redis介绍</h2><ul>
+<li>Redis是Vmware开发的开源免费KV型NoSQL缓存产品</li>
+<li>Redis具有很好的性能，最多可以提供10万次/秒的读写</li>
+<li>目前新浪微博团队组建了世界上最大规模的Redis集群</li>
+</ul>
+<h2 id="Redis集群介绍"><a href="#Redis集群介绍" class="headerlink" title="Redis集群介绍"></a>Redis集群介绍</h2><p>Redis目前的集群方案分为以下几种：</p>
+<ol>
+<li>RedisCluster: 官方推荐，没有中心节点</li>
 </ol>
+<blockquote>
+<p>什么叫没有中心节点？</p>
+</blockquote>
+<p>之前使用的pxc集群，pxc集群就没有中心节点，比如数据库集群里面有一部分节点挂掉了，那么剩余的节点如果超过半数，就要选出一个主节点，其他节点和这个主节点进行同步数据，注意这个主节点不是中心节点，这个主节点只是说保存的数据是最新的并且保存的数据最多，集群中剩余的节点就跟主节点同步数据，同步数据之后主节点就自动消失了，集群中就没有主节点了，所以主节点不是中心节点，这个RedisCluster类似。</p>
+<ol start="2">
+<li>Codis: 中间件产品，存在中心节点</li>
+</ol>
+<p>Codis是360公司推出的Redis集群方案，它是存在中心节点的，中心节点一旦挂掉之后，整个Redis集群就不能用了</p>
+<ol start="3">
+<li>Twemproxy: 中间件产品，存在中心节点</li>
+</ol>
+<p>也是中心节点一旦挂掉之后，整个Redis集群就不能用了</p>
+<h2 id="RedisCluster"><a href="#RedisCluster" class="headerlink" title="RedisCluster"></a>RedisCluster</h2><ul>
+<li><p>无中心节点，客户端与Redis集群中任何节点直连，不需要中间代理层， Redis集群中每个节点都是可读可写的</p>
+</li>
+<li><p>数据可以被分片存储</p>
+</li>
+</ul>
+<p>RedisCluster存储数据是分片存储的，就是每一个节点存储的数据都是不一样的，假设现在Redis集群有三个节点A，B，C，现在我存储很多数据到集群中，A，B，C三个节点存储的数据都是不一样的，也就是要存储的数据要被切分存储到不同的Redis节点上面，如果这种情况下ABC任何一个节点挂掉，是不是就损失了一部分数据呢，对，确实是这样子的。</p>
+<p>为了避免这种情况，就需要为ABC三个节点分别设置冗余节点，就是备份，A节点挂掉之后有冗余节点可以使用，所以不会出现A节点挂掉之后数据就没有了，冗余节点可以继续的提供A节点的服务，此时数据还在。</p>
+<ul>
+<li>Redis集群管理方便，后续可自行增加或摘除已存在节点</li>
+</ul>
+<h3 id="RedisCluster-示意图"><a href="#RedisCluster-示意图" class="headerlink" title="RedisCluster 示意图"></a>RedisCluster 示意图</h3><p><img src="/images/docker/112.png" alt=""></p>
+<p>上图中使用了三节点Redis构成了一个Redis集群，但是为了避免某一个节点出现故障数据丢失，又为三个节点配置了冗余节点，所以算下来整个RedisCluster用到了6个节点的Redis,我们正常执行业务操作的Redis节点叫做Master节点，也叫做主节点，与Master节点进行数据同步的节点叫做Slave节点，也叫做从节点。</p>
+<h2 id="主从同步"><a href="#主从同步" class="headerlink" title="主从同步"></a>主从同步</h2><ul>
+<li><p>Redis集群中的数据库复制是通过主从同步来实现的</p>
+</li>
+<li><p>主节点（Master）把数据分发给从节点（Slave）</p>
+</li>
+</ul>
+<p><img src="/images/docker/227.png" alt=""></p>
+<p>Redis 集群数据采用的是切分存储，也就是集群中每一个Redis节点存储的数据都不相同，一旦Redis节点挂掉，那么它存储的数据也就丢失了，为了避免这种情况就需要引入冗余节点，Master和Slave节点之间的数据是实时同步的。当Master节点挂掉之后，可以使用Slave节点继续开展业务，这就是主从同步的好处。</p>
+<h2 id="Redis集群高可用"><a href="#Redis集群高可用" class="headerlink" title="Redis集群高可用"></a>Redis集群高可用</h2><ul>
+<li>Redis集群中应该包含奇数个Master，至少应该有3个Master</li>
+</ul>
+<p>因为Redis集群和PXC集群都有选举机制，当集群中的大部分节点挂掉了，也就是说超过一半节点挂掉，剩余的节点是无法进行选举然后组成新的集群的。如果采用两个Master节点去构建一个集群，如果一个Master挂掉，那么剩余的节点数量没有出超过一半，那么Redis集群就不可用了，如果三个节点的Master，挂掉一个还剩两个，还可以进行选举，还可以组成一个新的集群。</p>
+<ul>
+<li>Redis集群中每个Master都应该有Slave</li>
+</ul>
+<p>如果客户端连接到第一个Master,并向第一个Master写入数据，数据应该切分到哪个Master节点上，如果就是存储到第一个Master节点上就进行保存，保存后就会到对应的Slave节点。如果经过计算发现数据不应该存储到当前的Master(第一个)，那么这个Master就会把数据发送到对应的Master存储，然后经过复制对应的Slave也会同步数据，所以在Redis集群里面通过客户端连接任意任何Master节点都可以读写数据，不管数据应该保存到这个Master上还是其他的Master上，正常向这个Master写入数据就可以了。</p>
+<h2 id="配置RedisCluster集群"><a href="#配置RedisCluster集群" class="headerlink" title="配置RedisCluster集群"></a>配置RedisCluster集群</h2><ul>
+<li>安装Redis镜像</li>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker pull yyyyttttwwww&#x2F;redis</span><br><span class="line">docker tag docker.io&#x2F;yyyyttttwwww&#x2F;redis redis</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
+<ul>
 <li>创建net2网络</li>
-</ol>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network create --subnet&#x3D;172.19.0.0&#x2F;16 net2</span><br></pre></td></tr></table></figure>
 
-<ol start="3">
+<ul>
 <li>创建Redis容器</li>
-</ol>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name r1 -p 5001:6379 --net&#x3D;net2 --ip 172.19.0.2 redis bash</span><br></pre></td></tr></table></figure>
 
-<ol start="4">
+<p>这里并不是容器启动了，redis就启动，还要进入容器进行设置才能启动redis</p>
+<ul>
 <li>进入容器</li>
-</ol>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it r1 bash</span><br></pre></td></tr></table></figure>
 
-<h2 id="配置Redis节点"><a href="#配置Redis节点" class="headerlink" title="配置Redis节点"></a>配置Redis节点</h2><p>进入容器后需要修改Redis配置文件，修改Redis配置文件后Redis才可以启动，因为Redis默认是关闭了RedisCluster集群功能</p>
+<ul>
+<li>配置Redis节点</li>
+</ul>
+<p>进入容器后需要修改Redis配置文件，修改Redis配置文件后Redis才可以启动，因为Redis默认是关闭了RedisCluster集群功能，然后启动redis才能加入到集群里</p>
 <p>配置文件所在路径 <code>/usr/redis/redis.conf</code></p>
-<h3 id="参数介绍"><a href="#参数介绍" class="headerlink" title="参数介绍"></a>参数介绍</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">daemonize yes                   #以后台进程运行</span><br><span class="line">cluster-enabled yes             #开启集群</span><br><span class="line">cluster-config-file nodes.conf  #集群配置文件,一旦搭建起RedisCluster集群，集群里的一些节点信息保存在什么文件里面，文件名随便取，这里取的nodes.conf</span><br><span class="line">cluster-node-timeout 15000      #超时时间 集群内部节点和节点连接超时时间</span><br><span class="line">appendonly yes                  #开启AOF模式 Redis开启日志功能 一旦宕机可以通过AOF日志恢复Redis数据</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">daemonize yes                   #以后台进程运行</span><br><span class="line">cluster-enabled yes             #开启集群</span><br><span class="line">cluster-config-file nodes.conf  #集群配置文件,一旦搭建起RedisCluster集群，集群里的一些节点信息保存在什么文件里面，文件名随便取，这里取的nodes.conf</span><br><span class="line">cluster-node-timeout 15000      #超时时间 集群内部节点和节点连接超时时间</span><br><span class="line">appendonly yes                  #开启AOF模式 Redis开启日志功能 一旦宕机可以通过AOF日志恢复Redis数据</span><br></pre></td></tr></table></figure>
 
-<h3 id="配置步骤"><a href="#配置步骤" class="headerlink" title="配置步骤"></a>配置步骤</h3><ol>
+<ul>
 <li>打开配置文件</li>
-</ol>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;usr&#x2F;redis&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
+<ul>
 <li><p>找到上面的配置项并修改保存退出</p>
 </li>
 <li><p>启动Redis,首先进入Redis所在目录</p>
 </li>
-</ol>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;src</span><br><span class="line">.&#x2F;redis-server ..&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
 
+<p>到这里第一个redis节点就已经启动成功</p>
 <h2 id="创建r2节点"><a href="#创建r2节点" class="headerlink" title="创建r2节点"></a>创建r2节点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name r2 -p 5002:6379 --net&#x3D;net2 --ip 172.19.0.3 redis bash</span><br><span class="line">#进入r2节点</span><br><span class="line">docker exec -it r2 bash</span><br><span class="line">#配置</span><br><span class="line">vi &#x2F;usr&#x2F;redis&#x2F;redis.conf</span><br><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;src</span><br><span class="line">.&#x2F;redis-server ..&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
 
 <h2 id="创建r3节点"><a href="#创建r3节点" class="headerlink" title="创建r3节点"></a>创建r3节点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name r3 -p 5003:6379 --net&#x3D;net2 --ip 172.19.0.4 redis bash</span><br><span class="line">#进入r3节点</span><br><span class="line">docker exec -it r3 bash</span><br><span class="line">#配置</span><br><span class="line">vi &#x2F;usr&#x2F;redis&#x2F;redis.conf</span><br><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;src</span><br><span class="line">.&#x2F;redis-server ..&#x2F;redis.conf</span><br></pre></td></tr></table></figure>
@@ -317,42 +386,57 @@
 
 <h2 id="安装redis-trib-rb"><a href="#安装redis-trib-rb" class="headerlink" title="安装redis-trib.rb"></a>安装redis-trib.rb</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cp &#x2F;usr&#x2F;redis&#x2F;src&#x2F;redis-trib.rb &#x2F;usr&#x2F;redis&#x2F;cluster&#x2F;</span><br><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;cluster</span><br><span class="line">apt-get install ruby</span><br><span class="line">apt-get install rubygems</span><br><span class="line">gem install redis</span><br></pre></td></tr></table></figure>
 
-<h2 id="创建Redis集群"><a href="#创建Redis集群" class="headerlink" title="创建Redis集群"></a>创建Redis集群</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;redis-trib.rb create --replicas 1 172.19.0.2:6379 172.19.0.3:6379 172.10.0.4:6379 172.19.0.5:6379 172.19.0.6:6379 172.19.0.7:6379</span><br></pre></td></tr></table></figure>
+<h2 id="创建Redis集群"><a href="#创建Redis集群" class="headerlink" title="创建Redis集群"></a>创建Redis集群</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it r1 bash</span><br><span class="line">cd &#x2F;usr&#x2F;redis</span><br><span class="line">mkdir cluster &amp;&amp; cd cluster</span><br><span class="line">cp src&#x2F;redis-trib.rb .&#x2F;cluster&#x2F;</span><br><span class="line">cd cluster</span><br><span class="line">.&#x2F;redis-trib.rb create --replicas 1 172.19.0.2:6379 172.19.0.3:6379 172.19.0.4:6379 172.19.0.5:6379 172.19.0.6:6379 172.19.0.7:6379</span><br></pre></td></tr></table></figure>
 
 <p>–replicas 1参数表示为每个主节点创建一个从节点</p>
-<h2 id="具体步骤"><a href="#具体步骤" class="headerlink" title="具体步骤"></a>具体步骤</h2><ol>
+<p><img src="/images/docker/228.png" alt=""></p>
+<p>到这里redis集群已经成功创建出来了，下面通过客户端去连接集群，有6个redis节点，它们都含有redis客户端，所以可以任意访问一个redis节点，下面访问的r1节点</p>
+<h2 id="连接集群"><a href="#连接集群" class="headerlink" title="连接集群"></a>连接集群</h2><ul>
 <li>进入r1容器</li>
-</ol>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it r1 bash</span><br></pre></td></tr></table></figure>
 
-<ol start="2">
-<li>进入Redis所在目录</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;redis&#x2F;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>连接</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;redis&#x2F;src&#x2F;redis-cli -c</span><br></pre></td></tr></table></figure>
 
-<ol start="3">
-<li>创建cluster空目录</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir cluster</span><br></pre></td></tr></table></figure>
+<p>-c 表示连接redis-cluster</p>
+<ul>
+<li>测试</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set a 10</span><br><span class="line">get a</span><br></pre></td></tr></table></figure>
 
-<ol start="4">
-<li>将redis-trib工具拷贝到空目录中</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd src&#x2F;</span><br><span class="line">cp redis-trib.rb ..&#x2F;cluster&#x2F;</span><br></pre></td></tr></table></figure>
+<p><img src="/images/docker/229.png" alt=""></p>
+<p>经过redis计算，这个数据存入到了 <code>172.19.0.4</code> 这个节点上</p>
+<p>这个redis集群是由6个节点组成，3个Master，3个Slave，经过计算这个 <code>172.19.0.4</code> 应该是第三个 Master,因为当前的节点是 <code>172.19.0.2</code></p>
+<ul>
+<li>挂掉 <code>172.19.0.4</code> Master节点，由Slave节点接替Master</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pause r3</span><br></pre></td></tr></table></figure>
 
-<ol start="5">
-<li>进入cluster创建集群</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ..&#x2F;cluster</span><br><span class="line">.&#x2F;redis-trib.rb create --replicas 1 172.19.0.2:6379 172.19.0.3:6379 172.10.0.4:6379 172.19.0.5:6379 172.19.0.6:6379 172.19.0.7:6379</span><br></pre></td></tr></table></figure>
+<ul>
+<li>退出刚才的客户端，因为连接的r3的节点，所以需要先退出，然后再通过客户端连接redis集群</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br><span class="line">&#x2F;usr&#x2F;redis&#x2F;src&#x2F;redis-cli -c</span><br></pre></td></tr></table></figure>
 
-<p>在创建过程中提示下面错误</p>
-<div align=center>
-![](http://images.ornnth.com/images/docker/113.png)
-</div>
+<p><img src="/images/docker/230.png" alt=""></p>
+<p>会看到这个节点 <code>172.19.0.4</code> 已经挂掉了，但是没有关系，这个节点之前是Master,现在还有 Slave 节点可以使用，这个 slave 节点是 <code>172.19.0.7</code>，之前是 Slave，现在已经升级成 Master 节点了</p>
+<ul>
+<li>读取数据测试</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">get a</span><br></pre></td></tr></table></figure>
 
-<p>解决方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">核对一下Redis的配置文件，应该把bind设置为0.0.0.0</span><br></pre></td></tr></table></figure>
+<p><img src="/images/docker/231.png" alt=""></p>
+<p>成功读取。</p>
+<ul>
+<li>将 r3 节点恢复</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker unpause r3</span><br></pre></td></tr></table></figure>
 
+<p>重新退出然后连接redis，执行 <code>cluster nodes</code></p>
+<p><img src="/images/docker/232.png" alt=""></p>
+<p>会看到 <code>172.19.0.4</code> 这个节点被降级到 salve 了</p>
 
     </div>
 
@@ -400,8 +484,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2018/11/18/Docker-8-Redis%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98%E4%BB%8B%E7%BB%8D/" rel="prev" title="8-Redis高速缓存介绍">
-      <i class="fa fa-chevron-left"></i> 8-Redis高速缓存介绍
+    <a href="/2018/11/18/Docker-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/" rel="prev" title="热备份数据">
+      <i class="fa fa-chevron-left"></i> 热备份数据
     </a></div>
       <div class="post-nav-item">
     <a href="/2018/12/16/Vagrant%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" rel="next" title="Vagrant常用命令">
@@ -465,7 +549,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Redis镜像"><span class="nav-number">1.</span> <span class="nav-text">安装Redis镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Redis节点"><span class="nav-number">2.</span> <span class="nav-text">配置Redis节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数介绍"><span class="nav-number">2.1.</span> <span class="nav-text">参数介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置步骤"><span class="nav-number">2.2.</span> <span class="nav-text">配置步骤</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r2节点"><span class="nav-number">3.</span> <span class="nav-text">创建r2节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r3节点"><span class="nav-number">4.</span> <span class="nav-text">创建r3节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r4节点"><span class="nav-number">5.</span> <span class="nav-text">创建r4节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r5节点"><span class="nav-number">6.</span> <span class="nav-text">创建r5节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r6节点"><span class="nav-number">7.</span> <span class="nav-text">创建r6节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装redis-trib-rb"><span class="nav-number">8.</span> <span class="nav-text">安装redis-trib.rb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Redis集群"><span class="nav-number">9.</span> <span class="nav-text">创建Redis集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体步骤"><span class="nav-number">10.</span> <span class="nav-text">具体步骤</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#高速缓存介绍"><span class="nav-number">1.</span> <span class="nav-text">高速缓存介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis介绍"><span class="nav-number">2.</span> <span class="nav-text">Redis介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis集群介绍"><span class="nav-number">3.</span> <span class="nav-text">Redis集群介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RedisCluster"><span class="nav-number">4.</span> <span class="nav-text">RedisCluster</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RedisCluster-示意图"><span class="nav-number">4.1.</span> <span class="nav-text">RedisCluster 示意图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主从同步"><span class="nav-number">5.</span> <span class="nav-text">主从同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis集群高可用"><span class="nav-number">6.</span> <span class="nav-text">Redis集群高可用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置RedisCluster集群"><span class="nav-number">7.</span> <span class="nav-text">配置RedisCluster集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r2节点"><span class="nav-number">8.</span> <span class="nav-text">创建r2节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r3节点"><span class="nav-number">9.</span> <span class="nav-text">创建r3节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r4节点"><span class="nav-number">10.</span> <span class="nav-text">创建r4节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r5节点"><span class="nav-number">11.</span> <span class="nav-text">创建r5节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建r6节点"><span class="nav-number">12.</span> <span class="nav-text">创建r6节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装redis-trib-rb"><span class="nav-number">13.</span> <span class="nav-text">安装redis-trib.rb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Redis集群"><span class="nav-number">14.</span> <span class="nav-text">创建Redis集群</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接集群"><span class="nav-number">15.</span> <span class="nav-text">连接集群</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

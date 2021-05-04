@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://notes.xuepincat.com/2021/05/04/Docker-%E6%9E%84%E5%BB%BARedis%E9%95%9C%E5%83%8F/</loc>
+    <lastmod>2021-05-04</lastmod>
+  </url>
+  <url>
+    <loc>https://notes.xuepincat.com/2018/11/18/Docker-%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/</loc>
+    <lastmod>2021-05-02</lastmod>
+  </url>
+  <url>
     <loc>https://notes.xuepincat.com/2018/11/18/Docker-%E7%83%AD%E5%A4%87%E4%BB%BD%E6%95%B0%E6%8D%AE/</loc>
     <lastmod>2021-05-01</lastmod>
   </url>
@@ -717,10 +725,6 @@
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2018/11/18/Docker-8-Redis%E9%AB%98%E9%80%9F%E7%BC%93%E5%AD%98%E4%BB%8B%E7%BB%8D/</loc>
-    <lastmod>2020-05-23</lastmod>
-  </url>
-  <url>
     <loc>https://notes.xuepincat.com/2020/05/18/1-Elasticsearch%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
@@ -734,10 +738,6 @@
   </url>
   <url>
     <loc>https://notes.xuepincat.com/2018/07/26/VMware%E7%8E%AF%E5%A2%83%E4%B8%8BCentOS-7%E8%AE%BE%E7%BD%AE%E9%9D%99%E6%80%81IP/</loc>
-    <lastmod>2020-05-23</lastmod>
-  </url>
-  <url>
-    <loc>https://notes.xuepincat.com/2018/11/19/Docker-9-%E9%85%8D%E7%BD%AERedisCluster%E9%9B%86%E7%BE%A4/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
 </urlset> 

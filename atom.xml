@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2021-02-18T14:21:18.258Z</updated>
+  <updated>2021-05-04T07:46:29.712Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,42 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>构建Redis镜像</title>
+    <link href="https://notes.xuepincat.com/2021/05/04/Docker-%E6%9E%84%E5%BB%BARedis%E9%95%9C%E5%83%8F/"/>
+    <id>https://notes.xuepincat.com/2021/05/04/Docker-%E6%9E%84%E5%BB%BARedis%E9%95%9C%E5%83%8F/</id>
+    <published>2021-05-04T07:38:18.000Z</published>
+    <updated>2021-05-04T07:46:29.712Z</updated>
+    
+    <summary type="html">
+    
+      redis.conf
+到这个网站下下载对应版本的 redis.conf 文件
+
+https://raw.githubusercontent.com/antirez/redis/6.2/redis.conf
+
+修改配置文件
+1
+2
+3
+4
+5
+
+
+daemonize yes                   #以后台进程运行
+cluster-enabled yes             #开启集群
+cluster-config-file nodes.conf  #集群配置文件,一旦搭建起RedisCluster集群，集群里的一些节点信息保存在什么文件里面，文件名随便取，这里取的nodes.c
+    
+    </summary>
+    
+    
+      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
+    
+    
+      <category term="Linux - CentOS - Docker" scheme="https://notes.xuepincat.com/tags/Linux-CentOS-Docker/"/>
+    
+  </entry>
   
   <entry>
     <title>常见知识点汇总</title>
@@ -843,35 +879,6 @@ RabbitMQ
     
     
       <category term="Network" scheme="https://notes.xuepincat.com/tags/Network/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Microservice-微服务入门</title>
-    <link href="https://notes.xuepincat.com/2020/10/04/Microservices-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/"/>
-    <id>https://notes.xuepincat.com/2020/10/04/Microservices-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/</id>
-    <published>2020-10-04T15:12:28.000Z</published>
-    <updated>2021-03-05T23:49:53.459Z</updated>
-    
-    <summary type="html">
-    
-      单体应用
-在 微服务 出现之前，接触最多的就是 单体应用
-
-单体应用的开发部署
-通常本地开发单体应用，比如开发了一个 web 应用，通过 run server 启动，运行起来之后会有一个接口，比如默认 8000 的端口；
-
-本地开发会通过浏览器进行访问，如果它想去访问上面开发的 web 系统，浏览器访问 8000 端口，然后应用会为我们提供服务。
-
-现在开发完打算部署上传到服务器，这个服务器比如说是 Linux，现在想将这个 web 应用运行在服务器上，首先第一步就是上传代码。上传完后运行系统，比如服务器提供了 8001 的 TCP 端口，此时浏览器如果想要访问是不能直接访问 8001 端口的
-    
-    </summary>
-    
-    
-      <category term="Microservices" scheme="https://notes.xuepincat.com/categories/Microservices/"/>
-    
-    
-      <category term="Microservices" scheme="https://notes.xuepincat.com/tags/Microservices/"/>
     
   </entry>
   
