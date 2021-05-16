@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://images.notes.xuepincat.com/yapi/4.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/yapi/5.png">
 <meta property="article:published_time" content="2021-01-02T05:10:11.000Z">
-<meta property="article:modified_time" content="2021-03-06T07:56:41.584Z">
+<meta property="article:modified_time" content="2021-05-15T16:45:42.229Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
@@ -252,7 +252,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-06 15:56:41" itemprop="dateModified" datetime="2021-03-06T15:56:41+08:00">2021-03-06</time>
+                <time title="Modified: 2021-05-16 00:45:42" itemprop="dateModified" datetime="2021-05-16T00:45:42+08:00">2021-05-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -601,9 +601,9 @@
 <ol start="4">
 <li><code>exit</code> 可以退出容器，第一次输入 <code>exit</code> 是退出 <code>MySQL</code>,第二次输入 <code>exit</code> 是退出容器，然后使用 <code>Navicat</code> 连接 MySQL</li>
 </ol>
-<h1 id="python-安装"><a href="#python-安装" class="headerlink" title="python 安装"></a>python 安装</h1><h2 id="拉取-centos7-镜像"><a href="#拉取-centos7-镜像" class="headerlink" title="拉取 centos7 镜像"></a>拉取 centos7 镜像</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull centos:7</span><br></pre></td></tr></table></figure>
+<h1 id="python-安装"><a href="#python-安装" class="headerlink" title="python 安装"></a>python 安装</h1><h2 id="容器方式"><a href="#容器方式" class="headerlink" title="容器方式"></a>容器方式</h2><h3 id="拉取-centos7-镜像"><a href="#拉取-centos7-镜像" class="headerlink" title="拉取 centos7 镜像"></a>拉取 centos7 镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull centos:7</span><br></pre></td></tr></table></figure>
 
-<h2 id="运行容器"><a href="#运行容器" class="headerlink" title="运行容器"></a>运行容器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name centos7 centos:7</span><br></pre></td></tr></table></figure>
+<h3 id="运行容器"><a href="#运行容器" class="headerlink" title="运行容器"></a>运行容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it -d --name centos7 centos:7</span><br></pre></td></tr></table></figure>
 
 <p>我使用的上面的方式，但是还有下面的一些实际场景，根据实际情况选择</p>
 <ul>
@@ -634,27 +634,27 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker restart &#123;Container ID or Container Name&#125;</span><br></pre></td></tr></table></figure>
 
 <p>docker restart 参数<br>-t：关闭容器的限时，如果超时未能关闭则用kill强制关闭，默认值10s，这个时间用于容器的自己保存状态</p>
-<h2 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 07e578484737 &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
+<h3 id="进入容器"><a href="#进入容器" class="headerlink" title="进入容器"></a>进入容器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 07e578484737 &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
 
-<h2 id="下载安装python"><a href="#下载安装python" class="headerlink" title="下载安装python"></a>下载安装python</h2><ul>
+<h2 id="安装包方式"><a href="#安装包方式" class="headerlink" title="安装包方式"></a>安装包方式</h2><ul>
 <li>编译环境依赖</li>
 </ul>
 <p><code>centos</code>:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y openssl-devel bzip2-devel expat-devel gdbm-devel readline-devel sqlite-devel gcc gcc-c++  openssl-devel libffi-devel python-devel mariadb-devel</span><br></pre></td></tr></table></figure>
 
 <p><code>ubuntu</code>: </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install zlib1g-dev libbz2-dev libssl-dev libncurses5-dev default-libmysqlclient-dev libsqlite3-dev libreadline-dev tk-dev libgdbm-dev libdb-dev libpcap-dev xz-utils libexpat1-dev liblzma-dev libffi-dev libc6-dev</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install -y zlib1g-dev libbz2-dev libssl-dev libncurses5-dev default-libmysqlclient-dev libsqlite3-dev libreadline-dev tk-dev libgdbm-dev libdb-dev libpcap-dev xz-utils libexpat1-dev liblzma-dev libffi-dev libc6-dev</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>获取源码</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;www.python.org&#x2F;ftp&#x2F;python&#x2F;3.8.6&#x2F;Python-3.8.6.tgz</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo wget https:&#x2F;&#x2F;www.python.org&#x2F;ftp&#x2F;python&#x2F;3.8.6&#x2F;Python-3.8.6.tgz</span><br></pre></td></tr></table></figure>
 
 <p>如果没有 <code>wget</code> 需要安装下 <code>yum -y install wget</code></p>
 <ul>
 <li>解压缩</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf Python-3.8.6.tgz -C &#x2F;tmp</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxvf Python-3.8.6.tgz -C &#x2F;tmp</span><br></pre></td></tr></table></figure>
 
 <p>这里解压到了 <code>/tmp</code> 目录中</p>
 <p>进入到解压后的目录</p>
@@ -664,19 +664,19 @@
 <li>安装</li>
 </ul>
 <p>把 <code>Python3.8</code> 安装到 <code>/usr/local</code> 目录</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo .&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F;local</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make</span><br></pre></td></tr></table></figure>
 
 <p>如果出现 <code>bash: make: command not found</code> ,需要安装下编译工具</p>
 <p>Centos: </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install gcc gcc-c++ automake autoconf libtool make</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum -y install gcc gcc-c++ automake autoconf libtool make</span><br></pre></td></tr></table></figure>
 
 <p>Ubuntu/Debian: </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt-get install gcc automake autoconf libtool make</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install -y gcc automake autoconf libtool make</span><br></pre></td></tr></table></figure>
 
 <p>然后再重新执行 <code>make</code>,执行完后再执行下面语句</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make altinstall</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make altinstall</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>更改/usr/bin/python链接</li>
@@ -685,9 +685,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@07e578484737 Python-3.8.6]# python3</span><br><span class="line">bash: python3: command not found</span><br></pre></td></tr></table></figure>
 
 <p>所以需要设置下链接</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s &#x2F;usr&#x2F;local&#x2F;bin&#x2F;python3.8 &#x2F;usr&#x2F;bin&#x2F;python3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s &#x2F;usr&#x2F;local&#x2F;bin&#x2F;python3.8 &#x2F;usr&#x2F;bin&#x2F;python3</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ln -s &#x2F;usr&#x2F;local&#x2F;bin&#x2F;pip3.8 &#x2F;usr&#x2F;bin&#x2F;pip3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s &#x2F;usr&#x2F;local&#x2F;bin&#x2F;pip3.8 &#x2F;usr&#x2F;bin&#x2F;pip3</span><br></pre></td></tr></table></figure>
 
 <p>然后在输入 <code>python3</code> 查看结果</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@07e578484737 Python-3.8.6]# python3</span><br><span class="line">Python 3.8.6 (default, Dec 21 2020, 00:27:51)</span><br><span class="line">[GCC 4.8.5 20150623 (Red Hat 4.8.5-44)] on linux</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
@@ -746,12 +746,12 @@
 <h1 id="Linux-下-Go-环境搭建"><a href="#Linux-下-Go-环境搭建" class="headerlink" title="Linux 下 Go 环境搭建"></a>Linux 下 Go 环境搭建</h1><ul>
 <li>下载</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;studygolang.com&#x2F;dl&#x2F;golang&#x2F;go1.15.6.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo wget https:&#x2F;&#x2F;studygolang.com&#x2F;dl&#x2F;golang&#x2F;go1.15.6.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>解压</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf go1.15.6.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxvf go1.15.6.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>配置环境变量</li>
@@ -775,19 +775,19 @@
 <li>设置代理加速</li>
 </ul>
 <p>输入 <code>go env</code> 可以看到代理的是 <code>GOPROXY=&quot;https://proxy.golang.org,direct&quot;</code>，需要改成国内源</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go env -w GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io,direct</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go env -w GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.cn,direct</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go env -w GO111MODULE&#x3D;on</span><br></pre></td></tr></table></figure>
 
 <h1 id="nodejs-开发环境搭建"><a href="#nodejs-开发环境搭建" class="headerlink" title="nodejs 开发环境搭建"></a>nodejs 开发环境搭建</h1><ul>
 <li>下载</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;npm.taobao.org&#x2F;mirrors&#x2F;node&#x2F;v14.15.3&#x2F;node-v14.15.3-linux-x64.tar.xz</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo wget https:&#x2F;&#x2F;npm.taobao.org&#x2F;mirrors&#x2F;node&#x2F;v14.15.3&#x2F;node-v14.15.3-linux-x64.tar.xz</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>解压</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -xvf node-v14.15.3-linux-x64.tar.xz</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -xvf node-v14.15.3-linux-x64.tar.xz</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>建立软链</li>
@@ -911,7 +911,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境概览"><span class="nav-number">1.</span> <span class="nav-text">开发环境概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VirtualBox-Vagrant"><span class="nav-number">2.</span> <span class="nav-text">VirtualBox + Vagrant</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用开发环境"><span class="nav-number">3.</span> <span class="nav-text">常用开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#包含镜像"><span class="nav-number">3.1.</span> <span class="nav-text">包含镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP"><span class="nav-number">3.2.</span> <span class="nav-text">PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">3.3.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx"><span class="nav-number">3.4.</span> <span class="nav-text">Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mongo"><span class="nav-number">3.5.</span> <span class="nav-text">Mongo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YApi"><span class="nav-number">3.6.</span> <span class="nav-text">YApi</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-docker-compose-构建容器"><span class="nav-number">3.7.</span> <span class="nav-text">使用 docker-compose 构建容器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#版本管理工具-Git"><span class="nav-number">4.</span> <span class="nav-text">版本管理工具 - Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载"><span class="nav-number">4.1.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装依赖"><span class="nav-number">4.2.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压"><span class="nav-number">4.3.</span> <span class="nav-text">解压</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置安装目录"><span class="nav-number">4.4.</span> <span class="nav-text">配置安装目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译并安装"><span class="nav-number">4.5.</span> <span class="nav-text">编译并安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置环境变量"><span class="nav-number">4.6.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看版本"><span class="nav-number">4.7.</span> <span class="nav-text">查看版本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-docker-安装-MySQL"><span class="nav-number">5.</span> <span class="nav-text">使用 docker 安装 MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载镜像"><span class="nav-number">5.1.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过镜像启动容器"><span class="nav-number">5.2.</span> <span class="nav-text">通过镜像启动容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">5.3.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python-安装"><span class="nav-number">6.</span> <span class="nav-text">python 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#拉取-centos7-镜像"><span class="nav-number">6.1.</span> <span class="nav-text">拉取 centos7 镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行容器"><span class="nav-number">6.2.</span> <span class="nav-text">运行容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入容器"><span class="nav-number">6.3.</span> <span class="nav-text">进入容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载安装python"><span class="nav-number">6.4.</span> <span class="nav-text">下载安装python</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-虚拟环境安装与配置"><span class="nav-number">7.</span> <span class="nav-text">Python 虚拟环境安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">7.1.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-下-Go-环境搭建"><span class="nav-number">8.</span> <span class="nav-text">Linux 下 Go 环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nodejs-开发环境搭建"><span class="nav-number">9.</span> <span class="nav-text">nodejs 开发环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Shell"><span class="nav-number">9.1.</span> <span class="nav-text">Shell</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#开发环境概览"><span class="nav-number">1.</span> <span class="nav-text">开发环境概览</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#VirtualBox-Vagrant"><span class="nav-number">2.</span> <span class="nav-text">VirtualBox + Vagrant</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常用开发环境"><span class="nav-number">3.</span> <span class="nav-text">常用开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#包含镜像"><span class="nav-number">3.1.</span> <span class="nav-text">包含镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP"><span class="nav-number">3.2.</span> <span class="nav-text">PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL"><span class="nav-number">3.3.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx"><span class="nav-number">3.4.</span> <span class="nav-text">Nginx</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mongo"><span class="nav-number">3.5.</span> <span class="nav-text">Mongo</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#YApi"><span class="nav-number">3.6.</span> <span class="nav-text">YApi</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-docker-compose-构建容器"><span class="nav-number">3.7.</span> <span class="nav-text">使用 docker-compose 构建容器</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#版本管理工具-Git"><span class="nav-number">4.</span> <span class="nav-text">版本管理工具 - Git</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载"><span class="nav-number">4.1.</span> <span class="nav-text">下载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装依赖"><span class="nav-number">4.2.</span> <span class="nav-text">安装依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压"><span class="nav-number">4.3.</span> <span class="nav-text">解压</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置安装目录"><span class="nav-number">4.4.</span> <span class="nav-text">配置安装目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译并安装"><span class="nav-number">4.5.</span> <span class="nav-text">编译并安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置环境变量"><span class="nav-number">4.6.</span> <span class="nav-text">配置环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查看版本"><span class="nav-number">4.7.</span> <span class="nav-text">查看版本</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用-docker-安装-MySQL"><span class="nav-number">5.</span> <span class="nav-text">使用 docker 安装 MySQL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载镜像"><span class="nav-number">5.1.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过镜像启动容器"><span class="nav-number">5.2.</span> <span class="nav-text">通过镜像启动容器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置"><span class="nav-number">5.3.</span> <span class="nav-text">配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python-安装"><span class="nav-number">6.</span> <span class="nav-text">python 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#容器方式"><span class="nav-number">6.1.</span> <span class="nav-text">容器方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#拉取-centos7-镜像"><span class="nav-number">6.1.1.</span> <span class="nav-text">拉取 centos7 镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行容器"><span class="nav-number">6.1.2.</span> <span class="nav-text">运行容器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进入容器"><span class="nav-number">6.1.3.</span> <span class="nav-text">进入容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装包方式"><span class="nav-number">6.2.</span> <span class="nav-text">安装包方式</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-虚拟环境安装与配置"><span class="nav-number">7.</span> <span class="nav-text">Python 虚拟环境安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">7.1.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-下-Go-环境搭建"><span class="nav-number">8.</span> <span class="nav-text">Linux 下 Go 环境搭建</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#nodejs-开发环境搭建"><span class="nav-number">9.</span> <span class="nav-text">nodejs 开发环境搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Shell"><span class="nav-number">9.1.</span> <span class="nav-text">Shell</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

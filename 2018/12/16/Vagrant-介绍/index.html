@@ -23,20 +23,20 @@
 
   <meta name="description" content="什么是Vagrant Vagrant 是构建在 虚拟化技术之上 的 虚拟机运行环境管理工具   * 可以建立和删除虚拟机  * 可以配置虚拟机的运行参数(如CPU，内存)  * 管理虚拟机运行状态（如启动虚拟机，重新启动虚拟机，关闭虚拟机，将虚拟机挂起等）  * 自动化配置和安装开发环境  * 可以打包和分发虚拟机运行环境  Vagrant 的运行，需要依赖某项具体的 虚拟化技术   * Virt">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Vagrant常用命令">
-<meta property="og:url" content="https://notes.xuepincat.com/2018/12/16/Vagrant%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:title" content="Vagrant介绍">
+<meta property="og:url" content="https://notes.xuepincat.com/2018/12/16/Vagrant-%E4%BB%8B%E7%BB%8D/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
 <meta property="og:description" content="什么是Vagrant Vagrant 是构建在 虚拟化技术之上 的 虚拟机运行环境管理工具   * 可以建立和删除虚拟机  * 可以配置虚拟机的运行参数(如CPU，内存)  * 管理虚拟机运行状态（如启动虚拟机，重新启动虚拟机，关闭虚拟机，将虚拟机挂起等）  * 自动化配置和安装开发环境  * 可以打包和分发虚拟机运行环境  Vagrant 的运行，需要依赖某项具体的 虚拟化技术   * Virt">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://images.notes.xuepincat.com/vagrant/1.png">
 <meta property="article:published_time" content="2018-12-16T05:51:53.000Z">
-<meta property="article:modified_time" content="2020-07-18T04:35:06.038Z">
+<meta property="article:modified_time" content="2021-05-16T23:32:24.119Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Vagrant">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://images.notes.xuepincat.com/vagrant/1.png">
 
-<link rel="canonical" href="https://notes.xuepincat.com/2018/12/16/Vagrant%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+<link rel="canonical" href="https://notes.xuepincat.com/2018/12/16/Vagrant-%E4%BB%8B%E7%BB%8D/">
 
 
 <script id="page-configurations">
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title>Vagrant常用命令 | Finnley's Notes</title>
+  <title>Vagrant介绍 | Finnley's Notes</title>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
     <script>
@@ -217,7 +217,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/12/16/Vagrant%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/12/16/Vagrant-%E4%BB%8B%E7%BB%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -230,7 +230,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Vagrant常用命令
+          Vagrant介绍
         </h1>
 
         <div class="post-meta">
@@ -247,7 +247,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-18 12:35:06" itemprop="dateModified" datetime="2020-07-18T12:35:06+08:00">2020-07-18</time>
+                <time title="Modified: 2021-05-17 07:32:24" itemprop="dateModified" datetime="2021-05-17T07:32:24+08:00">2021-05-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -304,62 +304,37 @@
 </ul>
 <h2 id="前提准备"><a href="#前提准备" class="headerlink" title="前提准备"></a>前提准备</h2><p>安装 <code>VirtualBox</code><br>安装 <code>Vagrant</code></p>
 <h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><p>虚拟机本质底层仍然是操作系统，通常虚拟机安装系统一般是以ISO镜像来安装，而vagrant默认的格式是以 <code>.box</code> 结尾的。</p>
-<ul>
-<li>查看目前已有的box</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box list</span><br></pre></td></tr></table></figure>
+<h3 id="查看目前已有的box"><a href="#查看目前已有的box" class="headerlink" title="查看目前已有的box"></a>查看目前已有的box</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box list</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>新添加一个box</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box add &lt;box名称&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="新添加一个box"><a href="#新添加一个box" class="headerlink" title="新添加一个box"></a>新添加一个box</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box add &lt;box名称&gt;</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>删除指定box</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box remove &lt;box名称&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="删除指定box"><a href="#删除指定box" class="headerlink" title="删除指定box"></a>删除指定box</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box remove &lt;box名称&gt;</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://images.notes.xuepincat.com/vagrant/1.png" alt=""></p>
-<p>关于虚拟机的使用命令</p>
-<ul>
-<li>初始化配置vagrantfile配置文件（启动虚拟机的配置文件）</li>
+<h3 id="初始化配置vagrantfile配置文件"><a href="#初始化配置vagrantfile配置文件" class="headerlink" title="初始化配置vagrantfile配置文件"></a>初始化配置vagrantfile配置文件</h3><ul>
+<li>启动虚拟机的配置文件</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant init</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>启动虚拟机（如果当前没有则创建并启动一个新的虚拟机）</li>
+<h3 id="启动虚拟机"><a href="#启动虚拟机" class="headerlink" title="启动虚拟机"></a>启动虚拟机</h3><ul>
+<li>如果当前没有则创建并启动一个新的虚拟机</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>ssh登录虚拟机</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh</span><br></pre></td></tr></table></figure>
+<h3 id="ssh登录虚拟机"><a href="#ssh登录虚拟机" class="headerlink" title="ssh登录虚拟机"></a>ssh登录虚拟机</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>挂起虚拟机(不会消耗任何内存或者硬件资源)</li>
+<h3 id="挂起虚拟机"><a href="#挂起虚拟机" class="headerlink" title="挂起虚拟机"></a>挂起虚拟机</h3><ul>
+<li>不会消耗任何内存或者硬件资源</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant suspend</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>重启虚拟机</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant reload</span><br></pre></td></tr></table></figure>
+<h3 id="重启虚拟机"><a href="#重启虚拟机" class="headerlink" title="重启虚拟机"></a>重启虚拟机</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant reload</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>关闭虚拟机</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant halt</span><br></pre></td></tr></table></figure>
+<h3 id="关闭虚拟机"><a href="#关闭虚拟机" class="headerlink" title="关闭虚拟机"></a>关闭虚拟机</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant halt</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>查看虚拟机状态</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant status</span><br></pre></td></tr></table></figure>
+<h3 id="查看虚拟机状态"><a href="#查看虚拟机状态" class="headerlink" title="查看虚拟机状态"></a>查看虚拟机状态</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant status</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>删除虚拟机</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant destroy</span><br></pre></td></tr></table></figure>
+<h3 id="删除虚拟机"><a href="#删除虚拟机" class="headerlink" title="删除虚拟机"></a>删除虚拟机</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant destroy</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -472,7 +447,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Vagrant"><span class="nav-number">1.</span> <span class="nav-text">什么是Vagrant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Vagran好处"><span class="nav-number">2.</span> <span class="nav-text">使用Vagran好处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vagrant适用范围"><span class="nav-number">3.</span> <span class="nav-text">Vagrant适用范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前提准备"><span class="nav-number">4.</span> <span class="nav-text">前提准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用命令"><span class="nav-number">5.</span> <span class="nav-text">常用命令</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是Vagrant"><span class="nav-number">1.</span> <span class="nav-text">什么是Vagrant</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Vagran好处"><span class="nav-number">2.</span> <span class="nav-text">使用Vagran好处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vagrant适用范围"><span class="nav-number">3.</span> <span class="nav-text">Vagrant适用范围</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前提准备"><span class="nav-number">4.</span> <span class="nav-text">前提准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用命令"><span class="nav-number">5.</span> <span class="nav-text">常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查看目前已有的box"><span class="nav-number">5.1.</span> <span class="nav-text">查看目前已有的box</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新添加一个box"><span class="nav-number">5.2.</span> <span class="nav-text">新添加一个box</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除指定box"><span class="nav-number">5.3.</span> <span class="nav-text">删除指定box</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化配置vagrantfile配置文件"><span class="nav-number">5.4.</span> <span class="nav-text">初始化配置vagrantfile配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启动虚拟机"><span class="nav-number">5.5.</span> <span class="nav-text">启动虚拟机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh登录虚拟机"><span class="nav-number">5.6.</span> <span class="nav-text">ssh登录虚拟机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#挂起虚拟机"><span class="nav-number">5.7.</span> <span class="nav-text">挂起虚拟机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重启虚拟机"><span class="nav-number">5.8.</span> <span class="nav-text">重启虚拟机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭虚拟机"><span class="nav-number">5.9.</span> <span class="nav-text">关闭虚拟机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看虚拟机状态"><span class="nav-number">5.10.</span> <span class="nav-text">查看虚拟机状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除虚拟机"><span class="nav-number">5.11.</span> <span class="nav-text">删除虚拟机</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

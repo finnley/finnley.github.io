@@ -646,7 +646,7 @@ php -r "unlink('composer-setu
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/12/21/Vagrant%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/12/21/Vagrant-%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -660,7 +660,7 @@ php -r "unlink('composer-setu
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/12/21/Vagrant%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">Vagrant高级应用</a>
+            <a href="/2018/12/21/Vagrant-%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/" class="post-title-link" itemprop="url">Vagrant高级应用</a>
         </h2>
 
         <div class="post-meta">
@@ -677,7 +677,7 @@ php -r "unlink('composer-setu
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-15 01:45:57" itemprop="dateModified" datetime="2020-07-15T01:45:57+08:00">2020-07-15</time>
+                <time title="Modified: 2021-05-17 07:56:31" itemprop="dateModified" datetime="2021-05-17T07:56:31+08:00">2021-05-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -701,9 +701,11 @@ php -r "unlink('composer-setu
 
       
           转发端口配置
-进入之前创建的目录lanmp,打开virtualbox，查看网络配置
+ 1. 进入之前创建的目录lanmp,打开virtualbox，查看网络配置
 
-![vagrant](/images/vagrant/19.png)现在重启虚拟机
+
+
+ 2. 现在重启虚拟机
 
 1
 
@@ -711,11 +713,13 @@ php -r "unlink('composer-setu
 vagrant reload
 
 
-然后再去查看虚拟机网络
+ 3. 然后再去查看虚拟机网络
 
-![vagrant](/images/vagrant/20.png)发现之前设置网络设置里面的端口转发消失了。这是因为vagrant每次重启的时候都会按照自己的配置文件进行设置
 
-现在编辑目录下的Vagrantfile文件
+
+发现之前设置网络设置里面的端口转发消失了。这是因为vagrant每次重启的时候都会按照自己的配置文件进行设置。
+
+ 4. 现在编辑目录下的Vagrantfile文件
 
 1
 
@@ -723,10 +727,16 @@ vagrant reload
 sudo vim Vagrantfile
 
 
-在config.vm.box = “ubuntu1404”下面添加下面端口转发的
+ 5. 在 config.vm.box = "ubuntu1404" 下面添加下面端口转发的配置
+
+1
+2
+
+
+config.vm.network "forwarded_po
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/12/21/Vagrant%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/#more" rel="contents">
+              <a class="btn" href="/2018/12/21/Vagrant-%E9%AB%98%E7%BA%A7%E5%BA%94%E7%94%A8/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -750,7 +760,7 @@ sudo vim Vagrantfile
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/12/16/Vagrant%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/12/16/Vagrant-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -764,7 +774,7 @@ sudo vim Vagrantfile
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/12/16/Vagrant%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">Vagrant环境配置</a>
+            <a href="/2018/12/16/Vagrant-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/" class="post-title-link" itemprop="url">Vagrant环境配置</a>
         </h2>
 
         <div class="post-meta">
@@ -781,7 +791,7 @@ sudo vim Vagrantfile
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-18 12:38:49" itemprop="dateModified" datetime="2020-07-18T12:38:49+08:00">2020-07-18</time>
+                <time title="Modified: 2021-05-17 07:42:52" itemprop="dateModified" datetime="2021-05-17T07:42:52+08:00">2021-05-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -853,7 +863,7 @@ deb http://mirrors.aliyun.com/ubuntu/ trusty main restricted universe multiverse
 deb http://mi
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/12/16/Vagrant%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/#more" rel="contents">
+              <a class="btn" href="/2018/12/16/Vagrant-%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
@@ -908,7 +918,7 @@ deb http://mi
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-19 02:38:48" itemprop="dateModified" datetime="2020-07-19T02:38:48+08:00">2020-07-19</time>
+                <time title="Modified: 2021-05-17 07:33:44" itemprop="dateModified" datetime="2021-05-17T07:33:44+08:00">2021-05-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -945,7 +955,7 @@ vagrant init ubuntu1604
 
 
 配置文件
-初始化接受后目录中生成了一个Vagrantfile的文件
+初始化接受后目录中生成了一个 Vagrantfile 的文件
 
 启动虚拟机
 1
@@ -985,7 +995,7 @@ vagrant up
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/12/16/Vagrant%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/12/16/Vagrant-%E4%BB%8B%E7%BB%8D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
@@ -999,7 +1009,7 @@ vagrant up
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2018/12/16/Vagrant%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">Vagrant常用命令</a>
+            <a href="/2018/12/16/Vagrant-%E4%BB%8B%E7%BB%8D/" class="post-title-link" itemprop="url">Vagrant介绍</a>
         </h2>
 
         <div class="post-meta">
@@ -1016,7 +1026,7 @@ vagrant up
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-18 12:35:06" itemprop="dateModified" datetime="2020-07-18T12:35:06+08:00">2020-07-18</time>
+                <time title="Modified: 2021-05-17 07:32:24" itemprop="dateModified" datetime="2021-05-17T07:32:24+08:00">2021-05-17</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -1061,7 +1071,7 @@ Vagrant 的运行，需要依赖某项具体的 虚拟化技术
      * 自动化部署无需人工参与（可以自动帮我们启动虚拟机或执行一
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2018/12/16/Vagrant%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/#more" rel="contents">
+              <a class="btn" href="/2018/12/16/Vagrant-%E4%BB%8B%E7%BB%8D/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>

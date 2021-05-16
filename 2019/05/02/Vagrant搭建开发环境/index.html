@@ -21,18 +21,31 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="准备  * 本地环境 Ubuntu18.04 LTS  * 镜像 Ubuntu18.04.box  步骤 下载镜像  1. 比如我需要下载 ubuntu&#x2F;bionic64 ，可以打开官网 https:&#x2F;&#x2F;app.vagrantup.com&#x2F;ubuntu&#x2F;boxes&#x2F;bionic64 进行下载  ![vagrant](http:&#x2F;&#x2F;images.ornnth.com&#x2F;hexo&#x2F;vagrant&#x2F;48.">
+  <meta name="description" content="准备  * 本地环境 Ubuntu18.04 LTS  * 镜像 Ubuntu18.04.box  步骤 下载镜像  1. 比如我需要下载 ubuntu&#x2F;bionic64 ，可以打开官网 ubuntu&#x2F;bionic64 进行下载，图中的 v20190501.0.0 就是可以下载的版本号     2. 点击上图进入版本详情页 v20190501.0.0            3. 拼接URL">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vagrant搭建开发环境">
 <meta property="og:url" content="https://notes.xuepincat.com/2019/05/02/Vagrant%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="准备  * 本地环境 Ubuntu18.04 LTS  * 镜像 Ubuntu18.04.box  步骤 下载镜像  1. 比如我需要下载 ubuntu&#x2F;bionic64 ，可以打开官网 https:&#x2F;&#x2F;app.vagrantup.com&#x2F;ubuntu&#x2F;boxes&#x2F;bionic64 进行下载  ![vagrant](http:&#x2F;&#x2F;images.ornnth.com&#x2F;hexo&#x2F;vagrant&#x2F;48.">
+<meta property="og:description" content="准备  * 本地环境 Ubuntu18.04 LTS  * 镜像 Ubuntu18.04.box  步骤 下载镜像  1. 比如我需要下载 ubuntu&#x2F;bionic64 ，可以打开官网 ubuntu&#x2F;bionic64 进行下载，图中的 v20190501.0.0 就是可以下载的版本号     2. 点击上图进入版本详情页 v20190501.0.0            3. 拼接URL">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notes.xuepincat.com/images/vagrant/48.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/vagrant/49.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/vagrant/50.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/vagrant/51.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/vagrant/52.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/vagrant/53.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/vagrant/54.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/vagrant/55.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/vagrant/56.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/vagrant/57.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/vagrant/58.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/vagrant/59.png">
 <meta property="article:published_time" content="2019-05-02T03:01:55.000Z">
-<meta property="article:modified_time" content="2020-07-14T17:46:35.614Z">
+<meta property="article:modified_time" content="2021-05-15T11:28:00.592Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Vagrant">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/vagrant/48.png">
 
 <link rel="canonical" href="https://notes.xuepincat.com/2019/05/02/Vagrant%E6%90%AD%E5%BB%BA%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
 
@@ -245,7 +258,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-15 01:46:35" itemprop="dateModified" datetime="2020-07-15T01:46:35+08:00">2020-07-15</time>
+                <time title="Modified: 2021-05-15 19:28:00" itemprop="dateModified" datetime="2021-05-15T19:28:00+08:00">2021-05-15</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -273,17 +286,14 @@
 <li>镜像 <code>Ubuntu18.04.box</code></li>
 </ul>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><h3 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h3><ol>
-<li>比如我需要下载 <code>ubuntu/bionic64</code> ，可以打开官网 <code>https://app.vagrantup.com/ubuntu/boxes/bionic64</code> 进行下载</li>
+<li>比如我需要下载 <code>ubuntu/bionic64</code> ，可以打开官网 <a href="https://app.vagrantup.com/ubuntu/boxes/bionic64" target="_blank" rel="noopener">ubuntu/bionic64</a> 进行下载，图中的 <code>v20190501.0.0</code> 就是可以下载的版本号</li>
 </ol>
-<div align=center>
-![vagrant](http://images.ornnth.com/hexo/vagrant/48.png)
-</div>
-
-<p>图中的 <code>v20190501.0.0</code> 就是可以下载的版本号</p>
+<p><img src="/images/vagrant/48.png" alt="vagrant"></p>
 <ol start="2">
-<li><p>点击上图进入版本详情页 <code>https://app.vagrantup.com/ubuntu/boxes/bionic64/versions/20190501.0.0</code></p>
+<li><p>点击上图进入版本详情页 <a href="https://app.vagrantup.com/ubuntu/boxes/bionic64/versions/20190501.0.0" target="_blank" rel="noopener">v20190501.0.0</a></p>
 </li>
-<li><p>拼URL <code>https://app.vagrantup.com/centos/boxes/7/versions/1804.02&#39;+&#39;/providers/&#39;+&#39;供应商名字/&#39;+&#39;.box</code></p>
+<li><p>拼接URL </p>
+<p><code>https://app.vagrantup.com/centos/boxes/7/versions/1804.02</code> + <code>/providers/</code> + <code>供应商名字/</code> + <code>.box</code></p>
 </li>
 </ol>
 <p>公式：下载链接 = 产品版本链接 + 供应商英文意思 + 要下载的供应商名称（如virtualbox）+’.box’</p>
@@ -291,22 +301,16 @@
 <p><code>https://app.vagrantup.com/ubuntu/boxes/bionic64/versions/20190501.0.0/providers/virtualbox.box</code></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo wget https:&#x2F;&#x2F;app.vagrantup.com&#x2F;ubuntu&#x2F;boxes&#x2F;bionic64&#x2F;versions&#x2F;20190501.0.0&#x2F;providers&#x2F;virtualbox.box</span><br></pre></td></tr></table></figure>
 
-<h3 id="创建目录"><a href="#创建目录" class="headerlink" title="创建目录"></a>创建目录</h3><h2 id="初始化系统"><a href="#初始化系统" class="headerlink" title="初始化系统"></a>初始化系统</h2><ol>
+<h3 id="初始化系统"><a href="#初始化系统" class="headerlink" title="初始化系统"></a>初始化系统</h3><ol>
 <li>将下载的镜像放到指定目录中，我存放的目录是 <code>/mnt/f/vagrant/box</code></li>
 </ol>
-<div align=center>
-![vagrant](http://images.ornnth.com/hexo/vagrant/49.png)
-</div>
-
+<p><img src="/images/vagrant/49.png" alt="vagrant"></p>
 <ol start="2">
 <li>查看是否已经将镜像添加到vagrant中</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box list</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![vagrant](http://images.ornnth.com/hexo/vagrant/50.png)
-</div>
-
+<p><img src="/images/vagrant/50.png" alt="vagrant"></p>
 <p>此时镜像列表中并没有发现 <code>bionic</code> 的镜像</p>
 <ol start="3">
 <li>添加镜像</li>
@@ -314,15 +318,13 @@
 <p>命令：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box add &lt;自己命名的名称&gt; &lt;镜像名称&gt;</span><br></pre></td></tr></table></figure>
 
+<p>比如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box add bionic bionic-server-cloudimg-amd64-vagrant.box</span><br></pre></td></tr></table></figure>
 
 <p>添加完之后再次查看是否已经成功添加到vagrant</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant box list</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![vagrant](http://images.ornnth.com/hexo/vagrant/51.png)
-</div>
-
+<p><img src="/images/vagrant/51.png" alt="vagrant"></p>
 <ol start="4">
 <li>创建一个名为 <code>bionic</code> 的目录</li>
 </ol>
@@ -334,12 +336,10 @@
 <p>命令： </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant init &lt;镜像名称&gt;</span><br></pre></td></tr></table></figure>
 
+<p>比如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd bionic&#x2F;</span><br><span class="line">vagrant init bionic</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![vagrant](http://images.ornnth.com/hexo/vagrant/52.png)
-</div>
-
+<p><img src="/images/vagrant/52.png" alt="vagrant"></p>
 <p>此时会在 <code>bionic</code> 目录中看到生成了一个 <code>Vagrantfile</code> 的配置文件</p>
 <ol start="6">
 <li><p>打开 <code>Vagrantfile</code> 文件，会看到 <code>config.vm.box = &quot;bionic&quot;</code> ， 其中 <code>bionic</code> 就是在上面初始化的时候也就是 <code>init</code> 后面输入的 <code>bionic</code> ,如果初始化的时候 <code>init</code> 后面没有接受参数后面可以在这个配置文件中改变这个值。</p>
@@ -349,28 +349,19 @@
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant up</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![vagrant](http://images.ornnth.com/hexo/vagrant/53.png)
-</div>
-
 <p>如图，一个虚拟机新建并启动完成。</p>
+<p><img src="/images/vagrant/53.png" alt="vagrant"></p>
 <h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>此时虚拟机已经新建完成，进入虚拟机</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vagrant ssh</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![vagrant](http://images.ornnth.com/hexo/vagrant/54.png)
-</div>
-
+<p><img src="/images/vagrant/54.png" alt="vagrant"></p>
 <p>现在已经进入到了虚拟机内部，当前系统是 <code>Ubuntu 18.04</code>。</p>
 <h3 id="替换源"><a href="#替换源" class="headerlink" title="替换源"></a>替换源</h3><ol>
 <li>首先备份源</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp &#x2F;etc&#x2F;apt&#x2F;sources.list &#x2F;etc&#x2F;apt&#x2F;sources.list.bak</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![vagrant](http://images.ornnth.com/hexo/vagrant/55.png)
-</div>
-
+<p><img src="/images/vagrant/55.png" alt="vagrant"></p>
 <ol start="2">
 <li>编辑源</li>
 </ol>
@@ -394,22 +385,16 @@
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;nginx.org&#x2F;keys&#x2F;nginx_signing.key </span><br><span class="line">sudo apt-key add nginx_signing.key</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![vagrant](http://images.ornnth.com/hexo/vagrant/56.png)
-</div>
-
+<p><img src="/images/vagrant/56.png" alt="vagrant"></p>
 <ol start="3">
-<li>对于Ubuntu，将codename替换为 Ubuntu分发 代号，并将以下代码附加到 <code>/etc/apt/sources.list</code> 文件末尾，然后保存退出</li>
+<li>对于Ubuntu，将codename替换为 Ubuntu 分发代号，并将以下代码附加到 <code>/etc/apt/sources.list</code> 文件末尾，然后保存退出</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;ubuntu&#x2F; codename nginx </span><br><span class="line">deb-src http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;ubuntu&#x2F; codename nginx</span><br></pre></td></tr></table></figure>
 
 <p>例如：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;ubuntu&#x2F; bionic nginx </span><br><span class="line">deb-src http:&#x2F;&#x2F;nginx.org&#x2F;packages&#x2F;ubuntu&#x2F; bionic nginx</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![vagrant](http://images.ornnth.com/hexo/vagrant/57.png)
-</div>
-
+<p><img src="/images/vagrant/57.png" alt="vagrant"></p>
 <ol start="4">
 <li>更新系统</li>
 </ol>
@@ -420,19 +405,13 @@
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install -y nginx</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![vagrant](http://images.ornnth.com/hexo/vagrant/58.png)
-</div>
-
+<p><img src="/images/vagrant/58.png" alt="vagrant"></p>
 <ol start="6">
 <li>查看是否安装成功</li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -v</span><br></pre></td></tr></table></figure>
 
-<div align=center>
-![vagrant](http://images.ornnth.com/hexo/vagrant/59.png)
-</div>
-
+<p><img src="/images/vagrant/59.png" alt="vagrant"></p>
 <ol start="7">
 <li>查看nginx状态</li>
 </ol>
@@ -814,7 +793,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤"><span class="nav-number">2.</span> <span class="nav-text">步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载镜像"><span class="nav-number">2.1.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建目录"><span class="nav-number">2.2.</span> <span class="nav-text">创建目录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#初始化系统"><span class="nav-number">3.</span> <span class="nav-text">初始化系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境配置"><span class="nav-number">4.</span> <span class="nav-text">环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#替换源"><span class="nav-number">4.1.</span> <span class="nav-text">替换源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装软件"><span class="nav-number">5.</span> <span class="nav-text">安装软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Nginx"><span class="nav-number">5.1.</span> <span class="nav-text">安装Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装MaraiaDB"><span class="nav-number">5.2.</span> <span class="nav-text">安装MaraiaDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装PHP7"><span class="nav-number">5.3.</span> <span class="nav-text">安装PHP7</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级配置"><span class="nav-number">6.</span> <span class="nav-text">高级配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#端口转发"><span class="nav-number">6.1.</span> <span class="nav-text">端口转发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置共享目录（挂载）"><span class="nav-number">6.2.</span> <span class="nav-text">配置共享目录（挂载）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改虚拟机名称（虚拟机里面主机的名称）"><span class="nav-number">6.3.</span> <span class="nav-text">修改虚拟机名称（虚拟机里面主机的名称）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改虚拟机主机名称"><span class="nav-number">6.4.</span> <span class="nav-text">修改虚拟机主机名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置虚拟机内容和CPU"><span class="nav-number">6.5.</span> <span class="nav-text">配置虚拟机内容和CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化Nginx"><span class="nav-number">6.6.</span> <span class="nav-text">优化Nginx</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打包分发"><span class="nav-number">7.</span> <span class="nav-text">打包分发</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备"><span class="nav-number">1.</span> <span class="nav-text">准备</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#步骤"><span class="nav-number">2.</span> <span class="nav-text">步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载镜像"><span class="nav-number">2.1.</span> <span class="nav-text">下载镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化系统"><span class="nav-number">2.2.</span> <span class="nav-text">初始化系统</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境配置"><span class="nav-number">3.</span> <span class="nav-text">环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#替换源"><span class="nav-number">3.1.</span> <span class="nav-text">替换源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装软件"><span class="nav-number">4.</span> <span class="nav-text">安装软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装Nginx"><span class="nav-number">4.1.</span> <span class="nav-text">安装Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装MaraiaDB"><span class="nav-number">4.2.</span> <span class="nav-text">安装MaraiaDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装PHP7"><span class="nav-number">4.3.</span> <span class="nav-text">安装PHP7</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#高级配置"><span class="nav-number">5.</span> <span class="nav-text">高级配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#端口转发"><span class="nav-number">5.1.</span> <span class="nav-text">端口转发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置共享目录（挂载）"><span class="nav-number">5.2.</span> <span class="nav-text">配置共享目录（挂载）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改虚拟机名称（虚拟机里面主机的名称）"><span class="nav-number">5.3.</span> <span class="nav-text">修改虚拟机名称（虚拟机里面主机的名称）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改虚拟机主机名称"><span class="nav-number">5.4.</span> <span class="nav-text">修改虚拟机主机名称</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置虚拟机内容和CPU"><span class="nav-number">5.5.</span> <span class="nav-text">配置虚拟机内容和CPU</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#优化Nginx"><span class="nav-number">5.6.</span> <span class="nav-text">优化Nginx</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打包分发"><span class="nav-number">6.</span> <span class="nav-text">打包分发</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
