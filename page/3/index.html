@@ -211,6 +211,106 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/" class="post-title-link" itemprop="url">Network-代理和转发</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-10-24 12:16:23 / Modified: 14:50:06" itemprop="dateCreated datePublished" datetime="2020-10-24T12:16:23+08:00">2020-10-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          什么是网络代理
+ * 用户通过代理请求信息
+ * 请求通过网络代理完成转发到达目标服务器
+ * 目标服务器响应后再通过网络代理回传给用户
+
+网络代理与网络转发区别
+网络转发
+
+
+ 1. 首先是客户端先发起请求，它的IP是rs_ip,就是实际的服务器IP；
+    
+    
+ 2. 然后请求会到达rt_ip,路由器会修改报文，把来源的IP改成自己本身的IP，
+    
+    
+ 3. 然后经过互联网多级路由，直达实际服务器
+    
+    
+ 4. 返回时直接逆向转发请求，最后直达客户端IP
+    
+    
+
+网络代理
+
+
+可以将客户端看做是实际的外网机器，客户端机器的目标IP是代理的
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/10/04/Microservices-%E5%BE%AE%E6%9C%8D%E5%8A%A1%E5%85%A5%E9%97%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1143,92 +1243,6 @@ swarm 有内置一个DNS服务发现功能，在创建一
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2020/07/25/Docker-swarm%E9%9B%86%E7%BE%A4%E9%80%9A%E8%BF%87service%E9%83%A8%E7%BD%B2wordpress/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/07/25/Docker-swarm%E9%9B%86%E7%BE%A4%E9%80%9A%E8%BF%87service%E9%83%A8%E7%BD%B2wordpress/" class="post-title-link" itemprop="url">Docker-集群通过service部署wordpress</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-              
-
-              <time title="Created: 2020-07-25 10:00:14 / Modified: 11:50:27" itemprop="dateCreated datePublished" datetime="2020-07-25T10:00:14+08:00">2020-07-25</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index"><span itemprop="name">Docker</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          在 swarm 里面创建 service 的时候，service 是创建在哪个节点上是不知道的，比如创建两个service,一个 wordpress 的 service,一个 mysql 的 service,这两个 servie 需要通信，这个两个容器有可能不在docker的节点上，那它们如何去通信呢？
-
-可以通过 overlay 的方式让两个容器都连接到 overlay 的网络上，这样不管它们是否在同一台机器上，这两个容器都是可以相互通信的
-
- 1. 创建 overlay 的 network
-
-在swarm-manager节点上创建overlay的网络driver,名字叫demo
-
-1
-
-
-
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/07/25/Docker-swarm%E9%9B%86%E7%BE%A4%E9%80%9A%E8%BF%87service%E9%83%A8%E7%BD%B2wordpress/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1300,7 +1314,7 @@ swarm 有内置一个DNS服务发现功能，在创建一
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">185</span>
+          <span class="site-state-item-count">186</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

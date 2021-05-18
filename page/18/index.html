@@ -211,6 +211,98 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/26/4-%E7%89%88%E6%9C%AC%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E6%9D%83%E9%99%90%E5%88%86%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/26/4-%E7%89%88%E6%9C%AC%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E6%9D%83%E9%99%90%E5%88%86%E7%BB%84/" class="post-title-link" itemprop="url">4-版本库配置以及权限分组</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-26 07:57:42" itemprop="dateCreated datePublished" datetime="2017-06-26T07:57:42+08:00">2017-06-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          版本库的配置文件位于版本库下的conf文件夹 /path.repos/conf/，下面到创建的版本库下查看一下配置文件
+
+
+
+里面有4个文件，分别是authz、hooks-env.tmpl、passwd、svnserve.conf。但是这里用到的只有3个文件，他们分别是authz、passwd、svnserve.conf。
+
+作用
+authz:配置用户组以及用户权限，权限就是提交代码和更新代码的权限。
+passwd:配置用户名和密码，允许访问当前版本库的用户名和密码
+svnserve.conf:配置当前版本库端的默认权限以及指定权限分组配置文件以及密码配置文件以及密码配置文件
+
+SVN版本库权
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/26/4-%E7%89%88%E6%9C%AC%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E6%9D%83%E9%99%90%E5%88%86%E7%BB%84/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/25/3-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E5%88%A0%E9%99%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1215,112 +1307,6 @@ NexT 使用的是 Font Awesome 提供的图标， Font Awesome 提供了 600+ �
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/03/31/Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E7%BB%88%E7%BB%93%E7%AF%87/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/03/31/Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E7%BB%88%E7%BB%93%E7%AF%87/" class="post-title-link" itemprop="url">Next主题配置——终结篇</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-03-31 20:38:36" itemprop="dateCreated datePublished" datetime="2017-03-31T20:38:36+08:00">2017-03-31</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-04 22:27:39" itemprop="dateModified" datetime="2021-03-04T22:27:39+08:00">2021-03-04</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hexo-Next/" itemprop="url" rel="index"><span itemprop="name">Hexo+Next</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          下载主题
-Next官方文档（旧版）
-
-定位到 Hexo 站点目录下，右键选择 Git Bash Here
-
-
-
-使用 Git checkout 代码
-
-1
-
-
-$ git clone https://github.com/iissnan/hexo-theme-next themes/next
-
-
-
-
-回车，等待下载，下载完成后是这样的
-
-
-
-这时候进入 themes 目录，里面多了一个带绿色钩钩的文件夹，这就是下载好的NexT主题。另外一个 landscape 是Hexo默认的主题。
-
-
-
-在 Hexo 中有两份主要的配置文件，其名称都是 _config.yml 。 其中，一份位于 站点根目录
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/03/31/Next%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E2%80%94%E2%80%94%E7%BB%88%E7%BB%93%E7%AF%87/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1392,7 +1378,7 @@ $ git clone https://github.com/iissnan/hexo-theme-next themes/next
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">185</span>
+          <span class="site-state-item-count">186</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

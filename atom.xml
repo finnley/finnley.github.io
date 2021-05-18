@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2021-05-04T09:45:33.456Z</updated>
+  <updated>2021-05-18T00:11:20.546Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,53 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Go是怎么跑起来的</title>
+    <link href="https://notes.xuepincat.com/2021/05/17/Go-Go%E6%98%AF%E6%80%8E%E4%B9%88%E8%B7%91%E8%B5%B7%E6%9D%A5%E7%9A%84/"/>
+    <id>https://notes.xuepincat.com/2021/05/17/Go-Go%E6%98%AF%E6%80%8E%E4%B9%88%E8%B7%91%E8%B5%B7%E6%9D%A5%E7%9A%84/</id>
+    <published>2021-05-17T14:40:20.000Z</published>
+    <updated>2021-05-18T00:11:20.546Z</updated>
+    
+    <summary type="html">
+    
+      对 Go 的 启动 和 执行流程 建立简答的宏观认识
+ * 目的：了解 Go 语言进程的启动过程以及它的执行流程，比如了解 go hello world 具体是怎么执行的？底层都发生了什么？
+
+理解可执行文件
+实验
+ 1. 新建 Dockerfile
+
+1
+2
+3
+4
+5
+6
+
+
+FROM centos
+RUN yum install golang -y \
+  &amp;&amp; yum install dlv -y \
+  &amp;&amp; yum install binutils -y \
+  &amp;&amp; yum install vim -y \
+  &amp;&amp; yum install gdb -y
+
+
+ 2. 构建
+
+1
+
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/tags/Go/"/>
+    
+  </entry>
   
   <entry>
     <title>构建Redis镜像</title>
@@ -833,52 +880,6 @@ RabbitMQ
     
     
       <category term="RabbitMQ" scheme="https://notes.xuepincat.com/tags/RabbitMQ/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Network-代理和转发</title>
-    <link href="https://notes.xuepincat.com/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/"/>
-    <id>https://notes.xuepincat.com/2020/10/24/Network-%E4%BB%A3%E7%90%86%E5%92%8C%E8%BD%AC%E5%8F%91/</id>
-    <published>2020-10-24T04:16:23.000Z</published>
-    <updated>2020-10-24T06:50:06.527Z</updated>
-    
-    <summary type="html">
-    
-      什么是网络代理
- * 用户通过代理请求信息
- * 请求通过网络代理完成转发到达目标服务器
- * 目标服务器响应后再通过网络代理回传给用户
-
-网络代理与网络转发区别
-网络转发
-
-
- 1. 首先是客户端先发起请求，它的IP是rs_ip,就是实际的服务器IP；
-    
-    
- 2. 然后请求会到达rt_ip,路由器会修改报文，把来源的IP改成自己本身的IP，
-    
-    
- 3. 然后经过互联网多级路由，直达实际服务器
-    
-    
- 4. 返回时直接逆向转发请求，最后直达客户端IP
-    
-    
-
-网络代理
-
-
-可以将客户端看做是实际的外网机器，客户端机器的目标IP是代理的
-    
-    </summary>
-    
-    
-      <category term="Docker" scheme="https://notes.xuepincat.com/categories/Docker/"/>
-    
-    
-      <category term="Network" scheme="https://notes.xuepincat.com/tags/Network/"/>
     
   </entry>
   
