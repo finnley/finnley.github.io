@@ -29,9 +29,13 @@
 <meta property="og:description" content="对 Go 的 启动 和 执行流程 建立简答的宏观认识  * 目的：了解 Go 语言进程的启动过程以及它的执行流程，比如了解 go hello world 具体是怎么执行的？底层都发生了什么？  理解可执行文件 实验  1. 新建 Dockerfile  1 2 3 4 5 6   FROM centos RUN yum install golang -y \   &amp;&amp; yum install dl">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/1.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/go/1.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/2.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/3.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/5.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/6.png">
 <meta property="article:published_time" content="2021-05-17T14:40:20.000Z">
-<meta property="article:modified_time" content="2021-05-18T00:11:20.546Z">
+<meta property="article:modified_time" content="2021-05-19T00:00:24.380Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Go">
 <meta name="twitter:card" content="summary">
@@ -248,7 +252,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-18 08:11:20" itemprop="dateModified" datetime="2021-05-18T08:11:20+08:00">2021-05-18</time>
+                <time title="Modified: 2021-05-19 08:00:24" itemprop="dateModified" datetime="2021-05-19T08:00:24+08:00">2021-05-19</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -343,7 +347,7 @@
 </li>
 </ol>
 <p>操作系统加载可执行文件，需要解析 ELF Header，通过 ELF Header 里面的内容找到相应的段，然后再将二进制文件的段加载到内存，然后再通过 ELF Header 中的 entry point 开始执行我们的代码</p>
-<p><img src="/images/go/1.png" alt=""></p>
+<p><img src="/images/go/2.png" alt=""></p>
 <p>下面通过 <code>readelf -h [可执行文件]</code> 找到可执行文件头的入口地址，就是上图中的 <code>0x455780</code></p>
 <p>然后再通过 <code>dlv</code> go 的 debug 工具，打一个断点 <code>b *0x455780</code> 就可以看到断点打到具体的某一个函数上</p>
 <h2 id="计算机是怎么执行我们的程序的呢？"><a href="#计算机是怎么执行我们的程序的呢？" class="headerlink" title="计算机是怎么执行我们的程序的呢？"></a>计算机是怎么执行我们的程序的呢？</h2><p>目标：了解计算机CPU是怎么执行二进制文件中的指令</p>
@@ -379,7 +383,68 @@
 </ol>
 <p>当内存不再需要时，负责内存回收</p>
 <p>这些模块中（runtime 中的四座大山），最核心的就是 <code>Scheduler</code> 调度器，它负责串联所有的 runtime 流程</p>
-<h2 id="调度器从什么地方启动"><a href="#调度器从什么地方启动" class="headerlink" title="调度器从什么地方启动"></a>调度器从什么地方启动</h2>
+<h2 id="调度器从什么地方启动"><a href="#调度器从什么地方启动" class="headerlink" title="调度器从什么地方启动"></a>调度器从什么地方启动</h2><p>通过 entry_point 找到 Go 进程的执行入口，它会通过三个汇编函数一路跳到 <code>runtime.rt0_go</code> 这个函数里面，这个函数是初始化的一个非常重要的函数，它会执行参数的初始化，全局 <code>m0</code>, <code>g0</code> 的初始化，这是一个特殊的线程，<code>m0</code> 执行的是应用的主线程；<br>获取CPU的核心数；<br>初始化内置的数据结构；<br>执行用户的main主函数，这些就是主线程要做的事情</p>
+<p>m0: Go 程序启动后创建的第一个线程；</p>
+<h2 id="调度组件与调度循环"><a href="#调度组件与调度循环" class="headerlink" title="调度组件与调度循环"></a>调度组件与调度循环</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go func() &#123;</span><br><span class="line">  println(&quot;hello world in gorouine!&quot;)</span><br><span class="line">&#125; ()</span><br></pre></td></tr></table></figure>
+
+<p>每次写下上面的一段语句的时候，到底发生了什么？</p>
+<p>其实就是向 <code>runtime</code> 提交了一个计算任务。func() { xxx } 里面包裹的代码就是计算任务的内容，它包含的一坨代码，这坨代码已经被编译到二进制文件里面了，sync 包其实并不是 runtime 的一部分，sync 包只是 go 语言的一个标准库，它依赖了 runtime 提供的一些组件。</p>
+<p>既然有提交任务，就会有人去消费这个任务，所以 Go 的调度流程本质上是一个 <code>生产-消费</code> 流程</p>
+<p><img src="/images/go/3.png" alt=""></p>
+<p>平时开发中会写一些 <code>生产-消费</code> 程序，常见就是消息队列，在右边生产端会不停的提交任务，对于程序来说就是每次 go func 一次都是提交一个任务，这个任务肯定会进入某个队列，然后在队列的另一端会有人不停的消费这个任务去执行，执行完之后相当于这个任务被执行掉了，对于用户来说就是目标达到了，把我们的代码都执行了一遍</p>
+<p><img src="/images/go/4.png" alt=""></p>
+<p>在 runtime 中，这些都是有一些角色的，右边的生产者相当于每次 <code>go func() {}</code> 的时候都生产了一把，中间的队列（queue），任务会被打包成 <code>协程</code> ，<code>协程</code> 在上面的模型叫 <code>G</code>， 也就是 <code>goroutine</code> ，<code>goroutine</code> 它最终是进入了专门的队列，队列的另一端消费的就是 <code>线程-M</code>，线程是一直在循环执行消费操作来消费这些任务</p>
+<p>为了能够在性能上达到更好的目标，GO语言在队列上是有分级的，中间的队列会分为几个部分，比如有一个本地的执行队列 <code>local run queue</code> ，还有一个全局的执行队列 <code>global run queue</code>，当然实际上不止这两个，对于 runtime 来说，它就是来协调这些对象之间的工作，并且进一步去做优化</p>
+<h2 id="go-func-去了哪里？"><a href="#go-func-去了哪里？" class="headerlink" title="go func 去了哪里？"></a>go func 去了哪里？</h2><p><img src="/images/go/5.png" alt=""></p>
+<p>右边黄色，蓝色，绿色部分就是我们的线程，大部分线程（M）都是一直在执行调度循环，调度循环简单理解就是从左边的各种队列里面把任务拿出来去执行，这就是线程的相关操作。</p>
+<p>左边的三个蓝色的就是任务来源，队列有一个本地队列 <code>local run queue</code> 和一个全局队列 <code>global run queue</code>，为了优化，GO 语言还专门做了一个叫 <code>runnext</code> 的结构，本地队列和 runtext 都是为了解决程序的局部性，只有一个队列其实也是可以达到生产消费流程的，但是在计算机执行代码的过程中或者在大部分系统中，程序是有局部性原理的，也就是我们最近调用的代码非常有极大可能性得到再一次调用，这是一个非常有名的原理，它分为代码的局部性和数据的局部性，根据这里原理在我们右边刚刚创建的 goroutine 如果是非常高优先级的 goroutine,所以它会在本地的队列或者在runnext的结构中执行</p>
+<p>优先级最高的是 <code>runnext</code>，其次是本地执行队列，再其次才是全局队列</p>
+<p>上面提过多级队列就是为了解决程序的局部性问题，然后在解决程序局部性问题的时候尽量让生产和消费少加锁，如果只有一个队列的情况下其实也是可以实现这个流程的，这样的生产和消费就都需要加锁了</p>
+<p>在这个过程中我们又不希望所有的生产都进全局队列，执行调度循环的不止是一个线程，而是多个线程并且是多个线程的消费，如果只有一个全局队列的话就需要所有的线程在消费这个全局队列的时候加锁，这是一个基本原则，所以就分为了本地队列和全局队列</p>
+<p>当然在执行过程中有一部分线程可能是空闲的，这些空闲的线程，这些空闲的线程它会在一个专门的 <code>midle</code> 的队列里面进行管理，本身线程在执行过程中是按需创建的，所以总是会有一些线程是空闲下来，它们就会在队列里面等待下一次执行，就是没有可用线程的时候会到空闲线程里面找</p>
+<h3 id="goroutine-的生产端"><a href="#goroutine-的生产端" class="headerlink" title="goroutine 的生产端"></a>goroutine 的生产端</h3><p><img src="/images/go/6.png" alt=""></p>
+<p>代码起 routine 的时候会生成一个任务，左上角就是创建了一个 goroutine，goroutine 会调用 runtime 里面的 <code>newproc</code> 函数，这个函数会生成 goroutine 的结构，会指向具体的代码位置，一路执行下来，比如 <code>malg &amp;&amp; allgadd</code> 就是在分配内存空间，并将它们管理在 <code>allg</code> 的数组结构里面，然后下面 <code>runqput</code> 就是再把他们放入到队列里面，右边就是入队的流程</p>
+<p>因为队列是有优先级的，所以在生产 goroutine 的时候会优先把 goroutine 往当前绑定的 <code>_p_</code> 的 runnext 中放，有没有放成功其实也是有区分的，<code>_p_.runnext</code> 本身也是有一个值的，也只有一个值，不是一个队列，可以理解为一个高优先级的队列，只是有一个元素</p>
+<p>也就是当我将 goroutine 生产出来之后，它会先进 runnext，如果 runnext 原来有值，就需要好人做到底，送佛送到西，既然将别人踢出去了，就需要将别人先送到本地队列，如果本地队列也满了，就需要将刚才提出来的 G 送到全局队列里面，如果没有满就放到本地队列就可以了</p>
+<p>上面的流程就是从生产 G 到进入队列的全流程，也即是上上面出现的 runnext，local run queue，global run queue 的过程</p>
+<ul>
+<li>runnext 为空的情况</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go func () &#123;</span><br><span class="line">  println(&quot;hello world&quot;)</span><br><span class="line">&#125; ()</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>通过 <code>runtime.newproc</code> 生成一个 G；</p>
+</li>
+<li><p>生成的 G 要和三个队列进行交互，因为 runnext 为空，只需要将新生成的 G 通过 <code>runtime.runqput</code> 放进去就行了，到此一个生产流程就完成了，相当于生产代码执行完了；</p>
+</li>
+</ol>
+<ul>
+<li>runnext 非空的情况</li>
+</ul>
+<ol>
+<li><p>通过 <code>runtime.newproc</code> 生成一个 G；</p>
+</li>
+<li><p>现在想要将新生成的 G 通过 <code>runtime.runqput</code> 放到 runnext 里面，但是现在 runnext 被一个 G 占着，就需要将老的 G 踢走，那需要将老的 G 提到什么地方呢？就需要将老的 G 提到 本地队列（local run queue）中，如果本地队列没有满，就可以成功将老的 G 从 runnext 成功踢出去，然后将新的 G 放到 runnext 中；</p>
+</li>
+</ol>
+<ul>
+<li>local run queue 满的情况</li>
+</ul>
+<ol>
+<li><p>通过 <code>runtime.newproc</code> 生成一个 G；</p>
+</li>
+<li><p>现在想要将新生成的 G 通过 <code>runtime.runqput</code> 放到 runnext 里面，但是现在 runnext 被一个 G 占着，就需要将老的 G 踢走，需要将老的 G 提到 本地队列（local run queue）中</p>
+</li>
+<li><p>如果将老的 G 踢出去了，但是本地队列已经满了，就需要将本地队列里面一半的 goroutine 拿出来再加上刚刚从 runnext 踢出去的一个G 生成一个新的结构 batch</p>
+</li>
+</ol>
+<p>batch = len(local run local) / 2 + 1</p>
+<ol start="3">
+<li>将生成的 batch 拼成一个链表加入到全局队列里面 glocal run queue</li>
+</ol>
+<p>本地队列是个数组，全局队列是个链表，为什么这样设计呢？</p>
+<p>因为全局队列大小是无限的，但是本地队列只限制了 256 的大小，这其实也是由局部性原理决定的，本地访问肯定数组访问的比较快，因为数组内存是连续的，所以局部性会很好，理论上新进来的 goroutine 优先级要比老的高，</p>
+
     </div>
 
     
@@ -488,7 +553,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#对-Go-的-启动-和-执行流程-建立简答的宏观认识"><span class="nav-number">1.</span> <span class="nav-text">对 Go 的 启动 和 执行流程 建立简答的宏观认识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#理解可执行文件"><span class="nav-number">1.1.</span> <span class="nav-text">理解可执行文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实验"><span class="nav-number">1.1.1.</span> <span class="nav-text">实验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-程序-hell-go-的编译过程"><span class="nav-number">1.2.</span> <span class="nav-text">Go 程序 hell.go 的编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可执行文件"><span class="nav-number">1.3.</span> <span class="nav-text">可执行文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可执行文件在不同操作系统上规范不一样"><span class="nav-number">1.3.1.</span> <span class="nav-text">可执行文件在不同操作系统上规范不一样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作系统执行可执行文件的步骤（以-Linux-为例）"><span class="nav-number">1.3.2.</span> <span class="nav-text">操作系统执行可执行文件的步骤（以 Linux 为例）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机是怎么执行我们的程序的呢？"><span class="nav-number">1.4.</span> <span class="nav-text">计算机是怎么执行我们的程序的呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runtime"><span class="nav-number">1.5.</span> <span class="nav-text">runtime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度器从什么地方启动"><span class="nav-number">1.6.</span> <span class="nav-text">调度器从什么地方启动</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#对-Go-的-启动-和-执行流程-建立简答的宏观认识"><span class="nav-number">1.</span> <span class="nav-text">对 Go 的 启动 和 执行流程 建立简答的宏观认识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#理解可执行文件"><span class="nav-number">1.1.</span> <span class="nav-text">理解可执行文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实验"><span class="nav-number">1.1.1.</span> <span class="nav-text">实验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-程序-hell-go-的编译过程"><span class="nav-number">1.2.</span> <span class="nav-text">Go 程序 hell.go 的编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可执行文件"><span class="nav-number">1.3.</span> <span class="nav-text">可执行文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可执行文件在不同操作系统上规范不一样"><span class="nav-number">1.3.1.</span> <span class="nav-text">可执行文件在不同操作系统上规范不一样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作系统执行可执行文件的步骤（以-Linux-为例）"><span class="nav-number">1.3.2.</span> <span class="nav-text">操作系统执行可执行文件的步骤（以 Linux 为例）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机是怎么执行我们的程序的呢？"><span class="nav-number">1.4.</span> <span class="nav-text">计算机是怎么执行我们的程序的呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runtime"><span class="nav-number">1.5.</span> <span class="nav-text">runtime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度器从什么地方启动"><span class="nav-number">1.6.</span> <span class="nav-text">调度器从什么地方启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度组件与调度循环"><span class="nav-number">1.7.</span> <span class="nav-text">调度组件与调度循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-func-去了哪里？"><span class="nav-number">1.8.</span> <span class="nav-text">go func 去了哪里？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine-的生产端"><span class="nav-number">1.8.1.</span> <span class="nav-text">goroutine 的生产端</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
