@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/6.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/7.png">
 <meta property="article:published_time" content="2021-05-17T14:40:20.000Z">
-<meta property="article:modified_time" content="2021-05-19T00:07:28.849Z">
+<meta property="article:modified_time" content="2021-05-31T15:30:36.400Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Go">
 <meta name="twitter:card" content="summary">
@@ -253,7 +253,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-19 08:07:28" itemprop="dateModified" datetime="2021-05-19T08:07:28+08:00">2021-05-19</time>
+                <time title="Modified: 2021-05-31 23:30:36" itemprop="dateModified" datetime="2021-05-31T23:30:36+08:00">2021-05-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -284,10 +284,13 @@
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FROM centos</span><br><span class="line">RUN yum install golang -y \</span><br><span class="line">  &amp;&amp; yum install dlv -y \</span><br><span class="line">  &amp;&amp; yum install binutils -y \</span><br><span class="line">  &amp;&amp; yum install vim -y \</span><br><span class="line">  &amp;&amp; yum install gdb -y</span><br></pre></td></tr></table></figure>
 
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">FROM centos</span><br><span class="line">RUN yum install binutils -y \</span><br><span class="line">    &amp;&amp; yum install vim -y \</span><br><span class="line">    &amp;&amp; yum install gdb -y \</span><br><span class="line">    &amp;&amp; yum install git -y \</span><br><span class="line">    &amp;&amp; yum install wget -y</span><br><span class="line"></span><br><span class="line">RUN wget https:&#x2F;&#x2F;dl.google.com&#x2F;go&#x2F;go1.14.12.linux-amd64.tar.gz  \</span><br><span class="line">    &amp;&amp; tar -C &#x2F;usr&#x2F;local -zxvf go1.14.12.linux-amd64.tar.gz \</span><br><span class="line">    &amp;&amp; rm &#x2F;go1.14.12.linux-amd64.tar.gz</span><br><span class="line"></span><br><span class="line">ENV PATH &#x2F;usr&#x2F;local&#x2F;go&#x2F;bin:$PATH</span><br><span class="line">ENV GOPATH &#x2F;home</span><br><span class="line">ENV GOROOT &#x2F;usr&#x2F;local&#x2F;go</span><br><span class="line">ENV GOPROXY goproxy.cn</span><br><span class="line"></span><br><span class="line">RUN git clone https:&#x2F;&#x2F;github.com&#x2F;go-delve&#x2F;delve \</span><br><span class="line">    &amp;&amp; cd delve \</span><br><span class="line">    &amp;&amp; go build .&#x2F;cmd&#x2F;dlv \</span><br><span class="line">    &amp;&amp; cp .&#x2F;dlv &#x2F;usr&#x2F;local&#x2F;bin</span><br></pre></td></tr></table></figure>
+
 <ol start="2">
 <li>构建</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t test</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t test .</span><br></pre></td></tr></table></figure>
 
 <ol start="3">
 <li>运行</li>
@@ -446,7 +449,8 @@
 <p>本地队列是个数组，全局队列是个链表，为什么这样设计呢？</p>
 <p>因为全局队列大小是无限的，但是本地队列只限制了 256 的大小，这其实也是由局部性原理决定的，本地访问肯定数组访问的比较快，因为数组内存是连续的，所以局部性会很好，理论上新进来的 goroutine 优先级要比老的高</p>
 <h3 id="goroutine-的消费端"><a href="#goroutine-的消费端" class="headerlink" title="goroutine 的消费端"></a>goroutine 的消费端</h3><p><img src="/images/go/7.png" alt=""></p>
-<p>消费端就是多个线程在反复执行一个循环，这个循环从队列中拿值，右边4个蓝色块表示一个标准的调度循环执行的流程，也是 runtime 里面的4个函数反复在执行，最重要就是 <code>schedule</code> 函数</p>
+<p>消费端就是多个线程在反复执行一个循环，这个循环从队列中拿值，右边4个蓝色块表示一个标准的调度循环执行的流程，也是 runtime 里面的4个函数反复在执行，最重要就是 <code>schedule</code> 函数,<br>这个函数会从几个队列的源去找可以用的任务</p>
+<p>每执行 60 次本地队列的获取</p>
 
     </div>
 
