@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2021-05-31T15:30:36.400Z</updated>
+  <updated>2021-06-02T16:29:42.473Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -21,15 +21,14 @@
     <link href="https://notes.xuepincat.com/2021/05/17/Go-Go%E6%98%AF%E6%80%8E%E4%B9%88%E8%B7%91%E8%B5%B7%E6%9D%A5%E7%9A%84/"/>
     <id>https://notes.xuepincat.com/2021/05/17/Go-Go%E6%98%AF%E6%80%8E%E4%B9%88%E8%B7%91%E8%B5%B7%E6%9D%A5%E7%9A%84/</id>
     <published>2021-05-17T14:40:20.000Z</published>
-    <updated>2021-05-31T15:30:36.400Z</updated>
+    <updated>2021-06-02T16:29:42.473Z</updated>
     
     <summary type="html">
     
-      对 Go 的 启动 和 执行流程 建立简答的宏观认识
- * 目的：了解 Go 语言进程的启动过程以及它的执行流程，比如了解 go hello world 具体是怎么执行的？底层都发生了什么？
+      目标
+ * 了解 Go 语言进程的启动过程以及它的执行流程，比如了解 hello world 具体是怎么执行的？底层都发生了什么？
 
-理解可执行文件
-实验
+环境搭建
  1. 新建 Dockerfile
 
 1
@@ -53,6 +52,20 @@ RUN yum install golang -y \
 1
 2
 3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
 
     
     </summary>

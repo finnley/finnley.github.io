@@ -21,22 +21,24 @@
     var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="对 Go 的 启动 和 执行流程 建立简答的宏观认识  * 目的：了解 Go 语言进程的启动过程以及它的执行流程，比如了解 go hello world 具体是怎么执行的？底层都发生了什么？  理解可执行文件 实验  1. 新建 Dockerfile  1 2 3 4 5 6   FROM centos RUN yum install golang -y \   &amp;&amp; yum install dl">
+  <meta name="description" content="目标  * 了解 Go 语言进程的启动过程以及它的执行流程，比如了解 hello world 具体是怎么执行的？底层都发生了什么？  环境搭建  1. 新建 Dockerfile  1 2 3 4 5 6   FROM centos RUN yum install golang -y \   &amp;&amp; yum install dlv -y \   &amp;&amp; yum install binutils -y">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Go是怎么跑起来的">
 <meta property="og:url" content="https://notes.xuepincat.com/2021/05/17/Go-Go%E6%98%AF%E6%80%8E%E4%B9%88%E8%B7%91%E8%B5%B7%E6%9D%A5%E7%9A%84/index.html">
 <meta property="og:site_name" content="Finnley&#39;s Notes">
-<meta property="og:description" content="对 Go 的 启动 和 执行流程 建立简答的宏观认识  * 目的：了解 Go 语言进程的启动过程以及它的执行流程，比如了解 go hello world 具体是怎么执行的？底层都发生了什么？  理解可执行文件 实验  1. 新建 Dockerfile  1 2 3 4 5 6   FROM centos RUN yum install golang -y \   &amp;&amp; yum install dl">
+<meta property="og:description" content="目标  * 了解 Go 语言进程的启动过程以及它的执行流程，比如了解 hello world 具体是怎么执行的？底层都发生了什么？  环境搭建  1. 新建 Dockerfile  1 2 3 4 5 6   FROM centos RUN yum install golang -y \   &amp;&amp; yum install dlv -y \   &amp;&amp; yum install binutils -y">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/1.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/2.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/3.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/4.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/3.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/4.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/5.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/6.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/7.png">
 <meta property="article:published_time" content="2021-05-17T14:40:20.000Z">
-<meta property="article:modified_time" content="2021-05-31T15:30:36.400Z">
+<meta property="article:modified_time" content="2021-06-02T16:29:42.473Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Go">
 <meta name="twitter:card" content="summary">
@@ -253,7 +255,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-05-31 23:30:36" itemprop="dateModified" datetime="2021-05-31T23:30:36+08:00">2021-05-31</time>
+                <time title="Modified: 2021-06-03 00:29:42" itemprop="dateModified" datetime="2021-06-03T00:29:42+08:00">2021-06-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -276,10 +278,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="对-Go-的-启动-和-执行流程-建立简答的宏观认识"><a href="#对-Go-的-启动-和-执行流程-建立简答的宏观认识" class="headerlink" title="对 Go 的 启动 和 执行流程 建立简答的宏观认识"></a>对 Go 的 <code>启动</code> 和 <code>执行流程</code> 建立简答的宏观认识</h1><ul>
-<li>目的：了解 Go 语言进程的启动过程以及它的执行流程，比如了解 go <code>hello world</code> 具体是怎么执行的？底层都发生了什么？</li>
+        <h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ul>
+<li>了解 Go 语言进程的启动过程以及它的执行流程，比如了解 <code>hello world</code> 具体是怎么执行的？底层都发生了什么？</li>
 </ul>
-<h2 id="理解可执行文件"><a href="#理解可执行文件" class="headerlink" title="理解可执行文件"></a>理解可执行文件</h2><h3 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h3><ol>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><ol>
 <li>新建 <code>Dockerfile</code></li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FROM centos</span><br><span class="line">RUN yum install golang -y \</span><br><span class="line">  &amp;&amp; yum install dlv -y \</span><br><span class="line">  &amp;&amp; yum install binutils -y \</span><br><span class="line">  &amp;&amp; yum install vim -y \</span><br><span class="line">  &amp;&amp; yum install gdb -y</span><br></pre></td></tr></table></figure>
@@ -297,9 +299,14 @@
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --rm test bash</span><br></pre></td></tr></table></figure>
 
-<h2 id="Go-程序-hell-go-的编译过程"><a href="#Go-程序-hell-go-的编译过程" class="headerlink" title="Go 程序 hell.go 的编译过程"></a>Go 程序 hell.go 的编译过程</h2><ol>
+<h2 id="Go-程序-hell-go-的编译过程"><a href="#Go-程序-hell-go-的编译过程" class="headerlink" title="Go 程序 hell.go 的编译过程"></a>Go 程序 hell.go 的编译过程</h2><p><img src="/images/go/1.png" alt=""></p>
+<ol>
 <li>文本</li>
 </ol>
+<p>进入 docker 内，编写 hello.go</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;home</span><br><span class="line">vim hello.go</span><br></pre></td></tr></table></figure>
+
+<p>内容如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">  println(&quot;hello world&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <ol start="2">
@@ -314,9 +321,9 @@
 
 <p>单个文件可以通过 <code>go build xxx.go</code> 生成可执行文件，这就是简单的代码编译过程，从文本编译到二进制文件，其实这个编译过程也是有很多阶段的，这些属于编译原理内容（有时间可以研究）</p>
 <p>可以通过 <code>go build -x hello.go</code> 命令在编译的时候可以将详细内容输出出来</p>
-<p><img src="/images/go/1.png" alt=""></p>
+<p><img src="/images/go/2.png" alt=""></p>
 <p>  编译：文本代码 -&gt; 目标文件（.o, .a）<br>  链接：将目标文件合并为可执行文件</p>
-<p>编译阶段就是将文本代码转成目标文件，这个目标文件需要和标准库里已经编译出来的静态库做链接，链接了之后就会在临时目录里面把编译后完整的二进制文件输出出来，它再把临时目录中的文件挪动到默认编译出来 <code>-o</code> 的目标，然后再将临时目录删掉，这就完成了整个编译过程</p>
+<p>编译阶段就是将文本代码转成目标文件，这个目标文件需要和标准库里已经编译出来的静态库做链接，链接了之后就会在临时目录里面把编译后完整的二进制文件输出出来，它再把临时目录中的文件挪动到默认编译出来 <code>-o</code> 的目标，然后再把临时目录删掉，这就完成了整个编译过程</p>
 <h2 id="可执行文件"><a href="#可执行文件" class="headerlink" title="可执行文件"></a>可执行文件</h2><h3 id="可执行文件在不同操作系统上规范不一样"><a href="#可执行文件在不同操作系统上规范不一样" class="headerlink" title="可执行文件在不同操作系统上规范不一样"></a>可执行文件在不同操作系统上规范不一样</h3><table>
 <thead>
 <tr>
@@ -331,29 +338,25 @@
 <td>Mach-O</td>
 </tr>
 </tbody></table>
-<p>Linux 的可执行文件 <code>ELF (Executable and Linkable Format)</code> 为例，ELF 由几部分构成：</p>
+<p>Linux 的可执行文件 <code>ELF (Executable and Linkable Format)</code> 为例，<code>ELF</code> 由下面几部分构成：</p>
 <ul>
-<li><p>ELF header</p>
-</li>
-<li><p>Section header</p>
-</li>
-<li><p>Sections</p>
-</li>
+<li>ELF header</li>
+<li>Section header</li>
+<li>Sections</li>
 </ul>
-<p>如果想要找 go 语言的入口，只需要看  <code>ELF header</code> 就可以了</p>
-<p>参考：【二进制ELF文件分布图】:</p>
-<h3 id="操作系统执行可执行文件的步骤（以-Linux-为例）"><a href="#操作系统执行可执行文件的步骤（以-Linux-为例）" class="headerlink" title="操作系统执行可执行文件的步骤（以 Linux 为例）"></a>操作系统执行可执行文件的步骤（以 Linux 为例）</h3><ol>
-<li><p>解析 ELF Header</p>
-</li>
-<li><p>加载文件内容至内存</p>
-</li>
-<li><p>从 entry point 开始执行代码</p>
-</li>
+<p>如果想要找 <code>go</code> 语言的入口，只需要看  <code>ELF header</code> 就可以了</p>
+<p>参考：<a href="https://github.com/corkami/pics/blob/28cb0226093ed57b348723bc473cea0162dad366/binary/elf101/elf101p.pdf" target="_blank" rel="noopener">二进制ELF文件分布图</a></p>
+<h3 id="操作系统执行可执行文件的步骤（以-Linux-为例）"><a href="#操作系统执行可执行文件的步骤（以-Linux-为例）" class="headerlink" title="操作系统执行可执行文件的步骤（以 Linux 为例）"></a>操作系统执行可执行文件的步骤（以 Linux 为例）</h3><p><img src="/images/go/3.png" alt=""></p>
+<ol>
+<li>解析 ELF Header</li>
+<li>加载文件内容至内存</li>
+<li>从 entry point 开始执行代码</li>
 </ol>
-<p>操作系统加载可执行文件，需要解析 ELF Header，通过 ELF Header 里面的内容找到相应的段，然后再将二进制文件的段加载到内存，然后再通过 ELF Header 中的 entry point 开始执行我们的代码</p>
-<p><img src="/images/go/2.png" alt=""></p>
-<p>下面通过 <code>readelf -h [可执行文件]</code> 找到可执行文件头的入口地址，就是上图中的 <code>0x455780</code></p>
-<p>然后再通过 <code>dlv</code> go 的 debug 工具，打一个断点 <code>b *0x455780</code> 就可以看到断点打到具体的某一个函数上</p>
+<p>操作系统加载可执行文件，需要解析 <code>ELF Header</code>，通过 <code>ELF Header</code> 里面的内容找到相应的段，然后再将二进制文件的段加载到内存，然后再通过 <code>ELF Header</code> 中的 <code>entry point</code> 开始执行我们的代码</p>
+<h3 id="寻找-go-程序入口"><a href="#寻找-go-程序入口" class="headerlink" title="寻找 go 程序入口"></a>寻找 go 程序入口</h3><p>下面通过 <code>readelf -h [可执行文件]</code> 找到可执行文件头的入口地址，就是下图中的 <code>0x455780</code> 的地址</p>
+<p><img src="/images/go/4.png" alt=""></p>
+<p>然后再通过 <code>dlv</code>, <code>dlv</code> 是 <code>go</code> 语言专用的 <code>Debug</code> 工具，通过 <code>dlv</code> 打一个断点 <code>b *0x455780</code> 就可以看到断点打到具体的某一个函数上</p>
+<p>其实不需要打断点，默认就是就程序的入口位置，可以使用 <code>si</code> 回车，就会看到指向的程序入口位置</p>
 <h2 id="计算机是怎么执行我们的程序的呢？"><a href="#计算机是怎么执行我们的程序的呢？" class="headerlink" title="计算机是怎么执行我们的程序的呢？"></a>计算机是怎么执行我们的程序的呢？</h2><p>目标：了解计算机CPU是怎么执行二进制文件中的指令</p>
 <p>从文本代码编译之后，最终生成文件里面只有汇编指令，有一个非常常见的通用寄存机叫 <code>pc 寄存器</code>，CPU就是靠 <code>pc 寄存器</code> 所指向的位置来执行我们的代码的，在 64 位平台上 <code>pc 寄存器 = rip</code></p>
 <p>CPU 无法理解文本，只能执行一条一条的二进制机器码指令<br>就是一行一行解析后面的二进制代码然后再去执行的，每次执行完一条指令，pc 寄存器就指向下一条继续执行，对于CPU来说没有什么负担，就挨个去解释每条指令并执行就行了</p>
@@ -560,7 +563,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#对-Go-的-启动-和-执行流程-建立简答的宏观认识"><span class="nav-number">1.</span> <span class="nav-text">对 Go 的 启动 和 执行流程 建立简答的宏观认识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#理解可执行文件"><span class="nav-number">1.1.</span> <span class="nav-text">理解可执行文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实验"><span class="nav-number">1.1.1.</span> <span class="nav-text">实验</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-程序-hell-go-的编译过程"><span class="nav-number">1.2.</span> <span class="nav-text">Go 程序 hell.go 的编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可执行文件"><span class="nav-number">1.3.</span> <span class="nav-text">可执行文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可执行文件在不同操作系统上规范不一样"><span class="nav-number">1.3.1.</span> <span class="nav-text">可执行文件在不同操作系统上规范不一样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作系统执行可执行文件的步骤（以-Linux-为例）"><span class="nav-number">1.3.2.</span> <span class="nav-text">操作系统执行可执行文件的步骤（以 Linux 为例）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机是怎么执行我们的程序的呢？"><span class="nav-number">1.4.</span> <span class="nav-text">计算机是怎么执行我们的程序的呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runtime"><span class="nav-number">1.5.</span> <span class="nav-text">runtime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度器从什么地方启动"><span class="nav-number">1.6.</span> <span class="nav-text">调度器从什么地方启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度组件与调度循环"><span class="nav-number">1.7.</span> <span class="nav-text">调度组件与调度循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-func-去了哪里？"><span class="nav-number">1.8.</span> <span class="nav-text">go func 去了哪里？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine-的生产端"><span class="nav-number">1.8.1.</span> <span class="nav-text">goroutine 的生产端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine-的消费端"><span class="nav-number">1.8.2.</span> <span class="nav-text">goroutine 的消费端</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境搭建"><span class="nav-number">2.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-程序-hell-go-的编译过程"><span class="nav-number">3.</span> <span class="nav-text">Go 程序 hell.go 的编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可执行文件"><span class="nav-number">4.</span> <span class="nav-text">可执行文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可执行文件在不同操作系统上规范不一样"><span class="nav-number">4.1.</span> <span class="nav-text">可执行文件在不同操作系统上规范不一样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作系统执行可执行文件的步骤（以-Linux-为例）"><span class="nav-number">4.2.</span> <span class="nav-text">操作系统执行可执行文件的步骤（以 Linux 为例）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#寻找-go-程序入口"><span class="nav-number">4.3.</span> <span class="nav-text">寻找 go 程序入口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机是怎么执行我们的程序的呢？"><span class="nav-number">5.</span> <span class="nav-text">计算机是怎么执行我们的程序的呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runtime"><span class="nav-number">6.</span> <span class="nav-text">runtime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度器从什么地方启动"><span class="nav-number">7.</span> <span class="nav-text">调度器从什么地方启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度组件与调度循环"><span class="nav-number">8.</span> <span class="nav-text">调度组件与调度循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-func-去了哪里？"><span class="nav-number">9.</span> <span class="nav-text">go func 去了哪里？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine-的生产端"><span class="nav-number">9.1.</span> <span class="nav-text">goroutine 的生产端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine-的消费端"><span class="nav-number">9.2.</span> <span class="nav-text">goroutine 的消费端</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
