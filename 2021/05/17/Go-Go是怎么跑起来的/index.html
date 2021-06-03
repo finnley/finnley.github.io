@@ -32,13 +32,17 @@
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/2.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/3.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/4.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/go/3.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/6.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/7.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/8.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/9.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/10.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/5.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/6.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/7.png">
 <meta property="article:published_time" content="2021-05-17T14:40:20.000Z">
-<meta property="article:modified_time" content="2021-06-02T16:29:42.473Z">
+<meta property="article:modified_time" content="2021-06-03T00:18:58.900Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Go">
 <meta name="twitter:card" content="summary">
@@ -255,7 +259,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-06-03 00:29:42" itemprop="dateModified" datetime="2021-06-03T00:29:42+08:00">2021-06-03</time>
+                <time title="Modified: 2021-06-03 08:18:58" itemprop="dateModified" datetime="2021-06-03T08:18:58+08:00">2021-06-03</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -357,10 +361,13 @@
 <p><img src="/images/go/4.png" alt=""></p>
 <p>然后再通过 <code>dlv</code>, <code>dlv</code> 是 <code>go</code> 语言专用的 <code>Debug</code> 工具，通过 <code>dlv</code> 打一个断点 <code>b *0x455780</code> 就可以看到断点打到具体的某一个函数上</p>
 <p>其实不需要打断点，默认就是就程序的入口位置，可以使用 <code>si</code> 回车，就会看到指向的程序入口位置</p>
-<h2 id="计算机是怎么执行我们的程序的呢？"><a href="#计算机是怎么执行我们的程序的呢？" class="headerlink" title="计算机是怎么执行我们的程序的呢？"></a>计算机是怎么执行我们的程序的呢？</h2><p>目标：了解计算机CPU是怎么执行二进制文件中的指令</p>
+<h2 id="计算机是怎么执行我们的程序的呢？"><a href="#计算机是怎么执行我们的程序的呢？" class="headerlink" title="计算机是怎么执行我们的程序的呢？"></a>计算机是怎么执行我们的程序的呢？</h2><p><img src="/images/go/4.png" alt=""></p>
+<p>CPU 无法理解文本，只能执行一条一条的二进制机器码指令<br>就是一行一行解析后面的二进制代码然后再去执行的，每次执行完一条指令，<code>pc 寄存器</code> 就指向下一条指令的位置继续执行，对于CPU来说没有什么负担，就挨个去解释每条指令并执行就可以了</p>
 <p>从文本代码编译之后，最终生成文件里面只有汇编指令，有一个非常常见的通用寄存机叫 <code>pc 寄存器</code>，CPU就是靠 <code>pc 寄存器</code> 所指向的位置来执行我们的代码的，在 64 位平台上 <code>pc 寄存器 = rip</code></p>
-<p>CPU 无法理解文本，只能执行一条一条的二进制机器码指令<br>就是一行一行解析后面的二进制代码然后再去执行的，每次执行完一条指令，pc 寄存器就指向下一条继续执行，对于CPU来说没有什么负担，就挨个去解释每条指令并执行就行了</p>
-<h2 id="runtime"><a href="#runtime" class="headerlink" title="runtime"></a>runtime</h2><p>目标：了解 Go 语言本身编译出来的二进制在预执行起来之后是怎么组成的</p>
+<h2 id="runtime"><a href="#runtime" class="headerlink" title="runtime"></a>runtime</h2><ul>
+<li>了解 Go 语言本身编译出来的二进制在预执行起来之后是怎么组成的?</li>
+</ul>
+<p><img src="/images/go/6.png" alt=""></p>
 <p>GO 的可执行文件由两部分组成</p>
 <ol>
 <li><p>runtime</p>
@@ -368,7 +375,7 @@
 <li><p>用户代码</p>
 </li>
 </ol>
-<p>Go 语言是一门有 runtime 的语言，可以认为 runtime 是为了实现额外的功能，有程序员提供的在程序运行时自动加载/运行的一些模块</p>
+<p>Go 语言是一门有 <code>runtime</code> 的语言，可以认为 <code>runtime</code> 是为了实现额外的功能，由程序员提供的在程序运行时自动加载/运行的一些模块</p>
 <p>上面是我们些的 GO 程序代码，下面就是 Runtime ，GO 代码通过一些比如 goroutine 的创建，或者 channel 的操作，或者内存的分配来和 Runtime 进行交互，Runtime 负责管理我们提交的一些任务，它和操作系统是通过系统调用和线程的调用来做交互的，也有人说 runtime 相当于 go 的 kernel ，可以这么理解</p>
 <ul>
 <li>Go 语言的 runtime 包括：</li>
@@ -380,7 +387,7 @@
 <ol start="2">
 <li>Netpoll</li>
 </ol>
-<p>为了支持高并发，原生的在 runtime 里面实现了一套网络 FD 管理流程</p>
+<p>为了支持高并发，原生的在 runtime 里面实现了一套网络 FD 管理流程，比如网络轮询负责网络 FD 相关的读写，就绪事件</p>
 <ol start="3">
 <li>Memory</li>
 </ol>
@@ -389,17 +396,32 @@
 <li>Garbage</li>
 </ol>
 <p>当内存不再需要时，负责内存回收</p>
-<p>这些模块中（runtime 中的四座大山），最核心的就是 <code>Scheduler</code> 调度器，它负责串联所有的 runtime 流程</p>
-<h2 id="调度器从什么地方启动"><a href="#调度器从什么地方启动" class="headerlink" title="调度器从什么地方启动"></a>调度器从什么地方启动</h2><p>通过 entry_point 找到 Go 进程的执行入口，它会通过三个汇编函数一路跳到 <code>runtime.rt0_go</code> 这个函数里面，这个函数是初始化的一个非常重要的函数，它会执行参数的初始化，全局 <code>m0</code>, <code>g0</code> 的初始化，这是一个特殊的线程，<code>m0</code> 执行的是应用的主线程；<br>获取CPU的核心数；<br>初始化内置的数据结构；<br>执行用户的main主函数，这些就是主线程要做的事情</p>
-<p>m0: Go 程序启动后创建的第一个线程；</p>
+<p>  这些模块中（runtime 中的四座大山），最核心的就是 <code>Scheduler</code> 调度器，它负责串联所有的 runtime 流程</p>
+<h2 id="调度器从什么地方启动"><a href="#调度器从什么地方启动" class="headerlink" title="调度器从什么地方启动"></a>调度器从什么地方启动</h2><p><img src="/images/go/7.png" alt=""></p>
+<p>上面开始的时候通过 <code>entry point</code> 找到 Go 进程的执行入口，它会通过三个汇编函数一路跳到 <code>runtime.rt0_go</code> 这个函数里面，这个函数是初始化的一个非常重要的函数</p>
+<p><img src="/images/go/8.png" alt=""></p>
+<ol>
+<li><p>它会执行参数的初始化；</p>
+</li>
+<li><p>全局 <code>m0</code>, <code>g0</code> 的初始化，这是一个特殊的线程，<code>m0</code> 执行的是应用的主线程；</p>
+</li>
+<li><p>获取CPU的核心数；</p>
+</li>
+<li><p>然后初始化内置的数据结构；</p>
+</li>
+<li><p>执行用户的main主函数，这些就是主线程要做的事情</p>
+<p>m0是 Go 程序启动后创建的第一个线程；</p>
+</li>
+</ol>
 <h2 id="调度组件与调度循环"><a href="#调度组件与调度循环" class="headerlink" title="调度组件与调度循环"></a>调度组件与调度循环</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go func() &#123;</span><br><span class="line">  println(&quot;hello world in gorouine!&quot;)</span><br><span class="line">&#125; ()</span><br></pre></td></tr></table></figure>
 
-<p>每次写下上面的一段语句的时候，到底发生了什么？</p>
-<p>其实就是向 <code>runtime</code> 提交了一个计算任务。func() { xxx } 里面包裹的代码就是计算任务的内容，它包含的一坨代码，这坨代码已经被编译到二进制文件里面了，sync 包其实并不是 runtime 的一部分，sync 包只是 go 语言的一个标准库，它依赖了 runtime 提供的一些组件。</p>
-<p>既然有提交任务，就会有人去消费这个任务，所以 Go 的调度流程本质上是一个 <code>生产-消费</code> 流程</p>
-<p><img src="/images/go/3.png" alt=""></p>
-<p>平时开发中会写一些 <code>生产-消费</code> 程序，常见就是消息队列，在右边生产端会不停的提交任务，对于程序来说就是每次 go func 一次都是提交一个任务，这个任务肯定会进入某个队列，然后在队列的另一端会有人不停的消费这个任务去执行，执行完之后相当于这个任务被执行掉了，对于用户来说就是目标达到了，把我们的代码都执行了一遍</p>
-<p><img src="/images/go/4.png" alt=""></p>
+<ul>
+<li>每次写下上面的一段语句的时候，到底发生了什么？</li>
+</ul>
+<p>其实就是向 <code>runtime</code> 提交了一个计算任务。func() { xxx } 里面包裹的代码就是计算任务的内容，它包含的一坨代码，这坨代码已经被编译到二进制文件里面了，每次启动一个 <code>goroutine</code> 就相当于向 <code>runtime</code> 提交了一个任务，既然有提交任务，就应该有人去消费这个任务，所以 Go 的调度流程本质上是一个 <code>生产-消费</code> 过程</p>
+<p><img src="/images/go/9.png" alt=""></p>
+<p>平时开发中会写一些 <code>生产-消费</code> 程序，常见就是消息队列，在右边生产端会不停的提交任务，对于程序来说就是每次 <code>go func</code> 一次都是提交一个任务，这个任务肯定会进入某个队列，然后在队列的另一端会有人不停的消费这个任务去执行，执行完之后相当于这个任务被执行掉了，对于用户来说就是目标达到了，把我们的代码都执行了一遍；</p>
+<p><img src="/images/go/10.png" alt=""></p>
 <p>在 runtime 中，这些都是有一些角色的，右边的生产者相当于每次 <code>go func() {}</code> 的时候都生产了一把，中间的队列（queue），任务会被打包成 <code>协程</code> ，<code>协程</code> 在上面的模型叫 <code>G</code>， 也就是 <code>goroutine</code> ，<code>goroutine</code> 它最终是进入了专门的队列，队列的另一端消费的就是 <code>线程-M</code>，线程是一直在循环执行消费操作来消费这些任务</p>
 <p>为了能够在性能上达到更好的目标，GO语言在队列上是有分级的，中间的队列会分为几个部分，比如有一个本地的执行队列 <code>local run queue</code> ，还有一个全局的执行队列 <code>global run queue</code>，当然实际上不止这两个，对于 runtime 来说，它就是来协调这些对象之间的工作，并且进一步去做优化</p>
 <h2 id="go-func-去了哪里？"><a href="#go-func-去了哪里？" class="headerlink" title="go func 去了哪里？"></a>go func 去了哪里？</h2><p><img src="/images/go/5.png" alt=""></p>
