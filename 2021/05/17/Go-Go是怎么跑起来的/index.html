@@ -83,8 +83,18 @@
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/53.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/54.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/55.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/56.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/57.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/58.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/59.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/60.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/61.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/62.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/63.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/64.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/65.png">
 <meta property="article:published_time" content="2021-05-17T14:40:20.000Z">
-<meta property="article:modified_time" content="2021-06-07T00:15:13.185Z">
+<meta property="article:modified_time" content="2021-06-08T00:19:59.133Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Go">
 <meta name="twitter:card" content="summary">
@@ -301,7 +311,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-06-07 08:15:13" itemprop="dateModified" datetime="2021-06-07T08:15:13+08:00">2021-06-07</time>
+                <time title="Modified: 2021-06-08 08:19:59" itemprop="dateModified" datetime="2021-06-08T08:19:59+08:00">2021-06-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -533,7 +543,7 @@
 <p>如果全局队列中没有获取到，或者当前不需要执行全局，那就会去本地的 run queue 中去拿，本地 run queue 拿的话一般都是优先从 <code>runnext</code> 中拿，如果本地 <code>runget</code> 也没有获取到，就会执行下面的 <code>findrunnable</code> 函数，<code>findrunnable</code> 函数是会分为上半部分 <code>top</code> 和下半部分 <code>stop</code>;</p>
 <p><code>top</code> 部分也会反复的再去本地队列中拿，如果还是拿不到，就需要加锁去全局队列中获取，如果全局队列还是没有获取到，就需要去看下当前的网络轮询情况 <code>netpoll</code>，如果这个地方能找到 <code>goroutine</code> 的话，就直接拿去执行，并且把这些待执行的 <code>goroutine</code> 放到全局队列中去；如果 <code>netpoll</code> 执行完后还是没有拿到可以执行的 <code>goroutine</code>，这个时候就需要从其他的 <code>P</code> 里面去偷一部分过来，这个就是常说的 <code>Work Stealing</code> 的逻辑；</p>
 <p>如果 <code>top</code> 部分执行完了还是没有获取，也就说明 <code>M</code> 没有机会得到执行了，下面也就会进入休眠流程了，在休眠之前还会锤死挣扎一下，再去从全局队列获取一下，然后再检查一遍所有的 run queue，再执行一次 <code>netpoll</code>，如果还是获取不到，就将当前的 <code>M</code> 停掉，这就是一个比较完整的消费端流程</p>
-<h4 id="调度循环"><a href="#调度循环" class="headerlink" title="调度循环"></a>调度循环</h4><p><img src="/images/go/31.png" alt=""></p>
+<h2 id="调度循环"><a href="#调度循环" class="headerlink" title="调度循环"></a>调度循环</h2><p><img src="/images/go/31.png" alt=""></p>
 <p>在 <code>P</code> 上有个叫 <code>schedtick</code> 的字段，它表示的是当前 <code>P</code> 上的调度循环执行过多少次，红色表示当前正在执行的函数，循环是会一直进行的，每次执行到 <code>execute</code> 函数的时候 <code>P.schedtick</code> 就会 <code>+1</code>， <code>P.schedtick</code> 是不会回到0的，会一直加，前面的 <code>61</code> 次其实就是判断 <code>schedtick</code> 的，<code>61</code> 是个魔法数字，就是调度循环每执行 <code>60次</code> ，第 <code>61</code> 次要去全局队列拿一个 <code>G</code> 出来执行；</p>
 <h4 id="schedtick-61-0"><a href="#schedtick-61-0" class="headerlink" title="schedtick % 61 == 0"></a>schedtick % 61 == 0</h4><p><img src="/images/go/32.png" alt=""></p>
 <p>每次执行 <code>schedule</code> 函数，第一步就是判断当前调度循环执行过多少次，也就是 <code>schedtick % 61</code> 是否为 0</p>
@@ -580,7 +590,52 @@
 <p><img src="/images/go/54.png" alt=""></p>
 <p>如上图会将头部的这一个蓝色部分拿出来单独去执行，而其他红色部分会放到 <code>local run queue</code> 本地执行队列里面，如下图</p>
 <p><img src="/images/go/55.png" alt=""></p>
+<p>请全局队列里面拿出一半的第一个会继续走刚才的流程，让它去线程上去执行，然后退出执行，进入调度循环</p>
+<p><img src="/images/go/56.png" alt=""></p>
+<p>如果全局队列为空的情况，也就是走的下面红色的分支</p>
+<p><img src="/images/go/57.png" alt=""></p>
+<p><img src="/images/go/58.png" alt=""></p>
+<p>也就是当前线程执行它所绑定的 <code>P</code> 的 <code>runnext</code> 和 <code>local run queue</code> 以及 <code>global run queue</code> 里面都没有可以执行的 <code>goroutine</code> ，这个时候只能去其他的 <code>P</code> 里面找，既然当前的 <code>P</code> 里面没有任务，那就去其他的 <code>P</code> 里面去找，如下图</p>
+<p><img src="/images/go/59.png" alt=""></p>
+<p>在其他 <code>P</code> 里面，再看下它的 <code>runnext</code> 或者 <code>local run queue</code> 里面有没有，取 <code>runnext</code> 和 <code>local run queue</code> 也是有判断规则的，就是前面没有偷到，为了增加偷到的概率，就要去 <code>runnext</code> 里面找，大部分情况都是从 <code>local run queue</code> 里面偷的，因为这样可以尽量多分担一些任务过来，比如上图中从其他 <code>P</code> 的 <code>local run queue</code> 里面偷了一半出来，这一半就是从 <code>local run queue</code> 的尾部摘出来的，如下图</p>
+<p><img src="/images/go/60.png" alt=""></p>
+<p>然后执行的是偷的 <code>goroutine</code> 里面最后一个，至于为什么，不知道，随机找其他的 <code>P</code> 是通过一个神奇的算法得到的，因为偷的时候是需要遍历其他所有的 <code>P</code>，比如这里是 8 个核心，会去找和 8 互质的质数，然后通过这个质数不断的加，通过加法能够实现一个伪随机的遍历过程</p>
+<p>执行过程中不会和 P 解绑，还是在 P0(第一个P) 上执行，只是要去看下其他 <code>P</code> 上的执行队列</p>
+<p><img src="/images/go/61.png" alt=""></p>
+<p><img src="/images/go/62.png" alt=""></p>
+<p><img src="/images/go/63.png" alt=""></p>
+<p>标红的部分会进入到当前 <code>M</code> 对应的 <code>local run queue</code> , 然后尾部蓝色的部分会拿去执行，此时当前的 <code>P</code> （P0，第一个）也就有了刚才 <code>P1</code> （被偷的 <code>P</code>） 的一半任务，也就是下次去执行的时候 <code>local run queue</code> 里面是有任务的</p>
+<p><img src="/images/go/64.png" alt=""></p>
+<p>后面的流程也就差不多</p>
+<p>上面偷取的过程就是常说的 <code>work stealing</code> 过程</p>
+<h4 id="什么是-M-N-模型"><a href="#什么是-M-N-模型" class="headerlink" title="什么是 M:N 模型"></a>什么是 M:N 模型</h4><p>为什么说 go 调度器是个 M:N 模型？</p>
+<p><img src="/images/go/65.png" alt=""></p>
+<p>M: 虽然 go 里面做了一些抽象，比如抽象出来的 goroutine, 可能很多人认为 goroutine 就是执行实体，其他 goroutine 不是执行实体，它只是一个计算任务，真正的执行实体不管什么语言最终都是线程，线程可以认为是 Linux 最小的调度单元，对于 go 来说也是如此，所有的逻辑运转和代码执行最终都是由 <code>M</code> 来做的，<code>M</code> 才是整个流转流程的核心，也是和系统里面的线程一一对应的</p>
+<p>P: 可以认为是 <code>M</code> 要执行任务时必须要获取到的 <code>Token</code>，必须要要有这个 Token，才会在 CPU 上有执行的权利，但是大部分人认为它是一个虚拟处理器</p>
+<h2 id="阻塞"><a href="#阻塞" class="headerlink" title="阻塞"></a>阻塞</h2><p>实际上在我们的代码里面有一些是需要和操作系统交互的，操作系统交互是通过系统调用，但是这些系统调用有可能会阻塞，除了系统调用，还会其他各种阻塞，如果这些阻塞在 go runtime 里面不去处理就会出现很多问题</p>
+<p>比如 M 绑定了 P才能去执行，现在有 8 个 P，如果有 8 个线程正在执行阻塞操作，比如在操作 channel, 可能卡了，这个时候没有任务的 P，其他新来的 goroutine 创建出来的线程没有办法获取到 P，此时整个系统的吞吐量就下去了，所以 runtime 就需要能处理用户的这些阻塞任务</p>
+<h3 id="阻塞的几种场景"><a href="#阻塞的几种场景" class="headerlink" title="阻塞的几种场景"></a>阻塞的几种场景</h3><p>  在线程发生阻塞的时候会无限制地创建线程么？</p>
+<p>并不会！！！</p>
+<ol>
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; channel send:</span><br><span class="line">var ch &#x3D; make(chan int)</span><br><span class="line">ch &lt;- 1</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; channel recv:</span><br><span class="line">var ch &#x3D; make(chan int)</span><br><span class="line"></span><br><span class="line">&lt;- ch</span><br></pre></td></tr></table></figure>
+</li>
+<li></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; net write</span><br><span class="line">var c net.Conn</span><br><span class="line">var buf &#x3D; []byte(&quot;hello&quot;)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; send buffer full, write blacked</span><br><span class="line">n, err :&#x3D; c.Write(buf)</span><br></pre></td></tr></table></figure>
 
+<ol start="3">
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; net read</span><br><span class="line">var c net.Conn</span><br><span class="line">var buf &#x3D; make([]byte, 1024)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; data not ready, block here</span><br><span class="line">n, err :&#x3D; c.Read(buf)</span><br></pre></td></tr></table></figure>
+</li>
+<li></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">time.Sleep(time.Hour)</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var (</span><br><span class="line">  ch1 &#x3D; make(chan int)</span><br><span class="line">  ch2 &#x3D; make(chan int)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; no case ready, block</span><br><span class="line">select &#123;</span><br><span class="line">  case &lt;- ch1:</span><br><span class="line">  println(&quot;ch1 ready&quot;)</span><br><span class="line">  case &lt;- ch2:</span><br><span class="line">  println(&quot;ch2 ready&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var l sync.RWMutex</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; somebody already grab the lock</span><br><span class="line">&#x2F;&#x2F; block here</span><br><span class="line"></span><br><span class="line">l.Lock()</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -689,7 +744,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境搭建"><span class="nav-number">2.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-程序-hell-go-的编译过程"><span class="nav-number">3.</span> <span class="nav-text">Go 程序 hell.go 的编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可执行文件"><span class="nav-number">4.</span> <span class="nav-text">可执行文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可执行文件在不同操作系统上规范不一样"><span class="nav-number">4.1.</span> <span class="nav-text">可执行文件在不同操作系统上规范不一样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作系统执行可执行文件的步骤（以-Linux-为例）"><span class="nav-number">4.2.</span> <span class="nav-text">操作系统执行可执行文件的步骤（以 Linux 为例）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#寻找-go-程序入口"><span class="nav-number">4.3.</span> <span class="nav-text">寻找 go 程序入口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机是怎么执行我们的程序的呢？"><span class="nav-number">5.</span> <span class="nav-text">计算机是怎么执行我们的程序的呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runtime"><span class="nav-number">6.</span> <span class="nav-text">runtime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度器从什么地方启动"><span class="nav-number">7.</span> <span class="nav-text">调度器从什么地方启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度组件与调度循环"><span class="nav-number">8.</span> <span class="nav-text">调度组件与调度循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-func-去了哪里？"><span class="nav-number">9.</span> <span class="nav-text">go func 去了哪里？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine-的生产端"><span class="nav-number">9.1.</span> <span class="nav-text">goroutine 的生产端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#runnext-为空的情况"><span class="nav-number">9.1.1.</span> <span class="nav-text">runnext 为空的情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#runnext-非空的情况"><span class="nav-number">9.1.2.</span> <span class="nav-text">runnext 非空的情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#local-run-queue-满的情况"><span class="nav-number">9.1.3.</span> <span class="nav-text">local run queue 满的情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine-的消费端"><span class="nav-number">9.2.</span> <span class="nav-text">goroutine 的消费端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#调度循环"><span class="nav-number">9.2.1.</span> <span class="nav-text">调度循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#schedtick-61-0"><span class="nav-number">9.2.2.</span> <span class="nav-text">schedtick % 61 &#x3D;&#x3D; 0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#schedtick-61-0-1"><span class="nav-number">9.2.3.</span> <span class="nav-text">schedtick % 61 !&#x3D; 0</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#目标"><span class="nav-number">1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境搭建"><span class="nav-number">2.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Go-程序-hell-go-的编译过程"><span class="nav-number">3.</span> <span class="nav-text">Go 程序 hell.go 的编译过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可执行文件"><span class="nav-number">4.</span> <span class="nav-text">可执行文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可执行文件在不同操作系统上规范不一样"><span class="nav-number">4.1.</span> <span class="nav-text">可执行文件在不同操作系统上规范不一样</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作系统执行可执行文件的步骤（以-Linux-为例）"><span class="nav-number">4.2.</span> <span class="nav-text">操作系统执行可执行文件的步骤（以 Linux 为例）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#寻找-go-程序入口"><span class="nav-number">4.3.</span> <span class="nav-text">寻找 go 程序入口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算机是怎么执行我们的程序的呢？"><span class="nav-number">5.</span> <span class="nav-text">计算机是怎么执行我们的程序的呢？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#runtime"><span class="nav-number">6.</span> <span class="nav-text">runtime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度器从什么地方启动"><span class="nav-number">7.</span> <span class="nav-text">调度器从什么地方启动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度组件与调度循环"><span class="nav-number">8.</span> <span class="nav-text">调度组件与调度循环</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#go-func-去了哪里？"><span class="nav-number">9.</span> <span class="nav-text">go func 去了哪里？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine-的生产端"><span class="nav-number">9.1.</span> <span class="nav-text">goroutine 的生产端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#runnext-为空的情况"><span class="nav-number">9.1.1.</span> <span class="nav-text">runnext 为空的情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#runnext-非空的情况"><span class="nav-number">9.1.2.</span> <span class="nav-text">runnext 非空的情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#local-run-queue-满的情况"><span class="nav-number">9.1.3.</span> <span class="nav-text">local run queue 满的情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goroutine-的消费端"><span class="nav-number">9.2.</span> <span class="nav-text">goroutine 的消费端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调度循环"><span class="nav-number">10.</span> <span class="nav-text">调度循环</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#schedtick-61-0"><span class="nav-number">10.0.1.</span> <span class="nav-text">schedtick % 61 &#x3D;&#x3D; 0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#schedtick-61-0-1"><span class="nav-number">10.0.2.</span> <span class="nav-text">schedtick % 61 !&#x3D; 0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#什么是-M-N-模型"><span class="nav-number">10.0.3.</span> <span class="nav-text">什么是 M:N 模型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#阻塞"><span class="nav-number">11.</span> <span class="nav-text">阻塞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#阻塞的几种场景"><span class="nav-number">11.1.</span> <span class="nav-text">阻塞的几种场景</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
