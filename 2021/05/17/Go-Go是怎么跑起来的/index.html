@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/2.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/3.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/4.png">
-<meta property="og:image" content="https://notes.xuepincat.com/images/go/4.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/5.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/6.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/7.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/8.png">
@@ -59,6 +59,11 @@
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/29.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/30.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/31.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/78.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/79.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/80.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/81.png">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/82.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/32.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/33.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/34.png">
@@ -106,7 +111,7 @@
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/76.png">
 <meta property="og:image" content="https://notes.xuepincat.com/images/go/77png">
 <meta property="article:published_time" content="2021-05-17T14:40:20.000Z">
-<meta property="article:modified_time" content="2021-06-08T23:59:44.624Z">
+<meta property="article:modified_time" content="2021-06-09T00:16:47.618Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Go">
 <meta name="twitter:card" content="summary">
@@ -323,7 +328,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-06-09 07:59:44" itemprop="dateModified" datetime="2021-06-09T07:59:44+08:00">2021-06-09</time>
+                <time title="Modified: 2021-06-09 08:16:47" itemprop="dateModified" datetime="2021-06-09T08:16:47+08:00">2021-06-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -425,7 +430,7 @@
 <p><img src="/images/go/4.png" alt=""></p>
 <p>然后再通过 <code>dlv</code>, <code>dlv</code> 是 <code>go</code> 语言专用的 <code>Debug</code> 工具，通过 <code>dlv</code> 打一个断点 <code>b *0x455780</code> 就可以看到断点打到具体的某一个函数上</p>
 <p>其实不需要打断点，默认就是就程序的入口位置，可以使用 <code>si</code> 回车，就会看到指向的程序入口位置</p>
-<h2 id="计算机是怎么执行我们的程序的呢？"><a href="#计算机是怎么执行我们的程序的呢？" class="headerlink" title="计算机是怎么执行我们的程序的呢？"></a>计算机是怎么执行我们的程序的呢？</h2><p><img src="/images/go/4.png" alt=""></p>
+<h2 id="计算机是怎么执行我们的程序的呢？"><a href="#计算机是怎么执行我们的程序的呢？" class="headerlink" title="计算机是怎么执行我们的程序的呢？"></a>计算机是怎么执行我们的程序的呢？</h2><p><img src="/images/go/5.png" alt=""></p>
 <p>CPU 无法理解文本，只能执行一条一条的二进制机器码指令<br>就是一行一行解析后面的二进制代码然后再去执行的，每次执行完一条指令，<code>pc 寄存器</code> 就指向下一条指令的位置继续执行，对于CPU来说没有什么负担，就挨个去解释每条指令并执行就可以了</p>
 <p>从文本代码编译之后，最终生成文件里面只有汇编指令，有一个非常常见的通用寄存机叫 <code>pc 寄存器</code>，CPU就是靠 <code>pc 寄存器</code> 所指向的位置来执行我们的代码的，在 64 位平台上 <code>pc 寄存器 = rip</code></p>
 <h2 id="runtime"><a href="#runtime" class="headerlink" title="runtime"></a>runtime</h2><ul>
@@ -556,6 +561,11 @@
 <p><code>top</code> 部分也会反复的再去本地队列中拿，如果还是拿不到，就需要加锁去全局队列中获取，如果全局队列还是没有获取到，就需要去看下当前的网络轮询情况 <code>netpoll</code>，如果这个地方能找到 <code>goroutine</code> 的话，就直接拿去执行，并且把这些待执行的 <code>goroutine</code> 放到全局队列中去；如果 <code>netpoll</code> 执行完后还是没有拿到可以执行的 <code>goroutine</code>，这个时候就需要从其他的 <code>P</code> 里面去偷一部分过来，这个就是常说的 <code>Work Stealing</code> 的逻辑；</p>
 <p>如果 <code>top</code> 部分执行完了还是没有获取，也就说明 <code>M</code> 没有机会得到执行了，下面也就会进入休眠流程了，在休眠之前还会锤死挣扎一下，再去从全局队列获取一下，然后再检查一遍所有的 run queue，再执行一次 <code>netpoll</code>，如果还是获取不到，就将当前的 <code>M</code> 停掉，这就是一个比较完整的消费端流程</p>
 <h2 id="调度循环"><a href="#调度循环" class="headerlink" title="调度循环"></a>调度循环</h2><p><img src="/images/go/31.png" alt=""></p>
+<p><img src="/images/go/78.png" alt=""></p>
+<p><img src="/images/go/79.png" alt=""></p>
+<p><img src="/images/go/80.png" alt=""></p>
+<p><img src="/images/go/81.png" alt=""></p>
+<p><img src="/images/go/82.png" alt=""></p>
 <p>在 <code>P</code> 上有个叫 <code>schedtick</code> 的字段，它表示的是当前 <code>P</code> 上的调度循环执行过多少次，红色表示当前正在执行的函数，循环是会一直进行的，每次执行到 <code>execute</code> 函数的时候 <code>P.schedtick</code> 就会 <code>+1</code>， <code>P.schedtick</code> 是不会回到0的，会一直加，前面的 <code>61</code> 次其实就是判断 <code>schedtick</code> 的，<code>61</code> 是个魔法数字，就是调度循环每执行 <code>60次</code> ，第 <code>61</code> 次要去全局队列拿一个 <code>G</code> 出来执行；</p>
 <h4 id="schedtick-61-0"><a href="#schedtick-61-0" class="headerlink" title="schedtick % 61 == 0"></a>schedtick % 61 == 0</h4><p><img src="/images/go/32.png" alt=""></p>
 <p>每次执行 <code>schedule</code> 函数，第一步就是判断当前调度循环执行过多少次，也就是 <code>schedtick % 61</code> 是否为 0</p>
