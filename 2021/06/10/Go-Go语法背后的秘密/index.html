@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="怎么找 make 和 new 这些函数的具体实现？ 会员服务 会员服务，给用户分等级：  初级会员，发帖数 &gt; 10 中级会员，充值 &gt; 1000RMB 高级会员，发帖数 &gt; 100，充值 &gt; 10000RMB  如果项目数 &#x3D; 几百，每个项目都有自己的会员规则，怎么办？  封装统一的数据查询服务 封装统一的数据查询服务：  用户提供查询条件，会经常变 代理去不同的模块查数据 外部模块没有统一的数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go语法背后的秘密">
+<meta property="og:url" content="https://notes.xuepincat.com/2021/06/10/Go-Go%E8%AF%AD%E6%B3%95%E8%83%8C%E5%90%8E%E7%9A%84%E7%A7%98%E5%AF%86/index.html">
+<meta property="og:site_name" content="Finnley&#39;s Notes">
+<meta property="og:description" content="怎么找 make 和 new 这些函数的具体实现？ 会员服务 会员服务，给用户分等级：  初级会员，发帖数 &gt; 10 中级会员，充值 &gt; 1000RMB 高级会员，发帖数 &gt; 100，充值 &gt; 10000RMB  如果项目数 &#x3D; 几百，每个项目都有自己的会员规则，怎么办？  封装统一的数据查询服务 封装统一的数据查询服务：  用户提供查询条件，会经常变 代理去不同的模块查数据 外部模块没有统一的数">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://notes.xuepincat.com/images/go/83.png">
+<meta property="article:published_time" content="2021-06-09T16:53:09.000Z">
+<meta property="article:modified_time" content="2021-06-10T00:21:44.618Z">
+<meta property="article:author" content="Finnley">
+<meta property="article:tag" content="Go">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://notes.xuepincat.com/images/go/83.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2021/06/10/Go-Go%E8%AF%AD%E6%B3%95%E8%83%8C%E5%90%8E%E7%9A%84%E7%A7%98%E5%AF%86/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Go语法背后的秘密 | Finnley's Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Finnley's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Finnley's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/06/10/Go-Go%E8%AF%AD%E6%B3%95%E8%83%8C%E5%90%8E%E7%9A%84%E7%A7%98%E5%AF%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Go语法背后的秘密
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-06-10 00:53:09 / Modified: 08:21:44" itemprop="dateCreated datePublished" datetime="2021-06-10T00:53:09+08:00">2021-06-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="怎么找-make-和-new-这些函数的具体实现？"><a href="#怎么找-make-和-new-这些函数的具体实现？" class="headerlink" title="怎么找 make 和 new 这些函数的具体实现？"></a>怎么找 make 和 new 这些函数的具体实现？</h2><h2 id="会员服务"><a href="#会员服务" class="headerlink" title="会员服务"></a>会员服务</h2><p>会员服务，给用户分等级：</p>
+<p>初级会员，发帖数 &gt; 10<br>中级会员，充值 &gt; 1000RMB<br>高级会员，发帖数 &gt; 100，充值 &gt; 10000RMB</p>
+<p>如果项目数 = 几百，每个项目都有自己的会员规则，怎么办？</p>
+<h2 id="封装统一的数据查询服务"><a href="#封装统一的数据查询服务" class="headerlink" title="封装统一的数据查询服务"></a>封装统一的数据查询服务</h2><p>封装统一的数据查询服务：</p>
+<p>用户提供查询条件，会经常变<br>代理去不同的模块查数据<br>外部模块没有统一的数据获取规范</p>
+<p>每次我们的用户踢了需求，我们就一定要写一遍代码么？</p>
+<h2 id="SQL-审计"><a href="#SQL-审计" class="headerlink" title="SQL 审计"></a>SQL 审计</h2><p>怎么获取到表的索引？<br>怎么把用户代码里的 SQL 扫描出来？<br>打算在上面的时候能自动做一些拦截，提醒用户去给表加索引？</p>
+<h2 id="软件定制"><a href="#软件定制" class="headerlink" title="软件定制"></a>软件定制</h2><p>公司卖出去的服务软件，客户要自己定制，但不想给客户源码，要支持客户写的扩展代码能在我们的模块上运行</p>
+<h2 id="编译原理基础"><a href="#编译原理基础" class="headerlink" title="编译原理基础"></a>编译原理基础</h2><p><img src="/images/go/83.png" alt=""></p>
+<p>编译流程大概分为两个部分，一部分是编译器前端，一部分是编译器后端</p>
+<h3 id="词法分析（Lexical-Analysis）"><a href="#词法分析（Lexical-Analysis）" class="headerlink" title="词法分析（Lexical Analysis）"></a>词法分析（Lexical Analysis）</h3><ul>
+<li>main.go</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; this is the main function</span><br><span class="line">func main() &#123;</span><br><span class="line">	println(1+2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>print.go</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;go&#x2F;scanner&quot;</span><br><span class="line">	&quot;go&#x2F;token&quot;</span><br><span class="line">	&quot;io&#x2F;ioutil&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	&#x2F;&#x2F; src is the input that we want to tokenize.</span><br><span class="line">	src, _ :&#x3D; ioutil.ReadFile(&#96;main.go&#96;)</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F; Initialize the scanner.</span><br><span class="line">	var s scanner.Scanner</span><br><span class="line">	fset :&#x3D; token.NewFileSet()                      &#x2F;&#x2F; positions are relative to fset</span><br><span class="line">	file :&#x3D; fset.AddFile(&quot;&quot;, fset.Base(), len(src)) &#x2F;&#x2F; register input &quot;file&quot;</span><br><span class="line">	s.Init(file, src, nil &#x2F;* no error handler *&#x2F;, scanner.ScanComments)</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F; Repeated calls to Scan yield the token sequence found in the input.</span><br><span class="line">	fmt.Printf(&quot;%s\t%s\t%s\n&quot;, &quot;pos&quot;, &quot;token&quot;, &quot;literal&quot;)</span><br><span class="line">	for &#123;</span><br><span class="line">		pos, tok, lit :&#x3D; s.Scan()</span><br><span class="line">		if tok &#x3D;&#x3D; token.EOF &#123;</span><br><span class="line">			break</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Printf(&quot;%s\t%s\t%q\n&quot;, fset.Position(pos), tok, lit)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>go run print.go，会将 main.go 中所有的 token 打印出来</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ go run print.go</span><br><span class="line">pos	token	literal</span><br><span class="line">1:1	package	&quot;package&quot;</span><br><span class="line">1:9	IDENT	&quot;main&quot;</span><br><span class="line">1:13	;	&quot;\n&quot;</span><br><span class="line">3:1	COMMENT	&quot;&#x2F;&#x2F; this is the main function&quot;</span><br><span class="line">4:1	func	&quot;func&quot;</span><br><span class="line">4:6	IDENT	&quot;main&quot;</span><br><span class="line">4:10	(	&quot;&quot;</span><br><span class="line">4:11	)	&quot;&quot;</span><br><span class="line">4:13	&#123;	&quot;&quot;</span><br><span class="line">5:2	IDENT	&quot;println&quot;</span><br><span class="line">5:9	(	&quot;&quot;</span><br><span class="line">5:10	INT	&quot;1&quot;</span><br><span class="line">5:11	+	&quot;&quot;</span><br><span class="line">5:12	INT	&quot;2&quot;</span><br><span class="line">5:13	)	&quot;&quot;</span><br><span class="line">5:14	;	&quot;\n&quot;</span><br><span class="line">6:1	&#125;	&quot;&quot;</span><br><span class="line">6:2	;	&quot;\n&quot;</span><br></pre></td></tr></table></figure>
+
+<p>词法分析得到上面的 token 流， token 流最终变成汇编还是不行，还需要先转成某种数据结构才可以用计算机的逻辑去处理，这一步就是语法分析，语法分析就是读入一个一个 token，把它们转成树结构</p>
+<h3 id="语法分析（Syntax-Analysis）"><a href="#语法分析（Syntax-Analysis）" class="headerlink" title="语法分析（Syntax Analysis）"></a>语法分析（Syntax Analysis）</h3><pre><code>https://astexplorer.net/</code></pre><ul>
+<li>main.go</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; this is the main function</span><br><span class="line">func main() &#123;</span><br><span class="line">	println(1 + 2)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>print.go</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;go&#x2F;ast&quot;</span><br><span class="line">	&quot;go&#x2F;parser&quot;</span><br><span class="line">	&quot;go&#x2F;token&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	fset :&#x3D; token.NewFileSet()</span><br><span class="line">	&#x2F;&#x2F; if the src parameter is nil, then will auto read the second filepath file</span><br><span class="line">	f, _ :&#x3D; parser.ParseFile(fset, &quot;.&#x2F;main.go&quot;, nil, parser.Mode(0))</span><br><span class="line"></span><br><span class="line">	for _, d :&#x3D; range f.Decls &#123;</span><br><span class="line">		ast.Print(fset, d)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>go run print.go，会打印所有函数声明的 AST</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">$ go run print.go</span><br><span class="line">     0  *ast.FuncDecl &#123;</span><br><span class="line">     1  .  Name: *ast.Ident &#123;</span><br><span class="line">     2  .  .  NamePos: .&#x2F;main.go:4:6</span><br><span class="line">     3  .  .  Name: &quot;main&quot;</span><br><span class="line">     4  .  .  Obj: *ast.Object &#123;</span><br><span class="line">     5  .  .  .  Kind: func</span><br><span class="line">     6  .  .  .  Name: &quot;main&quot;</span><br><span class="line">     7  .  .  .  Decl: *(obj @ 0)</span><br><span class="line">     8  .  .  &#125;</span><br><span class="line">     9  .  &#125;</span><br><span class="line">    10  .  Type: *ast.FuncType &#123;</span><br><span class="line">    11  .  .  Func: .&#x2F;main.go:4:1</span><br><span class="line">    12  .  .  Params: *ast.FieldList &#123;</span><br><span class="line">    13  .  .  .  Opening: .&#x2F;main.go:4:10</span><br><span class="line">    14  .  .  .  Closing: .&#x2F;main.go:4:11</span><br><span class="line">    15  .  .  &#125;</span><br><span class="line">    16  .  &#125;</span><br><span class="line">    17  .  Body: *ast.BlockStmt &#123;</span><br><span class="line">    18  .  .  Lbrace: .&#x2F;main.go:4:13</span><br><span class="line">    19  .  .  List: []ast.Stmt (len &#x3D; 1) &#123;</span><br><span class="line">    20  .  .  .  0: *ast.ExprStmt &#123;</span><br><span class="line">    21  .  .  .  .  X: *ast.CallExpr &#123;</span><br><span class="line">    22  .  .  .  .  .  Fun: *ast.Ident &#123;</span><br><span class="line">    23  .  .  .  .  .  .  NamePos: .&#x2F;main.go:5:2</span><br><span class="line">    24  .  .  .  .  .  .  Name: &quot;println&quot;</span><br><span class="line">    25  .  .  .  .  .  &#125;</span><br><span class="line">    26  .  .  .  .  .  Lparen: .&#x2F;main.go:5:9</span><br><span class="line">    27  .  .  .  .  .  Args: []ast.Expr (len &#x3D; 1) &#123;</span><br><span class="line">    28  .  .  .  .  .  .  0: *ast.BinaryExpr &#123;</span><br><span class="line">    29  .  .  .  .  .  .  .  X: *ast.BasicLit &#123;</span><br><span class="line">    30  .  .  .  .  .  .  .  .  ValuePos: .&#x2F;main.go:5:10</span><br><span class="line">    31  .  .  .  .  .  .  .  .  Kind: INT</span><br><span class="line">    32  .  .  .  .  .  .  .  .  Value: &quot;1&quot;</span><br><span class="line">    33  .  .  .  .  .  .  .  &#125;</span><br><span class="line">    34  .  .  .  .  .  .  .  OpPos: .&#x2F;main.go:5:12</span><br><span class="line">    35  .  .  .  .  .  .  .  Op: +</span><br><span class="line">    36  .  .  .  .  .  .  .  Y: *ast.BasicLit &#123;</span><br><span class="line">    37  .  .  .  .  .  .  .  .  ValuePos: .&#x2F;main.go:5:14</span><br><span class="line">    38  .  .  .  .  .  .  .  .  Kind: INT</span><br><span class="line">    39  .  .  .  .  .  .  .  .  Value: &quot;2&quot;</span><br><span class="line">    40  .  .  .  .  .  .  .  &#125;</span><br><span class="line">    41  .  .  .  .  .  .  &#125;</span><br><span class="line">    42  .  .  .  .  .  &#125;</span><br><span class="line">    43  .  .  .  .  .  Ellipsis: -</span><br><span class="line">    44  .  .  .  .  .  Rparen: .&#x2F;main.go:5:15</span><br><span class="line">    45  .  .  .  .  &#125;</span><br><span class="line">    46  .  .  .  &#125;</span><br><span class="line">    47  .  .  &#125;</span><br><span class="line">    48  .  .  Rbrace: .&#x2F;main.go:6:1</span><br><span class="line">    49  .  &#125;</span><br><span class="line">    50  &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="语义分析（Semantic-Analysis）"><a href="#语义分析（Semantic-Analysis）" class="headerlink" title="语义分析（Semantic Analysis）"></a>语义分析（Semantic Analysis）</h3><p>在抽象语法树 AST 上做类型检查</p>
+<ul>
+<li>main.go</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; this is the main function</span><br><span class="line">func main() &#123;</span><br><span class="line">	var x int &#x3D; &quot;abc&quot;</span><br><span class="line">    println(x)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ go build main.go </span><br><span class="line"># command-line-arguments</span><br><span class="line">.&#x2F;main.go:4:6: cannot use &quot;abc&quot; (type untyped string) as type int in assignment</span><br></pre></td></tr></table></figure>
+
+<h3 id="中间代码（SSA）生成优化"><a href="#中间代码（SSA）生成优化" class="headerlink" title="中间代码（SSA）生成优化"></a>中间代码（SSA）生成优化</h3><pre><code>https://golang.design/gossa</code></pre><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func foo(a, b int) int &#123;</span><br><span class="line">    c :&#x3D; 8</span><br><span class="line">    retuen a * 4 + b * c</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>SSA(Single Static Assignment)的两⼤ 点是 <br>• Static: 每个变 只 赋值⼀次(因此应 叫常 更合 ) <br>• Single: 每个表 式只 做⼀个简单 算 对于复杂的表 式a<em>b+c</em>d<br> 拆分成: t0=a<em>b; t1=c</em>d; t2=t0+t1; 三个简单表 式 </p>
+<p>上面的 <code>a * 4 + b * c</code> 表达式是无法直接转成汇编的，必须把它们做一次简化成下面每次都是单独计算和赋值语句，然后才能转成汇编</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">fun foo(a, b int) int &#123;</span><br><span class="line">    c :&#x3D; 8</span><br><span class="line">    t0 :&#x3D; 1 * 4</span><br><span class="line">    t1 :&#x3D; b * c</span><br><span class="line">    t2 :&#x3D; t0 + t1</span><br><span class="line">    return t2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>本地使用 GOSSAFUNC=funcname go build xx.go</li>
+</ul>
+<h3 id="机器码生成"><a href="#机器码生成" class="headerlink" title="机器码生成"></a>机器码生成</h3><pre><code>https://godbolt.org/</code></pre><p>编译的最后一个阶段</p>
+<h3 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h3><p>最重要的就是进行虚拟地址重定位（Relocation）</p>
+<h2 id="编译与反编译"><a href="#编译与反编译" class="headerlink" title="编译与反编译"></a>编译与反编译</h2><h3 id="类型转换是啥原理？"><a href="#类型转换是啥原理？" class="headerlink" title="类型转换是啥原理？"></a>类型转换是啥原理？</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go tool compile -S .&#x2F;hello.go | grep &quot;hello.go:5&quot;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>hello.go</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	var a &#x3D; &quot;hello&quot;</span><br><span class="line">	var b &#x3D; []byte(a)</span><br><span class="line">	println(b)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>上面命令会生成 <code>.o</code> 目标文件，并把目标的汇编内容输出</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">$ ls</span><br><span class="line">hello.go</span><br><span class="line">$ cat hello.go</span><br><span class="line">package main</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">	var a &#x3D; &quot;hello&quot;</span><br><span class="line">	var b &#x3D; []byte(a)</span><br><span class="line">	println(b)</span><br><span class="line">&#125;</span><br><span class="line">$ go tool compile -S .&#x2F;hello.go| grep &quot;hello.go:5&quot;</span><br><span class="line">	0x0021 00033 (.&#x2F;hello.go:5)	PCDATA	$0, $1</span><br><span class="line">	0x0021 00033 (.&#x2F;hello.go:5)	PCDATA	$1, $0</span><br><span class="line">	0x0021 00033 (.&#x2F;hello.go:5)	LEAQ	&quot;&quot;..autotmp_2+64(SP), AX</span><br><span class="line">	0x0026 00038 (.&#x2F;hello.go:5)	PCDATA	$0, $0</span><br><span class="line">	0x0026 00038 (.&#x2F;hello.go:5)	MOVQ	AX, (SP)</span><br><span class="line">	0x002a 00042 (.&#x2F;hello.go:5)	PCDATA	$0, $1</span><br><span class="line">	0x002a 00042 (.&#x2F;hello.go:5)	LEAQ	go.string.&quot;hello&quot;(SB), AX</span><br><span class="line">	0x0031 00049 (.&#x2F;hello.go:5)	PCDATA	$0, $0</span><br><span class="line">	0x0031 00049 (.&#x2F;hello.go:5)	MOVQ	AX, 8(SP)</span><br><span class="line">	0x0036 00054 (.&#x2F;hello.go:5)	MOVQ	$5, 16(SP)</span><br><span class="line">	0x003f 00063 (.&#x2F;hello.go:5)	CALL	runtime.stringtoslicebyte(SB)</span><br><span class="line">	0x0044 00068 (.&#x2F;hello.go:5)	PCDATA	$0, $1</span><br><span class="line">	0x0044 00068 (.&#x2F;hello.go:5)	MOVQ	24(SP), AX</span><br><span class="line">	0x0049 00073 (.&#x2F;hello.go:5)	PCDATA	$0, $0</span><br><span class="line">	0x0049 00073 (.&#x2F;hello.go:5)	PCDATA	$1, $1</span><br><span class="line">	0x0049 00073 (.&#x2F;hello.go:5)	MOVQ	AX, &quot;&quot;.b.ptr+96(SP)</span><br><span class="line">	0x004e 00078 (.&#x2F;hello.go:5)	MOVQ	32(SP), CX</span><br><span class="line">	0x0053 00083 (.&#x2F;hello.go:5)	MOVQ	CX, &quot;&quot;.b.len+48(SP)</span><br><span class="line">	0x0058 00088 (.&#x2F;hello.go:5)	MOVQ	40(SP), DX</span><br><span class="line">	0x005d 00093 (.&#x2F;hello.go:5)	MOVQ	DX, &quot;&quot;.b.cap+56(SP)</span><br></pre></td></tr></table></figure>
+
+<h3 id="哪个代码块运行比较快"><a href="#哪个代码块运行比较快" class="headerlink" title="哪个代码块运行比较快"></a>哪个代码块运行比较快</h3><ul>
+<li>片段一</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">type person struct &#123;</span><br><span class="line">    age int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    var a &#x3D; &amp;person&#123;111&#125;</span><br><span class="line">    println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>片段二</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">type person struct &#123;</span><br><span class="line">    age int</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line">    var b &#x3D; persion &#123;111&#125;</span><br><span class="line">    var a &#x3D; &amp;b</span><br><span class="line">    println(a)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有人说片段一要比片段二快？</p>
+<ul>
+<li>操作步骤</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">✗ ls</span><br><span class="line">main.go</span><br><span class="line">➜  test1 git:(golearn) ✗ cat -n main.go</span><br><span class="line">     1	package main</span><br><span class="line">     2</span><br><span class="line">     3	type person struct &#123;</span><br><span class="line">     4		age int</span><br><span class="line">     5	&#125;</span><br><span class="line">     6</span><br><span class="line">     7	func main() &#123;</span><br><span class="line">     8		var a &#x3D; &amp;person&#123;111&#125;</span><br><span class="line">     9		println(a)</span><br><span class="line">    10	&#125;</span><br><span class="line">➜  test1 git:(golearn) ✗ go tool compile -S main.go | grep &quot;main.go:8&quot;</span><br><span class="line">	0x001d 00029 (main.go:8)	PCDATA	$0, $0</span><br><span class="line">	0x001d 00029 (main.go:8)	PCDATA	$1, $0</span><br><span class="line">	0x001d 00029 (main.go:8)	MOVQ	$0, &quot;&quot;..autotmp_2+8(SP)</span><br><span class="line">	0x0026 00038 (main.go:8)	MOVQ	$111, &quot;&quot;..autotmp_2+8(SP)</span><br></pre></td></tr></table></figure>
+
+<p>两行的版本：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">➜  test2 git:(golearn) ✗ ls</span><br><span class="line">main.go</span><br><span class="line">➜  test2 git:(golearn) ✗ cat -n main.go</span><br><span class="line">     1	package main</span><br><span class="line">     2</span><br><span class="line">     3	type person struct &#123;</span><br><span class="line">     4		age int</span><br><span class="line">     5	&#125;</span><br><span class="line">     6</span><br><span class="line">     7	func main() &#123;</span><br><span class="line">     8		var b &#x3D; person&#123;111&#125;</span><br><span class="line">     9		var a &#x3D; &amp;b</span><br><span class="line">    10		println(a)</span><br><span class="line">    11	&#125;</span><br><span class="line">➜  test2 git:(golearn) ✗ go tool compile -S main.go | grep -E &quot;(main.go:8|main.go:9)&quot;</span><br><span class="line">	0x001d 00029 (main.go:8)	PCDATA	$0, $0</span><br><span class="line">	0x001d 00029 (main.go:8)	PCDATA	$1, $0</span><br><span class="line">	0x001d 00029 (main.go:8)	MOVQ	$0, &quot;&quot;.b+8(SP)</span><br><span class="line">	0x0026 00038 (main.go:8)	MOVQ	$111, &quot;&quot;.b+8(SP)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Go/" rel="tag"># Go</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/17/Go-Go%E6%98%AF%E6%80%8E%E4%B9%88%E8%B7%91%E8%B5%B7%E6%9D%A5%E7%9A%84/" rel="prev" title="Go是怎么跑起来的">
+      <i class="fa fa-chevron-left"></i> Go是怎么跑起来的
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#怎么找-make-和-new-这些函数的具体实现？"><span class="nav-number">1.</span> <span class="nav-text">怎么找 make 和 new 这些函数的具体实现？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#会员服务"><span class="nav-number">2.</span> <span class="nav-text">会员服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#封装统一的数据查询服务"><span class="nav-number">3.</span> <span class="nav-text">封装统一的数据查询服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL-审计"><span class="nav-number">4.</span> <span class="nav-text">SQL 审计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#软件定制"><span class="nav-number">5.</span> <span class="nav-text">软件定制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译原理基础"><span class="nav-number">6.</span> <span class="nav-text">编译原理基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#词法分析（Lexical-Analysis）"><span class="nav-number">6.1.</span> <span class="nav-text">词法分析（Lexical Analysis）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语法分析（Syntax-Analysis）"><span class="nav-number">6.2.</span> <span class="nav-text">语法分析（Syntax Analysis）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#语义分析（Semantic-Analysis）"><span class="nav-number">6.3.</span> <span class="nav-text">语义分析（Semantic Analysis）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中间代码（SSA）生成优化"><span class="nav-number">6.4.</span> <span class="nav-text">中间代码（SSA）生成优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#机器码生成"><span class="nav-number">6.5.</span> <span class="nav-text">机器码生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链接"><span class="nav-number">6.6.</span> <span class="nav-text">链接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编译与反编译"><span class="nav-number">7.</span> <span class="nav-text">编译与反编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#类型转换是啥原理？"><span class="nav-number">7.1.</span> <span class="nav-text">类型转换是啥原理？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#哪个代码块运行比较快"><span class="nav-number">7.2.</span> <span class="nav-text">哪个代码块运行比较快</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Finnley"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Finnley</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">187</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

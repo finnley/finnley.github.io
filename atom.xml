@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2021-06-09T00:16:47.618Z</updated>
+  <updated>2021-06-10T00:21:44.618Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,49 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Go语法背后的秘密</title>
+    <link href="https://notes.xuepincat.com/2021/06/10/Go-Go%E8%AF%AD%E6%B3%95%E8%83%8C%E5%90%8E%E7%9A%84%E7%A7%98%E5%AF%86/"/>
+    <id>https://notes.xuepincat.com/2021/06/10/Go-Go%E8%AF%AD%E6%B3%95%E8%83%8C%E5%90%8E%E7%9A%84%E7%A7%98%E5%AF%86/</id>
+    <published>2021-06-09T16:53:09.000Z</published>
+    <updated>2021-06-10T00:21:44.618Z</updated>
+    
+    <summary type="html">
+    
+      怎么找 make 和 new 这些函数的具体实现？
+会员服务
+会员服务，给用户分等级：
+
+初级会员，发帖数 &gt; 10
+中级会员，充值 &gt; 1000RMB
+高级会员，发帖数 &gt; 100，充值 &gt; 10000RMB
+
+如果项目数 = 几百，每个项目都有自己的会员规则，怎么办？
+
+封装统一的数据查询服务
+封装统一的数据查询服务：
+
+用户提供查询条件，会经常变
+代理去不同的模块查数据
+外部模块没有统一的数据获取规范
+
+每次我们的用户踢了需求，我们就一定要写一遍代码么？
+
+SQL 审计
+怎么获取到表的索引？
+怎么把用户代码里的 SQL 扫描出来？
+打算在上面的时候能自动做一些拦截，提醒用户去给表加索引？
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/tags/Go/"/>
+    
+  </entry>
   
   <entry>
     <title>Go是怎么跑起来的</title>
@@ -864,37 +907,6 @@ go: creating new go.mod: module github.com/finnley/geese-cros
     
       <category term="高并发" scheme="https://notes.xuepincat.com/categories/%E9%AB%98%E5%B9%B6%E5%8F%91/"/>
     
-    
-  </entry>
-  
-  <entry>
-    <title>RabbitMQ入门</title>
-    <link href="https://notes.xuepincat.com/2020/11/09/MQ-RabbitMQ%E5%85%A5%E9%97%A8/"/>
-    <id>https://notes.xuepincat.com/2020/11/09/MQ-RabbitMQ%E5%85%A5%E9%97%A8/</id>
-    <published>2020-11-09T14:29:26.000Z</published>
-    <updated>2020-11-09T15:28:09.620Z</updated>
-    
-    <summary type="html">
-    
-      消息队列
-是消息传输过程中存放消息的容器
-
-RabbitMQ
-用Erlang编写，实现了高级消息队列协议(AMQP)的消息中间件
-
-好处
- 1. 跨语言，调用端语言无关，支持 PHP,GO, JAVA, C#, Python等
- 2. 解耦
- 3. 异步，非必要的或者不要求实时性的逻辑可以放到队列中异步执行，加快响应速度，提高用户体验，比如发布评论后需要更新剧集的评论数，视频的评论数等，更新频道的排行榜或者类型的排行榜等，因为排行榜的信息无需实时体现出来，用户等待时间也会相应减少；
- 4. 削峰，从性能上考虑，当访问量很大时，如果全部打到数据库上，数据库会存在压力，扛不住，此时可以使用MQ限流
-    
-    </summary>
-    
-    
-      <category term="MQ" scheme="https://notes.xuepincat.com/categories/MQ/"/>
-    
-    
-      <category term="RabbitMQ" scheme="https://notes.xuepincat.com/tags/RabbitMQ/"/>
     
   </entry>
   

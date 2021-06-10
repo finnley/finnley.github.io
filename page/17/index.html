@@ -211,6 +211,103 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/07/15-%E5%A4%9A%E7%89%88%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/07/07/15-%E5%A4%9A%E7%89%88%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="post-title-link" itemprop="url">15-多版本解决方案</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-07 19:40:35" itemprop="dateCreated datePublished" datetime="2017-07-07T19:40:35+08:00">2017-07-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          什么是多版本库？
+我们假设这样一个场景，公司里面有很多个开发项目，老板比较抠门，只给安排了一台服务器运行SVN，那么这么多个项目就得公用一台SVN服务器，每个项目的代码又是独立的，甚至连开发人员都是不同的人，为了各个项目之间的开发，代码不会互相影响，那么我们需要在同一台SVN服务器上运行多个版本库来分别管理各个项目组的代码。
+
+怎么在同一台服务器上实现多个版本库的管理？
+最开始我们在服务器上创建repos版本库，现在我们要运行多个版本库，就需要在创建几个版本库。
+
+1
+2
+3
+4
+5
+
+
+# cd /svnroot
+# ls
+# svnadmin create hello
+# svnadmin
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/07/07/15-%E5%A4%9A%E7%89%88%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/06/14-SVN%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1087,105 +1184,6 @@ checkout和export最明显的区别就是export导出的项目文件其所在
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/27/5-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E8%AE%BF%E9%97%AE/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/27/5-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E8%AE%BF%E9%97%AE/" class="post-title-link" itemprop="url">5-版本库的访问</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-27 08:53:49" itemprop="dateCreated datePublished" datetime="2017-06-27T08:53:49+08:00">2017-06-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          如何运行SVN服务？
-比如我要运行之前创建的repos版本库
-svnserve -d -r /svn版本库路径，回车后并没有提示什么，都说LINUX中没有消息就是好消息，如果没有看到任何提示消息就代表版本库运行成功。
-
-1
-
-
-# svnserve -d -r /svnroot/repos/
-
-
-
-
-如何访问SVN服务
-一种是通过命令行的方式访问，另一种是通过图形化的方式访问，但是在底层，图形化的访问还是被转换成了命令的方式访问。这里介绍的使用命令方式访问。
-
-这里我首先介绍一下我的SVN服务端是搭建在腾讯云主机上的，稍后我会在我本地Ubuntu物理机上演示SVN的访问。
-
-检出版本库
-现在我
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/27/5-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E8%AE%BF%E9%97%AE/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1257,7 +1255,7 @@ svnserve -d -r /svn版本库路径，回车后并没有提示什么，都说LINU
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">186</span>
+          <span class="site-state-item-count">187</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
