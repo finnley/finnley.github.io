@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2021-06-10T00:21:44.618Z</updated>
+  <updated>2021-06-11T00:18:53.699Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -21,33 +21,72 @@
     <link href="https://notes.xuepincat.com/2021/06/10/Go-Go%E8%AF%AD%E6%B3%95%E8%83%8C%E5%90%8E%E7%9A%84%E7%A7%98%E5%AF%86/"/>
     <id>https://notes.xuepincat.com/2021/06/10/Go-Go%E8%AF%AD%E6%B3%95%E8%83%8C%E5%90%8E%E7%9A%84%E7%A7%98%E5%AF%86/</id>
     <published>2021-06-09T16:53:09.000Z</published>
-    <updated>2021-06-10T00:21:44.618Z</updated>
+    <updated>2021-06-11T00:18:53.699Z</updated>
     
     <summary type="html">
     
-      怎么找 make 和 new 这些函数的具体实现？
-会员服务
-会员服务，给用户分等级：
+      编译原理基础
 
-初级会员，发帖数 &gt; 10
-中级会员，充值 &gt; 1000RMB
-高级会员，发帖数 &gt; 100，充值 &gt; 10000RMB
 
-如果项目数 = 几百，每个项目都有自己的会员规则，怎么办？
+编译流程大概分为两个部分，一部分是编译器前端，一部分是编译器后端
 
-封装统一的数据查询服务
-封装统一的数据查询服务：
+词法分析（Lexical Analysis）
+ * main.go
 
-用户提供查询条件，会经常变
-代理去不同的模块查数据
-外部模块没有统一的数据获取规范
+1
+2
+3
+4
+5
+6
 
-每次我们的用户踢了需求，我们就一定要写一遍代码么？
 
-SQL 审计
-怎么获取到表的索引？
-怎么把用户代码里的 SQL 扫描出来？
-打算在上面的时候能自动做一些拦截，提醒用户去给表加索引？
+package main
+
+// this is the main function
+func main() {
+	println(1+2)
+}
+
+
+ * print.go
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+
+
+package main
+
+import (
+	&quot;fmt&quot;
+	&quot;go/scann
     
     </summary>
     

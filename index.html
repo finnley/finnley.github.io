@@ -234,10 +234,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2021-06-10 00:53:09 / Modified: 08:21:44" itemprop="dateCreated datePublished" datetime="2021-06-10T00:53:09+08:00">2021-06-10</time>
+              <time title="Created: 2021-06-10 00:53:09" itemprop="dateCreated datePublished" datetime="2021-06-10T00:53:09+08:00">2021-06-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-11 08:18:53" itemprop="dateModified" datetime="2021-06-11T08:18:53+08:00">2021-06-11</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -259,29 +265,68 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          怎么找 make 和 new 这些函数的具体实现？
-会员服务
-会员服务，给用户分等级：
+          编译原理基础
 
-初级会员，发帖数 > 10
-中级会员，充值 > 1000RMB
-高级会员，发帖数 > 100，充值 > 10000RMB
 
-如果项目数 = 几百，每个项目都有自己的会员规则，怎么办？
+编译流程大概分为两个部分，一部分是编译器前端，一部分是编译器后端
 
-封装统一的数据查询服务
-封装统一的数据查询服务：
+词法分析（Lexical Analysis）
+ * main.go
 
-用户提供查询条件，会经常变
-代理去不同的模块查数据
-外部模块没有统一的数据获取规范
+1
+2
+3
+4
+5
+6
 
-每次我们的用户踢了需求，我们就一定要写一遍代码么？
 
-SQL 审计
-怎么获取到表的索引？
-怎么把用户代码里的 SQL 扫描出来？
-打算在上面的时候能自动做一些拦截，提醒用户去给表加索引？
+package main
+
+// this is the main function
+func main() {
+	println(1+2)
+}
+
+
+ * print.go
+
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+
+
+package main
+
+import (
+	"fmt"
+	"go/scann
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/06/10/Go-Go%E8%AF%AD%E6%B3%95%E8%83%8C%E5%90%8E%E7%9A%84%E7%A7%98%E5%AF%86/#more" rel="contents">
