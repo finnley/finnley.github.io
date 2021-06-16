@@ -211,6 +211,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/08/16-svn%20copy%E5%91%BD%E4%BB%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/07/08/16-svn%20copy%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">16-svn copy命令</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-07-08 08:32:27" itemprop="dateCreated datePublished" datetime="2017-07-08T08:32:27+08:00">2017-07-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          之前所学的命令要不是针对工作副本内部的操作，要不是针对SVN服务端版本库的操作。而svn copy命令部分功能是可以关联工作副本，以及线上版本库的操作。
+
+一、工作副本到工作副本的复制
+也就是工作副本内部的复制操作。
+比如现在进入repos版本库的工作副本。我现在想新建个文件，并直接加入到版本控制中，而这个文件恰巧和index.html文件内容大致相同，这个时候就可以使用复制命令来复制一个index.html的文件，然后在其基础上做一些修改。
+
+格式
+
+svn copy(cp) 原文件名称 目标文件名称
+
+1
+
+
+# svn cp index.html copy.html
+
+
+
+
+这样就通过复
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/07/08/16-svn%20copy%E5%91%BD%E4%BB%A4/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/07/15-%E5%A4%9A%E7%89%88%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1081,109 +1180,6 @@ checkout和export最明显的区别就是export导出的项目文件其所在
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/28/6-SVN%E6%9C%8D%E5%8A%A1%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%90%AF%E5%8A%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/06/28/6-SVN%E6%9C%8D%E5%8A%A1%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%90%AF%E5%8A%A8/" class="post-title-link" itemprop="url">6-SVN服务设置自启动</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-06-28 09:35:33" itemprop="dateCreated datePublished" datetime="2017-06-28T09:35:33+08:00">2017-06-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          所谓SVN服务自启动就是SVN服务开机的自动运行，在Linux中自动运行通常需要配合Shell脚本
-
-在Ubuntu系统中的/etc/rc.local，/etc目录下有个叫rc.local的文件，这个脚本文件默认情况下是绑定了所有启动级别，意思是不管启动级别是多少，这个脚本都会在系统启动之后自动运行一次。
-
-现在我们来打开这个文件
-
-1
-
-
-# vi /etc/rc/local
-
-
-
-
-里面的大概内容如下：
-
-
-
-我们只需要在这个文件里面添加系统启动后要执行的命令(svnserve -d -r /路径)就可以了。
-
-
-
-然后保存退出就可以了，当然配置自启动不仅仅有这一种，还有其他的方式。
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/06/28/6-SVN%E6%9C%8D%E5%8A%A1%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%90%AF%E5%8A%A8/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1255,7 +1251,7 @@ checkout和export最明显的区别就是export导出的项目文件其所在
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">187</span>
+          <span class="site-state-item-count">188</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

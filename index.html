@@ -211,6 +211,96 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/06/16/Go-%E7%A5%9E%E5%A5%87%E7%9A%84%E5%86%85%E7%BD%AE%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/06/16/Go-%E7%A5%9E%E5%A5%87%E7%9A%84%E5%86%85%E7%BD%AE%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">神奇的内置数据结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2021-06-16 07:24:59 / Modified: 08:11:44" itemprop="dateCreated datePublished" datetime="2021-06-16T07:24:59+08:00">2021-06-16</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Go/" itemprop="url" rel="index"><span itemprop="name">Go</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          内置数据结构一览
+runtime
+
+
+channel
+
+
+channel 分为两种，一种是没有 buffer 的，一种是有 buffer 的，如上图，没有 buffer 的其实是有 buffer 的特殊情况，可以理解成 buffer size = 0,如下图
+
+
+
+下面是 buffer 是 3 的 channel，如图
+
+
+
+3 其实体现在底层的数据结构上，生成了 hchan 的数据结构，dataqsize 也就是队列的大小是 3，这个会体现在 buf 的大小里，channel buffer 其实就是个环形数组，上图中可以看到几个标识索引的字段，sendx 表示的比如现在有发送方进行发送，需要
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/06/16/Go-%E7%A5%9E%E5%A5%87%E7%9A%84%E5%86%85%E7%BD%AE%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/06/14/Ubuntu%E4%B8%AD%E9%80%9A%E8%BF%87Docker%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEMySQL%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1151,105 +1241,6 @@ branch: t1_project_init
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2021/01/11/Microservices-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96-user-srv/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/01/11/Microservices-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96-user-srv/" class="post-title-link" itemprop="url">Microservice-项目初始化-user-srv</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2021-01-11 22:21:46" itemprop="dateCreated datePublished" datetime="2021-01-11T22:21:46+08:00">2021-01-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-03-13 14:05:14" itemprop="dateModified" datetime="2021-03-13T14:05:14+08:00">2021-03-13</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Microservices/" itemprop="url" rel="index"><span itemprop="name">Microservices</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          新建虚拟环境
-这里选用 Python ，主要用于最底层的各个微服务的 Service 层的开发
-
-提前先创建了一个 Envs 的目录专门用来存放虚拟环境文件，进入 Envs, 创建一个目录 cat-srvs，然后进入该目录
-
-1
-2
-3
-4
-
-
-mkdir Envs && cd Envs
-mkdir cat-srvs && cd cat-srvs
-python3 -m venv --system-site-packages ./venv
-source ./venv/bin/activate
-
-
-新建 Python 项目
-cat-srvs 目录中存放的是所有的微服务，每个微服务新建一个 pack
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/01/11/Microservices-%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96-user-srv/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
@@ -1321,7 +1312,7 @@ cat-srvs 目录中存放的是所有的微服务，每个微服务新建一个 p
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">187</span>
+          <span class="site-state-item-count">188</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>

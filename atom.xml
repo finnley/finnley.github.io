@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://notes.xuepincat.com/"/>
-  <updated>2021-06-14T23:28:21.471Z</updated>
+  <updated>2021-06-16T00:11:44.799Z</updated>
   <id>https://notes.xuepincat.com/</id>
   
   <author>
@@ -15,6 +15,42 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>神奇的内置数据结构</title>
+    <link href="https://notes.xuepincat.com/2021/06/16/Go-%E7%A5%9E%E5%A5%87%E7%9A%84%E5%86%85%E7%BD%AE%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    <id>https://notes.xuepincat.com/2021/06/16/Go-%E7%A5%9E%E5%A5%87%E7%9A%84%E5%86%85%E7%BD%AE%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</id>
+    <published>2021-06-15T23:24:59.000Z</published>
+    <updated>2021-06-16T00:11:44.799Z</updated>
+    
+    <summary type="html">
+    
+      内置数据结构一览
+runtime
+
+
+channel
+
+
+channel 分为两种，一种是没有 buffer 的，一种是有 buffer 的，如上图，没有 buffer 的其实是有 buffer 的特殊情况，可以理解成 buffer size = 0,如下图
+
+
+
+下面是 buffer 是 3 的 channel，如图
+
+
+
+3 其实体现在底层的数据结构上，生成了 hchan 的数据结构，dataqsize 也就是队列的大小是 3，这个会体现在 buf 的大小里，channel buffer 其实就是个环形数组，上图中可以看到几个标识索引的字段，sendx 表示的比如现在有发送方进行发送，需要
+    
+    </summary>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/categories/Go/"/>
+    
+    
+      <category term="Go" scheme="https://notes.xuepincat.com/tags/Go/"/>
+    
+  </entry>
   
   <entry>
     <title>Ubuntu中通过Docker安装配置MySQL主从节点</title>
@@ -922,50 +958,6 @@ Branch: t2_project_init
 显然在较正规的项目中，这些问题的答案都是不允许的，为了解决这些问题，挑选一款读写配置文件的库，目前比较火的有 viper
 
 初始化项目目录
-    
-    </summary>
-    
-    
-      <category term="Coding" scheme="https://notes.xuepincat.com/categories/Coding/"/>
-    
-    
-      <category term="Go" scheme="https://notes.xuepincat.com/tags/Go/"/>
-    
-      <category term="Gin" scheme="https://notes.xuepincat.com/tags/Gin/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>geese-crossing-api-安装 gin</title>
-    <link href="https://notes.xuepincat.com/2020/11/29/geese-crossing-api-%E5%AE%89%E8%A3%85%20gin/"/>
-    <id>https://notes.xuepincat.com/2020/11/29/geese-crossing-api-%E5%AE%89%E8%A3%85%20gin/</id>
-    <published>2020-11-29T13:15:18.000Z</published>
-    <updated>2021-01-16T15:51:34.939Z</updated>
-    
-    <summary type="html">
-    
-      初始化 geese-crossing-api
-github
-
-Branch: t1_install_gin
-
-项目搭建
-创建一个自己的目录作为项目根目录，比如 geese-crossing-api
-
-1
-2
-3
-4
-5
-6
-7
-
-
-$  cd Code
-$  mkdir geese-crossing-api &amp;&amp; cd geese-crossing-api
-$  ls
-$  go mod init github.com/finnley/geese-crossing-api
-go: creating new go.mod: module github.com/finnley/geese-cros
     
     </summary>
     

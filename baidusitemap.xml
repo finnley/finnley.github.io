@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://notes.xuepincat.com/2021/06/16/Go-%E7%A5%9E%E5%A5%87%E7%9A%84%E5%86%85%E7%BD%AE%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
+    <lastmod>2021-06-16</lastmod>
+  </url>
+  <url>
     <loc>https://notes.xuepincat.com/2021/06/14/Ubuntu%E4%B8%AD%E9%80%9A%E8%BF%87Docker%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AEMySQL%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9/</loc>
     <lastmod>2021-06-14</lastmod>
   </url>
@@ -417,11 +421,11 @@
     <lastmod>2020-05-31</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2018/09/22/CentOS-7-%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</loc>
+    <loc>https://notes.xuepincat.com/2018/07/23/4-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E9%97%B4%E4%BB%B6MyCat/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2018/07/23/4-%E6%95%B0%E6%8D%AE%E5%BA%93%E4%B8%AD%E9%97%B4%E4%BB%B6MyCat/</loc>
+    <loc>https://notes.xuepincat.com/2018/09/22/CentOS-7-%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
@@ -577,11 +581,11 @@
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2019/03/14/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%9B%B4%E6%8D%A2%E8%BD%AF%E4%BB%B6%E6%BA%90/</loc>
+    <loc>https://notes.xuepincat.com/2017/06/14/Ubuntu16.04%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2017/06/14/Ubuntu16.04%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/</loc>
+    <loc>https://notes.xuepincat.com/2019/03/14/%E6%A0%91%E8%8E%93%E6%B4%BE%E6%9B%B4%E6%8D%A2%E8%BD%AF%E4%BB%B6%E6%BA%90/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
@@ -645,11 +649,11 @@
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2019/04/01/JDK%E9%85%8D%E7%BD%AE/</loc>
+    <loc>https://notes.xuepincat.com/2018/11/12/Linxu%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
-    <loc>https://notes.xuepincat.com/2018/11/12/Linxu%E5%B8%B8%E7%94%A8%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85/</loc>
+    <loc>https://notes.xuepincat.com/2019/04/01/JDK%E9%85%8D%E7%BD%AE/</loc>
     <lastmod>2020-05-23</lastmod>
   </url>
   <url>
