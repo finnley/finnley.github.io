@@ -211,686 +211,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/08/16-svn%20copy%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/08/16-svn%20copy%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">16-svn copy命令</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-08 08:32:27" itemprop="dateCreated datePublished" datetime="2017-07-08T08:32:27+08:00">2017-07-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          之前所学的命令要不是针对工作副本内部的操作，要不是针对SVN服务端版本库的操作。而svn copy命令部分功能是可以关联工作副本，以及线上版本库的操作。
-
-一、工作副本到工作副本的复制
-也就是工作副本内部的复制操作。
-比如现在进入repos版本库的工作副本。我现在想新建个文件，并直接加入到版本控制中，而这个文件恰巧和index.html文件内容大致相同，这个时候就可以使用复制命令来复制一个index.html的文件，然后在其基础上做一些修改。
-
-格式
-
-svn copy(cp) 原文件名称 目标文件名称
-
-1
-
-
-# svn cp index.html copy.html
-
-
-
-
-这样就通过复
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/08/16-svn%20copy%E5%91%BD%E4%BB%A4/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/07/15-%E5%A4%9A%E7%89%88%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/07/15-%E5%A4%9A%E7%89%88%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/" class="post-title-link" itemprop="url">15-多版本解决方案</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-07 19:40:35" itemprop="dateCreated datePublished" datetime="2017-07-07T19:40:35+08:00">2017-07-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          什么是多版本库？
-我们假设这样一个场景，公司里面有很多个开发项目，老板比较抠门，只给安排了一台服务器运行SVN，那么这么多个项目就得公用一台SVN服务器，每个项目的代码又是独立的，甚至连开发人员都是不同的人，为了各个项目之间的开发，代码不会互相影响，那么我们需要在同一台SVN服务器上运行多个版本库来分别管理各个项目组的代码。
-
-怎么在同一台服务器上实现多个版本库的管理？
-最开始我们在服务器上创建repos版本库，现在我们要运行多个版本库，就需要在创建几个版本库。
-
-1
-2
-3
-4
-5
-
-
-# cd /svnroot
-# ls
-# svnadmin create hello
-# svnadmin
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/07/15-%E5%A4%9A%E7%89%88%E6%9C%AC%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/06/14-SVN%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/06/14-SVN%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">14-SVN进阶应用命令的使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-06 18:15:10" itemprop="dateCreated datePublished" datetime="2017-07-06T18:15:10+08:00">2017-07-06</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          svn list -列出当前目录下处于版本控制的所有文件及文件夹
-svn status -列出工作副本中的文件（夹）的状态
-svn log -查看提交日志（来自svn ci的参数 -m参数）
-svn info -工作副本及文件（夹）的详细信息
-
-一、svn list(svn ls)命令
-来到svn_1机器，首先看一下svn list命令，使用这个命令列出的文件中不会包含无版本控制的文件。
-
-比如现在我们新建一个名为test.html的文件，现在test.html并没有加入到版本控制中，也就是说test.html的文件状态是无版本控制的。
-
-1
-2
-
-
-# touch test.html
-# s
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/06/14-SVN%E8%BF%9B%E9%98%B6%E5%BA%94%E7%94%A8%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BD%BF%E7%94%A8/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/05/13-%E9%94%81%E5%AE%9A%E4%B8%8E%E8%A7%A3%E9%94%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/05/13-%E9%94%81%E5%AE%9A%E4%B8%8E%E8%A7%A3%E9%94%81/" class="post-title-link" itemprop="url">13-锁定与解锁</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-05 16:10:23" itemprop="dateCreated datePublished" datetime="2017-07-05T16:10:23+08:00">2017-07-05</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          锁定与解锁的出现其实和冲突是紧密相连的，可以说锁定与解锁就是为了防止冲突而产生的附加的解决方案，但是并不那么完美。
-
-svn lock -锁定文件，防止其他成员对文件进行提交
-svn unlock -解锁文件
-
-冲突是由于开发人员对于其他成员的提交没有及时更新，然后在不知情的情况下修改了同一个地方，所以导致了冲突。
-
-那么可以使用锁定命令来防止冲突。
-
-说我现在要修改index.html,为了防止别人在这个过程中对index.html进行修改并且提交，那么我先锁定index.html，这样别人就无法对index.html的修改进行提交了，直到我的修改提交完毕了，再解锁index.html，别人
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/05/13-%E9%94%81%E5%AE%9A%E4%B8%8E%E8%A7%A3%E9%94%81/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/04/12-%E5%86%B2%E7%AA%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/04/12-%E5%86%B2%E7%AA%81/" class="post-title-link" itemprop="url">12-冲突</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-04 13:45:42" itemprop="dateCreated datePublished" datetime="2017-07-04T13:45:42+08:00">2017-07-04</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          问题
-1、什么是冲突以及冲突产生的条件
-2、如何尽可能的避免冲突
-3、如何解决冲突
-
-一、冲突及产生的条件
-冲突出现的时机：
-冲入通常出现与工作副本很长时间没有更新工作副本的情况下。如果我是一个人开发，那就不存在冲突了，如果我所在的研发团队人很多，而且我又个了好多天才做一次”svn update”，那么报冲突的概率就非常大了
-
-冲突产生的原因:
-工作副本的修改与我们执行svn update更新到的数据正好在同一个地方。
-
-冲突产生的过程:
-比方说：
-在一天早上，开发A和开发B来上班了。
-在9:10的时候，他们都把工作副本更新到了版本4；
-9:15开发A修改了index.html第10行；
-9:
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/04/12-%E5%86%B2%E7%AA%81/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/03/11-%E5%B7%A5%E4%BD%9C%E5%89%AF%E6%9C%AC%E8%BF%98%E5%8E%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/03/11-%E5%B7%A5%E4%BD%9C%E5%89%AF%E6%9C%AC%E8%BF%98%E5%8E%9F/" class="post-title-link" itemprop="url">11-工作副本还原</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-03 13:00:52" itemprop="dateCreated datePublished" datetime="2017-07-03T13:00:52+08:00">2017-07-03</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          相当于SVN版本的”CTRL+Z”,比如说我更新了工作副本之后，进行了项目文件的编辑，添加删除修改了一些操作，还没来得及提交，则时候接到通知，说要该需求了，被修改的内容都不需要提交到服务端了，接下来就不要还原工作副本了，把当前工作副本中的内容还原成最后一次更新得到的版本，命令如下：
-
-1
-
-
-svn revert [--recursice] [filename|*]
-
-
-主要内容是还原单个文件和批量还原目录下的所有更改。
-
-比如现在修改index.html
-修改前：
-
-
-
-修改后：
-
-
-
-然后在修改下about.html
-修改前是空白内容
-修改后：
-
-
-在修改js/app.js文件
-修改前也是
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/03/11-%E5%B7%A5%E4%BD%9C%E5%89%AF%E6%9C%AC%E8%BF%98%E5%8E%9F/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/02/10-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%BA%8C)/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
-      <meta itemprop="name" content="Finnley">
-      <meta itemprop="description" content="虽千万里，吾往矣">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Finnley's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/07/02/10-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%BA%8C)/" class="post-title-link" itemprop="url">10-常见的SVN客户端命令(二)</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-07-02 10:57:16" itemprop="dateCreated datePublished" datetime="2017-07-02T10:57:16+08:00">2017-07-02</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">In</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          常见SVN客户端命令(二)
-svn diff -版本差异比较
-
-svn mkdir -创建目录并增加到版本控制
-
-svn cat -不检出工作副本直接查看指定文件
-
-diff用于不用版本之间的差异比较；
-mkdir是创建目录并且直接增加到版本控制中；
-cat允许我们在不检出工作副本的情况下直接查看指定文件的内容。
-
-一、svn diff …
-1、比较本地工作副本和SVN客户机最后一次更新得到的版本
-之前提到过工作副本中会有一个.svn的隐藏文件夹，里面记录这SVN客户端最后一次更新版本的文件状态，如果我们给工作副本中的文件进行修改并且保存，工作副本中的文件和.svn文件夹记录的文件状态就会出现
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/07/02/10-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%BA%8C)/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/07/01/9-%E5%B8%B8%E8%A7%81%E7%9A%84SVN%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%91%BD%E4%BB%A4(%E4%B8%80)/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1180,6 +500,760 @@ checkout和export最明显的区别就是export导出的项目文件其所在
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/28/6-SVN%E6%9C%8D%E5%8A%A1%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%90%AF%E5%8A%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/28/6-SVN%E6%9C%8D%E5%8A%A1%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%90%AF%E5%8A%A8/" class="post-title-link" itemprop="url">6-SVN服务设置自启动</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-28 09:35:33" itemprop="dateCreated datePublished" datetime="2017-06-28T09:35:33+08:00">2017-06-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-07-12 11:33:47" itemprop="dateModified" datetime="2020-07-12T11:33:47+08:00">2020-07-12</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          所谓SVN服务自启动就是SVN服务开机的自动运行，在Linux中自动运行通常需要配合Shell脚本
+
+在Ubuntu系统中的/etc/rc.local，/etc目录下有个叫rc.local的文件，这个脚本文件默认情况下是绑定了所有启动级别，意思是不管启动级别是多少，这个脚本都会在系统启动之后自动运行一次。
+
+现在我们来打开这个文件
+
+1
+
+
+# vi /etc/rc/local
+
+
+
+
+里面的大概内容如下：
+
+
+
+我们只需要在这个文件里面添加系统启动后要执行的命令(svnserve -d -r /路径)就可以了。
+
+
+
+然后保存退出就可以了，当然配置自启动不仅仅有这一种，还有其他的方式。
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/28/6-SVN%E6%9C%8D%E5%8A%A1%E8%AE%BE%E7%BD%AE%E8%87%AA%E5%90%AF%E5%8A%A8/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/27/5-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E8%AE%BF%E9%97%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/27/5-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E8%AE%BF%E9%97%AE/" class="post-title-link" itemprop="url">5-版本库的访问</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-27 08:53:49" itemprop="dateCreated datePublished" datetime="2017-06-27T08:53:49+08:00">2017-06-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          如何运行SVN服务？
+比如我要运行之前创建的repos版本库
+svnserve -d -r /svn版本库路径，回车后并没有提示什么，都说LINUX中没有消息就是好消息，如果没有看到任何提示消息就代表版本库运行成功。
+
+1
+
+
+# svnserve -d -r /svnroot/repos/
+
+
+
+
+如何访问SVN服务
+一种是通过命令行的方式访问，另一种是通过图形化的方式访问，但是在底层，图形化的访问还是被转换成了命令的方式访问。这里介绍的使用命令方式访问。
+
+这里我首先介绍一下我的SVN服务端是搭建在腾讯云主机上的，稍后我会在我本地Ubuntu物理机上演示SVN的访问。
+
+检出版本库
+现在我
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/27/5-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E8%AE%BF%E9%97%AE/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/26/4-%E7%89%88%E6%9C%AC%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E6%9D%83%E9%99%90%E5%88%86%E7%BB%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/26/4-%E7%89%88%E6%9C%AC%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E6%9D%83%E9%99%90%E5%88%86%E7%BB%84/" class="post-title-link" itemprop="url">4-版本库配置以及权限分组</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-26 07:57:42" itemprop="dateCreated datePublished" datetime="2017-06-26T07:57:42+08:00">2017-06-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          版本库的配置文件位于版本库下的conf文件夹 /path.repos/conf/，下面到创建的版本库下查看一下配置文件
+
+
+
+里面有4个文件，分别是authz、hooks-env.tmpl、passwd、svnserve.conf。但是这里用到的只有3个文件，他们分别是authz、passwd、svnserve.conf。
+
+作用
+authz:配置用户组以及用户权限，权限就是提交代码和更新代码的权限。
+passwd:配置用户名和密码，允许访问当前版本库的用户名和密码
+svnserve.conf:配置当前版本库端的默认权限以及指定权限分组配置文件以及密码配置文件以及密码配置文件
+
+SVN版本库权
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/26/4-%E7%89%88%E6%9C%AC%E5%BA%93%E9%85%8D%E7%BD%AE%E4%BB%A5%E5%8F%8A%E6%9D%83%E9%99%90%E5%88%86%E7%BB%84/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/25/3-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E5%88%A0%E9%99%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/25/3-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E5%88%A0%E9%99%A4/" class="post-title-link" itemprop="url">3-版本库的创建与删除</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-25 23:45:49" itemprop="dateCreated datePublished" datetime="2017-06-25T23:45:49+08:00">2017-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          创建版本库
+1
+
+
+# svnadmin create /path/repos
+
+
+svn create 路径
+路径可以是相对路径也可以是绝对路径
+
+下面我要在根目录下创建一个名为svnroot的目录用于存放SVN版本库
+
+1
+
+
+# mkdir /svnroot
+
+
+然后在该目录下创建一个repos的版本库
+
+1
+
+
+# svnadmin create /svnroot/repos
+
+
+上面使用的是绝对路径下创建版本库，下面使用相对路径创建一个名为repos2的版本库
+切换到/svnroot目录下
+
+1
+
+
+# cd svnroot/
+
+
+创建名为repos2的版本库
+
+1
+
+
+# svna
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/25/3-%E7%89%88%E6%9C%AC%E5%BA%93%E7%9A%84%E5%88%9B%E5%BB%BA%E4%B8%8E%E5%88%A0%E9%99%A4/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/25/2-SVN%E7%9A%84%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/25/2-SVN%E7%9A%84%E5%AE%89%E8%A3%85/" class="post-title-link" itemprop="url">2-SVN的安装</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-25 23:25:10" itemprop="dateCreated datePublished" datetime="2017-06-25T23:25:10+08:00">2017-06-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SVN%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">SVN入门教程</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          环境：腾讯云Ubuntu16.04.1 64位
+本机环境：Ubuntu16.04.2 64位
+
+1
+
+
+$ sudo apt-get install subversion
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/25/2-SVN%E7%9A%84%E5%AE%89%E8%A3%85/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/24/Ubuntu-16-04-%E6%90%AD%E5%BB%BANodeJs%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/24/Ubuntu-16-04-%E6%90%AD%E5%BB%BANodeJs%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">Ubuntu 16.04 搭建NodeJs环境</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-24 17:40:07" itemprop="dateCreated datePublished" datetime="2017-06-24T17:40:07+08:00">2017-06-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Ubuntu/" itemprop="url" rel="index"><span itemprop="name">Ubuntu</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          1.下载文件
+到官网上看了一下，最新版本的node是v6.11.0的。
+
+
+
+安装包，我放在/opt目录下
+
+
+
+2.解压文件
+1
+
+
+$ sudo tar xvf node-v6.11.0-linux-x64.tar.xz
+
+
+
+
+解压完之后得到了这样的文件夹。
+
+
+
+3.对文件夹重命名
+1
+
+
+$ sudo mv node-v6.11.0-linux-x64 node
+
+
+
+
+给该文件夹赋予相应的权限
+
+1
+
+
+$ sudo chmod 777 /opt/node -R
+
+
+
+
+4.安装nodejs和npm
+安装nodejs：
+
+1
+
+
+$ sudo ln -s /opt/node/bin
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/24/Ubuntu-16-04-%E6%90%AD%E5%BB%BANodeJs%E7%8E%AF%E5%A2%83/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2017/06/14/Ubuntu16.04%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2017/06/14/Ubuntu16.04%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/" class="post-title-link" itemprop="url">Ubuntu16.04搭建LNMP开发环境</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2017-06-14 11:10:36" itemprop="dateCreated datePublished" datetime="2017-06-14T11:10:36+08:00">2017-06-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-05-24 07:14:19" itemprop="dateModified" datetime="2020-05-24T07:14:19+08:00">2020-05-24</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Ubuntu/" itemprop="url" rel="index"><span itemprop="name">Ubuntu</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          安装Nginx
+我在官网上看了一下，现在最新版的nginx稳定版是nginx-1.12.0的
+
+
+
+加入 Nginx 的 PPA：
+1
+
+
+$ sudo add-apt-repository ppa:nginx/stable
+
+
+
+
+更新系统
+1
+
+
+$ sudo apt-get update
+
+
+
+
+安装
+1
+
+
+$ sudo apt-get install nginx
+
+
+
+
+查看版本
+1
+
+
+$ nginx -v
+
+
+测试
+在输入完上面的命令加载完之后测试一下nginx是否安装成功，打开浏览器，在网址栏中输入localhost或者127.0.0.1，回车之后看下是否会出现下面页面。
+
+
+
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2017/06/14/Ubuntu16.04%E6%90%AD%E5%BB%BALNMP%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -1251,20 +1325,20 @@ checkout和export最明显的区别就是export导出的项目文件其所在
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">188</span>
+          <span class="site-state-item-count">181</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">29</span>
+        <span class="site-state-item-count">26</span>
         <span class="site-state-item-name">categories</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">50</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>

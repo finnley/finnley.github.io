@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="ZSxSpE3jKJq7l0YK31byHxtr3mSvQgmJfGL3AHON7kg">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Trade Winds:300,300italic,400,400italic,700,700italic|Patrick Hand:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"notes.xuepincat.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":"mac"},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="以小程序作为客户端为例，其实我们也可以设计一套账号密码体系来模式登陆和获取令牌，但是小程序是构建于微信体系下面的，微信已经有了一个身份验证体系，所以没有必要再再小程序中设计一套账号密码体系，这里可以借用微信的体系做自己用户权限体系，所以图中没有必要再传入账号密码了，因为这里是复用了微信的权限结构，所以不需要自己传递账号和密码，相应代替的是小程序可以为每个登录的用户生成一个Code,Code是一个数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信身份体系设计">
+<meta property="og:url" content="https://notes.xuepincat.com/2018/10/07/Wechat-%E5%BE%AE%E4%BF%A1%E8%BA%AB%E4%BB%BD%E4%BD%93%E7%B3%BB%E8%AE%BE%E8%AE%A1/index.html">
+<meta property="og:site_name" content="Finnley&#39;s Notes">
+<meta property="og:description" content="以小程序作为客户端为例，其实我们也可以设计一套账号密码体系来模式登陆和获取令牌，但是小程序是构建于微信体系下面的，微信已经有了一个身份验证体系，所以没有必要再再小程序中设计一套账号密码体系，这里可以借用微信的体系做自己用户权限体系，所以图中没有必要再传入账号密码了，因为这里是复用了微信的权限结构，所以不需要自己传递账号和密码，相应代替的是小程序可以为每个登录的用户生成一个Code,Code是一个数">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://notes.ornnth.com/images/token/3.png">
+<meta property="og:image" content="http://notes.ornnth.com/images/token/4.png">
+<meta property="article:published_time" content="2018-10-06T20:06:29.000Z">
+<meta property="article:modified_time" content="2021-06-27T02:18:18.498Z">
+<meta property="article:author" content="Finnley">
+<meta property="article:tag" content="Wechat">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://notes.ornnth.com/images/token/3.png">
+
+<link rel="canonical" href="https://notes.xuepincat.com/2018/10/07/Wechat-%E5%BE%AE%E4%BF%A1%E8%BA%AB%E4%BB%BD%E4%BD%93%E7%B3%BB%E8%AE%BE%E8%AE%A1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>微信身份体系设计 | Finnley's Notes</title>
+  
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-163505851-1"></script>
+    <script>
+      if (CONFIG.hostname === location.hostname) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-163505851-1');
+      }
+    </script>
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?328ff93c4af8b53636414cde4de97567";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Finnley's Notes" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Finnley's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://notes.xuepincat.com/2018/10/07/Wechat-%E5%BE%AE%E4%BF%A1%E8%BA%AB%E4%BB%BD%E4%BD%93%E7%B3%BB%E8%AE%BE%E8%AE%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://images.notes.xuepincat.com/avatar.jpg">
+      <meta itemprop="name" content="Finnley">
+      <meta itemprop="description" content="虽千万里，吾往矣">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Finnley's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微信身份体系设计
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-10-07 04:06:29" itemprop="dateCreated datePublished" datetime="2018-10-07T04:06:29+08:00">2018-10-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-06-27 10:18:18" itemprop="dateModified" datetime="2021-06-27T10:18:18+08:00">2021-06-27</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Wechat/" itemprop="url" rel="index"><span itemprop="name">Wechat</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="http://notes.ornnth.com/images/token/3.png" alt="token"></p>
+<p>以小程序作为客户端为例，其实我们也可以设计一套账号密码体系来模式登陆和获取令牌，但是小程序是构建于微信体系下面的，微信已经有了一个身份验证体系，所以没有必要再再小程序中设计一套账号密码体系，这里可以借用微信的体系做自己用户权限体系，所以图中没有必要再传入账号密码了，因为这里是复用了微信的权限结构，所以不需要自己传递账号和密码，相应代替的是小程序可以为每个登录的用户生成一个Code,Code是一个数字码，这里需要将Code码传递给getToken接口</p>
+<p>虽然没有自己的身份体系，所以我们必须有一个凭据去微信服务器去换取用户身份的标识，在getToken接口中接收到Code码后向微信服务器发送一个请求，然后把Code码传递到微信服务器中去，微信服务器在接收到Code码之后会返回给我们两个主要的信息，一个是openid，一个是session_key。</p>
+<p>其中openid就是用户身份的标识，我们设想一下如果不依靠微信的身份体系，而是自己去做用户身份体系的时候，其中最重要的就是要给每个用户生成一个唯一的ID号，比如说在传入账号密码之后写数据库的时候数据库就可以生成一个代表了用户唯一身份的ID，这个ID通常就做UID。换句话说openid就是用户身份的唯一标识。</p>
+<p>openid其实并不仅仅是用户的唯一身份标识，它还有一些别的作用，比如在做微信支付的时候就需要openid。</p>
+<p>使用Code码换取openid之外还有一个session_key，在小程序中可以直接访问微信服务器拿到一个加密信息，由于这个信息是加密的，如果想要解密这个信息，就需要使用session_key，之所以要解密这个信息，是因为这个加密信息中包含了一个变量unionid，这个unionid其实和openid有着同样的意义，它也标识用户的唯一标识，它们的区别在于openid是一个用户针对一个小程序，它有一个openid；如果一个用户在不同的小程序中，他们的openid是不同的，哪怕这些小程序在同一个账户下（一个个人身份是可以申请多个小程序的），那么同一个用户在同一个身份注册小程序中openid是不同的，如果想要一个身份下的所有小程序它们的id是相同的就是这个unionid。unionid不仅是在不同的小程序中是相同的，只要是同意账号注册的小程序，公众号，服务号，这些体系下所有unionid对于同一个用户来讲都是相同的。</p>
+<p>总结下openid的作用一是代表用户身份的唯一标识，二是用户微信支付等场景。</p>
+<p>通过微信服务器拿到openid之后需要把openid保存在数据库中，此时用户身份体系就建立完成了。接着客户端何如访问API呢?所以我们需要把用户的Token返回到客户端去，然后客户端每次访问的时候都携带openid,这样我们就知道用户的身份是否可以访问所要访问的接口了。</p>
+<p>我们可以将openid直接返回到小程序中去呢，这样小程序在访问下单接口的时候就可以携带openid。技术上是没有问题的，但是在实际情况中不能把openid返回给小程序，一是因为微信建议涉及到用户的身份信息的一些比较敏感的数据不应该存储到客户端，这是处于安全性的考虑，所以微信不建议将openid作为用户的标识返回给客户端；二是因为openid是固定不变的，所以openid是没有失效期的，而openid一旦传到客户端丢失之后安全性就非常差，在这方面一定要设置一个有失效期的id,解决方法就是生成一个令牌，把令牌返回到客户端去，下次用户访问的时候就可以携带这个令牌，通过令牌就可以找到对应这个令牌的openid，这也就间接的拿到了openid。所以说openid不能传到客户端，一定要保存到服务器中。</p>
+<p>如果把openid以及生成的Token令牌都记录在数据库中会出现什么问题呢？</p>
+<p>比如在首页一个用户需要访问3次API，每次访问都需要携带返回的令牌，如果把令牌记录到数据库中就会出现一个用户只要访问首页就要访问3次API，也就是要校验令牌是否有效就需要查询3次数据库，扩展下如果用户有100个或者1000个或者更多，想象一下数据库的访问压力有多大。所以为了减轻数据库的压力，可以借助缓存机制，当然数据库中肯定要持久化的存储openid,但是令牌就不需要保存到数据库中了，因为在频繁验证的过程中主要是验证令牌是否合法，所以可以将令牌和一些用户信息存储在缓存中，这样既可以减少数据库的性能压力，另外也可以加快用户的访问速度，因为缓存的查询通常是比数据库的查询要快。</p>
+<p><img src="http://notes.ornnth.com/images/token/4.png" alt="token"></p>
+<p>小程序去访问接口的流程其实很简单，小程序只需要携带令牌，然后服务器会去校验令牌，校验的时候就不会直接去查询数据库了，而是去缓存中读取相关的信息并作校验，验证通过之后才会去调用API接口，如果校验不合法就会向客户端返回异常。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://images.notes.xuepincat.com/wechat_channel.jpg">
+            <span class="icon">
+              <i class="fab fa-weixin"></i>
+            </span>
+
+            <span class="label">WeChat</span>
+          </a>
+        </div>
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="/atom.xml">
+            <span class="icon">
+              <i class="fa fa-rss"></i>
+            </span>
+
+            <span class="label">RSS</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Wechat/" rel="tag"># Wechat</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/10/07/Wechat-%E5%88%9D%E8%AF%86Token/" rel="prev" title="初识Token">
+      <i class="fa fa-chevron-left"></i> 初识Token
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/10/13/Wechat-%E4%B8%8B%E5%8D%95%E4%B8%8E%E6%94%AF%E4%BB%98%E8%AF%A6%E7%BB%86%E6%B5%81%E7%A8%8B/" rel="next" title="下单与支付详细流程">
+      下单与支付详细流程 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Finnley"
+      src="https://images.notes.xuepincat.com/avatar.jpg">
+  <p class="site-author-name" itemprop="name">Finnley</p>
+  <div class="site-description" itemprop="description">虽千万里，吾往矣</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">181</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">26</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/finnley" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;finnley" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:mingmin.yuen@gmail.com" title="E-Mail → mailto:mingmin.yuen@gmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 2017 – 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Finnley</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
