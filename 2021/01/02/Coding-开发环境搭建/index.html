@@ -35,7 +35,7 @@
 <meta property="og:image" content="https://images.notes.xuepincat.com/yapi/4.png">
 <meta property="og:image" content="https://images.notes.xuepincat.com/yapi/5.png">
 <meta property="article:published_time" content="2021-01-02T05:10:11.000Z">
-<meta property="article:modified_time" content="2021-07-06T23:28:56.047Z">
+<meta property="article:modified_time" content="2021-07-08T00:10:33.238Z">
 <meta property="article:author" content="Finnley">
 <meta property="article:tag" content="Docker">
 <meta name="twitter:card" content="summary">
@@ -252,7 +252,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2021-07-07 07:28:56" itemprop="dateModified" datetime="2021-07-07T07:28:56+08:00">2021-07-07</time>
+                <time title="Modified: 2021-07-08 08:10:33" itemprop="dateModified" datetime="2021-07-08T08:10:33+08:00">2021-07-08</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -298,8 +298,7 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo tar -zxvf Python-3.8.6.tgz -C &#x2F;tmp</span><br></pre></td></tr></table></figure>
 
-<p>这里解压到了 <code>/tmp</code> 目录中</p>
-<p>进入到解压后的目录</p>
+<p>这里解压到了 <code>/tmp</code> 目录中，进入到解压后的目录</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;tmp&#x2F;Python-3.8.6&#x2F;</span><br></pre></td></tr></table></figure>
 
 <ul>
@@ -331,7 +330,7 @@
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s &#x2F;usr&#x2F;local&#x2F;bin&#x2F;pip3.8 &#x2F;usr&#x2F;bin&#x2F;pip3</span><br></pre></td></tr></table></figure>
 
-<p>然后在输入 <code>python3</code> 查看结果</p>
+<p>然后再输入 <code>python3</code> 查看结果</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@07e578484737 Python-3.8.6]# python3</span><br><span class="line">Python 3.8.6 (default, Dec 21 2020, 00:27:51)</span><br><span class="line">[GCC 4.8.5 20150623 (Red Hat 4.8.5-44)] on linux</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
 
 <h2 id="容器方式"><a href="#容器方式" class="headerlink" title="容器方式"></a>容器方式</h2><h3 id="拉取-centos7-镜像"><a href="#拉取-centos7-镜像" class="headerlink" title="拉取 centos7 镜像"></a>拉取 centos7 镜像</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull centos:7</span><br></pre></td></tr></table></figure>
@@ -386,7 +385,7 @@
 <ul>
 <li>linux</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y python-setuptools python-devel</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y python-setuptools python-devel</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install virtualenvwrapper</span><br></pre></td></tr></table></figure>
 
@@ -405,21 +404,28 @@
 <p>下面这个句是我找的网上参考的，上面的是我机器上实际的文件目录</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">VIRTUALENVWRAPPER_PYTHON&#x3D;&#x2F;usr&#x2F;bin&#x2F;python3</span><br><span class="line">export WORKON_HOME&#x3D;$HOME&#x2F;.virtualenvs  </span><br><span class="line">source &#x2F;usr&#x2F;local&#x2F;bin&#x2F;virtualenvwrapper.sh</span><br></pre></td></tr></table></figure>
 
-<p><code>VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3</code> 这句话表示指明当使用 <code>virtualenv</code> 去新建 python 虚拟环境的时候到 <code>/usr/bin/python3</code> 这个位置去找 python 的可执行文件</p>
-<p>退出 <code>vim</code> 后运行下面命令重新加载</p>
+<p>执行下面命令</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source  ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@dev-centos7 Python-3.8.6]$ source  ~&#x2F;.bashrc</span><br><span class="line">-bash: &#x2F;usr&#x2F;local&#x2F;bin&#x2F;virtualenvwrapper.sh: No such file or directory</span><br><span class="line">[vagrant@dev-centos7 Python-3.8.6]$</span><br></pre></td></tr></table></figure>
+<p>执行完 <code>source ~/.bashrc</code> 后提示下面信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@centos7-staging ~]$ source ~&#x2F;.bashrc</span><br><span class="line">&#x2F;usr&#x2F;bin&#x2F;python: No module named virtualenvwrapper</span><br><span class="line">virtualenvwrapper.sh: There was a problem running the initialization hooks.</span><br><span class="line"></span><br><span class="line">If Python could not import the module virtualenvwrapper.hook_loader,</span><br><span class="line">check that virtualenvwrapper has been installed for</span><br><span class="line">VIRTUALENVWRAPPER_PYTHON&#x3D;&#x2F;usr&#x2F;bin&#x2F;python and that PATH is</span><br><span class="line">set properly.</span><br><span class="line">[vagrant@centos7-staging ~]$</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim ~&#x2F;.bashrc</span><br></pre></td></tr></table></figure>
+<p><code>VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3</code> 这句话表示指明当使用 <code>virtualenv</code> 去新建 python 虚拟环境的时候到 <code>/usr/bin/python3</code> 这个位置去找 python 的可执行文件</p>
+<p>编辑 <code>.bashrc</code> 完善下面内容后运行 <code>source ~/.bashrc</code> 命令重新加载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">VIRTUALENVWRAPPER_PYTHON&#x3D;&#x2F;usr&#x2F;bin&#x2F;python3</span><br><span class="line">export WORKON_HOME&#x3D;$HOME&#x2F;.virtualenvs</span><br><span class="line">source $HOME&#x2F;.local&#x2F;bin&#x2F;virtualenvwrapper.sh</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@dev-centos7 ~]$ source  ~&#x2F;.bashrc</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;premkproject</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postmkproject</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;initialize</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;premkvirtualenv</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postmkvirtualenv</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;prermvirtualenv</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postrmvirtualenv</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;predeactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postdeactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;preactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;get_env_details</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@dev-centos7 ~]$ source  ~&#x2F;.bashrc</span><br><span class="line">[vagrant@centos7-staging ~]$ source ~&#x2F;.bashrc</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;premkproject</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postmkproject</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;initialize</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;premkvirtualenv</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postmkvirtualenv</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;prermvirtualenv</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postrmvirtualenv</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;predeactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postdeactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;preactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;postactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;get_env_details</span><br></pre></td></tr></table></figure>
 
-<p>接着创建虚拟环境</p>
+<ul>
+<li>接着创建虚拟环境</li>
+</ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkvirtualenv python_start</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[vagrant@dev-centos7 ~]$ mkvirtualenv python_start</span><br><span class="line">created virtual environment CPython3.8.6.final.0-64 in 929ms</span><br><span class="line">  creator CPython3Posix(dest&#x3D;&#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;python_start, clear&#x3D;False, no_vcs_ignore&#x3D;False, global&#x3D;False)</span><br><span class="line">  seeder FromAppData(download&#x3D;False, pip&#x3D;bundle, setuptools&#x3D;bundle, wheel&#x3D;bundle, via&#x3D;copy, app_data_dir&#x3D;&#x2F;home&#x2F;vagrant&#x2F;.local&#x2F;share&#x2F;virtualenv)</span><br><span class="line">    added seed packages: pip&#x3D;&#x3D;20.3.1, setuptools&#x3D;&#x3D;51.0.0, wheel&#x3D;&#x3D;0.36.1</span><br><span class="line">  activators BashActivator,CShellActivator,FishActivator,PowerShellActivator,PythonActivator,XonshActivator</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;python_start&#x2F;bin&#x2F;predeactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;python_start&#x2F;bin&#x2F;postdeactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;python_start&#x2F;bin&#x2F;preactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;python_start&#x2F;bin&#x2F;postactivate</span><br><span class="line">virtualenvwrapper.user_scripts creating &#x2F;home&#x2F;vagrant&#x2F;.virtualenvs&#x2F;python_start&#x2F;bin&#x2F;get_env_details</span><br><span class="line">(python_start) [vagrant@dev-centos7 ~]$ python</span><br><span class="line">Python 3.8.6 (default, Dec 22 2020, 00:09:11)</span><br><span class="line">[GCC 4.8.5 20150623 (Red Hat 4.8.5-44)] on linux</span><br><span class="line">Type &quot;help&quot;, &quot;copyright&quot;, &quot;credits&quot; or &quot;license&quot; for more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
-
+<ul>
+<li>虚拟环境目录</li>
+</ul>
+<p>(python_start) [vagrant@centos7-staging ~]$ ls ~/.virtualenvs/<br>get_env_details  initialize  postactivate  postdeactivate  postmkproject  postmkvirtualenv  postrmvirtualenv  preactivate  predeactivate  premkproject  premkvirtualenv  prermvirtualenv  python_start<br>(python_start) [vagrant@centos7-staging ~]$</p>
 <h1 id="常用开发环境"><a href="#常用开发环境" class="headerlink" title="常用开发环境"></a>常用开发环境</h1><p><a href="https://github.com/finnley/docker-env" target="_blank" rel="noopener">github</a></p>
 <p><code>docker-env</code> 是基于 <code>docker-compose</code> 的运行在 <code>Docker</code> 上的开发环境，包含 <code>PHP</code>, <code>MySQL</code>, <code>Nginx</code>, <code>Redis</code> 等镜像，并支持多版本切换，可以满足一些简单的学习，开发和测试需求</p>
 <h2 id="包含镜像"><a href="#包含镜像" class="headerlink" title="包含镜像"></a>包含镜像</h2><p><code>docker-env</code> 包含以下镜像，每种镜像支持多个版本：</p>
