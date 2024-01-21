@@ -40,6 +40,7 @@ permalinks:
 params:
     mainSections:
         - post
+        - walking-dead
     featuredImageField: image
     rssFullContent: true
     favicon:  # e.g.: favicon placed in `static/favicon.ico` of your site folder, then set this field to `/favicon.ico` (`/` is necessary)
@@ -192,6 +193,32 @@ params:
 ### To remove about, archive and search page menu item, remove `menu` field from their FrontMatter
 menu:
     main: []
+    # main:
+    #     - name: 活死人
+    #       url: /walking-dead/
+    #       weight: 20
+    #       params:
+    #         icon: skull
+    #     - name: 关于
+    #       url: /about/
+    #       weight: 30
+    #       params:
+    #         icon: user
+    #     - name: 归档
+    #       url: /archives/
+    #       weight: 40
+    #       params:
+    #         icon: archives
+    #     - name: 搜索
+    #       url: /search/
+    #       weight: 50
+    #       params:
+    #         icon: search
+    #     - name: 链接
+    #       url: /link/
+    #       weight: 60
+    #       params:
+    #         icon: link
 
     social:
         - identifier: github
