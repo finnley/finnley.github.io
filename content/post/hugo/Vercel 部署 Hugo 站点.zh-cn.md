@@ -1,7 +1,7 @@
 +++
 title = 'Vercel 部署 Hugo 站点'
 date = 2024-01-16T16:29:13+08:00
-draft = true
+draft = false
 categories = [ "Hugo" ]
 tags = [ "hugo" ]
 +++
@@ -79,3 +79,11 @@ tags = [ "hugo" ]
 ![](/img/hugo/290.png)
 
 8、设置域名
+
+点击 `Add Domain` 进行域名设置，于是记得要进行解析哦，到服务商添加一条 CNAME 解析记录就好了。
+
+![](/img/hugo/300.png)
+
+9、通过域名进行站点预览
+
+![](/img/hugo/310.png)
