@@ -55,7 +55,7 @@ params:
 
     sidebar:
         emoji: 💀 # ☠️ # 🐻 🐼 🐈‍⬛ 🍥
-        subtitle: 虽千万里，吾往矣 # Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        subtitle: 遥望未来，一片混沌 # Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         avatar:
             enabled: true
             local: true
