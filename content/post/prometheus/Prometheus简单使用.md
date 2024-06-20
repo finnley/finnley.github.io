@@ -1,11 +1,10 @@
 +++
-title = 'Prometheus入门'
+title = 'Prometheus简单使用'
 date = 2024-03-04T08:34:19+08:00
 draft = false
 categories = [ "Prometheus" ]
 tags = [ "rometheus" ]
 +++
-
 
 ## 下载并启动
 
