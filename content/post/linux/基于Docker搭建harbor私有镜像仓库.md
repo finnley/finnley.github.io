@@ -141,6 +141,7 @@ REPOSITORY           TAG           IMAGE ID       CREATED        SIZE
 goharbor/prepare     v2.11.0       2baf15fbf5e2   3 weeks ago    207MB
 ```
 
+完整过程如下（可忽略）：
 ```bash
 # ./install.sh
 
@@ -428,3 +429,40 @@ REPOSITORY                            TAG       IMAGE ID       CREATED       SIZ
 ## 删除镜像
 
 ![](/img/linux/harbor/50.jpg)
+
+## 设置域名
+
+
+1、编辑配置文件
+```bash
+# vim 进入配置文件
+vim harbor.yml
+```
+
+修改 `hostname` 为我们自己的域名，例如：
+
+```yaml
+hostname: reg.youdomain.com
+```
+
+2、执行预制脚本
+```bash
+./ prepare
+```
+
+3、执行安装脚本
+```bash
+./install.sh
+```
+
+4、域名解析
+
+5、docker 客户端将 `reg.youdomain.com` 设置到 `/etc/docker/daemon.json`，内容如下：
+```json
+{
+    ...
+    "insecure-registries": [
+        "reg.yourdomain.com:10010"
+    ]
+}
+```
