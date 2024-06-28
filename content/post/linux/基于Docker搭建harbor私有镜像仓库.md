@@ -338,8 +338,6 @@ docker login 10.186.62.66:10010
 docker login -uadmin -pHaarbor12345 10.186.62.66:10010
 ```
 
-Hello@harbor#4343
-
 ## 页面访问
 
 访问地址：[配置文件中配置的hostname和port] <br>
