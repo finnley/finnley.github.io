@@ -366,10 +366,10 @@ docker tag 镜像名:版本 your-ip:端口/项目名称/新的镜像名:版本
 
 例如：
 ```bash
-# docker tag busybox:latest 111.231.87.78:10010/library/busybox:v1
+# docker tag busybox:latest 10.186.62.66:10010/library/busybox:v1
 # docker images
 REPOSITORY                                               TAG                                        IMAGE ID       CREATED         SIZE
-111.231.87.78:10010/library/busybox                      v1                                         71a676dd070f   2 years ago     1.41MB
+10.186.62.66:10010/library/busybox                      v1                                         71a676dd070f   2 years ago     1.41MB
 busybox                                                  latest                                     71a676dd070f   2 years ago     1.41MB
 ```
 
@@ -381,8 +381,8 @@ docker push 修改的镜像名
 
 例如：
 ```bash
-#  docker push 111.231.87.78:10010/library/busybox:v1
-The push refers to repository [111.231.87.78:10010/library/busybox]
+#  docker push 10.186.62.66:10010/library/busybox:v1
+The push refers to repository [10.186.62.66:10010/library/busybox]
 468ad4d964cd: Pushed
 v1: digest: sha256:a77fe109c026308f149d36484d795b42efe0fd29b332be9071f63e1634c36ac9 size: 527
 ```
@@ -418,7 +418,7 @@ docker pull 上传时修改的镜像名
 v1: Pulling from library/busybox
 a01966dde7f8: Pull complete
 Digest: sha256:a77fe109c026308f149d36484d795b42efe0fd29b332be9071f63e1634c36ac9
-Status: Downloaded newer image for 111.231.87.78:10010/library/busybox:v1
+Status: Downloaded newer image for 10.186.62.66:10010/library/busybox:v1
 10.186.62.66:10010/library/busybox:v1
 # docker images
 REPOSITORY                            TAG       IMAGE ID       CREATED       SIZE
