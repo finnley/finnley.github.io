@@ -1,5 +1,8 @@
-+++
-title = 'Bookmarks'
-date = 2024-07-11T22:09:57+08:00
-draft = true
-+++
+---
+comment: false
+---
+
+**[一念](/moments)  ·  书签  ·  [幕语](/videos)  ·  [墨存](/photos)**
+
+---
+> **Bookmarks - 收藏**

@@ -1,5 +1,10 @@
-+++
-title = 'Photos'
-date = 2024-07-11T22:09:57+08:00
-draft = true
-+++
+---
+comment: false
+---
+
+**[一念](/moments)  ·  [书签](/bookmarks)  ·  [幕语](/photos)  ·  墨存**
+
+---
+
+> **Photos - 照片**
+
