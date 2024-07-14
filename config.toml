@@ -30,14 +30,24 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
 
 [[menu.main]]
   name = "行知路"
-  weight = 5
-  identifier = "home"
-  url = "/moments/"
-[[menu.main]]             # config your menu              # 配置目录
-  name = "笔记"
-  weight = 10
+  weight = 2
   identifier = "notes"
-  url = "/"
+  url = "/moments/"
+[[menu.main]]
+  name = "悦❤️读"
+  weight = 3
+  identifier = "reading"
+  url = "/reading/"
+[[menu.main]]
+  name = "种花家"
+  weight = 5
+  identifier = "cathayan"
+  url = "/cathayan/"
+#[[menu.main]]             # config your menu              # 配置目录
+#  name = "笔记"
+#  weight = 10
+#  identifier = "notes"
+#  url = "/"
 [[menu.main]]
   name = "归档"
   weight = 20
