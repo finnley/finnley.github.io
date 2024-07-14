@@ -23,7 +23,7 @@ comment: false
 }
 </style>
 
-**[一念](/moments)  ·  [书签](/bookmarks)  ·  幕语  ·  [墨存](/photos)**
+**[一念](/moments)  ·  [书签](/bookmarks)  ·  幕语  ·  [画意](/photos)**
 
 ---
 

@@ -2,7 +2,7 @@
 comment: false
 ---
 
-**[一念](/moments)∂  ·  书签  ·  [幕语](/videos)  ·  [墨存](/photos)**
+**[一念](/moments)  ·  书签  ·  [幕语](/videos)  ·  [画意](/photos)**
 
 ---
 > **Bookmarks - 收藏**
