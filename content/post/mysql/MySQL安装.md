@@ -10,16 +10,16 @@ tags = [ "mysql" ]
 
 ### 下载
 
-1、进入官网 https://www.mysql.com/ ，选择 【DWONLOADS】
+1、进入 [MySQL](https://www.mysql.com/) 官网 ，选择 【DWONLOADS】
 ![](/img/mysql/10.png)
 
-2、在页面下方选择 “MySQL Community(GPL) Downloads” 社区版下载
+2、点击 “MySQL Community(GPL) Downloads” 下载社区版
 ![](/img/mysql/20.png)
 
 3、点击【MySQL Community Server】
 ![](/img/mysql/30.png)
 
-4、点击【Archives】选项卡，选择想要下载的版本，然后复制下载链接进行下载，如：
+4、点击【Archives】选项卡，选择下载版本，复制下载链接，如：
 ![](/img/mysql/40.png)
 
 ```bash
@@ -134,6 +134,18 @@ warning: mysql-community-server-5.7.44-1.el7.x86_64.rpm: Header V4 RSA/SHA256 Si
 Preparing...                          ################################# [100%]
 Updating / installing...
    1:mysql-community-server-5.7.44-1.e################################# [100%]
+```
+
+总结：
+
+若是没有依赖、签名等阻碍，可以使用下面命令：
+```bash
+tar -xvf mysql-5.7.44-1.el7.x86_64.rpm-bundle.tar
+rpm -ivh mysql-community-common-5.7.44-1.el7.x86_64.rpm
+rpm -ivh --force --nodeps mysql-community-libs-5.7.44-1.el7.x86_64.rpm
+rpm -ivh mysql-community-client-5.7.44-1.el7.x86_64.rpm
+yum install -y perl net-tools libaio
+rpm -ivh --force --nodeps mysql-community-server-5.7.44-1.el7.x86_64.rpm
 ```
 
 5、验证

@@ -408,6 +408,7 @@ docker pull 10.186.62.66:10010/library/busybox@sha256:a77fe109c026308f149d36484d
 ```
 
 拉取方法二
+
 格式：
 ```bash
 docker pull 上传时修改的镜像名
