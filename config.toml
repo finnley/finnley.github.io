@@ -1,7 +1,7 @@
 baseURL = "https://notes.einscat.com/"
 languageCode = "zh-cn"
 defaultContentLanguage = "zh-cn"                             # en / zh-cn / ... (This field determines which i18n file to use)
-title = "陆知行 - A super concise theme for Hugo"
+title = "活死人 - 行知路"
 preserveTaxonomyNames = true
 enableRobotsTXT = true
 enableEmoji = true
@@ -119,9 +119,9 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
 
   livereUID = ""            # LiveRe UID                  # 来必力
 
-  baiduPush = false        # baidu push                  # 百度
+  baiduPush = true        # baidu push                  # 百度
   baiduAnalytics = ""      # Baidu Analytics
-  baiduVerification = ""   # Baidu Verification
+  baiduVerification = "Aa3o8jTmqQ25heI7"   # Baidu Verification
   googleVerification = ""  # Google Verification         # 谷歌
 
   # Link custom CSS and JS assets
