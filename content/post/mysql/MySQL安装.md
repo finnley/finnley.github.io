@@ -343,7 +343,7 @@ vim /data/mysql/conf/my.cnf
 
 **配置文件内容参考：**
 
-[《/data/mysql/conf/my.cnf》](https://www.yuque.com/u8058753/pwvn3w/zedon838xflq5xg2?singleDoc#)
+[/data/mysql/conf/my.cnf](https://www.yuque.com/u8058753/pwvn3w/zedon838xflq5xg2?singleDoc#)
 
 **9. 初始化并获取临时密码**
 
@@ -391,13 +391,13 @@ datadir=/data/mysql/data
 confdir=/data/mysql/conf
 ```
 
-* 找到 `/mysqld_safe` 部分，找到 `$bindir/mysqld_safe --datadir="$datadir" --pid-file="$mysqld_pid_file_path" $other_args >/dev/null &` 这行，修改为：
+* 输入 `/mysqld_safe` 部分，找到 `$bindir/mysqld_safe --datadir="$datadir" --pid-file="$mysqld_pid_file_path" $other_args >/dev/null &` 这行，修改为：
 
 ```bash
 $bindir/mysqld_safe --defaults-file=$confdir/my.cnf --datadir="$datadir" --pid-file="$mysqld_pid_file_path" $other_args >/dev/null &
 ```
 
-* 找到 `datadir=\*` 部分，找到 `--datadir=*)  datadir=`echo "$arg" | sed -e 's/^[^=]*=//'`` 这行，修改为：
+* 输入 `datadir=\*` 部分，找到 “--datadir=*)  datadir=`echo "$arg" | sed -e 's/^[^=]*=//'`” 这行，修改为：
 
 ```shell
 --datadir=*)  datadir="/data/mysql/data"
