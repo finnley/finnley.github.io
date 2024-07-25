@@ -279,7 +279,7 @@ firewall-cmd --reload
 * 在生产环境中，请勿使用 `skip-grant-tables` 方式启动 MySQL，并设置更复杂的密码策略和密码长度。
 * 为了安全起见，建议使用更安全的密码管理方式，例如使用密钥文件或 SSH 连接。
 
-## Compressed TAR Archive 方式
+## TAR Archive 方式
 
 **1. 下载**
 
