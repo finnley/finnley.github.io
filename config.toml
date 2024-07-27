@@ -37,7 +37,7 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
   name = "悦❤️读"
   weight = 3
   identifier = "reading"
-  url = "/reading/"
+  url = "/reading/mine"
 [[menu.main]]
   name = "种花家"
   weight = 5
