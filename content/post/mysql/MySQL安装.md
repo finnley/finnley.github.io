@@ -690,6 +690,72 @@ mysql>
 
 脚本仍存在很多优化空间，后续需要对配置脚本优化。
 
+## Docker 部署
+
+**1. 拉取MySQL镜像:**
+
+```bash
+docker search mysql
+```
+
+**2. 查看可用MySQL版本:**
+
+```bash
+docker pull mysql:latest
+```
+
+**3. 拉取镜像:**
+
+	* 拉取最新版本镜像
+	```bash
+	docker pull mysql:latest
+	```
+
+	* 拉取指定版本 8.0.32 镜像
+
+	```bash
+	docker pull mysql:8.0.25
+	```
+
+
+**4. 查看本地:**
+
+```bash
+docker images
+```
+
+**5. 运行容器:**
+
+```bash
+docker run  --name mysql-test -p 3316:3306 -e MYSQL_ROOT_PASSWORD=123 mysql:8.0.32
+```
+
+* `-e` 表示设置环境变量
+
+**6. 查看容器:**
+
+```bash
+docker ps
+```
+
+**7. 登录MySQL:**
+
+```bash
+mysql -h 127.0.0.1 -uroot -p
+```
+
+**8. 停止容器:**
+
+```bash
+docker stop 26e553587b34
+```
+
+**9. 删除容器:**
+
+```bash
+docker rm 26e553587b34
+```
+
 ## ChatGPT 协作安装
 
 ### Prompt
