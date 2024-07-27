@@ -296,7 +296,7 @@ tar zxvf mysql-8.0.32-linux-glibc2.17-aarch64.tar.gz
 **3. 移动**
 
 ```bash
-mv mysql-8.0.32-linux-glibc2.17-aarch64 /opt/mysql
+mv mysql-8.0.32-linux-glibc2.17-aarch64 /usr/local/mysql
 ```
 
 **4. 添加 MySQL 用户组**
@@ -406,18 +406,13 @@ $bindir/mysqld_safe --defaults-file=$confdir/my.cnf --datadir="$datadir" --pid-f
 **11.3 启动 MySQL**
 
 ```bash
-# /etc/init.d/mysql.server start
-Starting MySQL.... SUCCESS!
-#
+/etc/init.d/mysql.server start
 ```
 
 **11.4 查看是否启动成功**
 
 ```bash
-# ps -ef | grep mysql
-root       292     1  0 08:00 pts/1    00:00:00 /bin/sh /usr/local/mysql/bin/mysqld_safe --defaults-file=/data/mysql/conf/my.cnf --datadir=/data/mysql/data --pid-file=/data/mysql/data/chaos-1.pid
-mysql     1544   292  6 08:00 pts/1    00:00:02 /usr/local/mysql/bin/mysqld --defaults-file=/data/mysql/conf/my.cnf --basedir=/usr/local/mysql --datadir=/data/mysql/data --plugin-dir=/usr/local/mysql/lib/plugin --user=mysql --log-error=/data/mysql/log/mysql.err --open-files-limit=28192 --pid-file=/data/mysql/data/chaos-1.pid --socket=/tmp/mysql.sock --port=3306
-root      1601     6  0 08:01 pts/1    00:00:00 grep --color=auto mysql
+ps -ef | grep mysql
 ```
 
 **12. 设置环境变量**
@@ -473,7 +468,7 @@ mysql>
 
 这是临时的超级用户，登录后并不能正常工作，需要先修改密码：
 ```bash
-mysql> alter user user() identified by 'finnley';
+mysql> alter user user() identified by '123123';
 Query OK, 0 rows affected (0.01 sec)
 
 mysql>
@@ -536,7 +531,7 @@ ps -ef | grep mysql
 * 在生产环境中，请谨慎使用 `skip-grant-tables`，并设置更复杂的密码策略和密码长度。
 * 保持服务器安全，定期更新 MySQL 版本和安全补丁。
 
-## Shell 脚本部署
+## Shell 脚本方式
 
 手动安装存在的缺点就是安装比较耗时。
 
@@ -548,6 +543,11 @@ mkdir -p /data/script/install_mysql8
 mkdir -p /data/mysql/conf/my.cnf /data/script/install_mysql8
 cp /opt/mysql-8.0.32-linux-glibc2.17-aarch64.tar.gz /data/script/install_mysql8
 cp /etc/init.d/mysql.server /data/script/install_mysql8
+
+或者
+cp ~/workspace/shared/tools/mysql/scripts/install_mysql/my.cnf /opt/
+cp ~/workspace/shared/tools/mysql/scripts/install_mysql/mysql.server /opt/
+cp ~/workspace/shared/tools/mysql/scripts/install_mysql/mysql-8.0.32-linux-glibc2.17-aarch64.tar.gz /opt/
 ```
 
 ### 编辑安装脚本
@@ -690,113 +690,114 @@ mysql>
 
 脚本仍存在很多优化空间，后续需要对配置脚本优化。
 
-### 优化后一
+## ChatGPT 协作安装
 
-```bash
-#!/bin/bash
+### Prompt
 
-# 设置错误退出
-set -e
-
-# 定义变量
-MYSQL_VERSION="8.0.32"
-MYSQL_TAR_FILE="mysql-${MYSQL_VERSION}-linux-glibc2.17-aarch64.tar.gz"
-MYSQL_HOME="/usr/local/mysql"
-MYSQL_DATA_DIR="/data/mysql"
-MYSQL_CONF_DIR="${MYSQL_DATA_DIR}/conf"
-MYSQL_LOG_DIR="${MYSQL_DATA_DIR}/log"
-MYSQL_DATA_DIR="${MYSQL_DATA_DIR}/data"
-MYSQL_INIT_SCRIPT="/etc/init.d/mysql.server"
-MYSQL_USER="mysql"
-
-# 检查是否已安装 MySQL
-if [ -d "$MYSQL_HOME" ]; then
-  echo "ERROR: MySQL appears to be already installed. Please check."
-  exit 1
-fi
-
-# 创建安装目录
-mkdir -p "$MYSQL_DATA_DIR"
-mkdir -p "$MYSQL_CONF_DIR"
-mkdir -p "$MYSQL_DATA_DIR/{binlog,data,log,tmpdir,conf}"
-
-# 解压 MySQL 软件包
-echo "正在解压压缩包..."
-tar xf "$MYSQL_TAR_FILE"
-mv "mysql-${MYSQL_VERSION}-linux-glibc2.17-aarch64" "$MYSQL_HOME"
-echo "压缩包解压结束"
-
-# 检查 MySQL 进程是否运行
-if ps -ef | grep mysqld | wc -l -gt 0; then
-  echo "ERROR: MySQL process is running. Please stop it first."
-  exit 1
-fi
-
-# 添加 MySQL 用户
-if id -u "$MYSQL_USER" > /dev/null 2>&1; then
-  echo "INFO: MySQL user already exists."
-else
-  echo "INFO: Adding MySQL user..."
-  groupadd "$MYSQL_USER"
-  useradd -g "$MYSQL_USER" -s /bin/false "$MYSQL_USER"
-  echo "INFO: MySQL user added successfully."
-fi
-
-# 设置权限
-chown -R "$MYSQL_USER":"$MYSQL_USER" "$MYSQL_DATA_DIR"
-chown -R "$MYSQL_USER":"$MYSQL_USER" "$MYSQL_HOME"
-
-# 初始化 MySQL
-echo "INFO: Initializing MySQL..."
-"$MYSQL_HOME/bin/mysqld" --defaults-file="$MYSQL_CONF_DIR/my.cnf" --user="$MYSQL_USER" --initialize
-
-# 检查初始化是否成功
-if grep -i "root@localhost:" "$MYSQL_LOG_DIR/mysql.err" | wc -l -gt 0; then
-  echo "INFO: MySQL initialized successfully."
-else
-  echo "ERROR: MySQL initialization failed. Please check the logs."
-  exit 1
-fi
-
-# 获取临时密码
-tmp_pwd=$(grep 'temporary password' "$MYSQL_LOG_DIR/mysql.err" | awk '{print $NF}')
-echo "INFO: Temporary password: $tmp_pwd"
-
-# 配置启动脚本
-if [ ! -f "$MYSQL_INIT_SCRIPT" ]; then
-  cp ./mysql.server "$MYSQL_INIT_SCRIPT" -rf
-  chmod 700 "$MYSQL_INIT_SCRIPT"
-fi
-
-# 启动 MySQL
-echo "INFO: Starting MySQL..."
-"$MYSQL_INIT_SCRIPT" start
-
-# 添加环境变量
-if ! grep 'export PATH=\$PATH:/usr/local/mysql/bin' /etc/profile | wc -l -gt 0; then
-  echo "export PATH=\$PATH:/usr/local/mysql/bin" >> /etc/profile
-  source /etc/profile
-fi
-
-# 使用临时密码登录 MySQL 并修改密码
-echo "INFO: Setting permanent password..."
-mysql -uroot -p"$tmp_pwd" --connect-expired-password -e "alter user user() identified by '123';"
-
-echo "INFO: MySQL ${MYSQL_VERSION} installation completed successfully."
-
+```markdown
+在CentOS7上通过安装包安装MySQL8.0.32这个小版本
+当前路径已经有 mysql-8.0.32-linux-glibc2.17-aarch64.tar.gz 这个压缩包了
+MySQL 基础目录为 /var/mysql
+数据目录是 /var/mysql/data
+日志目录是 /var/mysql/log
+配置文件是 /var/mysql/conf/my.cnf
+配置文件不要使用复制的方式生成，而是直接写入内容
+初始化和启动时，需要指定配置文件
+安装过程的命令不要加sudo
+增加修改 root 密码的操作
 ```
 
-**说明：**
+### 在CentOS7上安装MySQL 8.0.32
 
-* 脚本使用了更详细的错误信息和退出代码。
-* 使用了 `&&` 和 `||` 连接命令，提高了代码可读性。
-* 使用了 `trap` 捕获信号，以便在脚本被中断时，能够执行一些清理操作。
-* 脚本使用了更规范的变量命名，并添加了注释说明代码功能。
-* 脚本使用了 `source` 命令加载配置文件，而不是直接使用 `cp` 命令。
-* 脚本使用 `systemctl` 命令管理 MySQL 服务，而不是使用 `/etc/init.d/mysql.server` 脚本。
+**1. 解压安装包:**
 
-**其他建议：**
+```bash
+tar -zxvf mysql-8.0.32-linux-glibc2.17-aarch64.tar.gz
+```
 
-* 使用 `expect` 工具实现自动化密码设置。
-* 使用 `ansible` 或 `puppet` 等配置管理工具进行部署。
+**2. 移动解压后的文件夹到目标目录:**
+
+```bash
+mv mysql-8.0.32-linux-glibc2.17-aarch64 /var/mysql
+```
+
+**3. 创建数据目录、日志目录以及配置文件:**
+
+```bash
+mkdir -p /var/mysql/data
+mkdir -p /var/mysql/log
+mkdir -p /var/mysql/conf
+touch /var/mysql/conf/my.cnf
+```
+
+**4. 创建用户并修改MySQL数据目录和日志目录的所有者为 `mysql` 用户:**
+
+```bash
+groupadd mysql
+useradd -r -g mysql mysql
+chown -R mysql:mysql /var/mysql/data
+chown -R mysql:mysql /var/mysql/log
+```
+
+**5.  写入配置文件内容:**
+
+```bash
+cat << EOF > /var/mysql/conf/my.cnf
+[mysqld]
+basedir=/var/mysql
+datadir=/var/mysql/data
+log-error=/var/mysql/log/error.log
+EOF
+```
+
+**6. 初始化数据库:**
+
+```bash
+/var/mysql/bin/mysqld --defaults-file=/var/mysql/conf/my.cnf --initialize --user=mysql --basedir=/var/mysql --datadir=/var/mysql/data
+```
+
+初始化之后查看日志文件：
+```bash
+# cat /var/mysql/log/error.log
+2024-07-27T06:50:00.054479Z 0 [System] [MY-013169] [Server] /var/mysql/bin/mysqld (mysqld 8.0.32) initializing of server in progress as process 144
+2024-07-27T06:50:00.068534Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2024-07-27T06:50:00.859228Z 1 [System] [MY-013577] [InnoDB] InnoDB initialization has ended.
+2024-07-27T06:50:01.979924Z 6 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: ishLRsVw,3oz
+```
+
+**7.  启动 MySQL 服务:**
+
+```bash
+/var/mysql/bin/mysqld_safe --defaults-file=/var/mysql/conf/my.cnf --user=mysql --basedir=/var/mysql --datadir=/var/mysql/data &
+```
+
+**8.  查找初始密码:**
+
+```bash
+grep 'temporary password' /var/mysql/log/error.log
+```
+
+**9. 使用初始密码登录 MySQL:**
+
+```bash
+/var/mysql/bin/mysql -u root -p
+```
+
+**10. 修改 root 密码:**
+
+```sql
+ALTER USER 'root'@'localhost' IDENTIFIED BY '新密码';
+```
+
+**注意:** 请将“新密码”替换为您想要设置的密码。
+
+**11. 通过新密码登录MySQL:**
+
+```bash
+/var/mysql/bin/mysql -u root -p'新密码'
+```
+
+至此，您已成功在 CentOS7 上安装并配置了 MySQL 8.0.32。
+
+
 
