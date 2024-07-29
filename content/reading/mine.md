@@ -47,12 +47,21 @@ comment: false
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     background-color: #fafafa; /* 鼠标悬停更浅的灰色 */
   }
-  .book-cover {
-    width: 100px;
-    height: 150px;
-    object-fit: cover;
+  .book-cover-container {
+    width: 80px; /* 调整图片容器大小 */
+    height: 120px; /* 调整图片容器大小 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4; /* 添加背景颜色以便更好地显示图像边界 */
     border-radius: 5px;
     margin-bottom: 10px;
+    overflow: hidden; /* 确保图片不会超出边界 */
+  }
+  .book-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* 确保图片内容全部显示 */
   }
   .book-title {
     font-size: 1em;
