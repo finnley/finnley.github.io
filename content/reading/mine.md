@@ -83,7 +83,7 @@ comment: false
       </div>
     </div>
     <div class="book-item">
-      <img src="/img/reading/renzhijuexing.jpg" alt="认知觉醒" class="book-cover" />
+      <img src="/img/reading/shenruqianchumysql.jpg" alt="认知觉醒" class="book-cover" />
       <div class="book-title">认知觉醒</div>
       <div class="book-meta">作者：周岭 | 类目：认知</div>
       <div class="book-description">
