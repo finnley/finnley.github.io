@@ -589,7 +589,7 @@ if [ $mysql_user -eq 1 ];then
 else
 	echo "MySQL 用户不存在，开始添加 MySQL 用户"
 	groupadd mysql
-	useradd -g mysql mysql
+	useradd -r -g mysql -s /bin/false mysql
 	echo "添加 MySQL 用户成功"
 fi
 
@@ -773,7 +773,7 @@ MySQL 基础目录为 /var/mysql
 增加修改 root 密码的操作
 ```
 
-### 在CentOS7上安装MySQL 8.0.32
+### 安装步骤
 
 **1. 解压安装包:**
 
