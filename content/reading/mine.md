@@ -48,9 +48,9 @@ comment: false
     background-color: #fafafa; /* 鼠标悬停更浅的灰色 */
   }
   .book-cover {
-    width: 100px;
-    height: 150px;
-    object-fit: cover;
+    width: 110px; /* 调整图片宽度 */
+    height: 165px; /* 调整图片高度 */
+    object-fit: contain; /* 确保图片内容全部显示 */
     border-radius: 5px;
     margin-bottom: 10px;
   }
