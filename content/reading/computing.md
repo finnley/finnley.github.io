@@ -35,13 +35,11 @@ comment: false
     flex-shrink: 0;
     width: 100px;
     height: 150px;
-    /* object-fit: cover; */
     object-fit: contain; /* 确保图片内容全部显示 */
     border-radius: 5px;
     margin-right: 15px;
   }
   .book-details {
-    /* max-width: calc(100% - 115px); */
     flex: 1;/*保证详情区域宽度自适应 */
     padding: 10px;
   }

@@ -83,11 +83,11 @@ comment: false
       </div>
     </div>
     <div class="book-item">
-      <img src="/img/reading/shenruqianchumysql.jpg" alt="认知觉醒" class="book-cover" />
-      <div class="book-title">认知觉醒</div>
-      <div class="book-meta">作者：周岭 | 类目：认知</div>
+      <img src="/img/reading/laozidaodejingzhu.jpeg" alt="道德经" class="book-cover" />
+      <div class="book-title">道德经</div>
+      <div class="book-meta">作者：周岭 | 类目：哲学</div>
       <div class="book-description">
-        <a href="/reading/认知觉醒">读后感</a>
+        <a href="/reading/道德经">读后感</a>
       </div>
     </div>
     <div class="book-item">
