@@ -6,10 +6,9 @@ categories = [ "MySQL" ]
 tags = [ "mysql" ]
 +++
 
-## 什么是逻辑备份
+# 什么是逻辑备份
 
-
-## 逻辑备份工具
+# 逻辑备份工具
 
 * outfile
 * mysqldump
@@ -17,17 +16,17 @@ tags = [ "mysql" ]
 * mydumper
 * MySQL Shell 
 
-## OUTFILE 命令备份
+# OUTFILE 命令备份
 
 最简单的备份。
 
-### 特点
+## 特点
 
 * MySQL原生SQL指令
 * 最原始的逻辑备份方式
 * 备份的功能和效果取决于如何写SQL语句
 
-### 使用
+## 使用
 
 1、首先查询 MySQL 的导出路径
  

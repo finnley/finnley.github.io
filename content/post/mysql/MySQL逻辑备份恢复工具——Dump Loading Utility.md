@@ -162,6 +162,85 @@ grant create, insert, select, reload, process, lock tables, replication client, 
 
 # 使用
 
+这里使用的不是交互式环境，而是使用的API命令行集成环境，参考：https://dev.mysql.com/doc/mysql-shell/8.0/en/command-line-integration-overview.html
+
+语法：
+```bash
+mysqlsh [options] -- [shell_object]+ object_method [arguments]
+```
+
+查看帮忙：
+```bash
+mysqlsh --help
+```
+
+查看帮助：
+```bash
+# ./mysqlsh  -- --help
+The following objects provide command line operations:
+
+   cluster
+      Represents an InnoDB Cluster.
+
+   clusterset
+      Represents an InnoDB ClusterSet.
+
+   dba
+      InnoDB Cluster, ReplicaSet, and ClusterSet management functions.
+
+   rs
+      Represents an InnoDB ReplicaSet.
+
+   shell
+      Gives access to general purpose functions and properties.
+
+   util
+      Global object that groups miscellaneous tools like upgrade checker and
+      JSON import.
+#
+```
+
+再比如：
+```bash
+# ./mysqlsh  -- util --help
+The following object provides command line operations at 'util':
+
+   debug
+      Debugging and diagnostic utilities.
+
+The following operations are available at 'util':
+
+   check-for-server-upgrade
+      Performs series of tests on specified MySQL server to check if the
+      upgrade process will succeed.
+
+   dump-instance
+      Dumps the whole database to files in the output directory.
+
+   dump-schemas
+      Dumps the specified schemas to the files in the output directory.
+
+   dump-tables
+      Dumps the specified tables or views from the given schema to the files in
+      the target directory.
+
+   export-table
+      Exports the specified table to the data dump file.
+
+   import-json
+      Import JSON documents from file to collection or table in MySQL Server
+      using X Protocol session.
+
+   import-table
+      Import table dump stored in files to target table using LOAD DATA LOCAL
+      INFILE calls in parallel connections.
+
+   load-dump
+      Loads database dumps created by MySQL Shell.
+#
+# ./mysqlsh  -- util dump-schemas --help
+```
+
 ## 数据准备
 
 1、开启恢复实例 `local_infile`：
@@ -191,35 +270,7 @@ mysql>
 
 2、导入
 
-第一个参数是指令路径，是放置airportdb.tar.gz 的位置，而不是解压后的路径
-
-```shell
-
-util.loadDump('/root/airport-db', { threads: 4, deferTableIndexes: 'all', ignoreVersion: true });
-util.loadDump('/root/airport-db', { threads: 16, deferTableIndexes: 'all', ignoreVersion: true });
-
- MySQL  localhost:33060+ ssl  JS > util.loadDump('/root/airport-db/airport-db.tar.gz', { threads: 16, deferTableIndexes: 'all', ignoreVersion: true });
-Loading DDL and Data from '/root/airport-db' using 16 threads.
-Opening dump...
-NOTE: Dump format has version 1.0.2 and was created by an older version of MySQL Shell. If you experience problems loading it, please recreate the dump using the current version of MySQL Shell and try again.
-Target is MySQL 8.0.35. Dump was produced from MySQL 8.0.26-cloud
-Scanning metadata - done
-Checking for pre-existing objects...
-Executing common preamble SQL
-Executing DDL - done
-Executing view DDL - done
-Starting data load
-16 thds loading | 14% (290.15 MB / 2.03 GB), 51.13 MB/s, 12 / 14 tables done
-...
-```
-
-
-我完成的恢复过程如下，出现下面错误：
-```bash
-
-```
-
-延用上面的库表数据。
+我导入的使用MySQL官网提供的 employee data 和 sakila database 两个库。
 
 ```
 ./mysqlsh  -- util dump-schemas --help
@@ -244,6 +295,155 @@ util.dumpInstance(outputUrl[, options])
 util.dumpSchemas(schemas, outputUrl[, options])
 util.dumpTables(schema, tables, outputUrl[, options])
 ```
+
+### dump-instance
+
+    Dumps the whole database to files in the output directory.
+
+**语法**
+
+```bash
+util dump-instance <outputUrl> [<options>]
+```
+
+**示例**
+
+```bash
+./mysqlsh --socket=/opt/mysql/data/3306/mysqld.sock -uroot -P3306 -p'123' -- util dump-instance /opt/mysql/backup/instance01
+```
+
+完成过程如下：
+```bash
+# ./mysqlsh --socket=/opt/mysql/data/3306/mysqld.sock -uroot -P3306 -p'123' -- util dump-instance /opt/mysql/backup/instance01
+WARNING: Using a password on the command line interface can be insecure.
+NOTE: Backup lock is not supported in MySQL 5.7 and DDL changes will not be blocked. The dump may fail with an error if schema changes are made while dumping.
+Acquiring global read lock
+Global read lock acquired
+Initializing - done
+3 out of 7 schemas will be dumped and within them 23 tables, 9 views, 6 routines, 6 triggers.
+3 out of 5 users will be dumped.
+Gathering information - done
+All transactions have been started
+Global read lock has been released
+Writing global DDL files
+Writing users DDL
+WARNING: User 'universe_op'@'%' has a grant statement on an object which is not included in the dump (GRANT EXECUTE ON `sys`.* TO 'universe_op'@'%' WITH GRANT OPTION)
+WARNING: User 'universe_op'@'%' has a grant statement on an object which is not included in the dump (GRANT SELECT, UPDATE ON `mysql`.* TO 'universe_op'@'%' WITH GRANT OPTION)
+Running data dump using 4 threads.
+NOTE: Progress information uses estimated values and may not be accurate.
+Writing schema metadata - done
+Writing DDL - done
+Writing table metadata - done
+Starting data dump
+100% (3.97M rows / ~3.96M rows), 5.89M rows/s, 0.00 B/s uncompressed, 0.00 B/s compressed
+Dump duration: 00:00:00s
+Total duration: 00:00:00s
+Schemas dumped: 3
+Tables dumped: 23
+Uncompressed data size: 144.53 MB
+Compressed data size: 37.70 MB
+Compression ratio: 3.8
+Rows written: 3966283
+Bytes written: 37.70 MB
+Average uncompressed throughput: 144.53 MB/s
+Average compressed throughput: 37.70 MB/s
+```
+
+如果需要压缩：
+```bash
+./mysqlsh --socket=/opt/mysql/data/3306/mysqld.sock -uroot -P3306 -p'123' -- util dump-instance /opt/mysql/backup/instance02 --compression=zip
+```
+
+**注意**
+1、如果备份实例目录不存在，它会自动帮忙创建目录，例如上面的 “instance01” 目录。
+2、备份目录必须为空，否则报错。报错提示形式如下：
+“ERROR: Cannot proceed with the dump, the specified directory '/opt/mysql/backup/instance01' already exists at the target location /opt/mysql/backup/instance01 and is not empty.”
+
+
+
+
+- outputUrl: 备份目录
+
+先创建备份用户：
+```sql
+create user 'u_utility'@'%' identified with mysql_native_password by '123';
+```
+
+授权：
+```sql
+grant create, insert, select, reload, process, lock tables, replication client, replication_slave_admin, show view, trigger, event, backup_admin, super on *.* to u_utility@'%';
+```
+
+
+
+备份:
+
+```bash
+ MySQL  127.0.0.1:3306 ssl  JS > util.dumpInstance('/data/backup/mysql-shell/full')
+Acquiring global read lock
+Global read lock acquired
+Initializing - done
+2 out of 6 schemas will be dumped and within them 3 tables, 0 views.
+5 out of 8 users will be dumped.
+Gathering information - done
+All transactions have been started
+Locking instance for backup
+Global read lock has been released
+Writing global DDL files
+Writing users DDL
+Running data dump using 4 threads.
+NOTE: Progress information uses estimated values and may not be accurate.
+Writing schema metadata - done
+Writing DDL - done
+Writing table metadata - done
+Starting data dump
+100% (6 rows / ~6 rows), 0.00 rows/s, 0.00 B/s uncompressed, 0.00 B/s compressed
+Dump duration: 00:00:00s
+Total duration: 00:00:00s
+Schemas dumped: 2
+Tables dumped: 3
+Uncompressed data size: 60 bytes
+Compressed data size: 87 bytes
+Compression ratio: 0.7
+Rows written: 6
+Bytes written: 87 bytes
+Average uncompressed throughput: 60.00 B/s
+Average compressed throughput: 87.00 B/s
+ MySQL  127.0.0.1:3306 ssl  JS >
+
+查看备份内容：
+```bash
+[root@chaos-1 mysql-shell]# ll full/
+total 88
+-rw-r----- 1 root root  317 9月   9 00:22 backup1.json
+-rw-r----- 1 root root  569 9月   9 00:22 backup1.sql
+-rw-r----- 1 root root   29 9月   9 00:22 backup1@t1@@0.tsv.zst
+-rw-r----- 1 root root    8 9月   9 00:22 backup1@t1@@0.tsv.zst.idx
+-rw-r----- 1 root root  629 9月   9 00:22 backup1@t1.json
+-rw-r----- 1 root root  739 9月   9 00:22 backup1@t1.sql
+-rw-r----- 1 root root   29 9月   9 00:22 backup1@t2@@0.tsv.zst
+-rw-r----- 1 root root    8 9月   9 00:22 backup1@t2@@0.tsv.zst.idx
+-rw-r----- 1 root root  629 9月   9 00:22 backup1@t2.json
+-rw-r----- 1 root root  739 9月   9 00:22 backup1@t2.sql
+-rw-r----- 1 root root  275 9月   9 00:22 backup2.json
+-rw-r----- 1 root root  569 9月   9 00:22 backup2.sql
+-rw-r----- 1 root root   29 9月   9 00:22 backup2@t1@@0.tsv.zst
+-rw-r----- 1 root root    8 9月   9 00:22 backup2@t1@@0.tsv.zst.idx
+-rw-r----- 1 root root  629 9月   9 00:22 backup2@t1.json
+-rw-r----- 1 root root  739 9月   9 00:22 backup2@t1.sql
+-rw-r----- 1 root root  356 9月   9 00:22 @.done.json
+-rw-r----- 1 root root  984 9月   9 00:22 @.json
+-rw-r----- 1 root root  240 9月   9 00:22 @.post.sql
+-rw-r----- 1 root root  240 9月   9 00:22 @.sql
+-rw-r----- 1 root root 4391 9月   9 00:22 @.users.sql
+[root@chaos-1 mysql-shell]#
+```
+
+查看数据
+
+`backup1.sql` 建库信息
+`backup1@t1@@0.tsv.zst` 数据信息
+
 
 **备份指定schema**
 
@@ -362,89 +562,6 @@ No data loaded.
 ```
 
 
-**备份整个实例**
-
-outputUrl 是备份目录
-
-先创建备份用户：
-```sql
-create user 'u_utility'@'%' identified with mysql_native_password by '123';
-```
-
-授权：
-```sql
-grant create, insert, select, reload, process, lock tables, replication client, replication_slave_admin, show view, trigger, event, backup_admin, super on *.* to u_utility@'%';
-```
-
-
-
-备份:
-
-```bash
- MySQL  127.0.0.1:3306 ssl  JS > util.dumpInstance('/data/backup/mysql-shell/full')
-Acquiring global read lock
-Global read lock acquired
-Initializing - done
-2 out of 6 schemas will be dumped and within them 3 tables, 0 views.
-5 out of 8 users will be dumped.
-Gathering information - done
-All transactions have been started
-Locking instance for backup
-Global read lock has been released
-Writing global DDL files
-Writing users DDL
-Running data dump using 4 threads.
-NOTE: Progress information uses estimated values and may not be accurate.
-Writing schema metadata - done
-Writing DDL - done
-Writing table metadata - done
-Starting data dump
-100% (6 rows / ~6 rows), 0.00 rows/s, 0.00 B/s uncompressed, 0.00 B/s compressed
-Dump duration: 00:00:00s
-Total duration: 00:00:00s
-Schemas dumped: 2
-Tables dumped: 3
-Uncompressed data size: 60 bytes
-Compressed data size: 87 bytes
-Compression ratio: 0.7
-Rows written: 6
-Bytes written: 87 bytes
-Average uncompressed throughput: 60.00 B/s
-Average compressed throughput: 87.00 B/s
- MySQL  127.0.0.1:3306 ssl  JS >
-
-查看备份内容：
-```bash
-[root@chaos-1 mysql-shell]# ll full/
-total 88
--rw-r----- 1 root root  317 9月   9 00:22 backup1.json
--rw-r----- 1 root root  569 9月   9 00:22 backup1.sql
--rw-r----- 1 root root   29 9月   9 00:22 backup1@t1@@0.tsv.zst
--rw-r----- 1 root root    8 9月   9 00:22 backup1@t1@@0.tsv.zst.idx
--rw-r----- 1 root root  629 9月   9 00:22 backup1@t1.json
--rw-r----- 1 root root  739 9月   9 00:22 backup1@t1.sql
--rw-r----- 1 root root   29 9月   9 00:22 backup1@t2@@0.tsv.zst
--rw-r----- 1 root root    8 9月   9 00:22 backup1@t2@@0.tsv.zst.idx
--rw-r----- 1 root root  629 9月   9 00:22 backup1@t2.json
--rw-r----- 1 root root  739 9月   9 00:22 backup1@t2.sql
--rw-r----- 1 root root  275 9月   9 00:22 backup2.json
--rw-r----- 1 root root  569 9月   9 00:22 backup2.sql
--rw-r----- 1 root root   29 9月   9 00:22 backup2@t1@@0.tsv.zst
--rw-r----- 1 root root    8 9月   9 00:22 backup2@t1@@0.tsv.zst.idx
--rw-r----- 1 root root  629 9月   9 00:22 backup2@t1.json
--rw-r----- 1 root root  739 9月   9 00:22 backup2@t1.sql
--rw-r----- 1 root root  356 9月   9 00:22 @.done.json
--rw-r----- 1 root root  984 9月   9 00:22 @.json
--rw-r----- 1 root root  240 9月   9 00:22 @.post.sql
--rw-r----- 1 root root  240 9月   9 00:22 @.sql
--rw-r----- 1 root root 4391 9月   9 00:22 @.users.sql
-[root@chaos-1 mysql-shell]#
-```
-
-查看数据
-
-`backup1.sql` 建库信息
-`backup1@t1@@0.tsv.zst` 数据信息
 
 
 **备份指定库**

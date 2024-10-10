@@ -1,7 +1,7 @@
 +++
 title = 'MySQL安装'
 date = 2024-04-30T07:28:19+08:00
-draft = true
+draft = false
 categories = [ "MySQL" ]
 tags = [ "mysql" ]
 +++
@@ -22,7 +22,7 @@ tags = [ "mysql" ]
 4、点击 **Archives** 选项卡，选择下载版本，复制下载链接
 ![MySQL Archives](/img/mysql/40.png)
 
-5、快捷下载示例
+5、下载命令
 ```bash
 wget https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.44-1.el7.x86_64.rpm-bundle.tar
 ```
@@ -52,12 +52,12 @@ mysql-community-test-5.7.44-1.el7.x86_64.rpm
 
 安装过程中，`mysql-community-server` 和 `mysql-community-client` 是最重要的两个包。在安装这两个包之前，需要先安装 `common` 包，安装顺序也至关重要。
 
-**1、安装 common 包**
+**安装 common 包**
 ```bash
 rpm -ivh mysql-community-common-5.7.44-1.el7.x86_64.rpm
 ```
 
-**2、安装 libs 包 (非 libs-compat 包)**
+**安装 libs 包 (非 libs-compat 包)**
 ```bash
 rpm -ivh mysql-community-libs-5.7.44-1.el7.x86_64.rpm
 ```
@@ -96,13 +96,13 @@ error: Failed dependencies:
 rpm -ivh --force --nodeps mysql-community-libs-5.7.44-1.el7.x86_64.rpm
 ```
 
-**3、安装 MySQL Client**
+**安装 MySQL Client**
 
 ```bash
 rpm -ivh mysql-community-client-5.7.44-1.el7.x86_64.rpm
 ```
 
-**4、安装 MySQL Server**
+**安装 MySQL Server**
 ```bash
 rpm -ivh mysql-community-server-5.7.44-1.el7.x86_64.rpm
 ```
@@ -136,18 +136,7 @@ rpm -ivh mysql-community-server-5.7.44-1.el7.x86_64.rpm
 rpm -ivh --force --nodeps mysql-community-server-5.7.44-1.el7.x86_64.rpm
 ```
 
-**5、小结**
-如果没有依赖、签名等阻碍，可以使用以下命令快速安装：
-```bash
-tar -xvf mysql-5.7.44-1.el7.x86_64.rpm-bundle.tar
-rpm -ivh mysql-community-common-5.7.44-1.el7.x86_64.rpm
-rpm -ivh --force --nodeps mysql-community-libs-5.7.44-1.el7.x86_64.rpm
-rpm -ivh mysql-community-client-5.7.44-1.el7.x86_64.rpm
-yum install -y perl net-tools libaio
-rpm -ivh --force --nodeps mysql-community-server-5.7.44-1.el7.x86_64.rpm
-```
-
-**6、验证**
+**验证**
 ```bash
 mysql
 ```
@@ -157,56 +146,82 @@ mysql
 ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/lib/mysql/mysql.sock' (2)
 ```
 
+**安装命令小结**
+
+如果没有依赖、签名等阻碍，可以使用以下命令快速安装：
+```bash
+wget https://downloads.mysql.com/archives/get/p/23/file/mysql-5.7.44-1.el7.x86_64.rpm-bundle.tar
+tar -xvf mysql-5.7.44-1.el7.x86_64.rpm-bundle.tar
+yum install -y perl net-tools libaio
+rpm -ivh mysql-community-common-5.7.44-1.el7.x86_64.rpm
+rpm -ivh mysql-community-libs-5.7.44-1.el7.x86_64.rpm
+rpm -ivh mysql-community-client-5.7.44-1.el7.x86_64.rpm
+rpm -ivh mysql-community-server-5.7.44-1.el7.x86_64.rpm
+```
+
 ## 1.4 启动
 
-**1、设置无密码登录**
+**设置无密码登录**
 
-MySQL 默认配置路径是 `/etc/my.cnf`。打开 `/etc/my.cnf` 文件，在 `[mysqld]` 部分添加一行 `skip-grant-tables`：
+MySQL 默认配置路径是 `/etc/my.cnf`。打开 `/etc/my.cnf` 文件，在 `[mysqld]` 下面添加一行 `skip-grant-tables`：
 ![MySQL 配置文件](/img/mysql/50.png)
 
-这句话的作用是跳过校验，原因是 MySQL 5.7 在启动时会设置一个默认的 root 密码，需要查看日志文件才能找到 root 密码。添加 `skip-grant-tables` 可以直接进入 MySQL，然后修改密码。
+`skip-grant-tables` 的作用是跳过校验，原因是 MySQL 5.7 在启动时会设置一个默认的 root 密码，需要查看日志文件才能找到 root 密码。添加 `skip-grant-tables` 可以直接进入 MySQL 修改密码。
 
 > `生产环境切记不可使用此方法，因为开放这段时间容易被攻击。`
 
 
-**2、启动 MySQL Server**
+**启动服务**
 ```bash
 systemctl start mysqld.service
 ```
 
-**3、连接 MySQL Server**
+**连接服务**
 ```bash
 mysql
 ```
 
-此时不会经过任何校验，直接连接 MySQL。
+此时不会经过任何校验，可直接连接 MySQL。
 
-**4、设置 root 密码**
+**设置 root 密码**
 ```sql
 update mysql.user set authentication_string=password('123123') where user='root';
 flush privileges;
 ```
 
-**5、退出 MySQL Client，重启 MySQL Server**
+**退出客户端，重启服务**
 
 重启前，需要将 `/etc/my.cnf` 配置文件中的 `skip-grant-tables` 删除，然后重启 MySQL Server。
 ```bash
 systemctl restart mysqld.service
 ```
 
-重启后，再尝试使用 `mysql` 命令直接连接 MySQL，发现无法连接，此时需要使用密码连接：
+重启后，再尝试使用 `mysql` 命令直接连接 MySQL，发现无法连接，此时应该使用密码连接：
 ```bash
 mysql -u root -p123123
 ```
 
 ![MySQL 密码连接](/img/mysql/60.png)
 
-如果下发查询 SQL 语句无法执行，则需要设置密码策略和密码长度：
+**2024.10.10 更新**：使用 `mysql` 命令直接连接 MySQL 错误信息截图：
+
+![MySQL 密码连接](/img/mysql/61.png)
+
+`unknown error 1045` 是 MySQL 数据库的一个常见错误，通常与访问权限有关。错误消息的全文可能是 “Access denied for user ‘username’@‘hostname’ (using password: YES)”，这意味着尝试连接到 MySQL 服务器的用户没有提供正确的用户名、密码、或没有从给定主机连接的权限。与更新后的截图提示是一个意思。
+
+
+此时如果下发查询 SQL 语句会发现无法执行，则需要设置密码策略和密码长度：
 
 ![查询语句无法执行](/img/mysql/70.png)
 
+**2024.10.10 更新**：下发SQL错误信息截图：
 
-**6、设置密码策略和密码长度 (仅用于开发学习)**
+![查询语句无法执行](/img/mysql/71.png)
+
+MySQL 中的 `unknown error 1820` 错误通常与安全性或权限问题相关，主要是在用户的密码过期时出现。具体来说，这个错误通常是因为 MySQL 的用户密码策略要求用户必须在一定时间内更新自己的密码，但该用户尝试执行数据库操作时密码已过期。与更新后的截图提示是一个意思。
+
+
+**设置密码策略和密码长度 (仅用于开发学习)**
 ```sql
 set global validate_password_policy=LOW;
 set global validate_password_length=4;
@@ -217,79 +232,81 @@ set global validate_password_length=4;
 set password=password('123123');
 ```
 
-重新下发查询 SQL 语句，就可以正常执行：
+现在再重新下发查询 SQL 语句就可以正常执行了：
 
 ![查询语句执行成功](/img/mysql/80.png)
 
-**7、允许外部连接**
+## 1.5 开启远程连接
 
-使用 Navicat 连接 MySQL 时，可能无法连接，这是因为 CentOS 系统存在防火墙，需要开放 3306 端口：
-```shell
-systemctl status firewalld
-firewall-cmd --zone=public --add-port=3306/tcp --permanent
-firewall-cmd --reload
-```
-
-**8、允许外部连接**s
-比如使用 Navicat 连接 MySQL 时会发现连接不上，这是因为 CentOS 系统存在防火墙，可以进入 CentOS 设置防火墙开放 3306 端口：
-```shell
-systemctl status firewalld
-firewall-cmd --zone=public --add-port=3306/tcp --permanent
-firewall-cmd --reload
-```
-
-如果开放了端口依然无法连接 MySQL，可能是 MySQL 未开启允许远程登录，需要在 MySQL 中执行以下操作：
+比如使用 Navicat 连接 MySQL 时会发现连接不上：
 ![无法连接 MySQL](/img/mysql/90.png)
 
+这是因为系统（如CentOS）存在防火墙，可以进入 CentOS 设置防火墙开放 3306 端口：
+```shell
+systemctl status firewalld
+firewall-cmd --zone=public --add-port=3306/tcp --permanent
+firewall-cmd --reload
+```
+
+若开放端口后依然无法连接服务，可能是 MySQL 未开启允许远程登录，需要在 MySQL 中执行如下操作：
 ```sql
 grant all privileges on *.* to 'root'@'%' identified by '123123' with grant option;
 ```
 
-意思是使用 "root" 用户和 "123123" 密码可以远程登录 MySQL。然后重新尝试连接，就可以成功连接：
+意思是使用 "root" 用户和 "123123" 密码可以远程登录 MySQL，然后重新尝试连接就可以成功连接了：
 ![连接 MySQL 成功](/img/mysql/100.png)
 
 
-**9、注意**
+**注意**
 - 以上步骤仅供参考，实际安装过程中可能需要根据具体情况进行调整。
 - 在生产环境中，请勿使用 `skip-grant-tables` 方式启动 MySQL，并设置更复杂的密码策略和密码长度。
 - 为了安全起见，建议使用更安全的密码管理方式，例如使用密钥文件或 SSH 连接。
+- 保持服务器安全，定期更新 MySQL 版本和安全补丁。
+
+**一些其他细节**
+
+* 可以使用 `systemctl enable mysql.service` 将 MySQL 设置为开机启动。
+* 建议在生产环境中使用更安全的密码管理方式，例如密钥文件或 SSH 连接。
+* 确保防火墙允许 MySQL 端口（3306）的访问。
+
 
 # 2 TAR Archive 方式
 
-**1、下载**
+## 2.1 下载
+
 ```bash
 wget https://downloads.mysql.com/archives/get/p/23/file/mysql-8.0.32-linux-glibc2.17-aarch64.tar.gz
 ```
 
-**2、解压**
+## 2.2 解压
 
 ```bash
 tar zxvf mysql-8.0.32-linux-glibc2.17-aarch64.tar.gz
 ```
 
-**3. 移动**
+## 2.3 移动
 
 ```bash
 mv mysql-8.0.32-linux-glibc2.17-aarch64 /usr/local/mysql
 ```
 
-**4. 添加 MySQL 用户组**
+## 2.4 添加 MySQL 用户组
 
 ```bash
 groupadd mysql
 ```
 
-**5. 创建系统账号**
+## 2.5 创建系统用户
 
 ```bash
 useradd -r -g mysql -s /bin/false mysql
 ```
 
-* `-r`：表示创建系统用户，不创建用户家目录
+* `-r`：表示创建系统用户，不创建用户 home 目录
 * `-g mysql`：指定用户组为 `mysql`
 * `-s /bin/false`：指定用户登录 shell 为 `/bin/false`，使其无法登录，即该用户不能登录。
 
-**6. 创建 MySQL 目录**
+## 2.6 创建 MySQL 目录
 
 ```bash
 mkdir -p /data/mysql
@@ -302,14 +319,14 @@ mkdir -p /data/mysql/{binlog,data,log,tmpdir,conf}
 * `tmpdir`：存放临时文件目录
 * `conf`：存放配置文件目录
 
-**7. 修改属主**
+## 2.7 修改目录属主
 
 ```bash
 chown -R mysql.mysql /data/mysql
 chown -R mysql.mysql /usr/local/mysql
 ```
 
-**8. 添加配置文件**
+## 2.8 添加配置文件
 
 ```bash
 vim /data/mysql/conf/my.cnf
@@ -319,7 +336,7 @@ vim /data/mysql/conf/my.cnf
 
 [/data/mysql/conf/my.cnf](https://www.yuque.com/u8058753/pwvn3w/zedon838xflq5xg2?singleDoc#)
 
-**9. 初始化并获取临时密码**
+## 2.9 初始化并获取临时密码
 
 ```bash
 /opt/mysql/bin/mysqld --defaults-file=/data/mysql/conf/my.cnf --user=mysql --initialize
@@ -332,7 +349,7 @@ vim /data/mysql/conf/my.cnf
 * 创建默认库（在 `/data/mysql/data` 目录下查看）
 * 生成一个随机的临时密码，并记录在错误日志中
 
-**10. 查看临时密码**
+## 2.10 查看临时密码
 
 ```bash
 grep password /data/mysql/log/mysql.err
@@ -344,15 +361,13 @@ grep password /data/mysql/log/mysql.err
 2024-06-23T07:47:08.980554Z 6 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: qwD7j*cFl.1u
 ```
 
-**11. 启动 MySQL**
-
-**11.1 配置启动脚本**
+## 2.12 配置启动脚本
 
 ```bash
 cp /opt/mysql/support-files/mysql.server /etc/init.d/
 ```
 
-**11.2 编辑启动脚本**
+## 2.13 编辑启动脚本
 
 ```bash
 vim /etc/init.d/mysql.server
@@ -377,19 +392,19 @@ $bindir/mysqld_safe --defaults-file=$confdir/my.cnf --datadir="$datadir" --pid-f
 --datadir=*)  datadir="/data/mysql/data"
 ```
 
-**11.3 启动 MySQL**
+## 2.14 启动 MySQL
 
 ```bash
 /etc/init.d/mysql.server start
 ```
 
-**11.4 查看是否启动成功**
+## 2.15 查看是否启动成功
 
 ```bash
 ps -ef | grep mysql
 ```
 
-**12. 设置环境变量**
+## 2.16 设置环境变量
 
 ```bash
 vim /etc/profile
@@ -405,16 +420,14 @@ export PATH MYSQL_HOME
 
 保存退出后执行 `source /etc/profile`。
 
-**12.1 查看 MySQL 版本**
+## 2.17 查看 MySQL 版本
 
 ```bash
 # mysql --version
 mysql  Ver 8.0.32 for Linux on aarch64 (MySQL Community Server - GPL)
 ```
 
-**13. 登录 MySQL 并修改密码**
-
-**13.1 使用临时密码登录**
+## 2.18 使用临时密码登录
 
 ```bash
 #  grep password /data/mysql/log/mysql.err
@@ -438,7 +451,7 @@ ERROR 1820 (HY000): You must reset your password using ALTER USER statement befo
 mysql>
 ```
 
-**13.2 修改密码**
+## 2.19 修改密码
 
 这是临时的超级用户，登录后并不能正常工作，需要先修改密码：
 ```bash
@@ -448,7 +461,7 @@ Query OK, 0 rows affected (0.01 sec)
 mysql>
 ```
 
-**13.3 退出并使用新密码登录**
+## 2.20 退出并使用新密码登录
 
 ```bash
 [root@chaos-1 data]# mysql -uroot -p
@@ -480,7 +493,7 @@ mysql> show databases;
 mysql>
 ```
 
-**14. 关闭 MySQL**
+## 2.21 关闭 MySQL
 
 ```bash
 [root@chaos-1 data]# /etc/init.d/mysql.server stop
@@ -493,17 +506,7 @@ Shutting down MySQL.. SUCCESS!
 ps -ef | grep mysql
 ```
 
-**一些其他细节：**
 
-* 可以使用 `systemctl enable mysql.service` 将 MySQL 设置为开机启动。
-* 建议在生产环境中使用更安全的密码管理方式，例如密钥文件或 SSH 连接。
-* 确保防火墙允许 MySQL 端口（3306）的访问。
-
-**重要提醒：**
-
-* 以上步骤仅供参考，实际安装过程中可能需要根据具体情况进行调整。
-* 在生产环境中，请谨慎使用 `skip-grant-tables`，并设置更复杂的密码策略和密码长度。
-* 保持服务器安全，定期更新 MySQL 版本和安全补丁。
 
 # 3 Shell脚本方式
 
