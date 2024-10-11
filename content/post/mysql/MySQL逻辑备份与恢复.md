@@ -28,7 +28,11 @@ tags = [ "mysql" ]
 
 ## 使用
 
-1、首先查询 MySQL 的导出路径
+**1、数据准备**
+
+参考 [MySQL示例数据库](https://notes.einscat.com/post/mysql/mysql%E7%A4%BA%E4%BE%8B%E6%95%B0%E6%8D%AE%E5%BA%93/)
+
+**2、首先查询导出路径**
  
 MySQL 都有个能够安全操作的文件目录，比如想把 outfile 内容导出成文件，就可以看下安装的 MySQL Server 可操作的系统文件路径
 
@@ -45,23 +49,6 @@ mysql> show variables like '%secure%';
 
 也就是导出时要导出到 `/var/lib/mysql-files/` 这个文件夹里，这个文件夹才是 MySQL 能操作的安全文件夹。 
 
-2、数据准备
-
-```sql
-mysql> create database testdb;
-mysql> use testdb;
-mysql> create table t1 (f1 int, f2 int);
-mysql> insert into t1 values(4, 6), (6, 3), (7, 1);
-mysql> select * from t1;
-+------+------+
-| f1   | f2   |
-+------+------+
-|    4 |    6 |
-|    6 |    3 |
-|    7 |    1 |
-+------+------+
-```
-
 3、使用 `select * into outfile` 指令将查询结果导出至文件
 
 语法如下：
@@ -71,27 +58,26 @@ select * into outfile '/var/lib/mysql-files/out_file_test' from Z;
 
 示例：
 ```sql
-mysql> select * into outfile '/var/lib/mysql-files/t1-out' from t1;
+mysql> select * into outfile '/var/lib/mysql-files/store-out' from sakila.store;
 Query OK, 3 rows affected (0.02 sec)
 
 mysql> exit
 Bye
-# cat /var/lib/mysql-files/t1-out
-4	6
-6	3
-7	1
+# cat /var/lib/mysql-files/store-out
+1	1	1	2006-02-15 04:57:12
+2	2	2	2006-02-15 04:57:12
+#
 ```
 
 也可以如下操作来使用分隔符：
 
 ```sql
-select * into outfile '/var/lib/mysql-files/t1-out2' fields terminated by ',' from t1;
+select * into outfile '/var/lib/mysql-files/store-out2' fields terminated by ',' from t1;
 mysql> exit
 Bye
-# cat /var/lib/mysql-files/t1-out2
-4,6
-6,3
-7,1
+# cat /var/lib/mysql-files/store-out2
+1,1,1,2006-02-15 04:57:12
+2,2,2,2006-02-15 04:57:12
 #
 ```
 
