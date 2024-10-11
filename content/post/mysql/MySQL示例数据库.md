@@ -95,7 +95,7 @@ mysql> show tables;
 23 rows in set (0.00 sec)
 ```
 
-## 小结
+## 1.4 小结
 
 登录MySQL 并导入结构以及数据文件：
 ```sql
