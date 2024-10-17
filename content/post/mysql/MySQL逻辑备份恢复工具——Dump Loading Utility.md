@@ -351,7 +351,7 @@ Average compressed throughput: 37.70 MB/s
 
 如果需要压缩：
 ```bash
-./mysqlsh --socket=/opt/mysql/data/3306/mysqld.sock -uroot -P3306 -p'123' -- util dump-instance /opt/mysql/backup/instance02 --compression=zip
+./mysqlsh --socket=/opt/mysql/data/3306/mysqld.sock -uroot -P3306 -p'123' -- util dump-instance /opt/mysql/backup/instance02 --compression=gzip
 ```
 
 **注意**
@@ -360,6 +360,9 @@ Average compressed throughput: 37.70 MB/s
 “ERROR: Cannot proceed with the dump, the specified directory '/opt/mysql/backup/instance01' already exists at the target location /opt/mysql/backup/instance01 and is not empty.”
 
 
+1. urman-mgr 提供任务同步服务
+任务的编排来源于备份规则
+2、
 
 
 - outputUrl: 备份目录
@@ -446,6 +449,10 @@ total 88
 
 
 **备份指定schema**
+
+
+/bin/mysqlsh --scoket=/opt/mysql/data/3306/mysqld.sock -uroot -p3306 -p123 -- util dump-schemas 'sakila' --outputUrl='/data/backup/mysql-shell/backup1_schema'
+/opt/mysql-shell/bin/mysqlsh --user=root --port=3306 --password='123' -- util dump-schemas 'backup1' --outputUrl='/data/backup/mysql-shell/backup1_schema'
 
 ```bash
 [root@chaos-1 backup]# /opt/mysql-shell/bin/mysqlsh --user=root --port=3306 --password='123' -- util dump-schemas 'backup1' --outputUrl='/data/backup/mysql-shell/backup1_schema'

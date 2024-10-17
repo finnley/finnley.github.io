@@ -95,7 +95,7 @@ comment: false
       <div class="book-title">高考状元的屠龙宝刀</div>
       <div class="book-meta">作者：李晓鹏 | 类目：学习</div>
       <div class="book-description">
-        <a href="/reading/高考状元的屠龙宝刀">读后感</a>
+        <a href="/reading/思维导图学习法">读后感</a>
       </div>
     </div>
     <div class="book-item">

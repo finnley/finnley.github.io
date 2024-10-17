@@ -1,23 +1,29 @@
 +++
 title = 'MySQL逻辑备份工具——mysqldump'
 date = 2024-09-01T08:07:10
-draft = true
+draft = false
 categories = [ "MySQL" ]
 tags = [ "mysql" ]
 +++
 
-# 一、mysqldump
+# 1 mysqldump
 
-## （一）概述
+## 1.1 概述
 
-* 非常常用的MySQL逻辑备份工具
-* MySQL Server 自带
-* 输出的备份内容为 SQL语句，方便阅读和还原
-* SQL 语句占用空间较小
+* 非常常用的MySQL逻辑备份工具（逻辑备份表示输出的也是逻辑上可读的文本文件）
+* MySQL 自带
+* 输出的备份内容为 SQL 语句，方便阅读和还原
+* SQL 语句占用空间较小（InnDB的库不仅有数据还有索引、B+Tree、日志，这些都会占用空间，逻辑备份SQL语句就是标准的行记录）
 
 参考文档：https://dev.mysql.com/doc/refman/8.0/en/mysqldump.html
 
-## （二）优缺点分析
+## 1.2 功能
+
+- 可备份一个或多个表
+- 可备份一个或多个库
+- 可备份所有库表
+
+## 1.3 优缺点
 
 **优点**
 
@@ -33,22 +39,25 @@ tags = [ "mysql" ]
   - 官方文档中推荐使用 MySQL Shell，因为 MySQL Shell 程序可提供多线程并行转储、文件压缩和进度信息显示等功能。
 
 
-**支持功能**
+## 1.4 原理
 
-  - 可备份一个或多个表
-  - 可备份一个或多个库
-  - 可备份所有库表
+使用下面语句进行数据备份：
+```sql
+SELECT SQL_NOT_CACHE FROM `t`;
+```
 
-# 二、准备
+SQL_NOT_CACHE 查询存出的数据不会进入SQL缓存。
 
-## （一）环境
+# 2 准备
+
+## 2.1 环境
 
   主机   | IP            | 作用 | 用户
 ------- | ------------- | ---  | ---
 chaos-1 | 172.20.30.1   | 备份  | u_backup
 chaos-2 | 172.20.30.2   | 恢复  | u_recover
 
-## （二）数据
+## 2.2 数据
 
 1、登录 `chaos-1` 主机创建备份用户。
 
@@ -71,8 +80,7 @@ grant select, reload, process, lock tables, replication client, replication_slav
 - show view：要备份视图
 - trigger：要备份触发器
 
-
-3、创建测试库。
+3、创建测试库表。
 
 ```sql
 create database backup1;
@@ -103,11 +111,11 @@ create user 'u_recover'@'%' identified by '123';
 grant lock tables, drop, create, alter, select, insert, SUPER on *.* to 'u_recover'@'%';
 ```
 
-- 恢复数据库会进行锁表，并且是写锁，
-- 另外备份文件中会有drop操作，会将表drop 表再重新建，再导入备份数据，所以需要drop，create
-- 导入数据之前会关闭表的索引，以提高写入速度，导入之后还会再开启表索引，所以需要 alter 权限
-- 导入时会需要查询一些参数，所以需要 select 权限
-- 导入数据就是执行 insert 语句，所以需要insert权限
+- lock tables：恢复数据库会进行锁表，并且是写锁，
+- drop、create：另外备份文件中会有drop操作，会将表drop 表再重新建，再导入备份数据，所以需要drop，create
+- alter：导入数据之前会关闭表的索引，以提高写入速度，导入之后还会再开启表索引，所以需要 alter 权限
+- select：导入时会需要查询一些参数，所以需要 select 权限
+- insert：导入数据就是执行 insert 语句，所以需要insert权限
 
 > 注意：添加的SUPER是因为我在第二次恢复过程出现了下面错误
   ```bash
@@ -122,7 +130,7 @@ grant lock tables, drop, create, alter, select, insert, SUPER on *.* to 'u_recov
 create database recover1;
 ```
 
-## （三）快速使用
+## 2.3 快速使用
 
 1、登录 `chaos-1` 主机，创建存放备份目录
 
@@ -290,11 +298,11 @@ mysql> select * from t1;
 2 rows in set (0.00 sec)
 ```
 
-# 三、过程分析
+# 3 过程分析
 
 > 通过开启 `general_log` 实时查看 mysqldump 备份/恢复时执行了哪些操作，从而了解 mysqldump 备份/恢复原理。
 
-## （一）备份过程
+## 3.1 备份过程
 
 1、登录 `chaos-1` 主机实例查看 `general_log` 位置并开启 `general_log`
 
@@ -387,7 +395,7 @@ In order to ensure a consistent backup of the database, pass --single-transactio
 10. 释放锁
 11. 退出
 
-## （二）备份原理
+## 3.2 备份原理
 
 ```mermaid
 graph LR
@@ -403,7 +411,7 @@ end
 
 ![alt text](/img/mysql/backup/20.png)
 
-## （三）恢复过程
+## 3.3 恢复过程
 
 > 目标：通过开启 `general_log` 实时查看 mysqldump 恢复时执行了哪些操作，从而了解 mysqldump 恢复原理
 
@@ -496,7 +504,7 @@ mysql: [Warning] Using a password on the command line interface can be insecure.
 `/*!40000 ALTER TABLE `t1` ENABLE KEYS */` 会关闭表索引，因为导入数据钱关闭表索引会让表导入速度更快些。
 通过Insert 语句导入数据，打开表索引，然后打开解锁，
 
-## （四）恢复原理
+## 3.4 恢复原理
 
 ```mermaid
 graph LR
@@ -513,7 +521,7 @@ end
 ![alt text](/img/mysql/backup/30.png)
 
 
-# 四、常见用法
+# 4 常见用法
 
 **环境准备**
 
