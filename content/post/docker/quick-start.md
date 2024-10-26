@@ -220,6 +220,11 @@ CMD ["/usr/sbin/init"]
 
 ### 小结
 
+docker run -itd --privileged --name=udp-9 reg.einscat.com:10010/library/centos7:altarch
+
+export DOCKER_BUILDKIT=1
+export COMPOSE_DOCKER_CLI_BUILD=1
+
 
 
 在 Dockerfile 中，`RUN` 命令是在构建镜像时执行的，而不是在运行容器时执行的。如果要在容器启动时执行命令，应该使用 `CMD` 或 `ENTRYPOINT`。
