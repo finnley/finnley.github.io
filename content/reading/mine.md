@@ -75,11 +75,11 @@ comment: false
 <div class="bookshelf">
   <div class="bookshelf-row">
     <div class="book-item">
-      <img src="/images/reading/renzhijuexing.jpg" alt="认知觉醒" class="book-cover" />
-      <div class="book-title">认知觉醒</div>
-      <div class="book-meta">作者：周岭 | 类目：认知</div>
+      <img src="/images/reading/zheyangxuexizuiqingsong.jpg" alt="这样学习最轻松" class="book-cover" />
+      <div class="book-title">这样学习最轻松</div>
+      <div class="book-meta">作者：李晓鹏 | 类目：认知</div>
       <div class="book-description">
-        <a href="/reading/认知觉醒">读后感</a>
+        <a href="/reading/这样学习最轻松">读后感</a>
       </div>
     </div>
     <div class="book-item">

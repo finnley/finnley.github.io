@@ -104,11 +104,21 @@ comment: false
       <div class="book-description"></div>
     </div>
   </li>
-    <li class="book-item">
+  <li class="book-item">
     <img src="/images/reading/gaokaozhuangyuandetulongbaodao.jpg" alt="高考状元的屠龙宝刀" class="book-cover" />
     <div class="book-details">
       <div class="book-title">高考状元的屠龙宝刀</div>
-      <div class="book-meta">作者：李晓鹏 | 类目：学习</div>
+      <div class="book-meta">作者：李晓鹏 | 类目：工具</div>
+      <div class="book-rating">评分：⭐⭐⭐⭐</div>
+      <div class="book-tags"><span>学习</span><span>认知</span><span>工具</span><span>实践</span></div>
+      <div class="book-description"></div>
+    </div>
+  </li>
+  <li class="book-item">
+    <img src="/images/reading/zheyangxuexizuiqingsong.jpg" alt="这样学习最轻松" class="book-cover" />
+    <div class="book-details">
+      <div class="book-title">这样学习最轻松</div>
+      <div class="book-meta">作者：李晓鹏 | 类目：工具</div>
       <div class="book-rating">评分：⭐⭐⭐⭐</div>
       <div class="book-tags"><span>学习</span><span>认知</span><span>工具</span><span>实践</span></div>
       <div class="book-description"></div>
