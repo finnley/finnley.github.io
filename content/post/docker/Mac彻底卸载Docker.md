@@ -1,5 +1,5 @@
 +++
-title = 'Macbook 彻底卸载Docker'
+title = 'Mac彻底卸载Docker'
 date = 2024-10-26T10:58:11+08:00
 draft = false
 categories = [ "Docker" ]
@@ -66,6 +66,44 @@ sudo rm -rf ~/Library/Logs/Docker Desktop
 
 1. 备份重要数据。
 2. 检查系统完整性。
+
+# 七 小结
+
+将上面清理命令整理为shell脚本，一键清理Docker:
+```bash
+#!/bin/bash
+
+# 检查 figlet 是否安装
+if command -v figlet &> /dev/null; then
+    figlet "Uninstall Docker"
+fi
+
+# 一、移除容器网络设置
+docker system prune -a
+
+# 二、删除应用程序
+
+# 1、使用命令行工具删除Docker
+echo "删除 Docker 应用程序..."
+sudo rm -rf /Applications/Docker.app
+
+# 三、清理文件和配置
+
+# 1、删除配置文件和数据
+echo "删除配置文件和数据..."
+sudo rm -rf ~/Library/Containers/com.docker.docker
+sudo rm -rf ~/Library/Application\ Support/Docker\ Desktop
+sudo rm -rf ~/Library/Group\ Containers/group.com.docker
+sudo rm -rf ~/.docker
+
+# 2、清理系统缓存和日志
+echo "清理系统缓存和日志..."
+sudo rm -rf ~/Library/Caches/com.docker.docker
+sudo rm -rf ~/Library/Logs/Docker\ Desktop
+
+# 四、提示重启系统
+echo "请重启系统以确保所有与 Docker 相关的进程和文件都被彻底清除。"
+```
 
 # 七 参考
 

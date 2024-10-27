@@ -381,7 +381,7 @@ systemctl daemon-reload && service docker restart
 访问级别的 `公开` 不要勾选。
 ![](/images/harbor/10.png)
 
-## docker 登录
+## 登录
 
 ```bash
 # docker login harbor.einscat.com:10011
@@ -453,18 +453,18 @@ docker push harbor.example.com:10011/private/busybox:latest
 **查看**
 ![](/images/harbor/20.png)
 
-# 拉取镜像
+## 拉取镜像
 
-拉取方法一
+**拉取方法一**
 
-点击点击这个小按钮，然后直接粘贴，执行拉取命令：
+点击这个小按钮复制粘贴，执行拉取命令：
 ![](/img/linux/harbor/40.jpg)
 
 ```bash
-docker pull 10.186.62.66:10010/library/busybox@sha256:a77fe109c026308f149d36484d795b42efe0fd29b332be9071f63e1634c36ac9
+docker pull harbor.example.com:10011/private/busybox@sha256:cbfb4842eaea648ad3f0fa53bf27128563f09e1792ec754e0a1881e21780e88f
 ```
 
-拉取方法二
+**拉取方法二**
 
 格式：
 ```bash
@@ -473,57 +473,12 @@ docker pull 上传时修改的镜像名
 
 例如：
 ```bash
-# docker pull 10.186.62.66:10010/library/busybox:v1
-v1: Pulling from library/busybox
-a01966dde7f8: Pull complete
-Digest: sha256:a77fe109c026308f149d36484d795b42efe0fd29b332be9071f63e1634c36ac9
-Status: Downloaded newer image for 10.186.62.66:10010/library/busybox:v1
-10.186.62.66:10010/library/busybox:v1
-# docker images
-REPOSITORY                            TAG       IMAGE ID       CREATED       SIZE
-10.186.62.66:10010/library/busybox   v1        71a676dd070f   2 years ago   1.41MB
+docker pull harbor.example.com:10011/private/busybox:latest
 ```
 
-# 删除镜像
+## 删除镜像
 
 ![](/img/linux/harbor/50.jpg)
-
-# 设置域名
-
-
-1、编辑配置文件
-```bash
-# vim 进入配置文件
-vim harbor.yml
-```
-
-修改 `hostname` 为我们自己的域名，例如：
-
-```yaml
-hostname: reg.youdomain.com
-```
-
-2、执行预制脚本
-```bash
-./ prepare
-```
-
-3、执行安装脚本
-```bash
-./install.sh
-```
-
-4、域名解析
-
-5、docker 客户端将 `reg.youdomain.com` 设置到 `/etc/docker/daemon.json`，内容如下：
-```json
-{
-    ...
-    "insecure-registries": [
-        "reg.yourdomain.com:10010"
-    ]
-}
-```
 
 # 更新记录
 
