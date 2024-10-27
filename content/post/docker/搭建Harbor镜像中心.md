@@ -59,7 +59,7 @@ harbor/harbor.yml.tmpl
 - 文档参考：[Configure HTTPS Access to Harbor](https://goharbor.io/docs/2.11.0/install-config/configure-https/)
 - 脚本参考：[gen-certs.sh](https://github.com/finnley/quick-start/blob/x86_64/scripts/harbor/gen-certs.sh.example)
 
-# 配置
+# harbor 配置
 
 **编辑 `harbor.yml` 配置文件**
 
