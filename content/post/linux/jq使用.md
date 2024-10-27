@@ -75,7 +75,7 @@ jq [options] --jsonargs <jq filter> [JSON_TEXTS...]
 
 - `| jq '.'`
 
-  使用管道符 `|` 将 `echo` 的输出结果传到给 `jq` 处理器。 `jq` 是一个强大的命令行 JSON 处理起，`'.'` 是一个简单的额 jq 表达式，表示原样格式化输出接收的JSON数据。 
+  使用管道符 `|` 将 `echo` 的输出结果传到给 `jq` 处理器。 `jq` 是一个强大的命令行 JSON 处理起，`'.'` 是一个简单的 jq 表达式，表示原样格式化输出接收的JSON数据。 
 
 
 
@@ -213,4 +213,153 @@ jq [options] --jsonargs <jq filter> [JSON_TEXTS...]
 # echo '2' | jq 'if . == 0 then "zero" elif . == 1 then "one" else "many" end'
 "many"
 ```
+
+# 综合练习
+
+config.json 配置文件内容如下：
+```json
+{
+  "centos7_x64": {
+    "enable": false,
+    "count": 5,
+    "ports": [
+      "13306:3306",
+      "18080:18080"
+    ],
+    "volumes": [
+      "~/workspace:/root/workspace"
+    ]
+  },
+  "centos7_altarch": {
+    "enable": true,
+    "count": 5,
+    "ports":{
+      "chaos-1": [
+        "10000:10000",
+        "18080:18080"
+      ],
+      "chaos-2": [
+        "10001:10000",
+        "18081:18080"
+      ]
+    },
+    "volumes": {
+        "chaos-1": [
+            "~/workspace:/root/workspace"
+        ],
+        "chaos-2": [
+            "~/workspace:/root/workspace"
+        ]
+    }
+  }
+}
+```
+
+jq处理如下：
+```bash
+jq -c 'to_entries[]' ${CONFIG_FILE} | while read -r entry; do
+  key=$(echo "${entry}" | jq -r '.key')
+  value=$(echo "${entry}" | jq -r '.value')
+  enable=$(echo "${value}" | jq -r '.enable')
+  template="agent_$(to_lowercase ${key})"
+
+  if [[ "${enable}" == "true" ]]; then
+    # Add template to the file if not already added
+    if ! contains_element "${template}" "${templates[@]}"; then
+      echo "  ${template}:" >> ${COMPOSE_FILE}
+      yq eval ".x-templates.${template}" ${TEMPLATES_FILE} | sed 's/^/    /' >> ${COMPOSE_FILE}
+      templates+=("${template}")
+    fi
+  fi
+done
+```
+
+**输出**
+
+- `jq -c 'to_entries[]' ${CONFIG_FILE}`
+
+  `jq -c` 表示以紧凑格式（即不换行）输出数据。比如：
+  ```bash
+  # cat config.json | jq -c '.'
+  {"centos7_x64":{"enable":false,"count":5,"ports":["13306:3306","18080:18080"],"volumes":["~/workspace:/root/workspace"]},"centos7_altarch":{"enable":true,"count":5,"ports":{"chaos-1":["10000:10000","18080:18080"],"chaos-2":["10001:10000","18081:18080"]},"volumes":{"chaos-1":["~/workspace:/root/workspace"],"chaos-2":["~/workspace:/root/workspace"]}}}
+  ```
+  
+  `to_entries` 是 jq 中一个内置函数，用于将JSON对象转换为一个键值对数组。即它将对象的每个键值对转化为一个包含key和value的对象，形成一个数组。好处就是可以使便利对象的每个属性变得更加简单。比如:
+  ```bash
+  # echo '{"name": "John", "age": 30, "is_student": false}' | jq 'to_entries'
+  [
+    {
+      "key": "name",
+      "value": "John"
+    },
+    {
+      "key": "age",
+      "value": 30
+    },
+    {
+      "key": "is_student",
+      "value": false
+    }
+  ]
+  ```
+
+  看下查询的结果示例：
+  ```bash
+  # jq -c 'to_entries[]' config.json | jq '.'
+  {
+    "key": "centos7_x64",
+    "value": {
+      "enable": false,
+      "count": 5,
+      "ports": [
+        "13306:3306",
+        "18080:18080"
+      ],
+      "volumes": [
+        "~/workspace:/root/workspace"
+      ]
+    }
+  }
+  {
+    "key": "centos7_altarch",
+    "value": {
+      "enable": true,
+      "count": 5,
+      "ports": {
+        "chaos-1": [
+          "10000:10000",
+          "18080:18080"
+        ],
+        "chaos-2": [
+          "10001:10000",
+          "18081:18080"
+        ]
+      },
+      "volumes": {
+        "chaos-1": [
+          "~/workspace:/root/workspace"
+        ],
+        "chaos-2": [
+          "~/workspace:/root/workspace"
+        ]
+      }
+    }
+  }
+  ```
+
+- `| while read -r entry; do`
+
+  通过管道将 jq 的输出传递到 while 循环中，一次读取一个键值对，存储在 entry 变量中。
+
+- `key=$(echo "${entry}" | jq -r '.key')`
+
+  使用 jq -r 从 entry 中提取 key 值，-r 表示以原始格式输出，不加引号。
+
+- `value=$(echo "${entry}" | jq -r '.value')`
+
+  从 entry 中提取 value 值。
+
+- `enable=$(echo "${value}" | jq -r '.enable')`
+
+  从 value 中提取 enable 字段，判断该功能是否启用。
 
