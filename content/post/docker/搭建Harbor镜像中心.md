@@ -372,7 +372,7 @@ vim /etc/docker/daemon.json
 {
     ...
     "insecure-registries": [
-        "10.186.62.66:10010"
+        "harbor.example.com:10011"
     ]
 }
 ```
@@ -399,7 +399,7 @@ systemctl daemon-reload && service docker restart
 
 发现均无法登录，提示下面的错误信息：
 ```bash
-docker login harbor.example.com:10010
+docker login harbor.example.com:10011
 Authenticating with existing credentials...
 Login did not succeed, error: Error response from daemon: Get "https://harbor.example.com:10011/v2/": tls: failed to verify certificate: x509: certificate signed by unknown authority
 Username (admin): admin
