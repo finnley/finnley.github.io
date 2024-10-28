@@ -73,3 +73,5 @@ server {
     access_log /var/log/nginx/myproject_access.log;
 }
 EOF
+
+echo "<?php phpinfo(); ?>" > /var/www/html/index.php

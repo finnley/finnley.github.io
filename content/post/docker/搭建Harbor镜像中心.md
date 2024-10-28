@@ -8,7 +8,8 @@ tags = [ "docker", "harbor" ]
 
 # 文档
 
-[Getting Started](https://goharbor.io/docs/2.11.0/install-config/)
+**参考**
+- [Getting Started](https://goharbor.io/docs/2.11.0/install-config/)
 
 # 前提条件
 
@@ -56,8 +57,13 @@ harbor/harbor.yml.tmpl
 
 # https 访问配置
 
-- 文档参考：[Configure HTTPS Access to Harbor](https://goharbor.io/docs/2.11.0/install-config/configure-https/)
-- 脚本参考：[gen-certs.sh](https://github.com/finnley/quick-start/blob/x86_64/scripts/harbor/gen-certs.sh.example)
+**参考**
+- [Configure HTTPS Access to Harbor](https://goharbor.io/docs/2.11.0/install-config/configure-https/)
+- [gen-certs.sh](https://github.com/finnley/quick-start/blob/x86_64/scripts/harbor/gen-certs.sh.example)
+
+**快速配置**
+
+下载 `gen-certs.sh` 脚本并执行。
 
 # harbor 配置
 
@@ -134,7 +140,7 @@ data_volume: /data/harbor
 docker-compose ps
 ```
 
-**`prepare` 完整过程如下**
+**`prepare` 完整过程**
 ```bash
 # ./prepare
 prepare base dir is set to /opt/harbor
@@ -174,7 +180,7 @@ REPOSITORY                              TAG           IMAGE ID       CREATED    
 goharbor/prepare                        v2.11.1       1d00ffdb2e67   2 months ago    216MB
 ```
 
-**`install` 完整过程如下（可忽略）**
+**`install` 完整过程（可忽略）**
 ```bash
 # ./install.sh
 
@@ -335,23 +341,25 @@ cb9c5bb952e1   goharbor/harbor-db:v2.11.1            "/docker-entrypoint.…"   
 
 # 页面访问
 
-- 访问地址：[配置文件中配置的hostname和port]
-- 用户名：admin <br>	
-- 密码：[配置文件配置的密码]
-- 预览效果：
-![](/img/linux/harbor/10.jpg)
+**访问地址**
+- 配置文件中配置的 hostname和port
 
-# 修改 docker 配置
+**用户名和密码**
+- 用户名默认是 `admin`
+- 密码是配置文件配置的 `harbor_admin_password`
 
-**`注意`:**
+**预览效果**
+  ![](/img/linux/harbor/10.jpg)
 
-这里设置的 Docker 客户端，是自己的电脑，因为如果不设置的话，在自己电脑上推送镜像会提示如下错误：
+# 修改 Docker 配置
 
-```bash
-docker push 10.186.62.66:10010/library/busybox:v1
-The push refers to repository [10.186.60.66:10010/library/busybox]
-Get "https://10.186.60.66:10010/v2/": http: server gave HTTP response to HTTPS client
-```
+**参考**
+
+[harbor配置https访问](https://juejin.cn/post/7030414239181307918)
+
+**`注意`：**
+
+这里设置的是 Docker 客户端，也就是自己的电脑，因为如果不设置的话，在自己电脑上如登录、推送镜像等操作则会出现错误。
 
 **修改daemon.json**
 ```bash
@@ -359,7 +367,7 @@ Get "https://10.186.60.66:10010/v2/": http: server gave HTTP response to HTTPS c
 vim /etc/docker/daemon.json
 ```
 
-配置如下：
+1、配置如下
 ```json
 {
     ...
@@ -369,7 +377,7 @@ vim /etc/docker/daemon.json
 }
 ```
 
-然后重启docker和harbor容器：
+2、重启docker
 ```bash
 systemctl daemon-reload && service docker restart
 ```
@@ -378,19 +386,18 @@ systemctl daemon-reload && service docker restart
 
 ## 创建私有仓库
 
-访问级别的 `公开` 不要勾选。
+访问级别的 `公开` 选项不要勾选：
 ![](/images/harbor/10.png)
 
 ## 登录
 
 ```bash
-# docker login harbor.einscat.com:10011
+# docker login harbor.example.com:10011
 或者
-# docker login -uadmin -pHaarbor12345 10.186.62.66:10010
+# docker login -uadmin -pHaarbor12345 harbor.example.com:10011
 ```
 
 发现均无法登录，提示下面的错误信息：
-
 ```bash
 docker login harbor.example.com:10010
 Authenticating with existing credentials...
@@ -400,11 +407,11 @@ Password:
 Error response from daemon: Get "https://harbor.example.com:10011/v2/": tls: failed to verify certificate: x509: certificate signed by unknown authority
 ```
 
-解决办法如下：
+**解决方案**
 
-**1、进入服务器将 /etc/docker/certs.d 目录拷贝下来放到本地登录机器的 /etc/docker 目录下，我的是Mac，我放在了 ~/.docker 目录下**
+1、登录服务器将 `/etc/docker/certs.d` 目录拷贝下来放到本地登录机器的 `/etc/docker` 目录下。我本地使用的是 Mac，是放在了 `~/.docker` 目录下。
 
-**2、编辑daemon.json配置文件，添加下面内容**
+2、编辑 `daemon.json` 配置文件，添加以下内容，`harbor.example.com` 和 `10011` 是在 `harbor.yml` 配置的hostname和port。
 ```json
 {
   ...
@@ -414,18 +421,15 @@ Error response from daemon: Get "https://harbor.example.com:10011/v2/": tls: fai
 }
 ```
 
-**3、重启Docker**
+3、重启本地 Docker
 
-**4、重新登录**
-
+4、重新登录
 ```bash
-~ docker login harbor.einscat.com:10011
+~ docker login harbor.example.com:10011
 Username: admin
 Password:
 Login Succeeded
 ```
-
-参考：[harbor配置https访问](https://juejin.cn/post/7030414239181307918)
 
 ## 推送镜像
 
@@ -435,43 +439,46 @@ Login Succeeded
 ```
 
 **打标签**
-格式：
+
+1、格式
 ```bash
 docker tag 镜像名:版本 your-ip:端口/项目名称/新的镜像名:版本
 ```
-注意：**一定要加上项目名称**
+
+2、注意 `一定要加上项目名称`
 
 ```bash
 docker tag busybox:latest harbor.example.com:10011/private/busybox:latest
 ```
 
-**推送**
+3、推送
 ```bash
 docker push harbor.example.com:10011/private/busybox:latest
 ```
 
-**查看**
+4、查看
 ![](/images/harbor/20.png)
 
 ## 拉取镜像
 
 **拉取方法一**
 
-点击这个小按钮复制粘贴，执行拉取命令：
+1、点击小按钮复制命令
 ![](/img/linux/harbor/40.jpg)
 
+2、粘贴命令拉取
 ```bash
 docker pull harbor.example.com:10011/private/busybox@sha256:cbfb4842eaea648ad3f0fa53bf27128563f09e1792ec754e0a1881e21780e88f
 ```
 
 **拉取方法二**
 
-格式：
+1、格式
 ```bash
 docker pull 上传时修改的镜像名
 ```
 
-例如：
+2、拉取
 ```bash
 docker pull harbor.example.com:10011/private/busybox:latest
 ```
