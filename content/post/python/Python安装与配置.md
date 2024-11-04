@@ -166,6 +166,20 @@ initialize	 postdeactivate  postmkvirtualenv  preactivate	     premkproject   pr
 
 其中 `python_start` 就是虚拟环境的地址。
 
+5、虚拟环境常用命令
+```bash
+# 创建环境名
+mkvirtualenv 环境名
+# 退出环境
+deactivate
+# 进入环境
+workon 环境名
+# 删除环境
+rmvirtualenv 环境名
+# 列出所有环境
+lsvirtualenv
+```
+
 
 ### 2.3 MacOS
 
