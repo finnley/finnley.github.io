@@ -1,5 +1,5 @@
 +++
-title = '宿主机Mac无法Ping通容器IP.md'
+title = '宿主机Mac无法Ping通容器IP'
 date = 2024-11-03T12:26:48+08:00
 draft = false
 categories = [ "Mac" ]
