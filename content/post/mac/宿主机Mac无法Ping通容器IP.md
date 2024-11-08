@@ -87,6 +87,12 @@ Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
 ...
 ```
 
+或者
+```bash
+$ brew tap wenjunxiao/brew
+$ brew install docker-connector
+```
+
 **2、通过以下命令把所有Docker所有bridge子网放入配置文件，后续的增减可以参考后面的详细配置**
 ```bash
 ✗ docker network ls --filter driver=bridge --format "{{.ID}}" | xargs docker network inspect --format "route {{range .IPAM.Config}}{{.Subnet}}{{end}}" >> "$(brew --prefix)/etc/docker-connector.conf"
@@ -94,15 +100,6 @@ Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
 
 执行完后查看 `/opt/homebrew/etc/docker-connector.conf` 文件，该文件在安装 `wenjunxiao/brew/docker-connector` 时的返回信息中提到，见最后三行，最后两行是我容器环境的IP网段。
 ```bash
-# addr 192.168.251.1/24
-# mtu 1400
-# host 127.0.0.1
-# port 2511
-# route 172.17.0.0/16
-# route 172.18.0.0/16
-# iptables 172.17.0.0+172.18.0.0
-# hosts /etc/hosts .local
-# proxy 127.0.0.1:80:80
 route 172.17.0.0/16
 route 172.20.30.0/24
 route 172.20.40.0/24
@@ -125,7 +122,8 @@ Tapped 2 commands (52 files, 1.2MB).
 
 **4、安装Docker端的容器mac-docker-connector**
 ```bash
-✗ docker run -it -d --restart always --net host --cap-add NET_ADMIN --name connector wenjunxiao/mac-docker-connector
+✗ docker pull wenjunxiao/mac-docker-connector
+✗ docker run -it -d --restart always --net host --cap-add NET_ADMIN --name mac-connector wenjunxiao/mac-docker-connector
 Unable to find image 'wenjunxiao/mac-docker-connector:latest' locally
 latest: Pulling from wenjunxiao/mac-docker-connector
 26d14edc4f17: Pull complete
