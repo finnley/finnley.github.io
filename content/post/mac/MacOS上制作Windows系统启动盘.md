@@ -1,7 +1,7 @@
 +++
 title = 'MacOS上制作Windows系统启动盘'
 date = 2025-01-29T12:02:13+08:00
-draft = true
+draft = false
 categories = [ "Mac" ]
 tag = [ "mac", "windows" ]
 +++
