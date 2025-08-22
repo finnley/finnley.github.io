@@ -29,11 +29,11 @@ copyright = ""            # default: author.name ↓        # 默认为下面配
   priority = 0.5
   filename = "sitemap.xml"
 
-[[menu.main]]             # config your menu              # 配置目录
-  name = "Home"
-  weight = 1
-  identifier = "home"
-  url = "/"
+#[[menu.main]]             # config your menu              # 配置目录
+#  name = "Home"
+#  weight = 1
+#  identifier = "home"
+#  url = "/"
 [[menu.main]]
   name = "行知路"
   weight = 2
