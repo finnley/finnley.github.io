@@ -1,0 +1,3 @@
+[submodule "themes/notes"]
+	path = themes/notes
+	url = https://github.com/finnley/hugo-theme-notes/
