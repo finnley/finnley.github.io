@@ -1,5 +1,6 @@
 ---
 comment: false
+toc: false
 ---
 
 **[我的](/reading/mine)  ·  [心理学](/reading/psychology)  ·  哲学  ·  [计算机科学](/reading/computing)  ·  [工具](/reading/manuals)**
