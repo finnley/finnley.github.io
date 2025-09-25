@@ -1,170 +1,168 @@
 +++
-title = '记一次使用Nx+PNPM搭建Monorepo项目'
+title = '当你的项目多得像一盘散沙，是时候请出 Monorepo 这位“收纳大师”了！'
 date = 2025-08-30T18:52:25+08:00
 draft = false
 categories = [ "PM" ]
 tags = [ "pm", "monorepo"]
 +++
 
-## 准备
+## 一、你的“开发桌面”是不是也乱成了一锅粥？
 
-```shell
-brew install gh
+想象一下这个场景：
 
-sudo apt install gh -y
-```
+你的桌面上摊着好几个项目——用 Go 写的后端、用 Python 跑的 AI 模型、iOS 和 Android 两个 App、一个 React 前端，外加微信小程序和公众号...
 
-![alt text](image-1.png)
+每个项目都是一个独立的文件夹（Git 仓库），每次想做个涉及前后端的修改，你都得像个DJ一样，在好几个窗口之间疯狂“切碟”。时间久了，不仅心累，还容易出错。
 
-![alt text](image-2.png)
+如果你对这个场景感同身受，那么恭喜你，你遇到了一个“甜蜜的烦恼”，而 **Monorepo** 就是帮你解决这个烦恼的“收纳魔法”。本文将带你从零开始，使用 `Nx` + `pnpm` 这对黄金搭档，亲手打造一个能容纳 Go、React 等多语言项目的 Monorepo 工作区。
 
-![alt text](image-3.png)
+## 二、Monorepo：管理“项目动物园”的神器
 
-![alt text](image-4.png)
+把所有项目都放进一个仓库（Monorepo），听起来有点疯狂，但它带来的好处会让你大呼“真香”：
 
-![alt text](image-5.png)
+1.  **上帝视角，一目了然**
+    再也不用在几十个浏览器标签页或IDE窗口间反复横跳了。所有代码都在一个地方，整个技术版图清清楚楚，管理起来心情都变好了。
 
-![alt text](image-6.png)
+2.  **代码共享，如丝般顺滑**
 
----
+      * **前后端“心灵相通”**：后端 Go 定义了一个数据结构（DTO），前端 React 想用？在 Monorepo 里，你只需创建一个 `libs/types` 共享库，前后端直接引用就行。告别了过去需要发 npm 包或 Go module，然后两边再小心翼翼地更新版本的繁琐流程。
+      * **跨平台“组件复用”**：未来小程序和 App 想共享一套工具函数或业务逻辑？在 Monorepo 架构下，这种共享是天生的优势，而非后期的“技术改造”。
 
-## 场景介绍
+3.  **提交与重构，指哪打哪**
 
-我有一个商城项目，项目包含一个Golang的后端项目、一个安卓项目、一个React的前端项目、未来可能还有微信小程序、公众号、IOS项目等项目。
-我不想将所有的项目分别放到独立的仓库中，不方便我管理与查看，我想通过 Monorepo 来对这个商城项目进行管理。
+      * **原子化提交 (Atomic Commits)**：想象你改了一个后端 API，需要同时更新 Go 服务端、React 前端和 Android App。在 Monorepo 里，这一切可以在一个 commit 中完成！这意味着你的代码库在任何一个历史节点都是**一致且可运行的**，彻底告别了“A 仓库更新了，B 仓库还没跟上，项目挂了”的尴尬。
+      * **“地毯式”重构**：想给某个核心函数改个名？在 IDE 里直接全局搜索替换，从后端到前端，一键搞定，安全又高效。
 
-**使用 Monorepo 带来的好处**
+4.  **CI/CD，精准而高效**
+    你可以配置一套统一的构建部署流水线。更酷的是，借助 `Nx` 这样的智能工具，当你只改了 React 前端的代码时，CI/CD 会**只构建和部署前端应用**，后端、App 等项目纹丝不动，大大节省了时间和计算资源。
 
-1. **统一管理与可见性**：我不再需要在不同的代码仓库之间来回切换。所有的项目都在一个地方，一目了然。这对于个人开发者或小团队来说，极大地降低了心智负担。
+## 三、我们的“神兵利器”：Nx + PNPM
 
-2.  **代码共享变得简单**：
+  - **Nx**: 我们的“项目总管家”，它能理解项目之间的依赖关系，实现智能的构建、测试和缓存。
+  - **PNPM**: 高效的包管理器，它的 `workspace` 特性是实现 Monorepo 的天然盟友。
 
-      * **前后端代码共享**：我的 Golang 后端和 React 前端可能会共享一些数据结构（DTOs - Data Transfer Objects）或验证逻辑。在 Monorepo 中，我可以创建一个共享库，让前后端项目直接引用，而无需通过发布 npm 包或 Go module 来同步。
-      * **跨端代码共享**：如果未来我的小程序和 App (Android/iOS) 需要共享一些业务逻辑、工具函数或 UI 组件（例如使用 React Native 或 Flutter），Monorepo 会让这种共享变得非常自然。
-
-3.  **原子化的提交与重构**：
-
-      * 假设我修改了一个后端 API。在一个提交 (commit) 中，我可以同时修改 Golang 的服务端代码、React 的前端请求代码以及 Android 的网络请求代码。这保证了代码库在任何时刻都是一致和可运行的，避免了因多个仓库更新不同步而导致的“破坏性变更”。
-      * 当需要对某个核心功能进行跨项目重构时，我可以在 IDE 中轻松地进行全局搜索和替换，确保所有相关代码都被更新。
-
-4.  **简化的构建与部署流程**：
-
-      * 我可以设置一个统一的 CI/CD 流水线。当某个项目的代码发生变更时，智能的构建工具（如 Nx、Turborepo）可以只构建和部署受影响的部分。
-      * 例如，只修改了 React 前端的代码，CI 只会重新构建和部署前端应用，而不会去触碰 Golang 或 Android 项目。
-
-**管理工具的选择**
-
-- Nx
-- PNPM
-
-## 安装 Nx
-
-使用 `pnpm` 全局安装 `Nx`，类似于在使用仓库管理前先 安装 Git 一样。
+**给总管家发“上岗证”**
+在动手之前，先在你的电脑上全局安装 Nx。这就像在管理仓库前先安装 Git 一样。
 
 ```shell
 pnpm add --global nx
 ```
 
-## 搭建
+## 四、实战演练：从零到一，打造你的多语言 Monorepo
 
-### 1、创建工作空间
+### 第1步：开辟鸿蒙，创建工作空间
 
-**创建空的 Nx Workspace**
-
-我们将使用 create-nx-workspace 脚手架来初始化项目。这个命令会自动检测到 pnpm 并将其设置为包管理器。
-
-打开终端，运行以下命令：
+我们将使用 `create-nx-workspace` 脚手架来初始化项目。它很聪明，会自动检测到你安装了 pnpm。
 
 ```shell
-# `xuepingmall` 是你的项目名，可以替换
-# `--preset=apps` 表示创建一个空的、适合添加多个应用的 workspace
+# `xuepingmall` 是你的项目名，可以随心所欲地替换
+# `--preset=apps` 表示创建一个空的、适合添加多个独立应用的 workspace
+# `--pm=pnpm` 明确指定包管理器
 npx create-nx-workspace@latest xuepingmall --preset=apps --pm=pnpm
 ```
 
-![alt text](image-7.png)
+整个过程行云流水：
 
-完整过程如下：
-![alt text](image.png)
-
-创建完进入目录，结构如下：
+完成后，进入 `xuepingmall` 目录，你的“地基”就已经打好了：
 
 ```shell
-➜  xuepingmall git:(main) tree
-.
-├── node_modules
-│   ├── @nx
-│   │   ├── js
-│   │   └── workspace
-│   └── nx
-├── nx.json
-├── package.json
-├── pnpm-lock.yaml
+xuepingmall/
+├── node_modules/   # 依赖库存放地
+├── nx.json         # Nx 的核心配置文件
+├── package.json    # 项目的“身份证”
+├── pnpm-lock.yaml  # 锁定依赖版本
 └── README.md
 ```
 
-网上有些教程说使用上面命令创建后会自动创建 `app` 目录和 `pnpm-workspace.yaml` 文件，但实际上并没有，但也不用担心，因为这些我们可以自己手动创建。
+**温馨提示**：一些旧教程可能会说此时会自动创建 `apps` 目录和 `pnpm-workspace.yaml` 文件。别担心，新版本下我们自己动手，丰衣足食！
 
-**添加目录**
+### 第2步：Git 远程地址从 HTTPS 切换到 SSH
 
-在根目录 (xuepingmall/) 下，执行以下命令：
+如果在 GitHub 推送代码时觉得 HTTPS 方式太慢或需要频繁输入密码，可以切换到更高效的 SSH 方式。
+
+```shell
+# 查看你当前的远程地址
+git remote -v
+
+# 将 origin 的地址替换成你的 SSH 地址
+git remote set-url origin git@github.com:YourUsername/YourRepoName.git
+```
+
+
+**规划“功能分区”**
+在根目录下，创建两个核心目录：
 
 ```shell
 mkdir apps libs
 ```
 
-- apps/：这个目录将用来存放所有“可独立部署的应用程序”，比如我的 React 前端、Golang 后端、Android App 等。
-- libs/：这个目录将用来存放所有“可复用的代码库”，比如共享的工具函数、公共的 UI 组件、前后端通用的类型定义等。
+  - `apps/`: **“成品展示区”**。这里存放所有可以独立部署的应用，比如你的 React 前端、Go 后端服务、Android App 等。
+  - `libs/`: **“共享工具箱”**。这里存放所有可复用的代码库，比如共享的工具函数、公共 UI 组件、通用类型定义等。
 
+**配置 pnpm Workspace**
+在项目根目录下，确保你有一个 `pnpm-workspace.yaml` 文件，告诉 pnpm 它的管辖范围。如果没​​有，就创建一个：
 
-### 2、添加项目
+```yaml
+# pnpm-workspace.yaml
+packages:
+  - 'apps/*'
+  - 'libs/*'
+```
 
-**添加后端统一项目目录**
+### 第2步：让第一个“居民”——Go 后端服务入驻
 
-为后端服务添加一个名为 `backend-core` 的目录，由于后端是微服务架构，所以这个目录下存放的一些微服务项目
+**创建 Go 项目的“家”**
+由于后端可能采用微服务架构，我们先在 `apps` 里为所有后端服务建一个总目录 `backend-core`。
 
 ```shell
 mkdir apps/backend-core
-```
-
-**初始化Golang工作区**
-
-```shell
 cd apps/backend-core
+
+# 初始化 Go Workspace，让多个 Go 微服务能和谐共处
 go work init
 ```
 
-**初始化第一个Golang微服务项目**
+此时会在 `backend-core` 目录下生成一个名为 `go.work` 文件，内容如下：
+```shell
+go 1.25.0
+```
+
+**创建第一个微服务 `user-mgr`**
 
 ```shell
+# 创建项目目录
 mkdir user-mgr
 cd user-mgr
+
+# 初始化 Go Module
 go mod init xuepingmall.com/user-mgr
 ```
 
-**user-mgr加入到Go Workspace**
-```
-cd ../
-go work use ./user-mgr 
+**将其登记到 Go Workspace**
+
+```shell
+# 回到 backend-core 目录
+cd ..
+go work use ./user-mgr
 ```
 
-此时会在 backend-core 目录下生成一个 go.work 的文件，内容如下：
+`go.work` 此时内容更新如下：
 ```shell
-✗ cat go.work
 go 1.25.0
 
-use ./user-mgr # 新增的Go服务被包含进来
+use ./user-mgr
 ```
 
-**启动一个简单的Gin服务**
+现在，`backend-core` 目录下的 `go.work` 文件记录了 `user-mgr` 的存在，方便统一管理。
 
-user-mgr/main.go 文件内容如下：
+**启动一个简单的 Gin 服务**
+为了验证，我们在 `user-mgr/main.go` 中写入一个“Hello World”级别的服务：
 
 ```go
 package main
 
 import (
 	"net/http"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -172,26 +170,26 @@ func main() {
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
+			"message": "pong from user-mgr!",
 		})
 	})
-	r.Run(":8081") // listen and serve on 0.0.0.0:8081
+	r.Run(":8081") // 监听 8081 端口
 }
 ```
 
-### 3、注册项目至Monorepo
+### 第3步：给 Go 项目在 Monorepo 里“上户口”
 
-**注册**
+现在 Go 项目已经存在了，但我们的“总管家” Nx 还不知道。我们需要为它创建一个“身份证”——`project.json` 文件。
 
-在 app/backend-core/user-mgr 项目下新建 project.json 文件：
+在 `apps/backend-core/user-mgr` 目录下新建 `project.json`：
+
 ```json
 {
   "name": "user-mgr",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "root": "apps/backend-core/user-mgr",
-  "sourceRoot": "apps/backend-core/user-mgr",
   "projectType": "application",
-  "tags": ["scope:backend-core", "lang:go"],
+  "tags": ["scope:backend", "lang:go"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
@@ -214,88 +212,60 @@ func main() {
     }
   }
 }
-
 ```
 
-这个文件明确地告诉 Nx：
+这份“身份证”告诉了 Nx 关于 `user-mgr` 的一切：它的名字、位置、以及如何**构建(build)**、\*\*运行(serve)**和**测试(test)\*\*它。`outputs` 字段尤其重要，它告诉 Nx 构建产物的位置，以便启用缓存。
 
-有一个名为 user-mgr 的项目。
-
-它的 build 命令是 go build ...。
-
-它的 serve 命令是 go run .。
-
-**验证**
-在你完成了上述操作后，如何确认 Nx 已经成功识别了你的所有项目呢？
-
-运行以下命令：
+**验明正身**
+运行 `nx show projects`，看看 Nx 是否已经认出了我们的新成员：
 
 ```shell
 ➜  xuepingmall git:(main) ✗ nx show projects
 user-mgr
-➜  xuepingmall git:(main) ✗
 ```
 
-或者，一个更酷的方式是查看项目依赖图：
+成功！或者，用更酷的方式，打开项目依赖图看看：
 
 ```shell
 nx graph
 ```
 
-### 4、启动项目
+### 第4步：启动项目，感受 Monorepo 的魔力
 
-**检查 pnpm Workspace 配置**
 
-如果没有则在项目根目录下新建 `pnpm-workspace.yaml` 文件，内容如下：
-```yaml
-packages:
-  - 'apps/*'
-  - 'libs/*'
 
-```
+**点火，启动！**
+回到项目根目录，用 Nx 的命令来启动我们的 Go 服务：
 
-**启动**
-
-在根目录下执行下面命令：
 ```shell
 nx serve user-mgr
 ```
 
+看到 Gin 服务的启动日志了吗？恭喜，你的第一个非 JS 项目已成功融入 Monorepo！
 
-进入xuepingmall:
-```
-git remote add backend_repo_local /Users/finnley/workspace/Projects/AI-Family/Observatory
+### 第5步：如法炮制，添加 React 前端项目
 
-git subtree add --prefix=apps/backend-core backend_repo_local main
-
-git remote remove backend_repo_local
-```
-
-### 5、添加一个前端项目
-
-**手动创建一个 Vite + React 项目**
-
-使用一下命令创建一个名为 `web-frontend` 的前端项目
+**手动创建 Vite + React 项目**
+在 `apps` 目录下，使用 `pnpm create` 命令：
 
 ```shell
 cd apps
+# 根据提示操作，项目名称输入 web-frontend，选择 React 和 TypeScript
 pnpm create vite@latest
 ```
 
-执行完后会在 `apps` 目录下出现一个名为 `web-frontend` 目录。
+操作完成后，`apps` 目录下会多出一个 `web-frontend` 文件夹。
 
+**为前端项目“上户口”**
+同样，在 `apps/web-frontend` 目录下新建 `project.json` 文件：
 
-**注册项目至Monorepo**
-
-在 `web-frontend` 目录下新建 project.json 文件：
 ```json
-// apps/web-frontend/project.json
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "name": "web-frontend",
   "sourceRoot": "apps/web-frontend/src",
   "projectType": "application",
-  "tags": ["type:frontend", "framework:react"],
+  "tags": ["scope:frontend", "framework:react"],
   "targets": {
     "serve": {
       "executor": "nx:run-commands",
@@ -330,79 +300,89 @@ pnpm create vite@latest
 }
 ```
 
+这里的配置和 Go 项目类似，只是把 `targets` 里的命令换成了 `pnpm dev`、`pnpm build` 等前端专用命令。
 
-这个配置文件做了什么？
-
-name: 定义了项目的唯一名称，就是 web-frontend。
-
-targets: 定义了一系列可以对这个项目执行的“任务”。我们把您 package.json 里的 scripts 脚本映射到了这里：
-
-serve: 对应 pnpm dev，用于启动开发服务器。
-
-build: 对应 pnpm build，用于生产环境构建。
-
-preview: 对应 pnpm preview，用于预览构建后的产物。
-
-lint: 对应 pnpm lint，用于代码检查。
-
-executor: "nx:run-commands": 告诉 Nx，执行这些任务的方式就是简单地运行一个 shell 命令。
-
-cwd: "apps/web-frontend": 确保命令在正确的项目目录下执行。
-
-outputs: (非常重要) 在 build 任务中，我们告诉 Nx 构建产物会输出到 apps/web-frontend/dist 目录。这使得 Nx 的缓存功能可以生效。当您第二次构建且代码无变化时，Nx 会直接从缓存中读取结果，速度极快。
-
-**在根目录安装依赖**
-
-现在您的 web-frontend 项目有了新的依赖（react, vite 等），我们需要让 pnpm workspaces 来统一管理它们。
-
-回到您 Monorepo 的根目录（xuepingmall/），然后运行安装命令：
+**统一安装所有依赖**
+回到 Monorepo 的根目录，运行 `pnpm install`。pnpm 会自动扫描所有 `apps/*` 和 `libs/*` 下的 `package.json`，并将所有依赖项安装到根目录的 `node_modules` 中。
 
 ```shell
-# 确保在 my-org/ 目录下
+# 确保在 xuepingmall/ 根目录下
 pnpm install
 ```
 
-这个命令会：
+**用 Nx 统一指挥前端项目**
+现在，你可以像指挥官一样，在根目录用同样简洁的 Nx 命令来操作前端项目了：
 
-读取 pnpm-workspace.yaml，发现 apps/web-frontend 是一个新的工作区成员。
-
-读取 apps/web-frontend/package.json 中的 dependencies 和 devDependencies。
-
-将所有依赖项下载并链接到根目录的 node_modules 文件夹中。
-
-更新根目录的 pnpm-lock.yaml 文件。
-
-第三步：使用 Nx 命令运行您的项目
-恭喜您，所有配置都已完成！现在您可以像操作 Monorepo 中任何其他项目一样来操作您的新 React 应用了。
-
-在根目录下运行以下命令：
-
-启动开发服务器:
-
-```
+```shell
+# 启动开发服务器
 nx serve web-frontend
+
+# 构建生产包
+nx build web-frontend
+
+# 检查代码格式
+nx lint web-frontend
 ```
 
-（这背后实际执行的是 pnpm dev）
+**为前端项目安装依赖**
 
-构建项目:
+这个操作需要在 Monorepo 的根目录下执行，而不是进入到前端项目的子目录中。
 
-Bash
+具体步骤如下：
 
-nx build web-frontend
-（这背后实际执行的是 pnpm build）
+假设您要为名为 web-frontend 的前端项目安装 axios 这个库：
 
-代码检查:
+1、打开终端，并确保您位于 Monorepo 的根目录（即 xuepingmall/ 目录下）。
 
-Bash
+执行以下命令：
+```shell
+pnpm add axios --filter web-frontend
+```
 
-nx lint web-frontend
-（这背后实际执行的是 pnpm lint）
+- pnpm add <package-name>: 这是 pnpm 添加依赖的标准命令。
+- --filter <project-name>: 这是关键部分。它告诉 pnpm，这个命令只针对名为 web-frontend 的这个项目生效。项目名称是在其 package.json 文件里的 "name" 字段定义的。
 
-预览构建产物:
+如果您想安装一个开发依赖（devDependency），可以添加 -D 标志：
 
-Bash
+```shell
+pnpm add typescript -D --filter web-frontend
+```
 
-nx preview web-frontend
-（这背后实际执行的是 pnpm preview）
+为什么这样做？
 
+在 pnpm 工作空间（workspace）中：
+
+- 集中管理：所有项目的依赖最终都会被安装到根目录的 node_modules 文件夹中，并通过符号链接（symlinks）的方式供各个项目使用，这极大地节省了磁盘空间。
+- 精确操作：使用 --filter 标志可以确保依赖被正确地添加到 apps/web-frontend/package.json 文件中，而不是错误地加到根目录的 package.json 或其他项目中。
+- 维护一致性：执行命令后，pnpm 会自动更新根目录下的 pnpm-lock.yaml 文件，以保证整个 Monorepo 中所有依赖版本的一致性和锁定。
+
+-----
+
+## 附录
+
+### 将已有的 Git 仓库导入 Monorepo
+
+如果你想把一个已存在的独立项目（比如 `Observatory`）迁移到 Monorepo 的 `apps/backend-core` 目录下，`git subtree` 是个不错的选择。
+
+```shell
+# 1. (可选) 添加一个远程别名，方便操作
+git remote add backend_repo_local /path/to/your/existing/Observatory
+
+# 2. 使用 subtree 将对方的 main 分支添加到指定前缀目录下
+git subtree add --prefix=apps/backend-core backend_repo_local main
+
+# 3. (可选) 移除远程别名
+git remote remove backend_repo_local
+```
+
+恭喜你！你已经成功掌握了搭建和管理一个多语言 Monorepo 的核心技能。现在，去把你那盘散沙般的项目都收纳进这个强大的工作区吧！
+
+### 安装 `gh`
+
+需要提前安装 `gh`，否则会出现问题。
+
+```shell
+brew install gh
+
+sudo apt install gh -y
+```
