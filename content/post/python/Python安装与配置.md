@@ -94,7 +94,7 @@ Type "help", "copyright", "credits" or "license" for more information.
 >>>
 ```
 
-## 2 Python 虚拟环境安装与配置
+## 2 虚拟环境安装与配置
 
 **参考**
 - [Python学习：解决pip总是WARNING: Retrying (Retry(total=4...](https://blog.csdn.net/bjtu_linxinyu/article/details/105468658)
