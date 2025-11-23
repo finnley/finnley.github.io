@@ -394,5 +394,5 @@ done
 
 # 4 参考
 
-[yq](https://github.com/mikefarah/yq)
-[使用 Shell 脚本来处理 JSON](https://www.tomczhen.com/2017/10/15/parsing-json-with-shell-script/)
+- [yq](https://github.com/mikefarah/yq)
+- [使用 Shell 脚本来处理 JSON](https://www.tomczhen.com/2017/10/15/parsing-json-with-shell-script/)
