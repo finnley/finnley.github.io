@@ -305,6 +305,8 @@ pnpm create vite@latest
 **统一安装所有依赖**
 回到 Monorepo 的根目录，运行 `pnpm install`。pnpm 会自动扫描所有 `apps/*` 和 `libs/*` 下的 `package.json`，并将所有依赖项安装到根目录的 `node_modules` 中。
 
+这里切记如果目录过深，pnpm-workspace.yaml 需要配置到项目目录，否则前端无法执行下面命令。
+
 ```shell
 # 确保在 xuepingmall/ 根目录下
 pnpm install
@@ -386,3 +388,4 @@ brew install gh
 
 sudo apt install gh -y
 ```
+

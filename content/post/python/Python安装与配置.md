@@ -96,6 +96,10 @@ Type "help", "copyright", "credits" or "license" for more information.
 
 ## 2 虚拟环境安装与配置
 
+**为什么需要虚拟环境？**
+
+Python 的虚拟环境与系统之间是隔离的，一个项目一个虚拟环境，不同的虚拟环境不会相互影响，最大程度避免包冲突。缺点就是会占用更大的空间。
+
 **参考**
 - [Python学习：解决pip总是WARNING: Retrying (Retry(total=4...](https://blog.csdn.net/bjtu_linxinyu/article/details/105468658)
 
@@ -196,7 +200,7 @@ initialize	 postdeactivate  postmkvirtualenv  preactivate	     premkproject   pr
 
 其中 `python_start` 就是虚拟环境的地址。
 
-5、虚拟环境常用命令
+**5、虚拟环境常用命令**
 ```shell
 # 创建环境名
 mkvirtualenv 环境名
@@ -279,33 +283,21 @@ virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/python_learn
 virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/python_learning/bin/get_env_details
 ```
 
-列出虚拟环境列表：
+**4、虚拟环境常用命令**
+
+
 
 ```shell
+# 列出虚拟环境列表
 ➜  lsvirtualenv
-python_learning
-===============
-
-
+# 或者
 ➜  workon
 python_learning
-```
-
-启动/切换虚拟环境：
-
-```shell
+#启动/切换虚拟环境
 workon [虚拟环境名称]
-```
-
-删除虚拟环境：
-
-```shell
+# 删除虚拟环境：
 rmvirtualenv [虚拟环境名称]
-```
-
-离开虚拟环境，和virtualenv 一样：
-
-```shell
+# 离开虚拟环境，和virtualenv 一样：
 deactivate
 ```
 
@@ -316,37 +308,32 @@ deactivate
 创建一个新的虚拟环境，方法是选择 Python 解释器并创建一个 `./venv` 目录来存放它：
 
 ```shell
+# Linux or MacOS
 python3 -m venv --system-site-packages ./venv
-```
-
-Windows:
-```shell
+# Windows
 python -m venv --system-site-packages .\venv
 ```
 
 使用特定于 shell 的命令激活该虚拟环境：
 
 ```shell
-source ./venv/bin/activate  # sh, bash, or zsh
-```
-
-```shell
-source ./venv/bin/activate.csh  # csh or tcsh
-```
-
-```shell
-source ./venv/bin/activate.csh  # csh or tcsh
+# sh, bash, or zsh
+source ./venv/bin/activate  
+# csh or tcsh
+source ./venv/bin/activate.csh  
+# csh or tcsh
+source ./venv/bin/activate.csh  
 ```
 
 当虚拟环境处于有效状态时，shell 提示符带有 (venv) 前缀。
 在不影响主机系统设置的情况下，在虚拟环境中安装软件包。首先升级 pip：
 
 ```shell
-pip install --upgrade pip
+pip3 install --upgrade pip
 ```
 
 ```shell
-pip list  # show packages installed within the virtual environment
+pip3 list  # show packages installed within the virtual environment
 ```
 
 之后退出虚拟环境：
@@ -399,6 +386,31 @@ urllib3          1.26.3
 ➜  Envs
 ```
 
-## 3 更新日志
+2、删除虚拟环境，只需要删除项目目录下的虚拟环境目录即可。
+
+## 3 pip配置
+
+**更新pip版本到最新**
+```
+pip3 install --upgrade pip
+```
+
+**查看当前源**
+```
+➜  pip3 config list
+global.index-url='https://pypi.tuna.tsinghua.edu.cn/simple'
+global.trusted-host='pypi.tuna.tsinghua.edu.cn'
+```
+
+**镜像加速配置**
+
+```shell
+# 配置
+pip3 config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple
+pip3 config set global.trusted-host mirrors.cloud.tencent.com
+```
+
+## 4 更新日志
 
 - 2024.11.04 更新 Python 版本为 3.13
+- 2025.09.29 更新 Python Pip 镜像加速配置

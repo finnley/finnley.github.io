@@ -1,7 +1,7 @@
 +++
 title = 'MySQL逻辑备份工具——mysqldump'
 date = 2024-09-01T08:07:10
-draft = false
+draft = true
 categories = [ "MySQL" ]
 tags = [ "mysql" ]
 +++

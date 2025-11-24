@@ -1,7 +1,7 @@
 +++
 title = 'Mac彻底卸载Docker'
 date = 2024-10-26T10:58:11+08:00
-draft = false
+draft = true
 categories = [ "Docker" ]
 tags = [ "docker" ]
 +++

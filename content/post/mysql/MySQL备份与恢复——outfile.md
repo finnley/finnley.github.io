@@ -1,7 +1,7 @@
 +++
 title = 'MySQL备份与恢复——outfile'
 date = 2024-09-01T08:07:10
-draft = false
+draft = true
 categories = [ "MySQL" ]
 tags = [ "mysql" ]
 +++

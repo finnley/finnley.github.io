@@ -1,7 +1,7 @@
 +++
 title = '宿主机Mac无法Ping通容器IP'
 date = 2025-01-05T22:36:14+08:00
-draft = false
+draft = true
 categories = [ "Mac" ]
 tag = [ "mac", "docker" ]
 +++

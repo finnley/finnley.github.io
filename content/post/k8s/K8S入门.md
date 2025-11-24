@@ -1,7 +1,7 @@
 +++
 title = 'K8S入门'
 date = 2023-10-16T22:52:25+08:00
-draft = false
+draft = true
 categories = [ "Kubernetes" ]
 tags = [ "k8s", "kubernetes" ]
 +++
