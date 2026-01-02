@@ -1,3 +1,58 @@
 baseURL = 'https://example.org/'
-languageCode = 'en-us'
+languageCode = 'en-US'
 title = 'My New Hugo Site'
+
+theme = 'hugo-theme-drone'
+
+[params.meta]
+  username = "Y"
+  avatar = "/images/avatar.png"
+  description = "活死人的行知路..."
+
+[[menu.main]]
+  name = "文章"
+  title = "文章"
+  weight = 2
+  identifier = "posts"
+  url = "/posts"
+  params = { icon = "scroll" }  # 修改这里：显式定义 params
+[[menu.main]]
+  name = "悦❤️读"
+  title = "悦❤️读"
+  weight = 3
+  identifier = "reading"
+  url = "/reading/mine"
+  params = { icon = "book" }
+[[menu.main]]
+  name = "行知路"
+  title = "行知路"
+  weight = 4
+  identifier = "moments"
+  url = "/journey/moments"
+  params = { icon = "website" }
+[[menu.main]]
+  name = "我的项目"
+  title = "我的项目"
+  weight = 5
+  identifier = "projects"
+  url = "/projects"
+  params = { icon = "projects" }
+[[menu.main]]
+  name = "效率工具"
+  title = "效率工具"
+  weight = 6
+  identifier = "tools"
+  url = "/tools"
+  params = { icon = "tools" }
+[[menu.main]]
+  name = "关于"
+  title = "关于"
+  weight = 7
+  identifier = "about"
+  url = "/about"
+  params = { icon = "about" }
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
