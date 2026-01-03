@@ -1,0 +1,326 @@
++++
+title = 'Python虚拟环境配置'
+date = 2020-01-02T13:10:11+08:00
+draft = true
+categories = [ "Python" ]
+tags = [ "python" ]
++++
+
+## 1 虚拟环境安装与配置
+
+**为什么需要虚拟环境？**
+
+Python 的虚拟环境与系统之间是隔离的，一个项目一个虚拟环境，不同的虚拟环境不会相互影响，最大程度避免包冲突。缺点就是会占用更大的空间。
+
+**参考**
+- [Python学习：解决pip总是WARNING: Retrying (Retry(total=4...](https://blog.csdn.net/bjtu_linxinyu/article/details/105468658)
+
+### 1.1 Windows
+
+1、安装。安装完之后会在 Python 的可执行路径下安装一个 virtualenv 的 exe 文件
+```shell
+pip install virtualenvwrapper-win
+```
+
+2、使用 `mkvirtualenv` 命令创建虚拟环境，安装的时候会默认基于 Python 默认版本去新建一个虚拟环境
+```shell
+mkvirtualenv python_start
+```
+
+3、删除虚拟环境
+```shell
+rmvirtualenv python_start
+```
+
+创建的虚拟环境是默认 python 版本，也可以通过 `-p` 参数指定其他 Python 版本在创建虚拟环境：
+```shell
+mkvirtualenv -p {Python Path}\python.exe python_start
+```
+
+### 1.2 Linux
+
+1、安装。如果下载比较慢，可以使用镜像。
+
+```shell
+pip3 install virtualenv -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip3 install virtualenvwrapper -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+2、配置
+
+找到 `virtualenvwrapper.sh` 文件。这里不同的 Linux 系统 `virtualenvwrapper.sh` 路径可能不一致，最好通过 `find` 命令查询一下。
+
+```shell
+# CentOS
+find / -name 'virtualenvwrapper.sh'
+/usr/local/python3.13/bin/virtualenvwrapper.sh
+
+# MacOS
+/Library/Frameworks/Python.framework/Versions/3.13/bin/virtualenvwrapper.sh
+```
+
+编辑 `.bashrc` 文件：  
+
+```shell
+vim ~/.bashrc
+```
+
+在最后添加下面内容：
+
+```shell
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+export WORKON_HOME=$HOME/.virtualenvs
+export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/python3.13/bin/virtualenv
+source /usr/local/python3.13/bin/virtualenvwrapper.sh
+```
+
+- `VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3` 这句话表示当使用 `virtualenv` 去新建 python 虚拟环境的时候会到 `/usr/bin/python3` 位置去找 python 的可执行文件。
+
+最后执行下面命令重新加载：
+
+```shell
+source  ~/.bashrc
+```
+
+3、创建虚拟环境
+
+```shell
+# mkvirtualenv python_start
+created virtual environment CPython3.13.0.final.0-64 in 153ms
+  creator CPython3Posix(dest=/root/.virtualenvs/python_start, clear=False, no_vcs_ignore=False, global=False)
+  seeder FromAppData(download=False, pip=bundle, via=copy, app_data_dir=/root/.local/share/virtualenv)
+    added seed packages: pip==24.3.1
+  activators BashActivator,CShellActivator,FishActivator,NushellActivator,PowerShellActivator,PythonActivator
+virtualenvwrapper.user_scripts creating /root/.virtualenvs/python_start/bin/predeactivate
+virtualenvwrapper.user_scripts creating /root/.virtualenvs/python_start/bin/postdeactivate
+virtualenvwrapper.user_scripts creating /root/.virtualenvs/python_start/bin/preactivate
+virtualenvwrapper.user_scripts creating /root/.virtualenvs/python_start/bin/postactivate
+virtualenvwrapper.user_scripts creating /root/.virtualenvs/python_start/bin/get_env_details
+(python_start) [root@chaos-3 Python-3.13.0]# python
+Python 3.13.0 (main, Nov  4 2024, 04:09:22) [GCC 8.5.0 20210514 (Red Hat 8.5.0-4)] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>>
+```
+
+4、虚拟环境目录
+
+```shell
+(python_start) [root@chaos-3 opt]# ls ~/.virtualenvs/
+get_env_details  postactivate	 postmkproject	   postrmvirtualenv  predeactivate  premkvirtualenv  python_start
+initialize	 postdeactivate  postmkvirtualenv  preactivate	     premkproject   prermvirtualenv
+```
+
+其中 `python_start` 就是虚拟环境的地址。
+
+**5、虚拟环境常用命令**
+```shell
+# 创建环境名
+mkvirtualenv 环境名
+# 退出环境
+deactivate
+# 进入环境
+workon 环境名
+# 删除环境
+rmvirtualenv 环境名
+# 列出所有环境
+lsvirtualenv
+```
+
+
+### 2.3 MacOS
+
+**virtualenv**
+
+1、安装。如果下载比较慢，可以使用镜像。
+```shell
+pip3 install virtualenv -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn
+pip3 install virtualenvwrapper -i https://pypi.tuna.tsinghua.edu.cn/simple --trusted-host pypi.tuna.tsinghua.edu.cn
+```
+
+2、配置
+
+找到 `virtualenvwrapper.sh` 文件。这里不同的 Linux 系统 `virtualenvwrapper.sh` 路径可能不一致，最好通过 `find` 命令查询一下。
+```shell
+➜  which python3
+/Library/Frameworks/Python.framework/Versions/3.13/bin/python3
+➜  which virtualenvwrapper.sh
+/Library/Frameworks/Python.framework/Versions/3.13/bin/virtualenvwrapper.sh
+```
+
+编辑 `.zshrc` 文件：
+
+```shell
+vim ~/.zshrc
+```
+
+在最后添加下面内容：
+
+```shell
+export VIRTUALENVWRAPPER_PYTHON=/Library/Frameworks/Python.framework/Versions/3.13/bin/python3
+export WORKON_HOME=$HOME/.virtualenvs
+source /Library/Frameworks/Python.framework/Versions/3.13/bin/virtualenvwrapper.sh
+```
+
+最后执行下面命令重新加载：
+
+```shell
+➜  source ~/.zshrc
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/premkproject
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/postmkproject
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/initialize
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/premkvirtualenv
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/postmkvirtualenv
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/prermvirtualenv
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/postrmvirtualenv
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/predeactivate
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/postdeactivate
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/preactivate
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/postactivate
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/get_env_details
+```
+
+3、创建虚拟环境
+
+```shell
+➜  mkvirtualenv python_learning
+created virtual environment CPython3.13.0.final.0-64 in 275ms
+  creator CPython3Posix(dest=/Users/finnley/.virtualenvs/python_learning, clear=False, no_vcs_ignore=False, global=False)
+  seeder FromAppData(download=False, pip=bundle, via=copy, app_data_dir=/Users/finnley/Library/Application Support/virtualenv)
+    added seed packages: pip==24.3.1
+  activators BashActivator,CShellActivator,FishActivator,NushellActivator,PowerShellActivator,PythonActivator
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/python_learning/bin/predeactivate
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/python_learning/bin/postdeactivate
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/python_learning/bin/preactivate
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/python_learning/bin/postactivate
+virtualenvwrapper.user_scripts creating /Users/finnley/.virtualenvs/python_learning/bin/get_env_details
+```
+
+**4、虚拟环境常用命令**
+
+```shell
+# 列出虚拟环境列表
+➜  lsvirtualenv
+# 或者
+➜  workon
+python_learning
+#启动/切换虚拟环境
+workon [虚拟环境名称]
+# 删除虚拟环境：
+rmvirtualenv [虚拟环境名称]
+# 离开虚拟环境，和virtualenv 一样：
+deactivate
+```
+
+**venv**
+
+1、创建虚拟环境。Python 虚拟环境用于将软件包安装与系统隔离开来。
+
+创建一个新的虚拟环境，方法是选择 Python 解释器并创建一个 `./venv` 目录来存放它：
+
+```shell
+# Linux or MacOS
+python3 -m venv --system-site-packages ./venv
+# Windows
+python -m venv --system-site-packages .\venv
+```
+
+使用特定于 shell 的命令激活该虚拟环境：
+
+```shell
+# sh, bash, or zsh
+source ./venv/bin/activate  
+# csh or tcsh
+source ./venv/bin/activate.csh  
+# csh or tcsh
+source ./venv/bin/activate.csh  
+```
+
+当虚拟环境处于有效状态时，shell 提示符带有 (venv) 前缀。
+在不影响主机系统设置的情况下，在虚拟环境中安装软件包。首先升级 pip：
+
+```shell
+pip3 install --upgrade pip
+```
+
+```shell
+pip3 list  # show packages installed within the virtual environment
+```
+
+之后退出虚拟环境：
+
+```shell
+deactivate  # don't exit until you're done using TensorFlow
+```
+
+我的操作，比如： 
+
+```shell
+Envs python3 -m venv --system-site-packages ./cat-srvs
+➜  Envs source ./cat-srvs/bin/activate
+(cat-srvs) ➜  Envs pip list
+Package          Version
+---------------- ---------
+certifi          2020.12.5
+chardet          4.0.0
+idna             2.10
+jsonrpclib-pelix 0.4.2
+pip              21.0.1
+requests         2.25.1
+setuptools       49.2.1
+urllib3          1.26.3
+WARNING: You are using pip version 21.0.1; however, version 21.1.3 is available.
+You should consider upgrading via the '/Library/Frameworks/Python.framework/Versions/3.9/bin/python3.9 -m pip install --upgrade pip' command.
+(cat-srvs) ➜  Envs pip install --upgrade pip
+Requirement already satisfied: pip in /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages (21.0.1)
+Collecting pip
+  Downloading pip-21.1.3-py3-none-any.whl (1.5 MB)
+     |████████████████████████████████| 1.5 MB 349 kB/s
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 21.0.1
+    Uninstalling pip-21.0.1:
+      Successfully uninstalled pip-21.0.1
+Successfully installed pip-21.1.3
+(cat-srvs) ➜  Envs pip list
+Package          Version
+---------------- ---------
+certifi          2020.12.5
+chardet          4.0.0
+idna             2.10
+jsonrpclib-pelix 0.4.2
+pip              21.1.3
+requests         2.25.1
+setuptools       49.2.1
+urllib3          1.26.3
+(cat-srvs) ➜  Envs deactivate
+➜  Envs
+```
+
+2、删除虚拟环境，只需要删除项目目录下的虚拟环境目录即可。
+
+## 3 pip配置
+
+**更新pip版本到最新**
+```
+pip3 install --upgrade pip
+```
+
+**查看当前源**
+```
+➜  pip3 config list
+global.index-url='https://pypi.tuna.tsinghua.edu.cn/simple'
+global.trusted-host='pypi.tuna.tsinghua.edu.cn'
+```
+
+**镜像加速配置**
+
+```shell
+# 配置
+pip3 config set global.index-url https://mirrors.cloud.tencent.com/pypi/simple
+pip3 config set global.trusted-host mirrors.cloud.tencent.com
+```
+
+## 4 更新日志
+
+- 2024.11.04 更新 Python 版本为 3.13
+- 2025.09.29 更新 Python Pip 镜像加速配置

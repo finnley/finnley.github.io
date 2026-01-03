@@ -1,0 +1,18 @@
++++
+title = '如何进入Mac虚拟机'
+date = 2025-01-05T22:36:14+08:00
+draft = true
+categories = [ "Mac" ]
+tag = [ "mac" ]
++++
+
+1、 进入虚拟机
+```shell
+docker run --pid=host --privileged -it --rm justincormack/nsenter1
+```
+
+2、进入目录
+```shell
+cd containers/services/docker/rootfs
+```
+
