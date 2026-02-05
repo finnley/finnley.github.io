@@ -35,3 +35,39 @@ java中的dubbo dubbo/rmi/hessian messagepack 如果你懂了协议完全有能�
 # GRPC调用过程
 
 ![](/images/grpc/20.png)
+
+## Protobuf管理工具buf
+
+[buf](https://buf.build/docs/cli/installation/)
+
+**proto的难点**
+
+```shell
+protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative user.proto
+```
+
+命令会使用到许多插件，无论书写、记忆、管理，都不是易事。
+
+- 插件难管理。
+- protoc命令本身不好记忆，使用时每次都要输入一堆参数
+- 各种文件目录，package定位简直要命
+
+所以直接使用protoc比较难，因此我们还可以考虑使用buf来管理。
+
+**buf使用**
+
+```yaml
+
+```
+
+在项目的顶级目录之下，有一个 buf.gen.yaml 文件，里面定义了 buf 怎么帮我们管理和编译 protobuf。
+
+- go_package_prefix: 避免了每次写 go package 都要写老长一段的问题。
+- plugins: 这是比较关键的配置，这里指定了两个插件，并且在两个插件里面分别指定了 out 和 opt。
+- Go 语言插件
+- gRPC 插件
+
+Buf 还有其他很多配置项，需要使用的时候可以查阅文档。
+
+最终在顶级目录下运行我封装好的 `make grpc` 或直接执行 `buf generate webook/api/proto`
+

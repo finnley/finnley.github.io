@@ -6,126 +6,121 @@ categories = [ "Docker" ]
 tags = [ "docker" ]
 +++
 
-# Docker架构与底层技术
+## Docker架构与底层技术
 
-## Docker Platform
+### Docker Platform
 
-* Docker 提供了一个开发，打包，运行app的平台
-* 把app和底层infrastructure隔离开来
+* Docker提供了一个开发、打包、运行App的平台；
+* 隔离app与底层infrastructure
 
 ![](/images/docker/docker/6.png)
 
-图中我们可以看到Docker Engine将底层物理设备或者虚拟设备和上层的Application隔离开，然后我们可以在Docker Engine上做事情
+### Docker Engine
 
-## Docker Engine
-
-Docker Engine 是Docker中一个非常重要的概念，是一个核心的组件 
+Docker Engine 是Docker中一个非常重要的概念，是一个核心组件。 
 
 ![](/images/docker/docker/7.png)
 
-* Docker Engine 里面有一个后台进程，叫 `dockerd`
-
+* Docker Engine中有个后台进程，叫 `dockerd`；
 * dockerd 进程提供了一个 `REST API Server`
-
 * dockerd 进程还有一个 `CLI接口` (docker)
 
 ![](/images/docker/docker/8.png)
 
-在查看docker版本的时候会看到一个client版本和server版本，docker其实就是一种C/S架构， 后台进程(dockerd)就是Docker Server,CLI接口(docker)就是Client，它们之间就是通过Rest Api Server去通信的
+Docker是一种`C/S`架构，在查看docker版本时会看到一个Client和Server，后台进程(dockerd)就是Docker Server，CLI接口(docker)就是Client，它们之间就是通过REST API Server通信。
 
 ### 后台进程(dockerd)
 
-后台进程其实就是维护我们在docker中一些常见的概念或者操作，如image镜像，container容器的管理，network网络或者data volumes存储管理
+后台进程其实就是维护我们在Docker中一些常见的概念或操作，如Image镜像、Container容器、Network网络、Data Volumes存储的管理。
 
-命令行中可以通过 `sudo docker version` 可以查看docker版本
-
-也可以通过 `ps -ef | grep docker` 查看docker进程
+通过 `sudo docker version` 查看Docker版本，也可以通过 `ps -ef | grep docker` 查看Docker进程:
 
 ![](/images/docker/docker/9.png)
 
 ## Docker Architecture
 
-下图是总体上的 docker 架构
-
 ![](/images/docker/docker/10.png)
 
-左边: 我们常用的在命令行中的一些client的各种命令
+**Client**
 
-中间: DOCKER_HOST 就是我们安装了 docker 或者 启动了 dockerd 这个docker daemon的机器，Client是可以和Docker_Host在同一台机器上，或者Client是在另外一台机器上，然后通过网络去连接Docker_Host,因为Docker_Host提供了Rest Api 可以供Client去使用
+我们在命令行中常用的一些各种命令。
 
-    Docker_Host里面有两个重要的概念，一个是镜像 Images，一个是容器 Container
+**DOCKER HOST**
 
-右边: Registry 是一个存储镜像的公共的服务器，类似于GitHub，我们可以将Image镜像存储到Registry中，或者我们可以从Registry中去获取镜像Image
+我们安装了Docker并启动了Docker Daemon的机器，Client可以和Docker Host在同一台机器上，Client也可以在另外一台机器上，然后通过网络去连接Docker Host，因为Docker Host提供了REST API可以供Client使用。
+
+Docker Host有两个重要的概念，一个是镜像，一个是容器。
+
+**Registry**
+
+一个存储镜像的服务器，类似于GitHub，我们可以将镜像存储到Registry中，我们也可以从Registry中去获取所需的镜像。
 
 ## 底层技术支持
 
-* Namespaces: 做隔离pid, net, ipc, mnt, uts
+**Namespaces**：隔离。
 
-    Docker 不是一个完全创新的技术，因为它底层全部依赖于Linux已经存在了好多年的技术，如Namespaces, 通过 Namespaces可以做隔离，比如我们可以启动多个容器，它们之间是相互隔离的，它们有独立的用户空间，网络空间以及一些进程等
+Docker不是一个完全创新的技术，因为它底层全部依赖于Linux已经存在了好多年的技术，如Namespaces，通过Namespaces可以做隔离，比如我们可以启动多个容器，它们之间相互隔离，它们有独立的用户空间、网络空间以及进程等。
 
-* Control groups: 做资源限制
+**Control groups**：资源限制。
 
-    使用 Control groups 做资源限制，比如让这个容器使用200M内存，那个容器使用300M内存，Control groups 也是 Linux 中自带的技术
+Control groups也是Linux的技术，使用Control groups来做资源限制，比如让这个容器使用200M内存，那个容器使用300M内存。
 
-* Union file systems: Container和Image的分层
+**Union file systems**: 容器、镜像的分层
 
------
 
-# 1 背景
+## 背景
 
-## 1.1 传统部署应用流程
+### 传统应用部署流程
 
 ![](/images/docker/docker/1.png)
 
-话说 Long long time ago，我们要部署一个应用，需要哪些操作呢？
+话说Long long time ago，我们要部署一个应用需要哪些操作呢？
 1. 准备一台物理服务器
 2. 在服务器上安装操作系统（Windows、Linux）
 3. 然后再在操作系统上部署应用
 
 思考：这种部署模式有什么缺点呢？
 
-- **部署慢**：购买服务器 -> 部署到指定机房 -> 安装操作系统 -> 安装依赖 -> 部署应用。整个流程需要花费很长时间。
-- **成本高**：为了部署应用，需要购买专门的服务器，
-- **资源浪费**：哪怕应用消耗的资源非常少，也需要一台物理服务器，应用来说可能存在浪费的现象，资源可能用不完。
+- **部署慢**：购买服务器 -> 部署到指定机房 -> 安装操作系统 -> 安装依赖 -> 部署应用，整个流程需要花费很长时间。
+- **成本高**：为了部署应用，需要购买专门的服务器。
+- **资源浪费**：哪怕应用消耗的资源非常少，也需要一台物理服务器，存在资源浪费的现象。
 - **难以迁移和扩展**：迁移时需要另外再准备一台服务器和操作系统，再重新部署；扩展时如果应用用户增长很快，消耗资源很大，一台服务器资源难以满足日益增长的业务需求，可能要另外再买台物理服务器，再做迁移。
 - **可能会被限定硬件厂商**：可能有些操作系统是运行在厂商自己的平台的，如果要迁移到其他平台，应用可能要做一些兼容。
 
 为了解决这个模式中出现的种种问题，就发展出了 `虚拟化技术`。
 
-## 1.2 虚拟化技术
+### 虚拟化技术
 
 ![](/images/docker/docker/2.png)
 
-**实现方式**
-
-在物理服务器上面通过 `Hypervisor` 去做物理资源的虚拟化，比如将CPU、内存、硬盘资源进行虚拟化，然后在这些虚拟化之上再去安装操作系统，这些操作系统其实就是 `虚拟机`。
+最底层的机器称为物理机，比如IBM、戴尔的服务器，在物理服务器上面通过 `Hypervisor` 虚拟化技术做物理资源的虚拟化，比如将CPU、内存、硬盘资源虚拟化，然后在这些虚拟化之上再去安装操作系统，这些操作系统其实就是 `虚拟机`，这些虚拟机可以独立运行在虚拟化之上。
 
 比如一个物理机的 CPU 和内存都非常多，就可以通过虚拟化技术虚拟出多个机器，从而可以实现虚机之间资源的调度，如其中一个虚机可以使用1CPU、1G内存，另一个虚拟机可以使用2CPU、2G内存，可以做物理资源的限定以及调度，从而实现物理资源利用率的最大化。
 
-### 1.2.1 特点
+**特点**
 
 1. 一个物理机就可以部署多个 App
 2. 每个 App 独立运行在一个 VM 中
 
-### 1.2.2 优点
+**优点**
 
 - **资源池**：可以把一个物理机的资源可以分配到不同的虚拟机里面，然后去做物理资源的管理。
 - **易扩展**：可以增加物理机器或者增加虚拟机。
 - **易于云化**：亚马逊AWS、阿里云、腾讯云等。
 - **硬件无关**：因为虚拟化，App和底层物理机之间由于虚拟化的存在做了一层隔离，与底层的物理机是什么厂商机型（戴尔、IBM）无关，通过虚拟化可以在任何物理设备上创建虚拟机。
 
-### 1.2.3 缺点
+**缺点**
 
 - 每个虚拟机都是一个完整的操作系统，要给其分配资源，当虚拟机数量增多时，操作系统本身消耗的资源势必增多。
 - 虚拟化技术还不足以促进容器技术的发展，容器技术的发展主要还是来源于开发和运维所面临的挑战。
 
-# 2 容器
+## 容器
 
-## 2.1 容器解决了什么问题
+### 解决了什么问题
 
 - 解决了开发和运维之间的矛盾，在开发和运维之间搭建了一个桥梁，是实现devops的最佳解决方案。
 
-## 2.2 什么是容器
+### 什么是容器
 
 ![](/images/docker/docker/3.png)
 
@@ -134,13 +129,13 @@ Docker Engine 是Docker中一个非常重要的概念，是一个核心的组件
 3. 容器共享同一个OS Kernel
 4. 容器可以运行在很多主流操作系统上
 
-## 2.3 容器和虚拟机的区别
+### 容器和虚拟机的区别
 
 ![](/images/docker/docker/4.jpg)
 
 [](/images/docker/docker/5.png)
 
-![alt text](image.png)
+![](/images/docker/image.png)
 
 **虚拟机**
 
@@ -148,10 +143,10 @@ Docker Engine 是Docker中一个非常重要的概念，是一个核心的组件
 - Hypervisor: 虚拟化技术层
 - Virtual Machine：在虚拟化技术之上虚拟化出一个个虚拟机，这些虚拟机可以独立运行在虚拟化技术之上。
 
-**Container**
 
+## Docker 能做什么
 
-## 2.4 Docker 能做什么
+Docker其实并没有创新或发明新的技术，而是大量使用了封装在Linux底层的技术。
 
 - **简化配置**：可以实现将源代码、运行环境以及配置都打包到一个容器里面，并且这个容器可以运行在不同的环境中，因为配置简化所以自然而然的就提高了开发效率。
 - **提高开发效率**：可以统一本地开发环境、测试环境和生产环境，极大的减少在开发和测试以及部署过程中因环境的不同产生的错误。

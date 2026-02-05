@@ -2,7 +2,7 @@
 title = 'Docker Image'
 date = 2019-05-19T09:46:13+08:00
 draft = true
-categories = [ "Docker" ]
+categories = [ "Programming" ]
 tags = [ "docker" ]
 +++
 

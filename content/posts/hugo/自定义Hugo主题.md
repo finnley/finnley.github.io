@@ -6,46 +6,47 @@ categories = [ "Hugo" ]
 tags = [ "hugo" ]
 +++
 
-## 初始化主题项目
+## 1 初始化主题
 
-1. 新建主题
+1、新建主题
 
-该命令会在当前目录下生成 `themes` 目录，并在 `themes` 目录下生成主题目录 `hugo-theme-drone`。
-
-```bash
+命令会在当前目录下生成名为`themes`的目录，并在`themes`目录中生成名为`hugo-theme-drone`的主题目录。
+```shell
 hugo new theme hugo-theme-drone
 ```
 
-2. 初始化仓库
-```
+2、初始化仓库
+```shell
 cd themes/hugo-theme-drone
 git init
-git remote add github {Your repository}
+git remote add main git@github.com:einscat/hugo-theme-drone.git
 ```
 
-在 `hugo-theme-drone` 根目录下添加 `.gitignore` 文件，内容如下：
-```
+- 将仓库地址替换为自己的地址。
+
+在`hugo-theme-drone`目录下添加`.gitignore`文件，排除非项目文件，内容如下：
+```shell
 .idea
 .DS_Store
 ```
 
-3. 新建 t1-init 分支，下载官方提供的示例站点内容到主题的 exampleSite 目录下，下载后不用怀疑，就是个空的目录
-
-```bash
+3、下载`站点示例`到`hugo-theme-drone`主题的`exampleSite`目录。
+```shell
 git clone https://github.com/gohugoio/hugoBasicExample.git exampleSite
 rm -rf exampleSite/.git
 ```
 
-4. 添加配置文件
+- 下载后查看目录内容时不用怀疑，就是个空目录。
 
-复制 `hugo-theme-drone` 主题目录下的 `hugo.toml` 文件到 `exampleSite` 示例站点目录
-```bash
+4、添加并配置文件
+
+复制`hugo-theme-drone`主题目录下的`hugo.toml`文件到`exampleSite`示例站点目录。
+```shell
 cp hugo.toml exampleSite/
 ```
 
-在示例站点的配置文件 `hugo.toml` 文件中添加主题配置：theme = 'hugo-theme-drone'，内容如下：
-
-```
+5、在【示例站点】的配置文件`hugo.toml`中添加主题配置：`theme = 'hugo-theme-drone'`
+```shell
 baseURL = 'https://example.org/'
 languageCode = 'zh-cn'
 title = 'My New Hugo Site'
@@ -53,26 +54,28 @@ title = 'My New Hugo Site'
 theme = 'hugo-theme-drone'
 ```
 
-7. 运行命令启动示例站点
-
-```bash
+6、运行命令启动示例站点
+```shell
 hugo server -s exampleSite --gc --themesDir=../..
 ```
 
-8. 访问 `http://localhost:1313/` 预览
+7、预览
 
-![](/images/hugo/image-16.png)
+通过浏览器访问默认地址`http://localhost:1313/`进行预览。
 
-初始化并安装 tailwindcss v4
-```
+![](/images/hugo/theme/01-preview.png)
+
+
+## 2 安装Tailwind
+
+1、初始化并安装Tailwindcss v4
+```shell
 npm init -y
-npm install -D tailwindcss @tailwindcss/postcss postcss postcss-cli
-
 npm install -D tailwindcss@latest @tailwindcss/postcss postcss postcss-cli
 ```
 
-创建 postcss.config.js 在根目录新建文件，内容如下（这是 v4 的关键配置）：
-```
+2、在`hugo-theme-drone`根目录中新建`postcss.config.js`文件，内容如下（这是v4的关键配置）：
+```javascript
 module.exports = {
   plugins: {
     '@tailwindcss/postcss': {},
@@ -80,8 +83,9 @@ module.exports = {
 }
 ```
 
-引入CSS文件：
-一种实现默认的实现方式：
+## 3 引入CSS文件
+
+默认的实现方式：
 ```html
 {{- with resources.Get "css/main.css" }}
   {{- if hugo.IsDevelopment }}
@@ -92,10 +96,9 @@ module.exports = {
     {{- end }}
   {{- end }}
 {{- end }}
-
 ```
 
-这种写法我看上去嵌套了if条件，我不是很喜欢，我喜欢平铺直白的第二种方式：
+默认写法看上去嵌套了if条件，我不慎欢喜，我喜欢平铺直白方式：
 ```html
 {{/* 获取 assets/css/main.css 资源 */}}
 {{ $css := resources.Get "css/main.css" }}
@@ -130,18 +133,8 @@ module.exports = {
   </footer>
 </body>
 </html>
-
 ```
 
-修改布局如下：
-```html
-
-```
-
-编写CSS:
-```
-
-```
 
 ## 初始化布局
 

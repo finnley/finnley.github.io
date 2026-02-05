@@ -6,9 +6,7 @@ categories = [ "Docker" ]
 tags = [ "docker" ]
 +++
 
-# 环境概述
-
-[github](https://github.com/finnley/env-docker)
+## 环境概述
 
 `env-docker` 是基于 `docker-compose` 运行在 `Docker` 上的开发环境，包含 `PHP`, `MySQL`, `Nginx`, `Redis` 等镜像，并支持多版本切换，可以满足一些简单的学习，开发和测试需求
 

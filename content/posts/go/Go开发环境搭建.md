@@ -3,7 +3,7 @@ title = 'Go开发环境搭建'
 date = 2020-03-10T10:07:39+08:00
 draft = true
 categories = [ "Go" ]
-tags = [ "go", "golang", "环境搭建" ]
+tags = [ "go", "golang" ]
 +++
 
 ## 安装与配置
@@ -22,7 +22,6 @@ sudo tar -C /usr/local -zxvf go1.14.12.darwin-amd64.tar.gz
 
 参考：[Go installation](https://go.dev/doc/install)
 
-
 **配置**
 
 - **`GOROOT`**: Go安装路径，比如 `/usr/local/go`。
@@ -37,7 +36,7 @@ sudo tar -C /usr/local -zxvf go1.14.12.darwin-amd64.tar.gz
 > 
 > 	2、别忘了将 `GOPATH/bin` 加入到 `PATH`，后续通过 `go install` 安装的工具都存放于此目录，如果没有加入环境变量则无法运行。	
 
-例如我自己的 `zshrc` 文件内容配置如下:
+例如我的 `zshrc` 文件内容配置内容如下:
 ```bash
 # golang
 export GOROOT=/usr/local/go1.14.12
@@ -63,7 +62,7 @@ go env
 
 **补充**
 
-还可以通过下面方式设置代理和开启 Go Module:
+通过下面方式设置代理和开启 Go Module:
 ```bash
 go env -w GOPROXY=https://goproxy.cn,direct
 go env -w GO111MODULE=on

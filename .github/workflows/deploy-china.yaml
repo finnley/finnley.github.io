@@ -1,0 +1,41 @@
+name: deploy-china-mainland
+
+on:
+  push:
+    branches:
+      - main  # 确保这里是你存放代码的分支名 (main 或 master)
+
+jobs:
+  deploy-to-china:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 拉取代码
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive  # 如果主题是 submodule，必须加这行
+          fetch-depth: 0
+
+      # 2. 安装 Hugo (使用轻量级 Action，比官方那个快)
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 'latest'
+          extended: true  # 开启扩展版 (支持 SCSS 等)
+
+      # 3. 构建国内版 (关键步骤！！！)
+      # 注意：这里加了 --environment china 参数
+      # 它会强制读取 hugo.toml 里 [environments.china] 的配置（即清空广告ID）
+      - name: Build China Version
+        run: hugo --minify --environment china
+
+      # 4. 推送到国内服务器
+      - name: Deploy to Aliyun/Tencent
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}      # 服务器 IP
+          username: ${{ secrets.REMOTE_USER }}  # 用户名 (如 root)
+          key: ${{ secrets.SERVER_SSH_KEY }}    # 私钥
+          source: "public/"                     # Hugo 生成的文件夹
+          target: "/opt/hugo-site-notes"     # ⚠️修改为你服务器上的实际目录
+          strip_components: 1                   # 去掉 public 父目录，直接传内容

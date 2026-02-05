@@ -4,6 +4,12 @@ title = 'My New Hugo Site'
 
 theme = 'hugo-theme-drone'
 
+[pagination]
+  pagerSize = 20
+
+[outputs]
+  home = ["HTML", "RSS", "JSON"]
+
 [params.meta]
   username = "Y"
   avatar = "/images/avatar.png"

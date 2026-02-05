@@ -2,72 +2,46 @@
 title = 'Docker Container'
 date = 2019-05-19T17:37:58+08:00
 draft = true
-categories = [ "Docker" ]
+categories = [ "Programming" ]
 tags = [ "docker" ]
 +++
 
 ## 什么是Container
 
-* 通过 Image 创建 (copy)，先有 image ，然后通过 image 创建 container;
-* 在 Image layer 之上建立一个 container layer (可读写),container 是在原先的 image 的基础上增加了一层，叫做 container layer,这一层是可读可写的，而 Image 本身是只读的，container需要运行程序或者安装软件所以需要一个可写的空间;
+* 通过`镜像`创建 (copy)，先有镜像，然后通过镜像创建容器;
+* 在 Image Layer 之上建立一个 container layer (可读写),container 是在原先的 image 的基础上增加了一层，叫做 container layer,这一层是可读可写的，而 Image 本身是只读的，container需要运行程序或者安装软件所以需要一个可写的空间;
 * 类比面向对象: 类和实例;
 * Image 负责 app 的存储和分发，Container 负责运行 app
 
-![](/images/docker/137.png)
+![](/images/docker/137.jpeg)
 
 ## 常用命令
 
-#### 查看 Image
+**查看Image**
 
-```
+```shell
 docker image list
-```
-
-或者 
-
-```
+# 或
 docker image ls
 ```
 
-![](/images/docker/138.png)
+**查看Container**
 
-#### 查看 Container
-
-```
+```shell
 docker container list
-```
-
-或者 
-
-```
+# 或
 docker container ls
-```
-
-![](/images/docker/139.png)
-
-#### 创建 Container
-
-基于 Image 创建 Container, `docker run <Image Name>`
-
-```
-docker run finnley/hello-docker
-```
-
-![](/images/docker/140.png)
-
-现在再去使用 `docker container ls` 查看 container
-
-![](/images/docker/141.png)
-
-此时会发现本地并没有运行中的容器，因为之前运行的 `hello-docker` 在运行之后就退出了，它不是一个常驻内存的进程
-
-我们可以使用下面指令列举所有容器，包括正在运行的和已经退出的
-
-```
+# 可以查看包括已经退出的容器
 docker container ls -a
 ```
 
-![](/images/docker/142.png)
+**创建Container**
+
+基于Image创建Container。
+
+```shell
+docker run <Image Name>
+```
 
 图中就可以看到刚才运行的 hello-docker,列表中 COMMAND 一项的值是 `/hello` , 这个是在 Dockerfile 中写的 `CMD ["/hello"]`, 执行的就是 `hello` 的可执行文件，当通过 Image 去创建一个 Container 并运行的时候，它默认会去执行 `CMD` 里面的命令， 因为这个 `CMD` 是一个运行完就结束，不是一个常驻内存的进程，所以容器一旦运行后就退出， `hello` 也就运行结束了
 
@@ -150,3 +124,61 @@ docker container rm bd
 命令 `docker container ls -f "status=exited" -q` 列出所有退出的容器
 
 清除命令 `docker rm $(docker container ls -f "status=exited" -q)`
+
+## 进入容器
+
+**进入正在运行中的容器**
+
+```shell
+docker exec -it <Container ID> /bin/bash
+```
+
+`-it`: 进入交互式界面，并不会执行完程序后就退出
+
+**进入正在运行中的容器，并执行指令**
+
+```shell
+docker exec -it {Container ID} {Command}
+```
+
+如运行Python、打印IP:
+```shell
+docker exec -it 662188a370d0 python
+docker exec -it 662188a370d0 ip a
+```
+
+从容器中退出后容器还会继续运行，可以使用`docker ps`查看容器状态。
+
+## 关闭容器
+
+```shell
+docker container stop {Container ID/Name}
+或者
+docker stop {Container ID/Name}
+```
+
+使用 `docker ps -a` 查看所有容器，会发现有很多退出状态的容器，可以使用`docker rm $(docker ps -aq)`清理已经退出状态的容器。
+
+## 容器命名
+
+```shell
+docker run -d --name=demo einscat/flask-hello-world
+```
+
+## 启动容器
+
+```shell
+docker start {Container ID/Name}
+```
+
+## 查看容器信息
+
+```shell
+docker inspect <Container ID>
+```
+
+## 查看日志
+
+```shell
+docker logs <Container ID>
+```
