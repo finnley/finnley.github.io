@@ -8,6 +8,7 @@ on:
 jobs:
   deploy-to-china:
     runs-on: ubuntu-latest
+    timeout-minutes: 30  # 【新增】设置30分钟超时，防止卡死
     steps:
       # 1. 拉取代码
       - name: Checkout
@@ -29,13 +30,23 @@ jobs:
       - name: Build China Version
         run: hugo --minify --environment china
 
+      # 【新增】诊断步骤：查看生成的 public 目录到底有多大
+      # 如果这里显示超过 50MB，且你没有大量图片，说明有异常文件
+      - name: Check file size
+        run: du -sh public/
+
       # 4. 推送到国内服务器
-      - name: Deploy to Aliyun/Tencent
-        uses: appleboy/scp-action@master
+      - name: Deploy to Aliyun/Tencent via Rsync
+        uses: easingthemes/ssh-deploy@main
         with:
-          host: ${{ secrets.REMOTE_HOST }}      # 服务器 IP
-          username: ${{ secrets.REMOTE_USER }}  # 用户名 (如 root)
-          key: ${{ secrets.SERVER_SSH_KEY }}    # 私钥
-          source: "public/"                     # Hugo 生成的文件夹
-          target: "/opt/hugo-site-notes"     # ⚠️修改为你服务器上的实际目录
-          strip_components: 1                   # 去掉 public 父目录，直接传内容
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}  # 私钥
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}         # 服务器 IP
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}         # 用户名 (如 root)
+          SOURCE: "public/"                               # Hugo 生成的文件夹
+          TARGET: "/opt/hugo-site-notes/"                 # ⚠️修改为你服务器上的实际目录
+          # 关键参数配置：
+          # -a: 归档模式（保留权限、时间戳等）
+          # -v: 详细模式（输出传输进度，相当于 debug）
+          # -z: 压缩传输（极重要！解决带宽慢的问题）
+          # --delete: 删除服务器上有但本地没有的文件（保持完全一致）
+          ARGS: "-avz --delete"
