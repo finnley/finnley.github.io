@@ -73,8 +73,8 @@ docker info --format '{{json .RegistryConfig.Mirrors}}' | jq
 
 ### 2 步骤
 ```bash
-# step 1: 运行以下命令以下载 Docker Compose 的当前稳定版本，要安装其他版本的 Compose，请替换 v2.28.0。
-sudo curl -L "https://github.com/docker/compose/releases/download/v2.28.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# step 1: 运行以下命令以下载 Docker Compose 的当前稳定版本，要安装其他版本的 Compose，请替换 v5.0.2。
+sudo curl -L "https://github.com/docker/compose/releases/download/v5.0.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
 # step 2: 将可执行权限应用于二进制文件：
 sudo chmod +x /usr/local/bin/docker-compose
