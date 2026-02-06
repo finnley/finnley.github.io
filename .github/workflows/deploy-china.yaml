@@ -35,27 +35,28 @@ jobs:
       # 4. 推送到 Gitee 中转仓库 (替换了原来的 SCP 压缩包上传)
       # 备注：这里将 public 目录下的所有静态文件推送到 Gitee 的 main 分支
       - name: Deploy to Gitee Mirror
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          # 【配置说明 1】私钥
-          # 对应你在 GitHub Secrets 中配置的 GITEE_SSH_KEY
-          # 该私钥对应的公钥必须已添加到 Gitee 仓库的“部署公钥”中
-          deploy_key: ${{ secrets.GITEE_SSH_KEY }}
-
-          # 【配置说明 2】Gitee 仓库地址
-          # ⚠️ 请修改为你的 Gitee 用户名和仓库名 (格式: username/repo)
-          external_repository: finnley/hugo-site-notes
-
-          # 【配置说明 3】推送到 Gitee 的哪个分支
-          # 通常建议和本地保持一致，或专门指定一个 branch
-          publish_branch: main
-
-          # 【配置说明 4】要推送的目录
-          # Hugo 构建生成的静态文件默认在 public 目录
-          publish_dir: ./public
-
-          # 提交信息 (可选，保持和 GitHub 一致方便追溯)
-          commit_message: ${{ github.event.head_commit.message }}
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+        run: |
+          # 1. 配置 SSH 私钥
+          mkdir -p ~/.ssh
+          echo "${{ secrets.GITEE_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          
+          # 2. 将 Gitee 加入可信主机 (防止第一次连接弹 Yes/No 确认导致卡死)
+          ssh-keyscan -t rsa gitee.com >> ~/.ssh/known_hosts
+          
+          # 3. 进入构建好的静态文件目录
+          cd public
+          
+          # 4. 初始化 Git 并提交 (这就相当于在这里建了一个新库)
+          git init
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b main
+          git add .
+          git commit -m "Deploy from GitHub Actions: ${{ github.sha }}"
+          
+          # 5. 强制推送到 Gitee (使用 SSH 地址)
+          # 注意：这里使用了 -f 强制覆盖，保证 Gitee 始终与最新构建一致
+          git remote add origin git@gitee.com:finnley/hugo-site-notes.git
+          git push -f origin main
 
