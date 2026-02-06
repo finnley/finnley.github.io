@@ -6,12 +6,12 @@ on:
       - main
 
 jobs:
-  # Job 1: 在 GitHub 官方服务器上构建 (速度快，环境全)
+  # Job 1: 在 GitHub 官方服务器上构建
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # 顺手升级到 v4 (建议)
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -23,8 +23,8 @@ jobs:
         run: hugo --minify --environment china
 
       - name: Upload Artifact
-        # 把生成的 public 文件夹打包传到 GitHub 暂存区
-        uses: actions/upload-artifact@v3
+        # 【修改点 1】必须升级到 v4
+        uses: actions/upload-artifact@v4
         with:
           name: public-site
           path: public/
@@ -32,21 +32,20 @@ jobs:
 
   # Job 2: 你的国内服务器把包拉下来部署
   deploy:
-    needs: build # 必须等 Job 1 完成
-    runs-on: self-hosted # 【关键】这会召唤你的服务器
+    needs: build
+    runs-on: self-hosted
     steps:
       - name: Download Artifact
-        # 从 GitHub 暂存区把包下载到服务器
-        uses: actions/download-artifact@v3
+        # 【修改点 2】这里也必须升级到 v4，与上面对应
+        uses: actions/download-artifact@v4
         with:
           name: public-site
           path: temp_public/
 
       - name: Deploy to Nginx
-        # 使用 rsync 增量同步 + 删除旧文件 (防止垃圾堆积)
         run: |
-          # 这里的 /var/www/html/ 换成你实际的 Nginx 站点目录
-          # 注意 temp_public 后面的斜杠 / 不能少
+          # 这里的 /var/www/html/ 务必换成你实际的 Nginx 站点目录
+          # rsync 会把 temp_public 下面的内容同步过去
           rsync -av --delete temp_public/ /opt/hugo-site-notes
           
           # 部署完清理临时文件
