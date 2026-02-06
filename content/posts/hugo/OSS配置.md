@@ -106,8 +106,9 @@ COS域名,your-bucket-1250000000.cos.ap-guangzhou.myqcloud.com,腾讯云 COS 域
 ![alt text](/images/oss/170.png)
 
 
-2、数据安全 > 防盗链，启用防盗链
+2、数据安全 > 防盗链，启用防盗链，并在白名单上协商你博客的域名
 ![alt text](/images/oss/180.png)
+
 
 
 
