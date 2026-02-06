@@ -23,8 +23,7 @@ jobs:
         run: hugo --minify --environment china
 
       - name: Upload Artifact
-        # 【修改点 1】必须升级到 v4
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: public-site
           path: public/
@@ -36,8 +35,7 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: Download Artifact
-        # 【修改点 2】这里也必须升级到 v4，与上面对应
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: public-site
           path: temp_public/
