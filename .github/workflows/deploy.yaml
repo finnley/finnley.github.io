@@ -42,11 +42,13 @@ jobs:
 
       - name: Deploy to Nginx
         run: |
-          # 这里的 /var/www/html/ 务必换成你实际的 Nginx 站点目录
-          # rsync 会把 temp_public 下面的内容同步过去
-          rsync -av --delete temp_public/ /opt/hugo-site-notes
+          # 确保目录存在 (避免第一次部署报错)
+          mkdir -p /opt/hugo-site-notes/
           
-          # 部署完清理临时文件
-          rm -rf temp_public/
+          # 关键修改：添加 --no-o --no-g
+          # --no-o: do not preserve owner (不保留所有者)
+          # --no-g: do not preserve group (不保留组)
+          # 这里的 /opt/hugo-site-notes/ 是你实际的 Nginx 站点目录
+          rsync -av --no-o --no-g --delete public/ /opt/hugo-site-notes/
           
           echo "部署完成！"
