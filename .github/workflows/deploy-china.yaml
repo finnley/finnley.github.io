@@ -1,9 +1,11 @@
-name: deploy-china-mainland
+name: .github/workflows/deploy-china.yaml
 
 on:
   push:
     branches:
       - main  # 确保这里是你存放代码的分支名 (main 或 master)
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   deploy-to-china:
@@ -30,30 +32,30 @@ jobs:
       - name: Build China Version
         run: hugo --minify --environment china
 
-      # 4. 压缩打包 (核心优化点)
-      # 将 public 目录下的内容打包成 site-release.tar.gz
-      - name: Compress Site
-        run: |
-          cd public
-          tar -zcvf ../site-release.tar.gz .
-          cd ..
-
-      # 5. 【满足需求】显示文件大小
-      # 这样你在日志里就能看到这次包有多大，预估传输时间
-      - name: Show Package Size
-        run: |
-          echo "📦 ---------------------------------------------------"
-          echo "📦 准备推送的压缩包大小如下："
-          ls -lh site-release.tar.gz
-          echo "📦 ---------------------------------------------------"
-
-      # 4. 推送到国内服务器
-      - name: Deploy to Aliyun/Tencent via Rsync
-        uses: appleboy/scp-action@master
+      # 4. 推送到 Gitee 中转仓库 (替换了原来的 SCP 压缩包上传)
+      # 备注：这里将 public 目录下的所有静态文件推送到 Gitee 的 main 分支
+      - name: Deploy to Gitee Mirror
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          key: ${{ secrets.SERVER_SSH_KEY }}              # 私钥
-          host: ${{ secrets.REMOTE_HOST }}                # 服务器 IP
-          username: ${{ secrets.REMOTE_USER }}            # 用户名 (如 root)
-          source: "site-release.tar.gz"                   # Hugo 生成的文件夹
-          target: "/opt/hugo-site-notes/"                 # ⚠️修改为你服务器上的实际目录
-          debug: true
+          # 【配置说明 1】私钥
+          # 对应你在 GitHub Secrets 中配置的 GITEE_SSH_KEY
+          # 该私钥对应的公钥必须已添加到 Gitee 仓库的“部署公钥”中
+          deploy_key: ${{ secrets.GITEE_SSH_KEY }}
+
+          # 【配置说明 2】Gitee 仓库地址
+          # ⚠️ 请修改为你的 Gitee 用户名和仓库名 (格式: username/repo)
+          external_repository: finnley/hugo-site-notes
+
+          # 【配置说明 3】推送到 Gitee 的哪个分支
+          # 通常建议和本地保持一致，或专门指定一个 branch
+          publish_branch: main
+
+          # 【配置说明 4】要推送的目录
+          # Hugo 构建生成的静态文件默认在 public 目录
+          publish_dir: ./public
+
+          # 提交信息 (可选，保持和 GitHub 一致方便追溯)
+          commit_message: ${{ github.event.head_commit.message }}
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+
