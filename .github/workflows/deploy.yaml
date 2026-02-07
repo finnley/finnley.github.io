@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+        with:
+          submodules: recursive          # ← 关键！拉取所有子模块（包括主题）
+          fetch-depth: 0                 # 可选：拉取完整历史（推荐，如果你的主题依赖历史）
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3

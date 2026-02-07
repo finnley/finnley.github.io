@@ -8,7 +8,7 @@ theme = 'hugo-theme-drone'
   pagerSize = 20
 
 [outputs]
-  home = ["HTML", "RSS", "JSON"]
+  home = ["html", "rss", "json"]
 
 [params.meta]
   username = "Y"
