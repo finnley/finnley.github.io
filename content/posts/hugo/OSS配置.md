@@ -15,12 +15,12 @@ tags = [ "hugo", "oss" ]
 * **权限（ACL）：** 选择 **私有（Private）**。这意味着只有拥有密钥的请求才能访问，这是安全的基础。
 * **区域：** 尽量选择离你主要受众近的区域，或者离你服务器近的区域（如果是同区域内网传输会更快）。
 
-![alt text](/images/oss/10.png)
+![](https://assets.einscat.com/notes/oss/10.png)
 
-![alt text](/images/oss/20.png)
+![](https://assets.einscat.com/notes/oss/20.png)
 
-![alt text](/images/oss/30.png)
-![alt text](/images/oss/40.png)
+![](https://assets.einscat.com/notes/oss/30.png)
+![](https://assets.einscat.com/notes/oss/40.png)
 
 ### 1.2 配置 CDN 加速（关键步骤）
 
@@ -28,24 +28,24 @@ tags = [ "hugo", "oss" ]
 * 前往 **CDN 控制台**，添加域名（例如 `static.yourblog.com`）。
 * **源站设置：** 选择你的 OSS Bucket 域名。
 
-![alt text](/images/oss/50.png)
-![alt text](/images/oss/60.png)
+![](https://assets.einscat.com/notes/oss/50.png)
+![](https://assets.einscat.com/notes/oss/60.png)
 加速区域可以暂时先选择“仅中国内地”，未来可以调整。
 
 在“源站信息”中点击“新增源站信息”，源站信息选择“OSS域名”，域名选择第二个，之前创建Bucket分配的默认域名，不是“自定义OSS源站”，其他默认，最后点击“确定”按钮。
-![alt text](/images/oss/70.png)
+![](https://assets.einscat.com/notes/oss/70.png)
 
 配置完后点击“下一步”。
-![alt text](/images/oss/80.png)
+![](https://assets.einscat.com/notes/oss/80.png)
 
 进入下一步后，可以选择跳过：
-![alt text](/images/oss/90.png)
-![alt text](/images/oss/100.png)
+![](https://assets.einscat.com/notes/oss/90.png)
+![](https://assets.einscat.com/notes/oss/100.png)
 
 接着就是根据向导提示到域名服务商去添加一条域名解析。
-![alt text](/images/oss/110.png)
-![alt text](/images/oss/120.png)
-![alt text](/images/oss/130.png)
+![](https://assets.einscat.com/notes/oss/110.png)
+![](https://assets.einscat.com/notes/oss/120.png)
+![](https://assets.einscat.com/notes/oss/130.png)
 
 - 参考：https://help.aliyun.com/zh/oss/user-guide/cdn-acceleration
 
@@ -86,14 +86,14 @@ COS域名,your-bucket-1250000000.cos.ap-guangzhou.myqcloud.com,腾讯云 COS 域
 - 参考：https://help.aliyun.com/zh/cdn/user-guide/grant-alibaba-cloud-cdn-access-permissions-on-private-oss-buckets
 
 1、在域名管理页面，单击目标域名对应的管理。
-![alt text](/images/oss/140.png)
+![](https://assets.einscat.com/notes/oss/140.png)
 
 2、找到回源配置，在阿里云OSS私有Bucket回源区域打开状态。
 
-![alt text](/images/oss/150.png)
+![](https://assets.einscat.com/notes/oss/150.png)
 
 在弹出的阿里云OSS私有Bucket回源对话框中，选择回源类型，单击确定。
-![alt text](/images/oss/160.png)
+![](https://assets.einscat.com/notes/oss/160.png)
 
 
 ## 2 安全限制（防盗链与域名限制）
@@ -103,13 +103,11 @@ COS域名,your-bucket-1250000000.cos.ap-guangzhou.myqcloud.com,腾讯云 COS 域
 - 参考：https://help.aliyun.com/zh/oss/user-guide/hotlink-protection
 
 1、点击Bucket。
-![alt text](/images/oss/170.png)
+![](https://assets.einscat.com/notes/oss/170.png)
 
 
 2、数据安全 > 防盗链，启用防盗链，并在白名单上协商你博客的域名
-![alt text](/images/oss/180.png)
-
-
+![](https://assets.einscat.com/notes/oss/180.png)
 
 
 **配置位置：** 建议在 **CDN 控制台** 配置（因为流量先到 CDN），而不是在 OSS 上配置。
@@ -125,13 +123,56 @@ COS域名,your-bucket-1250000000.cos.ap-guangzhou.myqcloud.com,腾讯云 COS 域
 * **限制效果：** 配置后，只有当请求头中的 Referer 是你的博客域名时，CDN 才会返回图片；其他网站引用（盗链）或直接访问链接，都会返回 403。
 
 
-
-
 2. **IP 黑/白名单（可选）：**
 * 如果你发现有恶意的爬虫 IP 消耗流量，可以在 CDN 侧配置 IP 黑名单进行拦截。
 
 
+## 3 加速访问处理
 
+为了让博客加载飞快，除了基本的 CDN 分发，还需要配置缓存策略。
+
+1. **缓存过期时间（Cache-Control）：**
+* 对于博客图片（通常不会频繁修改），建议设置较长的缓存时间。
+* **文件类型：** `.jpg`, `.png`, `.webp`, `.css`, `.js`
+* **过期时间：** 建议设置为 **1个月** 或 **1年**。
+* *效果：* 用户第二次访问时，直接从本地浏览器缓存加载，无需消耗 CDN 流量，速度极快。
+
+
+2. **开启 HTTPS/HTTP2：**
+* 上传你的 SSL 证书到 CDN，开启 HTTPS 安全访问。
+* 勾选 **HTTP/2** 选项，这能显著提高多图并发加载的速度。
+
+1、在域名管理页面，单击目标域名对应的管理。
+![](https://assets.einscat.com/notes/oss/140.png)
+
+2、填入证书信息。
+![](https://assets.einscat.com/notes/oss/190.png)
+
+2、打开HTTP/2
+![](https://assets.einscat.com/notes/oss/200.png)
+![](https://assets.einscat.com/notes/oss/210.png)
+
+4、上传文件可以不指定域名，因为已经配置CDN，在访问时使用CDN配置的域名
+![](https://assets.einscat.com/notes/oss/220.png)
+![](https://assets.einscat.com/notes/oss/oss/10.png)
+
+
+## 4 总结与对比表
+
+| 功能需求 | 配置位置 | 关键设置项 | 作用 |
+| --- | --- | --- | --- |
+| **存储安全** | OSS | ACL 设为 **私有** | 防止恶意扫描和未授权下载源文件 |
+| **公开访问** | CDN | **私有 Bucket 回源授权** | 让 CDN 有权抓取私有 OSS 内容并对外分发 |
+| **域名绑定** | CDN | 添加自定义域名 | 替换丑陋的 OSS 长域名，提升专业度 |
+| **防盗链** | CDN | **Referer 白名单** (禁止空 Referer) | 限制资源仅能在你的博客页面内加载 |
+| **访问加速** | CDN | 缓存规则、HTTP/2 | 提升加载速度，节省回源流量费用 |
+
+### 潜在风险提示
+
+* **流量费用：** 虽然 OSS 存储便宜，但 CDN 流量是按量计费的。如果被攻击（DDoS 或 CC），可能会产生高额账单。
+* **建议方案：** 在 CDN 控制台设置 **“带宽封顶”** 或 **“用量预警”**。例如，单日流量超过 10GB 自动触发报警或停止服务，防止一夜之间房子归了云厂商。
+
+---
 
 2、OSS控制台绑定自定义域名（如img.yourdomain.com）。
 
@@ -216,21 +257,6 @@ COS域名,your-bucket-1250000000.cos.ap-guangzhou.myqcloud.com,腾讯云 COS 域
 
 
 ---
-
-### 步骤三：加速访问处理
-
-为了让博客加载飞快，除了基本的 CDN 分发，还需要配置缓存策略。
-
-1. **缓存过期时间（Cache-Control）：**
-* 对于博客图片（通常不会频繁修改），建议设置较长的缓存时间。
-* **文件类型：** `.jpg`, `.png`, `.webp`, `.css`, `.js`
-* **过期时间：** 建议设置为 **1个月** 或 **1年**。
-* *效果：* 用户第二次访问时，直接从本地浏览器缓存加载，无需消耗 CDN 流量，速度极快。
-
-
-2. **开启 HTTPS/HTTP2：**
-* 上传你的 SSL 证书到 CDN，开启 HTTPS 安全访问。
-* 勾选 **HTTP/2** 选项，这能显著提高多图并发加载的速度。
 
 
 
